@@ -1,17 +1,15 @@
 <?php
 
-namespace App\Contexts\Cards\Domain\Model\Card;
+namespace App\Contexts\Cards\Domain\Model\BlockedCard;
 
+use App\Contexts\Cards\Domain\Events\BlockedCard\BlockedCardUnblocked;
 use App\Contexts\Cards\Domain\Events\Card\AchievementDismissed;
 use App\Contexts\Cards\Domain\Events\Card\AchievementNoted;
-use App\Contexts\Cards\Domain\Events\Card\CardBlocked;
-use App\Contexts\Cards\Domain\Events\Card\CardCompleted;
-use App\Contexts\Cards\Domain\Events\Card\CardIssued;
-use App\Contexts\Cards\Domain\Events\Card\CardRevoked;
 use App\Contexts\Cards\Domain\Model\AggregateRoot;
+use App\Contexts\Cards\Domain\Model\Card\Achievement;
 use Carbon\Carbon;
 
-class CardAggregateRoot extends AggregateRoot
+class BlockedCard extends AggregateRoot
 {
     private ?Carbon $issued = null;
 
@@ -27,32 +25,14 @@ class CardAggregateRoot extends AggregateRoot
     private ?Carbon $blocked = null;
 
     public function __construct(
-        public CardId $cardId
+        public BlockedCardId $blockedCardId
     ) {
     }
 
-    public function issue(): CardIssued
+    public function unblock(): BlockedCardUnblocked
     {
-        $this->issued = Carbon::now();
-        return CardIssued::with($this->cardId);
-    }
-
-    public function complete(): CardCompleted
-    {
-        $this->completed = Carbon::now();
-        return CardCompleted::with($this->cardId);
-    }
-
-    public function revoke(): CardRevoked
-    {
-        $this->revoked = Carbon::now();
-        return CardRevoked::with($this->cardId);
-    }
-
-    public function block(): CardBlocked
-    {
-        $this->blocked = Carbon::now();
-        return CardBlocked::with($this->cardId);
+        $this->blocked = null;
+        return BlockedCardUnblocked::with($this->blockedCardId);
     }
 
     public function noteAchievement(Achievement $achievement): AchievementNoted
