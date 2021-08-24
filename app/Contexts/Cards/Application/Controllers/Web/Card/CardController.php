@@ -18,18 +18,17 @@ use App\Contexts\Cards\Application\IntegrationEvents\CardCompleted;
 use App\Contexts\Cards\Application\IntegrationEvents\CardIssued;
 use App\Contexts\Cards\Application\IntegrationEvents\CardRevoked;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class CardController extends BaseController
 {
     public function generateCardCode(GenerateCardCodeQuery $generateCardCodeQuery): JsonResponse
     {
-        return $this->successApiResponse(null, (string) $generateCardCodeQuery->cardId);
+        return $this->successApiResponse(null, ['cardId' => (string) $generateCardCodeQuery->cardId]);
     }
 
     public function issueCard(IssueCardCommand $issueCardCommand): JsonResponse
     {
-        return $this->successApiResponse(new CardIssued());
+        return $this->successApiResponse(new CardIssued(), ['cardId' => (string) $issueCardCommand->cardId]);
     }
 
     public function completeCard(CompleteCardCommand $completeCardCommand): JsonResponse
