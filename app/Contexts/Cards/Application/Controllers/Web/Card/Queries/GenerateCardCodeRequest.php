@@ -2,7 +2,7 @@
 
 namespace App\Contexts\Cards\Application\Controllers\Web\Card\Queries;
 
-class GenerateCardCodeQuery extends BaseQuery
+class GenerateCardCodeRequest extends BaseQueryRequest
 {
 
 }

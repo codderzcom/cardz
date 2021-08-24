@@ -6,7 +6,7 @@ use App\Contexts\Cards\Domain\CardId;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
-class BaseCommand extends FormRequest
+class BaseCommandRequest extends FormRequest
 {
     public ?CardId $cardId = null;
 

@@ -2,7 +2,7 @@
 
 namespace App\Contexts\Cards\Application\Controllers\Web\Card\Commands;
 
-class RemoveAchievementCommand extends BaseCommand
+class CompleteCardRequest extends BaseCommandRequest
 {
 
 }

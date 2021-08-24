@@ -3,14 +3,14 @@
 namespace App\Contexts\Cards\Application\Controllers\Web\Card;
 
 use App\Contexts\Cards\Application\Controllers\Web\BaseController;
-use App\Contexts\Cards\Application\Controllers\Web\Card\Commands\{AddAchievementCommand,
-    BlockCardCommand,
-    CompleteCardCommand,
-    IssueCardCommand,
-    RemoveAchievementCommand,
-    RevokeCardCommand
+use App\Contexts\Cards\Application\Controllers\Web\Card\Commands\{AddAchievementRequest,
+    BlockCardRequest,
+    CompleteCardRequest,
+    IssueCardRequest,
+    RemoveAchievementRequest,
+    RevokeCardRequest
 };
-use App\Contexts\Cards\Application\Controllers\Web\Card\Queries\GenerateCardCodeQuery;
+use App\Contexts\Cards\Application\Controllers\Web\Card\Queries\GenerateCardCodeRequest;
 use App\Contexts\Cards\Application\IntegrationEvents\AchievementDismissed;
 use App\Contexts\Cards\Application\IntegrationEvents\AchievementNoted;
 use App\Contexts\Cards\Application\IntegrationEvents\CardBlocked;
@@ -21,37 +21,37 @@ use Illuminate\Http\JsonResponse;
 
 class CardController extends BaseController
 {
-    public function generateCardCode(GenerateCardCodeQuery $generateCardCodeQuery): JsonResponse
+    public function generateCardCode(GenerateCardCodeRequest $generateCardCodeRequest): JsonResponse
     {
-        return $this->successApiResponse(null, ['cardId' => (string) $generateCardCodeQuery->cardId]);
+        return $this->successApiResponse(null, ['cardId' => (string) $generateCardCodeRequest->cardId]);
     }
 
-    public function issueCard(IssueCardCommand $issueCardCommand): JsonResponse
+    public function issueCard(IssueCardRequest $issueCardRequest): JsonResponse
     {
-        return $this->successApiResponse(new CardIssued(), ['cardId' => (string) $issueCardCommand->cardId]);
+        return $this->successApiResponse(new CardIssued(), ['cardId' => (string) $issueCardRequest->cardId]);
     }
 
-    public function completeCard(CompleteCardCommand $completeCardCommand): JsonResponse
+    public function completeCard(CompleteCardRequest $completeCardRequest): JsonResponse
     {
         return $this->successApiResponse(new CardCompleted());
     }
 
-    public function revokeCard(RevokeCardCommand $revokeCardCommand): JsonResponse
+    public function revokeCard(RevokeCardRequest $revokeCardRequest): JsonResponse
     {
         return $this->successApiResponse(new CardRevoked());
     }
 
-    public function blockCard(BlockCardCommand $blockCardCommand): JsonResponse
+    public function blockCard(BlockCardRequest $blockCardRequest): JsonResponse
     {
         return $this->successApiResponse(new CardBlocked());
     }
 
-    public function addAchievement(AddAchievementCommand $addAchievementCommand): JsonResponse
+    public function addAchievement(AddAchievementRequest $addAchievementRequest): JsonResponse
     {
         return $this->successApiResponse(new AchievementNoted());
     }
 
-    public function removeAchievement(RemoveAchievementCommand $removeAchievementCommand): JsonResponse
+    public function removeAchievement(RemoveAchievementRequest $removeAchievementRequest): JsonResponse
     {
         return $this->successApiResponse(new AchievementDismissed());
     }
