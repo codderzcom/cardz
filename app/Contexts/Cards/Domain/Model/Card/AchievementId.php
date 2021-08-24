@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Contexts\Cards\Domain;
+namespace App\Contexts\Cards\Domain\Model\Card;
 
 use Ramsey\Uuid\Guid\Guid;
 
-class CardId
+class AchievementId
 {
     public function __construct(private ?string $id = null)
     {

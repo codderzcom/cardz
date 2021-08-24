@@ -1,5 +1,6 @@
 <?php
 
+use App\Contexts\Cards\Application\Controllers\Web\BlockedCard\BlockedCardController;
 use App\Contexts\Cards\Application\Controllers\Web\Card\CardController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,28 +26,16 @@ Route::group(['prefix' => '/cards/v1'], function () {
 
         Route::post('', [CardController::class, 'issueCard'])->name('IssueCard');
 
-        Route::post('{cardId}/complete', function ($cardId) {
-            echo "card $cardId completed";
-        })->name('CompleteCard');
-        Route::post('{cardId}/revoke', function ($cardId) {
-            echo "card $cardId revoked";
-        })->name('RevokeCard');
-        Route::post('{cardId}/block', function ($cardId) {
-            echo "card $cardId blocked";
-        })->name('BlockCard');
+        Route::post('{cardId}/complete', [CardController::class, 'completeCard'])->name('CompleteCard');
+        Route::post('{cardId}/revoke', [CardController::class, 'revokeCard'])->name('RevokeCard');
+        Route::post('{cardId}/block', [CardController::class, 'blockCard'])->name('BlockCard');
 
-        Route::post('{cardId}/achievement', function ($cardId) {
-            echo "card $cardId achievement noted";
-        })->name('AddAchievement');
-        Route::delete('{cardId}/achievement/{achievementId}', function ($cardId, $achievementId) {
-            echo "card $cardId achievement $achievementId dismissed";
-        })->name('RemoveAchievement');
+        Route::post('{cardId}/achievement', [CardController::class, 'addAchievement'])->name('AddAchievement');
+        Route::delete('{cardId}/achievement/{achievementId}', [CardController::class, 'removeAchievement'])->name('RemoveAchievement');
 
     });
 
     Route::group(['prefix' => '/blocked-card'], function () {
-        Route::post('{blockedCardId}/unblock', function ($blockedCardId) {
-            echo "blocked card $blockedCardId unblocked";
-        })->name('UnblockBlockedCard');
+        Route::post('{blockedCardId}/unblock', [BlockedCardController::class, 'unblockBlockedCard'])->name('UnblockBlockedCard');
     });
 });

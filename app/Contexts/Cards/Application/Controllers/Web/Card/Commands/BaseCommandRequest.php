@@ -2,11 +2,11 @@
 
 namespace App\Contexts\Cards\Application\Controllers\Web\Card\Commands;
 
-use App\Contexts\Cards\Domain\CardId;
+use App\Contexts\Cards\Domain\Model\Card\CardId;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
-class BaseCommandRequest extends FormRequest
+abstract class BaseCommandRequest extends FormRequest
 {
     public ?CardId $cardId = null;
 
