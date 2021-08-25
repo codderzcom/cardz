@@ -2,7 +2,6 @@
 
 namespace App\Contexts\Cards\Application\IntegrationEvents;
 
-interface CardsReportable
+class CardArchived extends BaseIntegrationEvent
 {
-    public function __toString(): string;
 }

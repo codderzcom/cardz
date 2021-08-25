@@ -27,6 +27,6 @@ class BlockedCardController extends BaseController
 
         $blockedCard->unblock();
         $this->blockedCardRepository->persist($blockedCard);
-        return $this->success(new CardUnblocked());
+        return $this->success(new CardUnblocked($request->blockedCardId, 'BlockedCard'));
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Contexts\Cards\Application\Controllers\Web;
 
-use App\Contexts\Cards\Application\IntegrationEvents\CardsReportable;
+use App\Contexts\Cards\Application\Common\CardsReportable;
 use App\Contexts\Cards\Infrasctructure\Messaging\ReportingBus;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -22,7 +22,7 @@ abstract class BaseController extends Controller
     public function success(CardsReportable $reportable = null, $payload = [], $code = 200): JsonResponse
     {
         if ($reportable) {
-            $this->reportingBus->acceptReportable($reportable);
+            $this->reportingBus->report($reportable);
             $payload['IntegrationEvent'] = (string) $reportable;
         }
         return response()->json($payload, $code);

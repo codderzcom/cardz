@@ -36,17 +36,17 @@ class CardController extends BaseController
         return $this->success(null, ['code' => base64_encode($generateCardCodeRequest->cardId)]);
     }
 
-    public function issueCard(IssueCardRequest $issueCardRequest): JsonResponse
+    public function issueCard(IssueCardRequest $request): JsonResponse
     {
         $card = Card::create(
-            $issueCardRequest->cardId,
-            $issueCardRequest->bonusProgramId,
-            $issueCardRequest->customerId,
-            $issueCardRequest->description,
+            $request->cardId,
+            $request->bonusProgramId,
+            $request->customerId,
+            $request->description,
         );
         $card->issue();
         $this->cardRepository->persist($card);
-        return $this->success(new CardIssued(), ['cardId' => (string) $card->cardId]);
+        return $this->success(new CardIssued($request->cardId, 'Card'), ['cardId' => (string) $card->cardId]);
     }
 
     public function completeCard(CompleteCardRequest $request): JsonResponse
@@ -58,7 +58,7 @@ class CardController extends BaseController
 
         $card?->complete();
         $this->cardRepository->persist($card);
-        return $this->success(new CardCompleted());
+        return $this->success(new CardCompleted($request->cardId, 'Card'));
     }
 
     public function revokeCard(RevokeCardRequest $request): JsonResponse
@@ -70,7 +70,7 @@ class CardController extends BaseController
 
         $card?->revoke();
         $this->cardRepository->persist($card);
-        return $this->success(new CardRevoked());
+        return $this->success(new CardRevoked($request->cardId, 'Card'));
     }
 
     public function blockCard(BlockCardRequest $request): JsonResponse
@@ -82,7 +82,7 @@ class CardController extends BaseController
 
         $card?->block();
         $this->cardRepository->persist($card);
-        return $this->success(new CardBlocked());
+        return $this->success(new CardBlocked($request->cardId, 'Card'));
     }
 
     public function addAchievement(AddAchievementRequest $request): JsonResponse
@@ -94,7 +94,7 @@ class CardController extends BaseController
 
         $card?->noteAchievement($request->description);
         $this->cardRepository->persist($card);
-        return $this->success(new AchievementNoted());
+        return $this->success(new AchievementNoted($request->cardId, 'Card'));
     }
 
     public function removeAchievement(RemoveAchievementRequest $request): JsonResponse
@@ -106,7 +106,7 @@ class CardController extends BaseController
 
         $card?->dismissAchievement($request->achievementId);
         $this->cardRepository->persist($card);
-        return $this->success(new AchievementDismissed());
+        return $this->success(new AchievementDismissed($request->cardId, 'Card'));
     }
 
 }

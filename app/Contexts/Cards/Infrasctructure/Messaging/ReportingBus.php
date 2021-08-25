@@ -2,22 +2,45 @@
 
 namespace App\Contexts\Cards\Infrasctructure\Messaging;
 
-use App\Contexts\Cards\Application\IntegrationEvents\CardsReportable;
+use App\Contexts\Cards\Application\Common\CardsInformable;
+use App\Contexts\Cards\Application\Common\CardsReportable;
+use App\Contexts\Cards\Infrasctructure\Persistence\CardsReportableRepository;
 
 class ReportingBus
 {
     /**
-     * @var array<CardsReportable>
+     * @var array<CardsInformable>
      */
-    protected array $reportables = [];
+    protected array $informables = [];
 
-    public function acceptReportable(CardsReportable $reportable): void
+    public function __construct(private CardsReportableRepository $reportableRepository)
     {
-        $this->persist($reportable);
     }
 
-    protected function persist(CardsReportable $reportable): void
+    public function subscribe(CardsInformable $informable): void
     {
-        $this->reportables[] = $reportable;
+        $this->informables[] = $informable;
+    }
+
+    public function report(CardsReportable $reportable): void
+    {
+        $this->reportableRepository->persist($reportable);
+        $this->issue($reportable);
+    }
+
+    public function acceptReportables(CardsReportable ...$reportables): void
+    {
+        foreach ($reportables as $reportable) {
+            $this->report($reportable);
+        }
+    }
+
+    protected function issue(CardsReportable $reportable): void
+    {
+        foreach ($this->informables as $informable) {
+            if ($informable->accepts($reportable)) {
+                $informable->inform($reportable);
+            }
+        }
     }
 }

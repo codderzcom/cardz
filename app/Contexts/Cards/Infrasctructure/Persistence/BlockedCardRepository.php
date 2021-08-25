@@ -8,7 +8,7 @@ use App\Models\Card as EloquentCard;
 
 class BlockedCardRepository
 {
-    public function persist(BlockedCard $blockedCard): void
+    public function persist(?BlockedCard $blockedCard = null): void
     {
         if ($blockedCard === null) {
             return;
