@@ -4,10 +4,10 @@ namespace App\Contexts\Cards\Application\Controllers\Web\Card\Commands;
 
 class AddAchievementRequest extends BaseCommandRequest
 {
-    use ForSpecificCardTrait;
+    public string $description;
 
-    public function getDescription(): string
+    public function passedValidation(): void
     {
-        return $this->get('description') ?? 'Error';
+        $this->description = $this->input('description') ?: 'Random name';
     }
 }

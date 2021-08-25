@@ -27,8 +27,7 @@ class CardController extends BaseController
     public function __construct(
         private CardRepository $cardRepository,
         ReportingBus $reportingBus
-    )
-    {
+    ) {
         parent::__construct($reportingBus);
     }
 
@@ -39,7 +38,12 @@ class CardController extends BaseController
 
     public function issueCard(IssueCardRequest $issueCardRequest): JsonResponse
     {
-        $card = Card::create();
+        $card = Card::create(
+            $issueCardRequest->cardId,
+            $issueCardRequest->bonusProgramId,
+            $issueCardRequest->customerId,
+            $issueCardRequest->description,
+        );
         $card->issue();
         $this->cardRepository->persist($card);
         return $this->successApiResponse(new CardIssued(), ['cardId' => (string) $card->cardId]);
@@ -72,7 +76,7 @@ class CardController extends BaseController
     public function addAchievement(AddAchievementRequest $addAchievementRequest): JsonResponse
     {
         $card = $this->cardRepository->take($addAchievementRequest->cardId);
-        $card?->noteAchievement($addAchievementRequest->getDescription());
+        $card?->noteAchievement($addAchievementRequest->description);
         $this->cardRepository->persist($card);
         return $this->successApiResponse(new AchievementNoted());
     }
@@ -80,7 +84,7 @@ class CardController extends BaseController
     public function removeAchievement(RemoveAchievementRequest $removeAchievementRequest): JsonResponse
     {
         $card = $this->cardRepository->take($removeAchievementRequest->cardId);
-        $card?->dismissAchievement($removeAchievementRequest->getAchievementId());
+        $card?->dismissAchievement($removeAchievementRequest->achievementId);
         $this->cardRepository->persist($card);
         return $this->successApiResponse(new AchievementDismissed());
     }

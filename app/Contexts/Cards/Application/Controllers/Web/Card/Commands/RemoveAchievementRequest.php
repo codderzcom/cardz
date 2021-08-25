@@ -6,10 +6,18 @@ use App\Contexts\Cards\Domain\Model\Card\AchievementId;
 
 class RemoveAchievementRequest extends BaseCommandRequest
 {
-    use ForSpecificCardTrait;
+    public AchievementId $achievementId;
 
-    public function getAchievementId(): AchievementId
+    protected function prepareForValidation(): void
     {
-        return new AchievementId($this->route('achievementId'));
+        parent::prepareForValidation();
+        $this->merge([
+            'achievementId' => $this->route('achievementId'),
+        ]);
+    }
+
+    public function passedValidation(): void
+    {
+        $this->achievementId = new AchievementId($this->input('achievementId'));
     }
 }

@@ -9,13 +9,14 @@ use App\Contexts\Cards\Domain\Events\Card\CardCompleted;
 use App\Contexts\Cards\Domain\Events\Card\CardIssued;
 use App\Contexts\Cards\Domain\Events\Card\CardRevoked;
 use App\Contexts\Cards\Domain\Model\AggregateRoot;
+use App\Contexts\Cards\Domain\Model\Shared\BonusProgramId;
+use App\Contexts\Cards\Domain\Model\Shared\CustomerId;
 use Carbon\Carbon;
+use JetBrains\PhpStorm\Pure;
 use ReflectionClass;
 
 class Card extends AggregateRoot
 {
-    private ?string $description = null;
-
     private ?Carbon $issued = null;
 
     private ?Carbon $completed = null;
@@ -28,7 +29,10 @@ class Card extends AggregateRoot
     private array $achievements = [];
 
     private function __construct(
-        public CardId $cardId
+        public CardId $cardId,
+        public BonusProgramId $bonusProgramId,
+        public CustomerId $customerId,
+        private ?string $description = null
     ) {
     }
 
@@ -44,16 +48,19 @@ class Card extends AggregateRoot
     }
 
     private function from(
-        CardId $cardId,
+        ?string $cardId,
+        ?string $bonusProgramId,
+        ?string $customerId,
         ?string $description = null,
         ?Carbon $issued = null,
         ?Carbon $completed = null,
         ?Carbon $revoked = null,
         ?Carbon $blocked = null,
         array $achievements = [],
-    ): void
-    {
-        $this->cardId = $cardId;
+    ): void {
+        $this->cardId = new CardId($cardId);
+        $this->bonusProgramId = new BonusProgramId($bonusProgramId);
+        $this->customerId = new CustomerId($customerId);
         $this->description = $description;
         $this->issued = $issued;
         $this->completed = $completed;
@@ -62,9 +69,9 @@ class Card extends AggregateRoot
         $this->achievements = $achievements;
     }
 
-    public static function create(): static
+    #[Pure] public static function create(CardId $cardId, BonusProgramId $bonusProgramId, CustomerId $customerId, ?string $description = null): static
     {
-        return new static(new CardId());
+        return new static($cardId, $bonusProgramId, $customerId, $description);
     }
 
     public function issue(): CardIssued
@@ -97,11 +104,13 @@ class Card extends AggregateRoot
         if ($achievement) {
             $this->achievements[(string) $achievement->achievementId] = $achievement;
         }
+        return AchievementNoted::with($this->cardId, $achievement->achievementId);
     }
 
     public function dismissAchievement(AchievementId $achievementId): AchievementDismissed
     {
         unset($this->achievements[(string) $achievementId]);
+        return AchievementDismissed::with($this->cardId, $achievementId);
     }
 
     public function getDescription(): ?string

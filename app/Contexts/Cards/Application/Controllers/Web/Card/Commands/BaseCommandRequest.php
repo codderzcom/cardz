@@ -8,20 +8,27 @@ use Illuminate\Validation\Validator;
 
 abstract class BaseCommandRequest extends FormRequest
 {
+    public CardId $cardId;
+
     public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
     {
         parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
     }
 
-    public function withValidator(Validator $validator)
+    protected function prepareForValidation(): void
     {
-        if (method_exists(static::class, 'inferCardId')) {
-            $this->inferCardId($this->route('cardId'));
-        }
+        $this->inferCardId();
+    }
+
+    protected function inferCardId(): void
+    {
+        $this->cardId = new CardId($this->route('cardId'));
     }
 
     public function rules()
     {
-        return [];
+        return [
+            //'cardId' => 'required'
+        ];
     }
 }
