@@ -33,7 +33,7 @@ class CardController extends BaseController
 
     public function generateCardCode(GenerateCardCodeRequest $generateCardCodeRequest): JsonResponse
     {
-        return $this->successApiResponse(null, ['code' => base64_encode($generateCardCodeRequest->cardId)]);
+        return $this->success(null, ['code' => base64_encode($generateCardCodeRequest->cardId)]);
     }
 
     public function issueCard(IssueCardRequest $issueCardRequest): JsonResponse
@@ -46,47 +46,67 @@ class CardController extends BaseController
         );
         $card->issue();
         $this->cardRepository->persist($card);
-        return $this->successApiResponse(new CardIssued(), ['cardId' => (string) $card->cardId]);
+        return $this->success(new CardIssued(), ['cardId' => (string) $card->cardId]);
     }
 
-    public function completeCard(CompleteCardRequest $completeCardRequest): JsonResponse
+    public function completeCard(CompleteCardRequest $request): JsonResponse
     {
-        $card = $this->cardRepository->take($completeCardRequest->cardId);
+        $card = $this->cardRepository->take($request->cardId);
+        if ($card === null) {
+            return $this->notFound(['cardId' => (string) $request->cardId]);
+        }
+
         $card?->complete();
         $this->cardRepository->persist($card);
-        return $this->successApiResponse(new CardCompleted());
+        return $this->success(new CardCompleted());
     }
 
-    public function revokeCard(RevokeCardRequest $revokeCardRequest): JsonResponse
+    public function revokeCard(RevokeCardRequest $request): JsonResponse
     {
-        $card = $this->cardRepository->take($revokeCardRequest->cardId);
+        $card = $this->cardRepository->take($request->cardId);
+        if ($card === null) {
+            return $this->notFound(['cardId' => (string) $request->cardId]);
+        }
+
         $card?->revoke();
         $this->cardRepository->persist($card);
-        return $this->successApiResponse(new CardRevoked());
+        return $this->success(new CardRevoked());
     }
 
-    public function blockCard(BlockCardRequest $blockCardRequest): JsonResponse
+    public function blockCard(BlockCardRequest $request): JsonResponse
     {
-        $card = $this->cardRepository->take($blockCardRequest->cardId);
+        $card = $this->cardRepository->take($request->cardId);
+        if ($card === null) {
+            return $this->notFound(['cardId' => (string) $request->cardId]);
+        }
+
         $card?->block();
         $this->cardRepository->persist($card);
-        return $this->successApiResponse(new CardBlocked());
+        return $this->success(new CardBlocked());
     }
 
-    public function addAchievement(AddAchievementRequest $addAchievementRequest): JsonResponse
+    public function addAchievement(AddAchievementRequest $request): JsonResponse
     {
-        $card = $this->cardRepository->take($addAchievementRequest->cardId);
-        $card?->noteAchievement($addAchievementRequest->description);
+        $card = $this->cardRepository->take($request->cardId);
+        if ($card === null) {
+            return $this->notFound(['cardId' => (string) $request->cardId]);
+        }
+
+        $card?->noteAchievement($request->description);
         $this->cardRepository->persist($card);
-        return $this->successApiResponse(new AchievementNoted());
+        return $this->success(new AchievementNoted());
     }
 
-    public function removeAchievement(RemoveAchievementRequest $removeAchievementRequest): JsonResponse
+    public function removeAchievement(RemoveAchievementRequest $request): JsonResponse
     {
-        $card = $this->cardRepository->take($removeAchievementRequest->cardId);
-        $card?->dismissAchievement($removeAchievementRequest->achievementId);
+        $card = $this->cardRepository->take($request->cardId);
+        if ($card === null) {
+            return $this->notFound(['cardId' => (string) $request->cardId]);
+        }
+
+        $card?->dismissAchievement($request->achievementId);
         $this->cardRepository->persist($card);
-        return $this->successApiResponse(new AchievementDismissed());
+        return $this->success(new AchievementDismissed());
     }
 
 }

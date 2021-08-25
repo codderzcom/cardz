@@ -26,7 +26,14 @@ class CardRepository
         if ($cardId === null) {
             return null;
         }
-        $eloquentCard = EloquentCard::find((string) $cardId);
+        /** @var EloquentCard $eloquentCard */
+        $eloquentCard = EloquentCard::query()->where([
+            'id' => (string) $cardId,
+            'blocked_at' => null,
+        ])?->first();
+        if ($eloquentCard === null) {
+            return null;
+        }
         return $this->cardFromData($eloquentCard);
     }
 

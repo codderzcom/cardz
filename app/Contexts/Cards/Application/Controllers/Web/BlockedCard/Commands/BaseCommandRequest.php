@@ -2,26 +2,32 @@
 
 namespace App\Contexts\Cards\Application\Controllers\Web\BlockedCard\Commands;
 
-use App\Contexts\Cards\Domain\Model\Card\CardId;
+use App\Contexts\Cards\Domain\Model\BlockedCard\BlockedCardId;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Validator;
 
 abstract class BaseCommandRequest extends FormRequest
 {
-    public ?CardId $cardId = null;
+    public BlockedCardId $blockedCardId;
 
     public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
     {
         parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
     }
 
-    public function withValidator(Validator $validator)
+    protected function prepareForValidation(): void
     {
-        $this->cardId = new CardId($this->route('cardId'));
+        $this->inferCardId();
+    }
+
+    protected function inferCardId(): void
+    {
+        $this->blockedCardId = new BlockedCardId($this->route('blockedCardId'));
     }
 
     public function rules()
     {
-        return [];
+        return [
+            //'cardId' => 'required'
+        ];
     }
 }

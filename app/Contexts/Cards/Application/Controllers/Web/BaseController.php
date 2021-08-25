@@ -19,12 +19,24 @@ abstract class BaseController extends Controller
     ) {
     }
 
-    public function successApiResponse(CardsReportable $reportable = null, $payload = [], $code = 200): JsonResponse
+    public function success(CardsReportable $reportable = null, $payload = [], $code = 200): JsonResponse
     {
         if ($reportable) {
             $this->reportingBus->acceptReportable($reportable);
             $payload['IntegrationEvent'] = (string) $reportable;
         }
+        return response()->json($payload, $code);
+    }
+
+    public function notFound($payload = null): JsonResponse
+    {
+        return $this->error($payload, 404, 'Not found');
+    }
+
+    public function error($payload = null, $code = 500, ?string $message = null) : JsonResponse
+    {
+        $payload = $payload ?? [];
+        $payload['error'] = $message ?? 'Error';
         return response()->json($payload, $code);
     }
 }

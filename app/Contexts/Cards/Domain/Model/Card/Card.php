@@ -36,39 +36,6 @@ class Card extends AggregateRoot
     ) {
     }
 
-    private function createAchievement(string $description): ?Achievement
-    {
-        $reflection = new ReflectionClass(Achievement::class);
-        $constructor = $reflection->getConstructor();
-        $constructor?->setAccessible(true);
-        /** @var ?Achievement $achievement */
-        $achievement = $reflection->newInstanceWithoutConstructor();
-        $constructor?->invoke($achievement, new AchievementId(), $description);
-        return $achievement;
-    }
-
-    private function from(
-        ?string $cardId,
-        ?string $bonusProgramId,
-        ?string $customerId,
-        ?string $description = null,
-        ?Carbon $issued = null,
-        ?Carbon $completed = null,
-        ?Carbon $revoked = null,
-        ?Carbon $blocked = null,
-        array $achievements = [],
-    ): void {
-        $this->cardId = new CardId($cardId);
-        $this->bonusProgramId = new BonusProgramId($bonusProgramId);
-        $this->customerId = new CustomerId($customerId);
-        $this->description = $description;
-        $this->issued = $issued;
-        $this->completed = $completed;
-        $this->revoked = $revoked;
-        $this->blocked = $blocked;
-        $this->achievements = $achievements;
-    }
-
     #[Pure] public static function create(CardId $cardId, BonusProgramId $bonusProgramId, CustomerId $customerId, ?string $description = null): static
     {
         return new static($cardId, $bonusProgramId, $customerId, $description);
@@ -144,5 +111,39 @@ class Card extends AggregateRoot
     public function isBlocked(): bool
     {
         return $this->blocked === null;
+    }
+
+
+    private function createAchievement(string $description): ?Achievement
+    {
+        $reflection = new ReflectionClass(Achievement::class);
+        $constructor = $reflection->getConstructor();
+        $constructor?->setAccessible(true);
+        /** @var ?Achievement $achievement */
+        $achievement = $reflection->newInstanceWithoutConstructor();
+        $constructor?->invoke($achievement, new AchievementId(), $description);
+        return $achievement;
+    }
+
+    private function from(
+        ?string $cardId,
+        ?string $bonusProgramId,
+        ?string $customerId,
+        ?string $description = null,
+        ?Carbon $issued = null,
+        ?Carbon $completed = null,
+        ?Carbon $revoked = null,
+        ?Carbon $blocked = null,
+        array $achievements = [],
+    ): void {
+        $this->cardId = new CardId($cardId);
+        $this->bonusProgramId = new BonusProgramId($bonusProgramId);
+        $this->customerId = new CustomerId($customerId);
+        $this->description = $description;
+        $this->issued = $issued;
+        $this->completed = $completed;
+        $this->revoked = $revoked;
+        $this->blocked = $blocked;
+        $this->achievements = $achievements;
     }
 }
