@@ -2,11 +2,6 @@
 
 namespace App\Contexts\Cards\Application\IntegrationEvents;
 
-class CardRevoked implements CardsReportable
+class CardRevoked extends BaseIntegrationEvent
 {
-    public function __toString(): string
-    {
-        return self::class;
-    }
-
 }

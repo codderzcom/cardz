@@ -2,11 +2,6 @@
 
 namespace App\Contexts\Cards\Application\IntegrationEvents;
 
-class CardIssued implements CardsReportable
+class CardIssued extends BaseIntegrationEvent
 {
-    public function __toString(): string
-    {
-        return self::class;
-    }
-
 }

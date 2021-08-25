@@ -2,11 +2,6 @@
 
 namespace App\Contexts\Cards\Application\IntegrationEvents;
 
-class CardUnblocked implements CardsReportable
+class CardUnblocked extends BaseIntegrationEvent
 {
-    public function __toString(): string
-    {
-        return self::class;
-    }
-
 }
