@@ -8,5 +8,5 @@ use App\Contexts\Plans\Domain\Model\Plan\PlanId;
 interface PlanRepositoryInterface
 {
     public function take(PlanId $planId): ?Plan;
-    public function save(Plan $plan): void;
+    public function persist(?Plan $plan): void;
 }

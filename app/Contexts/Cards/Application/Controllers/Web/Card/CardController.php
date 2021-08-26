@@ -40,7 +40,7 @@ class CardController extends BaseController
     {
         $card = Card::create(
             $request->cardId,
-            $request->bonusProgramId,
+            $request->planId,
             $request->customerId,
             $request->description,
         );

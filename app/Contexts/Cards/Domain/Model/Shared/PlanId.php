@@ -4,7 +4,7 @@ namespace App\Contexts\Cards\Domain\Model\Shared;
 
 use Ramsey\Uuid\Guid\Guid;
 
-class BonusProgramId
+class PlanId
 {
     public function __construct(private ?string $id = null)
     {

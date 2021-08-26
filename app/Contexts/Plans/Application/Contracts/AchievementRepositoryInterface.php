@@ -9,6 +9,6 @@ interface AchievementRepositoryInterface
 {
     public function take(AchievementId $achievementId): ?Achievement;
 
-    public function save(Achievement $achievement): void;
+    public function persist(?Achievement $achievement): void;
 
 }

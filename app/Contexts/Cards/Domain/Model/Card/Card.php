@@ -9,7 +9,7 @@ use App\Contexts\Cards\Domain\Events\Card\CardCompleted;
 use App\Contexts\Cards\Domain\Events\Card\CardIssued;
 use App\Contexts\Cards\Domain\Events\Card\CardRevoked;
 use App\Contexts\Cards\Domain\Model\AggregateRoot;
-use App\Contexts\Cards\Domain\Model\Shared\BonusProgramId;
+use App\Contexts\Cards\Domain\Model\Shared\PlanId;
 use App\Contexts\Cards\Domain\Model\Shared\CustomerId;
 use Carbon\Carbon;
 use JetBrains\PhpStorm\Pure;
@@ -30,15 +30,15 @@ class Card extends AggregateRoot
 
     private function __construct(
         public CardId $cardId,
-        public BonusProgramId $bonusProgramId,
+        public PlanId $planId,
         public CustomerId $customerId,
         private ?string $description = null
     ) {
     }
 
-    #[Pure] public static function create(CardId $cardId, BonusProgramId $bonusProgramId, CustomerId $customerId, ?string $description = null): static
+    #[Pure] public static function create(CardId $cardId, PlanId $planId, CustomerId $customerId, ?string $description = null): static
     {
-        return new static($cardId, $bonusProgramId, $customerId, $description);
+        return new static($cardId, $planId, $customerId, $description);
     }
 
     public function issue(): CardIssued
@@ -127,7 +127,7 @@ class Card extends AggregateRoot
 
     private function from(
         ?string $cardId,
-        ?string $bonusProgramId,
+        ?string $planId,
         ?string $customerId,
         ?string $description = null,
         ?Carbon $issued = null,
@@ -137,7 +137,7 @@ class Card extends AggregateRoot
         array $achievements = [],
     ): void {
         $this->cardId = new CardId($cardId);
-        $this->bonusProgramId = new BonusProgramId($bonusProgramId);
+        $this->planId = new PlanId($planId);
         $this->customerId = new CustomerId($customerId);
         $this->description = $description;
         $this->issued = $issued;

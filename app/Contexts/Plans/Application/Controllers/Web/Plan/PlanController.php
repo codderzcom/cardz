@@ -13,6 +13,7 @@ use App\Contexts\Plans\Application\IntegrationEvents\PlanAdded;
 use App\Contexts\Plans\Application\IntegrationEvents\PlanArchived;
 use App\Contexts\Plans\Application\IntegrationEvents\PlanLaunched;
 use App\Contexts\Plans\Application\IntegrationEvents\PlanStopped;
+use App\Contexts\Plans\Domain\Model\Plan\Plan;
 use App\Contexts\Shared\Contracts\ReportingBusInterface;
 use Illuminate\Http\JsonResponse;
 
@@ -21,15 +22,15 @@ class PlanController extends BaseController
     public function __construct(
         private PlanRepositoryInterface $planRepository,
         ReportingBusInterface $reportingBus
-    )
-    {
+    ) {
         parent::__construct($reportingBus);
     }
 
     public function add(AddPlanRequest $request): JsonResponse
     {
-        $plan = $this->planRepository->take($request->planId);
+        $plan = Plan::create($request->planId, $request->workspaceId, $request->description);
         $plan?->add();
+        $this->planRepository->persist($plan);
         return $this->success(new PlanAdded($plan?->planId, 'Plan'));
     }
 
@@ -37,6 +38,7 @@ class PlanController extends BaseController
     {
         $plan = $this->planRepository->take($request->planId);
         $plan?->launch();
+        $this->planRepository->persist($plan);
         return $this->success(new PlanLaunched($plan?->planId, 'Plan'));
     }
 
@@ -44,6 +46,7 @@ class PlanController extends BaseController
     {
         $plan = $this->planRepository->take($request->planId);
         $plan?->stop();
+        $this->planRepository->persist($plan);
         return $this->success(new PlanStopped($plan?->planId, 'Plan'));
     }
 
@@ -51,6 +54,7 @@ class PlanController extends BaseController
     {
         $plan = $this->planRepository->take($request->planId);
         $plan?->archive();
+        $this->planRepository->persist($plan);
         return $this->success(new PlanArchived($plan?->planId, 'Plan'));
     }
 
@@ -58,6 +62,7 @@ class PlanController extends BaseController
     {
         $plan = $this->planRepository->take($request->planId);
         $plan?->changeDescription($request->description);
+        $this->planRepository->persist($plan);
         return $this->success(new PlanArchived($plan?->planId, 'Plan'));
     }
 }

@@ -3,14 +3,14 @@
 namespace App\Contexts\Cards\Application\Controllers\Web\Card\Commands;
 
 use App\Contexts\Cards\Domain\Model\Card\CardId;
-use App\Contexts\Cards\Domain\Model\Shared\BonusProgramId;
+use App\Contexts\Cards\Domain\Model\Shared\PlanId;
 use App\Contexts\Cards\Domain\Model\Shared\CustomerId;
 
 class IssueCardRequest extends BaseCommandRequest
 {
     public CustomerId $customerId;
 
-    public BonusProgramId $bonusProgramId;
+    public PlanId $planId;
 
     public ?string $description;
 
@@ -21,7 +21,7 @@ class IssueCardRequest extends BaseCommandRequest
 
     public function passedValidation(): void
     {
-        $this->bonusProgramId = new BonusProgramId($this->input('bonusProgramId'));
+        $this->planId = new PlanId($this->input('planId'));
         $this->customerId = new CustomerId($this->input('customerId'));
         $this->description = $this->input('description');
     }
@@ -29,7 +29,7 @@ class IssueCardRequest extends BaseCommandRequest
     public function messages()
     {
         return [
-            'bonusProgramId.required' => 'bonusProgramId required',
+            'planId.required' => 'planId required',
             'customerId.required' => 'customerId required',
         ];
     }

@@ -9,6 +9,7 @@ use App\Contexts\Plans\Domain\Events\Plan\PlanLaunched;
 use App\Contexts\Plans\Domain\Events\Plan\PlanStopped;
 use App\Contexts\Plans\Domain\Model\Shared\WorkspaceId;
 use Carbon\Carbon;
+use JetBrains\PhpStorm\Pure;
 
 class Plan
 {
@@ -25,6 +26,11 @@ class Plan
         public WorkspaceId $workspaceId,
         private ?string $description = null
     ) {
+    }
+
+    #[Pure] public static function create(PlanId $planId, WorkspaceId $workspaceId, ?string $description = null): static
+    {
+        return new static($planId, $workspaceId, $description);
     }
 
     public function add(): PlanAdded
@@ -82,4 +88,21 @@ class Plan
         return $this->archived === null;
     }
 
+    private function from(
+        ?string $planId,
+        ?string $workspaceId,
+        ?string $description = null,
+        ?Carbon $added = null,
+        ?Carbon $launched = null,
+        ?Carbon $stopped = null,
+        ?Carbon $archived = null,
+    ): void {
+        $this->planId = new PlanId($planId);
+        $this->workspaceId = new WorkspaceId($workspaceId);
+        $this->description = $description;
+        $this->added = $added;
+        $this->launched = $launched;
+        $this->stopped = $stopped;
+        $this->archived = $archived;
+    }
 }

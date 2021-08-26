@@ -7,6 +7,7 @@ use App\Contexts\Plans\Domain\Events\Achievement\AchievementChanged;
 use App\Contexts\Plans\Domain\Events\Achievement\AchievementRemoved;
 use App\Contexts\Plans\Domain\Model\Plan\PlanId;
 use Carbon\Carbon;
+use JetBrains\PhpStorm\Pure;
 
 class Achievement
 {
@@ -14,11 +15,16 @@ class Achievement
 
     private ?Carbon $removed = null;
 
-    public function __construct(
+    private function __construct(
         public AchievementId $achievementId,
         public PlanId $planId,
         private ?string $description = null
     ) {
+    }
+
+    #[Pure] public static function create(AchievementId $achievementId, PlanId $planId, ?string $description = null): static
+    {
+        return new static($achievementId, $planId, $description);
     }
 
     public function add(): AchievementAdded
@@ -52,5 +58,19 @@ class Achievement
     public function isRemoved(): bool
     {
         return $this->removed === null;
+    }
+
+    private function from(
+        ?string $achievementId,
+        ?string $planId,
+        ?string $description = null,
+        ?Carbon $added = null,
+        ?Carbon $removed = null,
+    ): void {
+        $this->achievementId = new AchievementId($achievementId);
+        $this->planId = new PlanId($planId);
+        $this->description = $description;
+        $this->added = $added;
+        $this->removed = $removed;
     }
 }

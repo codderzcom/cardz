@@ -21,7 +21,10 @@ class CardRepository implements CardRepositoryInterface
             return;
         }
 
-        EloquentCard::updateOrCreate(['id' => $card->cardId], $this->cardAsData($card));
+        EloquentCard::query()->updateOrCreate(
+            ['id' => $card->cardId],
+            $this->cardAsData($card)
+        );
     }
 
     public function take(?CardId $cardId = null): ?Card
@@ -58,7 +61,7 @@ class CardRepository implements CardRepositoryInterface
 
         $data = [
             'id' => (string) $card->cardId,
-            'bonus_program_id' => (string) $card->bonusProgramId,
+            'plan_id' => (string) $card->planId,
             'customer_id' => (string) $card->customerId,
             'description' => $card->getDescription(),
             'issued_at' => $properties['issued'],
@@ -89,14 +92,14 @@ class CardRepository implements CardRepositoryInterface
         $reflection = new ReflectionClass(Card::class);
         $creator = $reflection->getMethod('from');
         $creator?->setAccessible(true);
-        /** @var ?Card $card */
+        /** @var Card $card */
         $card = $reflection->newInstanceWithoutConstructor();
 
         $achievements = $eloquentCard->achievements ? json_try_decode($eloquentCard->achievements, true) : [];
 
         $creator?->invoke($card,
             $eloquentCard->id,
-            $eloquentCard->bonus_program_id,
+            $eloquentCard->plan_id,
             $eloquentCard->customer_id,
             $eloquentCard->description,
             $eloquentCard->issued_at,
