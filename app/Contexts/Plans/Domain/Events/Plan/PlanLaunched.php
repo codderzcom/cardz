@@ -2,7 +2,12 @@
 
 namespace App\Contexts\Plans\Domain\Events\Plan;
 
-class PlanLaunched
-{
+use App\Contexts\Plans\Domain\Model\Plan\PlanId;
 
+class PlanLaunched extends BasePlanDomainEvent
+{
+    public static function with(PlanId $planId): static
+    {
+        return new static($planId);
+    }
 }
