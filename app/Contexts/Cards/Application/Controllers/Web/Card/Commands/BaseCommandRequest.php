@@ -4,7 +4,6 @@ namespace App\Contexts\Cards\Application\Controllers\Web\Card\Commands;
 
 use App\Contexts\Cards\Domain\Model\Card\CardId;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Validator;
 
 abstract class BaseCommandRequest extends FormRequest
 {

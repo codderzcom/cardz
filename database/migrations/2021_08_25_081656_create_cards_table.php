@@ -15,7 +15,7 @@ class CreateCardsTable extends Migration
     {
         Schema::create('cards', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('bonus_program_id')->index();
+            $table->string('plan_id')->index();
             $table->string('customer_id')->index();
 
             $table->string('description')->nullable();

@@ -2,6 +2,7 @@
 
 namespace App\Contexts\Cards\Application\Controllers\Web\Card;
 
+use App\Contexts\Cards\Application\Contracts\CardRepositoryInterface;
 use App\Contexts\Cards\Application\Controllers\Web\BaseController;
 use App\Contexts\Cards\Application\Controllers\Web\Card\Commands\{AddAchievementRequest,
     BlockCardRequest,
@@ -18,29 +19,28 @@ use App\Contexts\Cards\Application\IntegrationEvents\CardCompleted;
 use App\Contexts\Cards\Application\IntegrationEvents\CardIssued;
 use App\Contexts\Cards\Application\IntegrationEvents\CardRevoked;
 use App\Contexts\Cards\Domain\Model\Card\Card;
-use App\Contexts\Cards\Infrasctructure\Persistence\CardRepository;
 use App\Contexts\Shared\Contracts\ReportingBusInterface;
 use Illuminate\Http\JsonResponse;
 
 class CardController extends BaseController
 {
     public function __construct(
-        private CardRepository $cardRepository,
+        private CardRepositoryInterface $cardRepository,
         ReportingBusInterface $reportingBus
     ) {
         parent::__construct($reportingBus);
     }
 
-    public function generateCardCode(GenerateCardCodeRequest $generateCardCodeRequest): JsonResponse
+    public function generateCode(GenerateCardCodeRequest $generateCardCodeRequest): JsonResponse
     {
         return $this->success(null, ['code' => base64_encode($generateCardCodeRequest->cardId)]);
     }
 
-    public function issueCard(IssueCardRequest $request): JsonResponse
+    public function issue(IssueCardRequest $request): JsonResponse
     {
         $card = Card::create(
             $request->cardId,
-            $request->bonusProgramId,
+            $request->planId,
             $request->customerId,
             $request->description,
         );
@@ -49,7 +49,7 @@ class CardController extends BaseController
         return $this->success(new CardIssued($request->cardId, 'Card'), ['cardId' => (string) $card->cardId]);
     }
 
-    public function completeCard(CompleteCardRequest $request): JsonResponse
+    public function complete(CompleteCardRequest $request): JsonResponse
     {
         $card = $this->cardRepository->take($request->cardId);
         if ($card === null) {
@@ -61,7 +61,7 @@ class CardController extends BaseController
         return $this->success(new CardCompleted($request->cardId, 'Card'));
     }
 
-    public function revokeCard(RevokeCardRequest $request): JsonResponse
+    public function revoke(RevokeCardRequest $request): JsonResponse
     {
         $card = $this->cardRepository->take($request->cardId);
         if ($card === null) {
@@ -73,7 +73,7 @@ class CardController extends BaseController
         return $this->success(new CardRevoked($request->cardId, 'Card'));
     }
 
-    public function blockCard(BlockCardRequest $request): JsonResponse
+    public function block(BlockCardRequest $request): JsonResponse
     {
         $card = $this->cardRepository->take($request->cardId);
         if ($card === null) {

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Contexts\Cards\Infrasctructure\Persistence;
+namespace App\Contexts\Cards\Infrastructure\Persistence;
 
+use App\Contexts\Cards\Application\Contracts\CardRepositoryInterface;
 use App\Contexts\Cards\Domain\Model\Card\Achievement;
 use App\Contexts\Cards\Domain\Model\Card\AchievementId;
 use App\Contexts\Cards\Domain\Model\Card\Card;
@@ -9,8 +10,10 @@ use App\Contexts\Cards\Domain\Model\Card\CardId;
 use App\Models\Card as EloquentCard;
 use JetBrains\PhpStorm\Pure;
 use ReflectionClass;
+use function json_try_decode;
+use function json_try_encode;
 
-class CardRepository
+class CardRepository implements CardRepositoryInterface
 {
     public function persist(?Card $card = null): void
     {
@@ -18,7 +21,10 @@ class CardRepository
             return;
         }
 
-        EloquentCard::updateOrCreate(['id' => $card->cardId], $this->cardAsData($card));
+        EloquentCard::query()->updateOrCreate(
+            ['id' => $card->cardId],
+            $this->cardAsData($card)
+        );
     }
 
     public function take(?CardId $cardId = null): ?Card
@@ -55,7 +61,7 @@ class CardRepository
 
         $data = [
             'id' => (string) $card->cardId,
-            'bonus_program_id' => (string) $card->bonusProgramId,
+            'plan_id' => (string) $card->planId,
             'customer_id' => (string) $card->customerId,
             'description' => $card->getDescription(),
             'issued_at' => $properties['issued'],
@@ -86,14 +92,14 @@ class CardRepository
         $reflection = new ReflectionClass(Card::class);
         $creator = $reflection->getMethod('from');
         $creator?->setAccessible(true);
-        /** @var ?Card $card */
+        /** @var Card $card */
         $card = $reflection->newInstanceWithoutConstructor();
 
         $achievements = $eloquentCard->achievements ? json_try_decode($eloquentCard->achievements, true) : [];
 
         $creator?->invoke($card,
             $eloquentCard->id,
-            $eloquentCard->bonus_program_id,
+            $eloquentCard->plan_id,
             $eloquentCard->customer_id,
             $eloquentCard->description,
             $eloquentCard->issued_at,
