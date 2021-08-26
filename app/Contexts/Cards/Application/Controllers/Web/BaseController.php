@@ -2,8 +2,8 @@
 
 namespace App\Contexts\Cards\Application\Controllers\Web;
 
-use App\Contexts\Cards\Application\Common\CardsReportable;
-use App\Contexts\Cards\Infrasctructure\Messaging\ReportingBus;
+use App\Contexts\Shared\Contracts\Reportable;
+use App\Contexts\Shared\Contracts\ReportingBusInterface;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -15,11 +15,11 @@ abstract class BaseController extends Controller
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     public function __construct(
-        private ReportingBus $reportingBus
+        private ReportingBusInterface $reportingBus
     ) {
     }
 
-    public function success(CardsReportable $reportable = null, $payload = [], $code = 200): JsonResponse
+    public function success(Reportable $reportable = null, $payload = [], $code = 200): JsonResponse
     {
         if ($reportable) {
             $this->reportingBus->report($reportable);
@@ -33,7 +33,7 @@ abstract class BaseController extends Controller
         return $this->error($payload, 404, 'Not found');
     }
 
-    public function error($payload = null, $code = 500, ?string $message = null) : JsonResponse
+    public function error($payload = null, $code = 500, ?string $message = null): JsonResponse
     {
         $payload = $payload ?? [];
         $payload['error'] = $message ?? 'Error';

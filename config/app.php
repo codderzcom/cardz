@@ -176,6 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         App\Contexts\Cards\CardsProvider::class,
+        App\Contexts\Shared\SharedProvider::class,
     ],
 
     /*

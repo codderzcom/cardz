@@ -2,9 +2,9 @@
 
 namespace App\Contexts\Cards\Application\IntegrationEvents;
 
-use App\Contexts\Cards\Application\Common\CardsReportable;
+use App\Contexts\Shared\Contracts\Reportable;
 
-abstract class BaseIntegrationEvent implements CardsReportable
+abstract class BaseIntegrationEvent implements Reportable
 {
     public function __construct(protected ?string $instanceId, protected ?string $instanceOf)
     {

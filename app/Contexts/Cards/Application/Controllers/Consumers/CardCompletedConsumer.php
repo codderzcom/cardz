@@ -2,24 +2,24 @@
 
 namespace App\Contexts\Cards\Application\Controllers\Consumers;
 
-use App\Contexts\Cards\Application\Common\CardsInformable;
-use App\Contexts\Cards\Application\Common\CardsReportable;
 use App\Contexts\Cards\Application\IntegrationEvents\CardArchived;
 use App\Contexts\Cards\Application\IntegrationEvents\CardCompleted;
-use App\Contexts\Cards\Infrasctructure\Messaging\ReportingBus;
+use App\Contexts\Shared\Contracts\Informable;
+use App\Contexts\Shared\Contracts\Reportable;
+use App\Contexts\Shared\Contracts\ReportingBusInterface;
 
-class CardsCompletedConsumer implements CardsInformable
+class CardCompletedConsumer implements Informable
 {
-    public function __construct(public ReportingBus $reportingBus)
+    public function __construct(public ReportingBusInterface $reportingBus)
     {
     }
 
-    public function accepts(CardsReportable $reportable): bool
+    public function accepts(Reportable $reportable): bool
     {
         return $reportable instanceof CardCompleted;
     }
 
-    public function inform(CardsReportable $reportable): void
+    public function inform(Reportable $reportable): void
     {
         /** @var CardCompleted $event */
         $event = $reportable;

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Contexts\Cards\Application\Common;
+namespace App\Contexts\Shared\Contracts;
 
-interface CardsReportable
+interface Reportable
 {
     public function toJSON(): string;
     public function __toString(): string;

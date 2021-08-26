@@ -18,15 +18,15 @@ use App\Contexts\Cards\Application\IntegrationEvents\CardCompleted;
 use App\Contexts\Cards\Application\IntegrationEvents\CardIssued;
 use App\Contexts\Cards\Application\IntegrationEvents\CardRevoked;
 use App\Contexts\Cards\Domain\Model\Card\Card;
-use App\Contexts\Cards\Infrasctructure\Messaging\ReportingBus;
 use App\Contexts\Cards\Infrasctructure\Persistence\CardRepository;
+use App\Contexts\Shared\Contracts\ReportingBusInterface;
 use Illuminate\Http\JsonResponse;
 
 class CardController extends BaseController
 {
     public function __construct(
         private CardRepository $cardRepository,
-        ReportingBus $reportingBus
+        ReportingBusInterface $reportingBus
     ) {
         parent::__construct($reportingBus);
     }
