@@ -175,8 +175,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        App\Contexts\Cards\CardsProvider::class,
         App\Contexts\Shared\SharedProvider::class,
+        App\Contexts\Cards\CardsProvider::class,
+        App\Contexts\Plans\PlansProvider::class,
     ],
 
     /*

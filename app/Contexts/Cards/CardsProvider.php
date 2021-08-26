@@ -17,9 +17,6 @@ class CardsProvider extends ServiceProvider
     {
         $this->app->singleton(CardRepositoryInterface::class, CardRepository::class);
         $this->app->singleton(BlockedCardRepositoryInterface::class, BlockedCardRepository::class);
-        //$this->app->singleton(CardsReportingBusInterface::class, ReportingBus::class);
-        //$this->app->bind(CardsCompletedConsumer::class, CardsCompletedConsumer::class);
-        //$this->app->bind(CardsRevokedConsumer::class, CardsRevokedConsumer::class);
     }
 
     public function boot(ReportingBusInterface $reportingBus)
