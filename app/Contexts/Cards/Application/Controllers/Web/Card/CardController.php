@@ -31,12 +31,12 @@ class CardController extends BaseController
         parent::__construct($reportingBus);
     }
 
-    public function generateCardCode(GenerateCardCodeRequest $generateCardCodeRequest): JsonResponse
+    public function generateCode(GenerateCardCodeRequest $generateCardCodeRequest): JsonResponse
     {
         return $this->success(null, ['code' => base64_encode($generateCardCodeRequest->cardId)]);
     }
 
-    public function issueCard(IssueCardRequest $request): JsonResponse
+    public function issue(IssueCardRequest $request): JsonResponse
     {
         $card = Card::create(
             $request->cardId,
@@ -49,7 +49,7 @@ class CardController extends BaseController
         return $this->success(new CardIssued($request->cardId, 'Card'), ['cardId' => (string) $card->cardId]);
     }
 
-    public function completeCard(CompleteCardRequest $request): JsonResponse
+    public function complete(CompleteCardRequest $request): JsonResponse
     {
         $card = $this->cardRepository->take($request->cardId);
         if ($card === null) {
@@ -61,7 +61,7 @@ class CardController extends BaseController
         return $this->success(new CardCompleted($request->cardId, 'Card'));
     }
 
-    public function revokeCard(RevokeCardRequest $request): JsonResponse
+    public function revoke(RevokeCardRequest $request): JsonResponse
     {
         $card = $this->cardRepository->take($request->cardId);
         if ($card === null) {
@@ -73,7 +73,7 @@ class CardController extends BaseController
         return $this->success(new CardRevoked($request->cardId, 'Card'));
     }
 
-    public function blockCard(BlockCardRequest $request): JsonResponse
+    public function block(BlockCardRequest $request): JsonResponse
     {
         $card = $this->cardRepository->take($request->cardId);
         if ($card === null) {

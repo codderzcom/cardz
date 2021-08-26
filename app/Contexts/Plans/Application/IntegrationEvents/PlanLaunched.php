@@ -2,7 +2,10 @@
 
 namespace App\Contexts\Plans\Application\IntegrationEvents;
 
-class PlanLaunched
+use JetBrains\PhpStorm\Immutable;
+
+#[Immutable]
+class PlanLaunched extends BaseIntegrationEvent
 {
 
 }

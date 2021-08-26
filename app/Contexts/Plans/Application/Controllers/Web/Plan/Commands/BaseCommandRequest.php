@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Contexts\Cards\Application\Controllers\Web\Card\Commands;
+namespace App\Contexts\Plans\Application\Controllers\Web\Plan\Commands;
 
-use App\Contexts\Cards\Domain\Model\Card\CardId;
+use App\Contexts\Plans\Domain\Model\Plan\PlanId;
 use Illuminate\Foundation\Http\FormRequest;
 
 abstract class BaseCommandRequest extends FormRequest
 {
-    public CardId $cardId;
+    public PlanId $planId;
 
     public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
     {
@@ -16,18 +16,18 @@ abstract class BaseCommandRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
-        $this->inferCardId();
+        $this->inferPlanId();
     }
 
-    protected function inferCardId(): void
+    protected function inferPlanId(): void
     {
-        $this->cardId = new CardId($this->route('cardId'));
+        $this->planId = new PlanId($this->route('planId'));
     }
 
     public function rules()
     {
         return [
-            //'cardId' => 'required'
+            //'planId' => 'required'
         ];
     }
 }

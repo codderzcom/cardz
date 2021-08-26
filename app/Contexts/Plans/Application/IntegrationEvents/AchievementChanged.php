@@ -2,7 +2,10 @@
 
 namespace App\Contexts\Plans\Application\IntegrationEvents;
 
-class AchievementChanged
+use JetBrains\PhpStorm\Immutable;
+
+#[Immutable]
+class AchievementChanged extends BaseIntegrationEvent
 {
 
 }

@@ -18,7 +18,7 @@ class BlockedCardController extends BaseController
         parent::__construct($reportingBus);
     }
 
-    public function unblockBlockedCard(UnblockBlockedCardRequest $request): JsonResponse
+    public function unblock(UnblockBlockedCardRequest $request): JsonResponse
     {
         $blockedCard = $this->blockedCardRepository->take($request->blockedCardId);
         if ($blockedCard === null) {
