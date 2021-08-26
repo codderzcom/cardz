@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contexts\Shared\Infrasctructure\Persistence;
+namespace App\Contexts\Shared\Infrastructure\Persistence;
 
 use App\Contexts\Shared\Contracts\Reportable;
 use App\Models\Reportable as EloquentReportable;

@@ -3,7 +3,7 @@
 namespace App\Contexts\Shared;
 
 use App\Contexts\Shared\Contracts\ReportingBusInterface;
-use App\Contexts\Shared\Infrasctructure\Messaging\ReportingBus;
+use App\Contexts\Shared\Infrastructure\Messaging\ReportingBus;
 use Illuminate\Support\ServiceProvider;
 
 class SharedProvider extends ServiceProvider

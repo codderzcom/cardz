@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contexts\Cards\Infrasctructure\Persistence;
+namespace App\Contexts\Cards\Infrastructure\Persistence;
 
 use App\Contexts\Cards\Domain\Model\BlockedCard\BlockedCard;
 use App\Contexts\Cards\Domain\Model\BlockedCard\BlockedCardId;
