@@ -23,17 +23,17 @@ class ReportingBus implements ReportingBusInterface
         $this->informables[] = $informable;
     }
 
-    public function report(Reportable $reportable): void
-    {
-        $this->reportableRepository->persist($reportable);
-        $this->issue($reportable);
-    }
-
     public function reportBatch(Reportable ...$reportables): void
     {
         foreach ($reportables as $reportable) {
             $this->report($reportable);
         }
+    }
+
+    public function report(Reportable $reportable): void
+    {
+        $this->reportableRepository->persist($reportable);
+        $this->issue($reportable);
     }
 
     protected function issue(Reportable $reportable): void

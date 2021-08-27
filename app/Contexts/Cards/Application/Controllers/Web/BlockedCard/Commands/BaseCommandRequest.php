@@ -14,6 +14,13 @@ abstract class BaseCommandRequest extends FormRequest
         parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
     }
 
+    public function rules()
+    {
+        return [
+            //'cardId' => 'required'
+        ];
+    }
+
     protected function prepareForValidation(): void
     {
         $this->inferCardId();
@@ -22,12 +29,5 @@ abstract class BaseCommandRequest extends FormRequest
     protected function inferCardId(): void
     {
         $this->blockedCardId = new BlockedCardId($this->route('blockedCardId'));
-    }
-
-    public function rules()
-    {
-        return [
-            //'cardId' => 'required'
-        ];
     }
 }

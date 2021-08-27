@@ -14,6 +14,13 @@ abstract class BaseCommandRequest extends FormRequest
         parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
     }
 
+    public function rules()
+    {
+        return [
+            //'planId' => 'required'
+        ];
+    }
+
     protected function prepareForValidation(): void
     {
         $this->inferPlanId();
@@ -22,12 +29,5 @@ abstract class BaseCommandRequest extends FormRequest
     protected function inferPlanId(): void
     {
         $this->planId = new PlanId($this->route('planId'));
-    }
-
-    public function rules()
-    {
-        return [
-            //'planId' => 'required'
-        ];
     }
 }

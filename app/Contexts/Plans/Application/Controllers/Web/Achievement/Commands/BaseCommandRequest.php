@@ -14,6 +14,13 @@ abstract class BaseCommandRequest extends FormRequest
         parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
     }
 
+    public function rules()
+    {
+        return [
+            //'achievementId' => 'required'
+        ];
+    }
+
     protected function prepareForValidation(): void
     {
         $this->inferAchievementId();
@@ -22,12 +29,5 @@ abstract class BaseCommandRequest extends FormRequest
     protected function inferAchievementId(): void
     {
         $this->achievementId = new AchievementId($this->route('achievementId'));
-    }
-
-    public function rules()
-    {
-        return [
-            //'achievementId' => 'required'
-        ];
     }
 }

@@ -52,12 +52,12 @@ class Achievement
 
     public function isAdded(): bool
     {
-        return $this->added === null;
+        return $this->added !== null;
     }
 
     public function isRemoved(): bool
     {
-        return $this->removed === null;
+        return $this->removed !== null;
     }
 
     private function from(

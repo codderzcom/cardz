@@ -4,10 +4,14 @@ namespace App\Contexts\Cards\Domain\Model;
 
 use App\Contexts\Cards\Domain\Persistable;
 use ReflectionClass;
-use Throwable;
 
 abstract class Entity implements Persistable
 {
+    public function __toString(): string
+    {
+        return json_try_encode($this->toArray());
+    }
+
     public function toArray(): array
     {
         $reflectionClass = new ReflectionClass($this);
@@ -18,11 +22,5 @@ abstract class Entity implements Persistable
         }
         return $array;
     }
-
-    public function __toString(): string
-    {
-        return json_try_encode($this->toArray());
-    }
-
 
 }

@@ -11,11 +11,6 @@ class AddPlanRequest extends BaseCommandRequest
 
     public ?string $description;
 
-    protected function inferPlanId(): void
-    {
-        $this->planId = new PlanId();
-    }
-
     public function passedValidation(): void
     {
         $this->workspaceId = new WorkspaceId($this->input('workspaceId'));
@@ -27,5 +22,10 @@ class AddPlanRequest extends BaseCommandRequest
         return [
             'description.required' => 'description required',
         ];
+    }
+
+    protected function inferPlanId(): void
+    {
+        $this->planId = new PlanId();
     }
 }

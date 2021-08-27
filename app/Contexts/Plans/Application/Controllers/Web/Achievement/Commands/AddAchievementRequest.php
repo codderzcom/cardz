@@ -11,11 +11,6 @@ class AddAchievementRequest extends BaseCommandRequest
 
     public ?string $description;
 
-    protected function inferAchievementId(): void
-    {
-        $this->achievementId = new AchievementId();
-    }
-
     public function passedValidation(): void
     {
         $this->planId = new PlanId($this->input('planId'));
@@ -27,5 +22,10 @@ class AddAchievementRequest extends BaseCommandRequest
         return [
             'description.required' => 'description required',
         ];
+    }
+
+    protected function inferAchievementId(): void
+    {
+        $this->achievementId = new AchievementId();
     }
 }

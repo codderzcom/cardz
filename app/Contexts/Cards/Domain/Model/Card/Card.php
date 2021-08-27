@@ -9,8 +9,8 @@ use App\Contexts\Cards\Domain\Events\Card\CardCompleted;
 use App\Contexts\Cards\Domain\Events\Card\CardIssued;
 use App\Contexts\Cards\Domain\Events\Card\CardRevoked;
 use App\Contexts\Cards\Domain\Model\AggregateRoot;
-use App\Contexts\Cards\Domain\Model\Shared\PlanId;
 use App\Contexts\Cards\Domain\Model\Shared\CustomerId;
+use App\Contexts\Cards\Domain\Model\Shared\PlanId;
 use Carbon\Carbon;
 use JetBrains\PhpStorm\Pure;
 use ReflectionClass;
@@ -74,6 +74,17 @@ class Card extends AggregateRoot
         return AchievementNoted::with($this->cardId, $achievement->achievementId);
     }
 
+    private function createAchievement(string $description): ?Achievement
+    {
+        $reflection = new ReflectionClass(Achievement::class);
+        $constructor = $reflection->getConstructor();
+        $constructor?->setAccessible(true);
+        /** @var ?Achievement $achievement */
+        $achievement = $reflection->newInstanceWithoutConstructor();
+        $constructor?->invoke($achievement, new AchievementId(), $description);
+        return $achievement;
+    }
+
     public function dismissAchievement(AchievementId $achievementId): AchievementDismissed
     {
         unset($this->achievements[(string) $achievementId]);
@@ -95,34 +106,22 @@ class Card extends AggregateRoot
 
     public function isIssued(): bool
     {
-        return $this->issued === null;
+        return $this->issued !== null;
     }
 
     public function isCompleted(): bool
     {
-        return $this->completed === null;
+        return $this->completed !== null;
     }
 
     public function isRevoked(): bool
     {
-        return $this->revoked === null;
+        return $this->revoked !== null;
     }
 
     public function isBlocked(): bool
     {
-        return $this->blocked === null;
-    }
-
-
-    private function createAchievement(string $description): ?Achievement
-    {
-        $reflection = new ReflectionClass(Achievement::class);
-        $constructor = $reflection->getConstructor();
-        $constructor?->setAccessible(true);
-        /** @var ?Achievement $achievement */
-        $achievement = $reflection->newInstanceWithoutConstructor();
-        $constructor?->invoke($achievement, new AchievementId(), $description);
-        return $achievement;
+        return $this->blocked !== null;
     }
 
     private function from(

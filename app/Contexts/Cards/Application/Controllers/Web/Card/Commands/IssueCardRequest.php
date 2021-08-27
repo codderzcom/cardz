@@ -3,8 +3,8 @@
 namespace App\Contexts\Cards\Application\Controllers\Web\Card\Commands;
 
 use App\Contexts\Cards\Domain\Model\Card\CardId;
-use App\Contexts\Cards\Domain\Model\Shared\PlanId;
 use App\Contexts\Cards\Domain\Model\Shared\CustomerId;
+use App\Contexts\Cards\Domain\Model\Shared\PlanId;
 
 class IssueCardRequest extends BaseCommandRequest
 {
@@ -13,11 +13,6 @@ class IssueCardRequest extends BaseCommandRequest
     public PlanId $planId;
 
     public ?string $description;
-
-    protected function inferCardId(): void
-    {
-        $this->cardId = new CardId();
-    }
 
     public function passedValidation(): void
     {
@@ -32,5 +27,10 @@ class IssueCardRequest extends BaseCommandRequest
             'planId.required' => 'planId required',
             'customerId.required' => 'customerId required',
         ];
+    }
+
+    protected function inferCardId(): void
+    {
+        $this->cardId = new CardId();
     }
 }
