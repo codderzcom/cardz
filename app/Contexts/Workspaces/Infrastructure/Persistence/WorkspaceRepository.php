@@ -3,7 +3,6 @@
 namespace App\Contexts\Workspaces\Infrastructure\Persistence;
 
 use App\Contexts\Workspaces\Application\Contracts\WorkspaceRepositoryInterface;
-use App\Contexts\Workspaces\Domain\Model\Workspace\Profile;
 use App\Contexts\Workspaces\Domain\Model\Workspace\Workspace;
 use App\Contexts\Workspaces\Domain\Model\Workspace\WorkspaceId;
 use App\Models\Workspace as EloquentWorkspace;
