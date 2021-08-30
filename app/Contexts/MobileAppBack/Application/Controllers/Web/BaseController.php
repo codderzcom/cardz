@@ -2,31 +2,32 @@
 
 namespace App\Contexts\MobileAppBack\Application\Controllers\Web;
 
-use App\Contexts\Shared\Contracts\ReportingBusInterface;
+use App\Contexts\MobileAppBack\Application\Contracts\ApplicationServiceResultCode;
+use App\Contexts\MobileAppBack\Application\Services\Shared\ApplicationServiceResult;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
+use JetBrains\PhpStorm\Pure;
 
 abstract class BaseController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function success($payload = [], $code = 200): JsonResponse
+    public function response(ApplicationServiceResult $result): JsonResponse
     {
-        return response()->json($payload, $code);
+        return response()->json($result->toArray(), $this->resultCodeToResponseCode($result->getCode()));
     }
 
-    public function notFound($payload = null): JsonResponse
+    #[Pure]
+    private function resultCodeToResponseCode(ApplicationServiceResultCode $resultCode): int
     {
-        return $this->error($payload, 404, 'Not found');
-    }
-
-    public function error($payload = null, $code = 500, ?string $message = null): JsonResponse
-    {
-        $payload = $payload ?? [];
-        $payload['error'] = $message ?? 'Error';
-        return response()->json($payload, $code);
+        return match ((string) $resultCode) {
+            ApplicationServiceResultCode::OK => 200,
+            ApplicationServiceResultCode::POLICY_VIOLATION => 400,
+            ApplicationServiceResultCode::SUBJECT_NOT_FOUND => 404,
+            default => 500
+        };
     }
 }

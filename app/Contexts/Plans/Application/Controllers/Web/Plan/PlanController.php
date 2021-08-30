@@ -4,11 +4,7 @@ namespace App\Contexts\Plans\Application\Controllers\Web\Plan;
 
 use App\Contexts\Plans\Application\Contracts\PlanRepositoryInterface;
 use App\Contexts\Plans\Application\Controllers\Web\BaseController;
-use App\Contexts\Plans\Application\Controllers\Web\Plan\Commands\AddPlanRequest;
-use App\Contexts\Plans\Application\Controllers\Web\Plan\Commands\ArchivePlanRequest;
-use App\Contexts\Plans\Application\Controllers\Web\Plan\Commands\ChangePlanDescriptionRequest;
-use App\Contexts\Plans\Application\Controllers\Web\Plan\Commands\LaunchPlanRequest;
-use App\Contexts\Plans\Application\Controllers\Web\Plan\Commands\StopPlanRequest;
+use App\Contexts\Plans\Application\Controllers\Web\Plan\Commands\{AddPlanRequest, ArchivePlanRequest, ChangePlanDescriptionRequest, LaunchPlanRequest, StopPlanRequest};
 use App\Contexts\Plans\Application\IntegrationEvents\PlanAdded;
 use App\Contexts\Plans\Application\IntegrationEvents\PlanArchived;
 use App\Contexts\Plans\Application\IntegrationEvents\PlanLaunched;

@@ -3,9 +3,7 @@
 namespace App\Contexts\Plans\Application\Controllers\Web\Achievement;
 
 use App\Contexts\Plans\Application\Contracts\AchievementRepositoryInterface;
-use App\Contexts\Plans\Application\Controllers\Web\Achievement\Commands\AddAchievementRequest;
-use App\Contexts\Plans\Application\Controllers\Web\Achievement\Commands\ChangeAchievementRequest;
-use App\Contexts\Plans\Application\Controllers\Web\Achievement\Commands\RemoveAchievementRequest;
+use App\Contexts\Plans\Application\Controllers\Web\Achievement\Commands\{AddAchievementRequest, ChangeAchievementRequest, RemoveAchievementRequest};
 use App\Contexts\Plans\Application\Controllers\Web\BaseController;
 use App\Contexts\Plans\Application\IntegrationEvents\AchievementAdded;
 use App\Contexts\Plans\Application\IntegrationEvents\AchievementChanged;

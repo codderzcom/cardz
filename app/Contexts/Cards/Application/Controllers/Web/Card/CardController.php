@@ -9,7 +9,8 @@ use App\Contexts\Cards\Application\Controllers\Web\Card\Commands\{AddAchievement
     CompleteCardRequest,
     IssueCardRequest,
     RemoveAchievementRequest,
-    RevokeCardRequest};
+    RevokeCardRequest
+};
 use App\Contexts\Cards\Application\Controllers\Web\Card\Queries\GenerateCardCodeRequest;
 use App\Contexts\Cards\Application\IntegrationEvents\AchievementDismissed;
 use App\Contexts\Cards\Application\IntegrationEvents\AchievementNoted;

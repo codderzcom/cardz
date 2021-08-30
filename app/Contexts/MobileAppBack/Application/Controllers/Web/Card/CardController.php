@@ -3,13 +3,21 @@
 namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Card;
 
 use App\Contexts\MobileAppBack\Application\Controllers\Web\BaseController;
+use App\Contexts\MobileAppBack\Application\Controllers\Web\Card\Queries\CardRequest;
+use App\Contexts\MobileAppBack\Application\Services\Card\CardService;
 use Illuminate\Http\JsonResponse;
 
 class CardController extends BaseController
 {
-    public function getCard(getCardRequest $request): JsonResponse
+    public function __construct(
+        private CardService $cardService,
+    ) {
+    }
+
+    public function getCard(CardRequest $request): JsonResponse
     {
-        return $this->success();
+        $result = $this->cardService->getCard($request->cardId);
+        return $this->response($result);
     }
 
     public function generateCode(GenerateCardCodeRequest $request): JsonResponse

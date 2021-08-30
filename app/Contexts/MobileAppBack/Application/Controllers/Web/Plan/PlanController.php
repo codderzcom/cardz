@@ -20,7 +20,7 @@ class PlanController extends BaseController
         return $this->success($plans);
     }
 
-    public function getPlan(GetPlanRequest $request): JsonResponse
+    public function getPlan(PlanRequest $request): JsonResponse
     {
         $plan = EloquentPlan::query()->find($request->planId);
         if ($plan === null) {
