@@ -5,6 +5,10 @@ use App\Contexts\Cards\Application\Controllers\Web\Card\CardController;
 use App\Contexts\Plans\Application\Controllers\Web\Achievement\AchievementController;
 use App\Contexts\Plans\Application\Controllers\Web\Plan\PlanController;
 use App\Contexts\Workspaces\Application\Controllers\Web\Workspace\WorkspaceController;
+use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\WorkspaceController as MABWorkspaceController;
+use App\Contexts\MobileAppBack\Application\Controllers\Web\Plan\PlanController as MABPlanController;
+use App\Contexts\MobileAppBack\Application\Controllers\Web\Card\CardController as MABCardController;
+use App\Contexts\MobileAppBack\Application\Controllers\Web\Customer\CustomerController as MABCustomerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -60,6 +64,49 @@ Route::group(['prefix' => '/plans/v1'], function () {
 Route::group(['prefix' => '/workspaces/v1'], function () {
     Route::group(['prefix' => '/workspace'], function () {
         Route::post('', [WorkspaceController::class, 'add'])->name('AddWorkspace');
-        Route::post('{workspaceId}/profile', [WorkspaceController::class, 'changeProfile'])->name('changeWorkspaceProfile');
+        Route::post('{workspaceId}/profile', [WorkspaceController::class, 'changeProfile'])->name('ChangeWorkspaceProfile');
     });
+});
+
+
+Route::group(['prefix' => '/mab/v1'], function () {
+    Route::group(['prefix' => '/workspace'], function () {
+        Route::get('', [MABWorkspaceController::class, 'listAll'])->name('MABWorkspaceListAll');
+        Route::get('{workspaceId}', [MABWorkspaceController::class, 'getWorkspace'])->name('MABWorkspaceGet');
+
+        Route::post('', [MABWorkspaceController::class, 'add'])->name('MABWorkspaceAdd');
+        Route::post('{workspaceId}/profile', [WorkspaceController::class, 'changeProfile'])->name('MABWorkspaceChangeProfile');
+    });
+
+    Route::group(['prefix' => '/plan'], function () {
+        Route::get('', [MABPlanController::class, 'listAll'])->name('MABPlanListAll');
+        Route::get('{planId}', [MABPlanController::class, 'getPlan'])->name('MABPlanGet');
+
+        Route::post('', [MABPlanController::class, 'add'])->name('MABPlanAdd');
+        Route::post('{planId}/description', [MABPlanController::class, 'setDescription'])->name('MABPlanSetDescription');
+        Route::post('{planId}/achievements', [MABPlanController::class, 'setAchievements'])->name('MABPlanSetAchievements');
+        Route::post('{planId}/launch', [MABPlanController::class, 'launch'])->name('MABPlanLaunch');
+        Route::post('{planId}/stop', [MABPlanController::class, 'stop'])->name('MABPlanStop');
+    });
+
+    Route::group(['prefix' => '/customer'], function () {
+        Route::get('{customerId}/code', [MABCustomerController::class, 'generateCode'])->name('MABCustomerGenerateCode');
+        Route::get('{customerId}/listAllCards', [MABCustomerController::class, 'listAllCards'])->name('MABCustomerListAllCards');
+    });
+
+    Route::group(['prefix' => '/card'], function () {
+        Route::get('{cardId}', [MABCardController::class, 'getCard'])->name('MABCardGet');
+        Route::get('{cardId}/code', [MABCardController::class, 'generateCode'])->name('MABCardGenerateCode');
+        Route::get('{cardId}/achievement', [MABCardController::class, 'listAllAchievements'])->name('MABCardListAllAchievements');
+
+        Route::post('', [MABCardController::class, 'issue'])->name('IssueCard');
+        Route::post('{cardId}/complete', [MABCardController::class, 'completeCard'])->name('MABCardComplete');
+        Route::post('{cardId}/revoke', [MABCardController::class, 'revokeCard'])->name('MABCardRevoke');
+        Route::post('{cardId}/block', [MABCardController::class, 'blockCard'])->name('MABCardBlock');
+        Route::post('{cardId}/unblock', [MABCardController::class, 'unblockCard'])->name('MABCardUnblock');
+
+        Route::post('{cardId}/achievement', [MABCardController::class, 'addAchievement'])->name('AddAchievement');
+        Route::post('{cardId}/achievement/mark', [MABCardController::class, 'markAchievement'])->name('MABCardMarkAchievement');
+    });
+
 });
