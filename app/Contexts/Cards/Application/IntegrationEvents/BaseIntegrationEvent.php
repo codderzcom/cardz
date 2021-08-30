@@ -10,14 +10,14 @@ abstract class BaseIntegrationEvent implements Reportable
     {
     }
 
-    public function toJSON(): string
-    {
-        return json_try_encode($this->toArray());
-    }
-
     public function __toString(): string
     {
         return $this->toJSON();
+    }
+
+    public function toJSON(): string
+    {
+        return json_try_encode($this->toArray());
     }
 
     protected function toArray(): array

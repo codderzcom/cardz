@@ -70,22 +70,22 @@ class Plan
 
     public function isAdded(): bool
     {
-        return $this->added === null;
+        return $this->added !== null;
     }
 
     public function isLaunched(): bool
     {
-        return $this->launched === null;
+        return $this->launched !== null;
     }
 
     public function isStopped(): bool
     {
-        return $this->stopped === null;
+        return $this->stopped !== null;
     }
 
     public function isArchived(): bool
     {
-        return $this->archived === null;
+        return $this->archived !== null;
     }
 
     private function from(

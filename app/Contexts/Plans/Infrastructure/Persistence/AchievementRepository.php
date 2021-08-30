@@ -10,21 +10,6 @@ use ReflectionClass;
 
 class AchievementRepository implements AchievementRepositoryInterface
 {
-    public function take(AchievementId $achievementId): ?Achievement
-    {
-        if ($achievementId === null) {
-            return null;
-        }
-        /** @var EloquentAchievement $eloquentAchievement */
-        $eloquentAchievement = EloquentAchievement::query()->where([
-            'id' => (string) $achievementId,
-        ])?->first();
-        if ($eloquentAchievement === null) {
-            return null;
-        }
-        return $this->achievementFromData($eloquentAchievement);
-    }
-
     public function persist(?Achievement $achievement): void
     {
         if ($achievement === null) {
@@ -59,6 +44,21 @@ class AchievementRepository implements AchievementRepositoryInterface
             'removed_at' => $properties['removed'],
         ];
         return $data;
+    }
+
+    public function take(AchievementId $achievementId): ?Achievement
+    {
+        if ($achievementId === null) {
+            return null;
+        }
+        /** @var EloquentAchievement $eloquentAchievement */
+        $eloquentAchievement = EloquentAchievement::query()->where([
+            'id' => (string) $achievementId,
+        ])?->first();
+        if ($eloquentAchievement === null) {
+            return null;
+        }
+        return $this->achievementFromData($eloquentAchievement);
     }
 
     private function achievementFromData(EloquentAchievement $eloquentAchievement): Achievement

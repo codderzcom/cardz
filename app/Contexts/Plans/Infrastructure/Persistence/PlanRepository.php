@@ -10,22 +10,6 @@ use ReflectionClass;
 
 class PlanRepository implements PlanRepositoryInterface
 {
-    public function take(PlanId $planId): ?Plan
-    {
-        if ($planId === null) {
-            return null;
-        }
-        /** @var EloquentPlan $eloquentPlan */
-        $eloquentPlan = EloquentPlan::query()->where([
-            'id' => (string) $planId,
-            'archived_at' => null,
-        ])?->first();
-        if ($eloquentPlan === null) {
-            return null;
-        }
-        return $this->planFromData($eloquentPlan);
-    }
-
     public function persist(?Plan $plan): void
     {
         if ($plan === null) {
@@ -64,6 +48,19 @@ class PlanRepository implements PlanRepositoryInterface
             'archived_at' => $properties['archived'],
         ];
         return $data;
+    }
+
+    public function take(PlanId $planId): ?Plan
+    {
+        /** @var EloquentPlan $eloquentPlan */
+        $eloquentPlan = EloquentPlan::query()->where([
+            'id' => (string) $planId,
+            'archived_at' => null,
+        ])?->first();
+        if ($eloquentPlan === null) {
+            return null;
+        }
+        return $this->planFromData($eloquentPlan);
     }
 
     private function planFromData(EloquentPlan $eloquentPlan): Plan

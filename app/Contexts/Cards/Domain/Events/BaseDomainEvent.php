@@ -16,6 +16,15 @@ abstract class BaseDomainEvent implements Persistable
         $this->on = Carbon::now();
     }
 
+    public function __toString(): string
+    {
+        try {
+            return json_try_encode($this->toArray());
+        } catch (Throwable $exception) {
+            return '';
+        }
+    }
+
     private function toArray(): array
     {
         $reflectionClass = new ReflectionClass($this);
@@ -27,15 +36,6 @@ abstract class BaseDomainEvent implements Persistable
             }
         }
         return $array;
-    }
-
-    public function __toString(): string
-    {
-        try {
-            return json_try_encode($this->toArray());
-        } catch (Throwable $exception) {
-            return '';
-        }
     }
 
     public function on(): Carbon

@@ -4,6 +4,7 @@ use App\Contexts\Cards\Application\Controllers\Web\BlockedCard\BlockedCardContro
 use App\Contexts\Cards\Application\Controllers\Web\Card\CardController;
 use App\Contexts\Plans\Application\Controllers\Web\Achievement\AchievementController;
 use App\Contexts\Plans\Application\Controllers\Web\Plan\PlanController;
+use App\Contexts\Workspaces\Application\Controllers\Web\Workspace\WorkspaceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -53,5 +54,12 @@ Route::group(['prefix' => '/plans/v1'], function () {
         Route::post('', [AchievementController::class, 'add'])->name('AddAchievement');
         Route::put('{achievementId}', [AchievementController::class, 'change'])->name('ChangeAchievement');
         Route::delete('{achievementId}', [AchievementController::class, 'remove'])->name('RemoveAchievement');
+    });
+});
+
+Route::group(['prefix' => '/workspaces/v1'], function () {
+    Route::group(['prefix' => '/workspace'], function () {
+        Route::post('', [WorkspaceController::class, 'add'])->name('AddWorkspace');
+        Route::post('{workspaceId}/profile', [WorkspaceController::class, 'changeProfile'])->name('changeWorkspaceProfile');
     });
 });

@@ -27,22 +27,6 @@ class CardRepository implements CardRepositoryInterface
         );
     }
 
-    public function take(?CardId $cardId = null): ?Card
-    {
-        if ($cardId === null) {
-            return null;
-        }
-        /** @var EloquentCard $eloquentCard */
-        $eloquentCard = EloquentCard::query()->where([
-            'id' => (string) $cardId,
-            'blocked_at' => null,
-        ])?->first();
-        if ($eloquentCard === null) {
-            return null;
-        }
-        return $this->cardFromData($eloquentCard);
-    }
-
     private function cardAsData(Card $card): array
     {
         $reflection = new ReflectionClass($card);
@@ -85,6 +69,19 @@ class CardRepository implements CardRepositoryInterface
             $achievementsData[] = $achievement->toArray();
         }
         return $achievementsData;
+    }
+
+    public function take(CardId $cardId = null): ?Card
+    {
+        /** @var EloquentCard $eloquentCard */
+        $eloquentCard = EloquentCard::query()->where([
+            'id' => (string) $cardId,
+            'blocked_at' => null,
+        ])?->first();
+        if ($eloquentCard === null) {
+            return null;
+        }
+        return $this->cardFromData($eloquentCard);
     }
 
     private function cardFromData(EloquentCard $eloquentCard): Card

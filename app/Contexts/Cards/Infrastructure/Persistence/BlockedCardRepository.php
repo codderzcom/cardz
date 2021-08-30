@@ -15,7 +15,7 @@ class BlockedCardRepository
         }
 
         $eloquentCard = EloquentCard::query()->find((string) $blockedCard->blockedCardId);
-        if($eloquentCard === null) {
+        if ($eloquentCard === null) {
             return;
         }
         $eloquentCard->blocked_at = $blockedCard->blocked;

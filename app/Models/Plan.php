@@ -7,9 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Plan extends Model
 {
     public $table = 'plans';
+
     public $incrementing = false;
 
     protected $guarded = [];
+
     protected $casts = [
         'added_at' => 'datetime',
         'launched_at' => 'datetime',

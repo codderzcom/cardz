@@ -8,16 +8,16 @@ class RemoveAchievementRequest extends BaseCommandRequest
 {
     public AchievementId $achievementId;
 
+    public function passedValidation(): void
+    {
+        $this->achievementId = new AchievementId($this->input('achievementId'));
+    }
+
     protected function prepareForValidation(): void
     {
         parent::prepareForValidation();
         $this->merge([
             'achievementId' => $this->route('achievementId'),
         ]);
-    }
-
-    public function passedValidation(): void
-    {
-        $this->achievementId = new AchievementId($this->input('achievementId'));
     }
 }

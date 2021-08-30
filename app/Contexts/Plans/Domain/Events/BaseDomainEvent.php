@@ -15,6 +15,15 @@ abstract class BaseDomainEvent
         $this->on = Carbon::now();
     }
 
+    public function __toString(): string
+    {
+        try {
+            return json_try_encode($this->toArray());
+        } catch (Throwable $exception) {
+            return '';
+        }
+    }
+
     private function toArray(): array
     {
         $reflectionClass = new ReflectionClass($this);
@@ -26,15 +35,6 @@ abstract class BaseDomainEvent
             }
         }
         return $array;
-    }
-
-    public function __toString(): string
-    {
-        try {
-            return json_try_encode($this->toArray());
-        } catch (Throwable $exception) {
-            return '';
-        }
     }
 
     public function on(): Carbon

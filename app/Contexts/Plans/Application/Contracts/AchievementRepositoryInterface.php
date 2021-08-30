@@ -7,8 +7,7 @@ use App\Contexts\Plans\Domain\Model\Achievement\AchievementId;
 
 interface AchievementRepositoryInterface
 {
-    public function take(AchievementId $achievementId): ?Achievement;
-
     public function persist(?Achievement $achievement): void;
 
+    public function take(AchievementId $achievementId): ?Achievement;
 }

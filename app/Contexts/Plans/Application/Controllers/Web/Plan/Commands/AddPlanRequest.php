@@ -7,14 +7,7 @@ use App\Contexts\Plans\Domain\Model\Shared\WorkspaceId;
 
 class AddPlanRequest extends BaseCommandRequest
 {
-    public WorkspaceId $workspaceId;
-
     public ?string $description;
-
-    protected function inferPlanId(): void
-    {
-        $this->planId = new PlanId();
-    }
 
     public function passedValidation(): void
     {
@@ -25,7 +18,13 @@ class AddPlanRequest extends BaseCommandRequest
     public function messages()
     {
         return [
+            'workspaceId.required' => 'workspaceId required',
             'description.required' => 'description required',
         ];
+    }
+
+    protected function inferPlanId(): void
+    {
+        $this->planId = new PlanId();
     }
 }
