@@ -4,6 +4,7 @@ namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Card;
 
 use App\Contexts\MobileAppBack\Application\Controllers\Web\BaseController;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Card\Queries\CardRequest;
+use App\Contexts\MobileAppBack\Application\Controllers\Web\Card\Queries\GenerateCardCodeRequest;
 use App\Contexts\MobileAppBack\Application\Services\Card\CardService;
 use Illuminate\Http\JsonResponse;
 
@@ -22,7 +23,8 @@ class CardController extends BaseController
 
     public function generateCode(GenerateCardCodeRequest $request): JsonResponse
     {
-        return $this->success();
+        $result = $this->cardService->getCardCode($request->cardId);
+        return $this->response($result);
     }
 
     public function issueCard(IssueCardRequest $request): JsonResponse
