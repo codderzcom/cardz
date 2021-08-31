@@ -4,10 +4,10 @@ namespace App\Contexts\Cards\Application\Controllers\Web\Card\Commands;
 
 class AddAchievementRequest extends BaseCommandRequest
 {
-    public string $description;
+    public string $achievementDescription;
 
     public function passedValidation(): void
     {
-        $this->description = $this->input('description') ?: 'Random name';
+        $this->achievementDescription = $this->input('description') ?: 'Random name';
     }
 }

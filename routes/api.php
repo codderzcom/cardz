@@ -29,8 +29,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => '/cards/v1'], function () {
     Route::group(['prefix' => '/card'], function () {
-        Route::get('{cardId}/code', [CardController::class, 'generateCode'])->name('GenerateCardCode');
-
         Route::post('', [CardController::class, 'issue'])->name('IssueCard');
         Route::post('{cardId}/complete', [CardController::class, 'complete'])->name('CompleteCard');
         Route::post('{cardId}/revoke', [CardController::class, 'revoke'])->name('RevokeCard');

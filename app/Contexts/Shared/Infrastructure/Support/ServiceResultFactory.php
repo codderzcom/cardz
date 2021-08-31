@@ -2,28 +2,30 @@
 
 namespace App\Contexts\Shared\Infrastructure\Support;
 
+use App\Contexts\Shared\Contracts\Reportable;
 use App\Contexts\Shared\Contracts\ServiceResultCode;
 use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
+use App\Contexts\Shared\Contracts\ServiceResultInterface;
 
-class ServiceResultFactory extends ServiceResult implements ServiceResultFactoryInterface
+class ServiceResultFactory implements ServiceResultFactoryInterface
 {
-    public function ok(string $payload): ServiceResult
+    public function ok($payload, Reportable ...$reportables): ServiceResultInterface
     {
-        return new ServiceResult(ServiceResultCode::OK(), $payload);
+        return ServiceResult::make(ServiceResultCode::OK(), $payload, null, null, ...$reportables);
     }
 
-    public function violation(string $violation): ServiceResult
+    public function violation(string $violation, Reportable ...$reportables): ServiceResultInterface
     {
-        return new ServiceResult(ServiceResultCode::POLICY_VIOLATION(), null, $violation);
+        return ServiceResult::make(ServiceResultCode::POLICY_VIOLATION(), null, $violation, null, ...$reportables);
     }
 
-    public function error(string $error): ServiceResult
+    public function error(string $error, Reportable ...$reportables): ServiceResultInterface
     {
-        return new ServiceResult(ServiceResultCode::INTERNAL_ERROR(), null, null, $error);
+        return ServiceResult::make(ServiceResultCode::INTERNAL_ERROR(), null, null, $error, ...$reportables);
     }
 
-    public function notFound(): ServiceResult
+    public function notFound(string $error, Reportable ...$reportables): ServiceResultInterface
     {
-        return new ServiceResult(ServiceResultCode::SUBJECT_NOT_FOUND(), null, null, null);
+        return ServiceResult::make(ServiceResultCode::SUBJECT_NOT_FOUND(), null, null, $error, ...$reportables);
     }
 }

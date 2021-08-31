@@ -5,6 +5,7 @@ namespace App\Contexts\Cards\Application\IntegrationEvents;
 use JetBrains\PhpStorm\Immutable;
 
 #[Immutable]
-class CardArchived extends BaseIntegrationEvent
+final class CardArchived extends BaseIntegrationEvent
 {
+    protected ?string $instanceOf = 'Card';
 }

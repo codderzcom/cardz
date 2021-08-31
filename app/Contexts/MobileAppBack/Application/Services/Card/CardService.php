@@ -21,7 +21,7 @@ class CardService
     {
         $card = EloquentCard::query()->find((string) $cardId);
         if ($card === null) {
-            return $this->resultFactory->notFound();
+            return $this->resultFactory->notFound("$cardId not found");
         }
         return $this->resultFactory->ok($card);
     }
@@ -30,10 +30,10 @@ class CardService
     {
         $card = EloquentCard::query()->find((string) $cardId);
         if ($card === null) {
-            return $this->resultFactory->notFound();
+            return $this->resultFactory->notFound("$cardId not found");
         }
         $code = CardCode::ofCardId($cardId);
-        return $this->resultFactory->ok($card);
+        return $this->resultFactory->ok($code);
     }
 }
 

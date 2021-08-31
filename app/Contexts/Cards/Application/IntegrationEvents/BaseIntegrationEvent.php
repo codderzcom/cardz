@@ -6,7 +6,9 @@ use App\Contexts\Shared\Contracts\Reportable;
 
 abstract class BaseIntegrationEvent implements Reportable
 {
-    public function __construct(protected ?string $instanceId, protected ?string $instanceOf)
+    protected ?string $instanceOf = null;
+
+    public function __construct(protected ?string $instanceId)
     {
     }
 

@@ -2,22 +2,34 @@
 
 namespace App\Contexts\Cards\Application\Controllers\Web\Card\Commands;
 
-use App\Contexts\Cards\Domain\Model\Card\CardId;
-use App\Contexts\Cards\Domain\Model\Shared\CustomerId;
-use App\Contexts\Cards\Domain\Model\Shared\PlanId;
+use Illuminate\Foundation\Http\FormRequest;
 
-class IssueCardRequest extends BaseCommandRequest
+class IssueCardRequest extends FormRequest
 {
-    public CustomerId $customerId;
+    //protected function failedValidation(Validator $validator)
+    //{
+    //    throw new \RuntimeException("Error");
+    //}
 
-    public PlanId $planId;
+    public string $customerId;
 
-    public ?string $description;
+    public string $planId;
+
+    public string $description;
+
+    public function rules()
+    {
+        return [
+            'planId' => 'required',
+            'customerId' => 'required',
+            'description' => 'required',
+        ];
+    }
 
     public function passedValidation(): void
     {
-        $this->planId = new PlanId($this->input('planId'));
-        $this->customerId = new CustomerId($this->input('customerId'));
+        $this->planId = $this->input('planId');
+        $this->customerId = $this->input('customerId');
         $this->description = $this->input('description');
     }
 
@@ -26,11 +38,7 @@ class IssueCardRequest extends BaseCommandRequest
         return [
             'planId.required' => 'planId required',
             'customerId.required' => 'customerId required',
+            'description.required' => 'description required',
         ];
-    }
-
-    protected function inferCardId(): void
-    {
-        $this->cardId = new CardId();
     }
 }

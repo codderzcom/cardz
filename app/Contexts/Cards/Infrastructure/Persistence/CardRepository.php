@@ -122,7 +122,7 @@ class CardRepository implements CardRepositoryInterface
         $constructor?->setAccessible(true);
         foreach ($achievementsData as $achievementData) {
             $achievement = $reflection->newInstanceWithoutConstructor();
-            $achievementId = new AchievementId($achievementData['id']);
+            $achievementId = AchievementId::of($achievementData['id']);
             $constructor?->invoke($achievement, $achievementId, $achievementData['description']);
             $achievements[(string) $achievementId] = $achievement;
         }

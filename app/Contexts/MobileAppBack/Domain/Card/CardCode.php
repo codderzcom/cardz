@@ -5,6 +5,7 @@ namespace App\Contexts\MobileAppBack\Domain\Card;
 use App\Contexts\MobileAppBack\Domain\Exceptions\ReconstructionException;
 use Carbon\Carbon;
 use DateInterval;
+use JetBrains\PhpStorm\Pure;
 use Throwable;
 
 class CardCode
@@ -66,6 +67,7 @@ class CardCode
         return base64_encode($this->expires) . self::SPLIT_MARKER . base64_encode($this->cardId);
     }
 
+    #[Pure]
     public function __toString(): string
     {
         return $this->getCode();
