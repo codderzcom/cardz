@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Contexts\MobileAppBack\Application\Services\Shared;
+namespace App\Contexts\Shared\Infrastructure\Support;
 
-use App\Contexts\MobileAppBack\Application\Contracts\ApplicationServiceResultInterface;
-use App\Contexts\MobileAppBack\Application\Contracts\ApplicationServiceResultCode;
+use App\Contexts\Shared\Contracts\ServiceResultCode;
+use App\Contexts\Shared\Contracts\ServiceResultInterface;
 use JetBrains\PhpStorm\Pure;
+use function json_try_encode;
 
-class ApplicationServiceResult implements ApplicationServiceResultInterface
+class ServiceResult implements ServiceResultInterface
 {
     protected function __construct(
-        protected ApplicationServiceResultCode $code,
+        protected ServiceResultCode $code,
         protected ?string $payload = null,
         protected ?string $violation = null,
         protected ?string $error = null,
@@ -21,7 +22,7 @@ class ApplicationServiceResult implements ApplicationServiceResultInterface
         return $this->payload;
     }
 
-    public function getCode(): ApplicationServiceResultCode
+    public function getCode(): ServiceResultCode
     {
         return $this->code;
     }

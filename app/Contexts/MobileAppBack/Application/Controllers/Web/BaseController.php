@@ -2,8 +2,8 @@
 
 namespace App\Contexts\MobileAppBack\Application\Controllers\Web;
 
-use App\Contexts\MobileAppBack\Application\Contracts\ApplicationServiceResultCode;
-use App\Contexts\MobileAppBack\Application\Services\Shared\ApplicationServiceResult;
+use App\Contexts\Shared\Contracts\ServiceResultCode;
+use App\Contexts\Shared\Contracts\ServiceResultInterface;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -15,18 +15,18 @@ abstract class BaseController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function response(ApplicationServiceResult $result): JsonResponse
+    public function response(ServiceResultInterface $result): JsonResponse
     {
         return response()->json($result->toArray(), $this->resultCodeToResponseCode($result->getCode()));
     }
 
     #[Pure]
-    private function resultCodeToResponseCode(ApplicationServiceResultCode $resultCode): int
+    private function resultCodeToResponseCode(ServiceResultCode $resultCode): int
     {
         return match ((string) $resultCode) {
-            ApplicationServiceResultCode::OK => 200,
-            ApplicationServiceResultCode::POLICY_VIOLATION => 400,
-            ApplicationServiceResultCode::SUBJECT_NOT_FOUND => 404,
+            ServiceResultCode::OK => 200,
+            ServiceResultCode::POLICY_VIOLATION => 400,
+            ServiceResultCode::SUBJECT_NOT_FOUND => 404,
             default => 500
         };
     }
