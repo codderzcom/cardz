@@ -3,17 +3,21 @@
 namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Customer;
 
 use App\Contexts\MobileAppBack\Application\Controllers\Web\BaseController;
+use App\Contexts\MobileAppBack\Application\Controllers\Web\Customer\Queries\GenerateCustomerCodeRequest;
+use App\Contexts\MobileAppBack\Application\Services\Customer\CustomerService;
 use Illuminate\Http\JsonResponse;
 
 class CustomerController extends BaseController
 {
-    public function generateCode(GenerateCodeRequest $request): JsonResponse
-    {
-        return $this->success();
+    public function __construct(
+        private CustomerService $customerService,
+    ) {
     }
 
-    public function listAllCards(ListAllCardsRequest $request): JsonResponse
+    public function generateCode(GenerateCustomerCodeRequest $request): JsonResponse
     {
-        return $this->success();
+        return $this->response($this->customerService->getCustomerCode(
+            $request->customerId,
+        ));
     }
 }

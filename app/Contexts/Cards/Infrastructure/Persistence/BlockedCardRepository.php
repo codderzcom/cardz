@@ -40,7 +40,7 @@ class BlockedCardRepository
 
     private function cardFromData(EloquentCard $eloquentCard): BlockedCard
     {
-        $blockedCard = new BlockedCard(new BlockedCardId($eloquentCard->id), $eloquentCard->blocked_at);
+        $blockedCard = new BlockedCard(BlockedCardId::of($eloquentCard->id), $eloquentCard->blocked_at);
         return $blockedCard;
     }
 }

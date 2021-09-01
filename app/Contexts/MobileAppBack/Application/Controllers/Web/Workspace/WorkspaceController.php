@@ -5,10 +5,11 @@ namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\BaseController;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\AddWorkspaceRequest;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\ChangeWorkspaceProfileRequest;
+use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\IssueCardRequest;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Queries\GetWorkspaceRequest;
 use App\Contexts\MobileAppBack\Application\Services\Workspace\WorkspaceService;
-use App\Models\Workspace as EloquentWorkspace;
 use App\Models\Plan as EloquentPlan;
+use App\Models\Workspace as EloquentWorkspace;
 use Illuminate\Http\JsonResponse;
 
 class WorkspaceController extends BaseController
@@ -49,5 +50,14 @@ class WorkspaceController extends BaseController
     {
         $this->workspaceService->changeProfile($request->customerId);
         return $this->success();
+    }
+
+    public function issueCard(IssueCardRequest $request): JsonResponse
+    {
+        return $this->response($this->cardService->issueCard(
+            $request->planId,
+            $request->customerId,
+            $request->description,
+        ));
     }
 }

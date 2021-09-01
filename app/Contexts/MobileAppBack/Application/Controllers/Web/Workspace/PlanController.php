@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Plan;
+namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace;
 
 use App\Contexts\MobileAppBack\Application\Controllers\Web\BaseController;
 use App\Contexts\MobileAppBack\Application\Services\Plan\PlanService;

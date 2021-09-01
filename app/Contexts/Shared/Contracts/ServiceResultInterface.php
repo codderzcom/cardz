@@ -35,4 +35,6 @@ interface ServiceResultInterface extends Stringable
 
     #[Pure]
     public function ofReported(): ServiceResultInterface;
+
+    public function isOk(): bool;
 }
