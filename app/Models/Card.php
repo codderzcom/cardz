@@ -17,5 +17,7 @@ class Card extends Model
         'completed_at' => 'datetime',
         'revoked_at' => 'datetime',
         'blocked_at' => 'datetime',
+        'achievements' => 'array',
     ];
+
 }

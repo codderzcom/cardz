@@ -2,30 +2,29 @@
 
 namespace App\Contexts\Cards\Application\Controllers\Web\Card\Commands;
 
-use App\Contexts\Cards\Domain\Model\Card\AchievementId;
-
 class RemoveAchievementRequest extends BaseCommandRequest
 {
     protected const RULES = [
-        'achievementId' => 'required',
+        'requirementId' => 'required',
     ];
 
     protected const MESSAGES = [
-        'achievementId.required' => 'achievementId required',
+        'requirementId.required' => 'requirementId required',
     ];
 
-    public string $achievementId;
+    public string $requirementId;
 
     public function passedValidation(): void
     {
-        $this->achievementId = $this->input('achievementId');
+        parent::passedValidation();
+        $this->requirementId = $this->input('requirementId');
     }
 
     protected function prepareForValidation(): void
     {
         parent::prepareForValidation();
         $this->merge([
-            'achievementId' => $this->route('achievementId'),
+            'requirementId' => $this->route('requirementId'),
         ]);
     }
 }

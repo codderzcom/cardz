@@ -1,31 +1,25 @@
 <?php
 
-namespace App\Contexts\Cards\Domain\Model;
+namespace App\Contexts\Cards\Domain\Model\Shared;
 
-use App\Contexts\Cards\Domain\Persistable;
 use Carbon\Carbon;
 use ReflectionClass;
 use Stringable;
 
-abstract class Entity implements Persistable
+trait ArrayPresenterTrait
 {
-    public function __toString(): string
-    {
-        return json_try_encode($this->toArray());
-    }
-
     public function toArray(): array
     {
         $reflectionClass = new ReflectionClass($this);
         $array = [];
         foreach ($reflectionClass->getProperties() as $property) {
             $property->setAccessible(true);
-            $array[$property->getName()] = $this->nest($property->getValue($this));
+            $array[$property->getName()] = $this->toArrayNestedValue($property->getValue($this));
         }
         return $array;
     }
 
-    private function nest($value)
+    protected function toArrayNestedValue($value): mixed
     {
         return match (true) {
             $value instanceof Carbon => $value,

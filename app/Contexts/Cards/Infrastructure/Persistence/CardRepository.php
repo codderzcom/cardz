@@ -4,9 +4,9 @@ namespace App\Contexts\Cards\Infrastructure\Persistence;
 
 use App\Contexts\Cards\Application\Contracts\CardRepositoryInterface;
 use App\Contexts\Cards\Domain\Model\Card\Achievement;
-use App\Contexts\Cards\Domain\Model\Card\AchievementId;
 use App\Contexts\Cards\Domain\Model\Card\Card;
 use App\Contexts\Cards\Domain\Model\Card\CardId;
+use App\Contexts\Cards\Domain\Model\Card\RequirementId;
 use App\Models\Card as EloquentCard;
 use JetBrains\PhpStorm\Pure;
 use ReflectionClass;
@@ -117,14 +117,9 @@ class CardRepository implements CardRepositoryInterface
             return [];
         }
         $achievements = [];
-        $reflection = new ReflectionClass(Achievement::class);
-        $constructor = $reflection->getConstructor();
-        $constructor?->setAccessible(true);
         foreach ($achievementsData as $achievementData) {
-            $achievement = $reflection->newInstanceWithoutConstructor();
-            $achievementId = AchievementId::of($achievementData['id']);
-            $constructor?->invoke($achievement, $achievementId, $achievementData['description']);
-            $achievements[(string) $achievementId] = $achievement;
+            $id = $achievementData['requirementId'];
+            $achievements[$id] = Achievement::of(RequirementId::of($id), $achievementsData['description']);
         }
         return $achievements;
     }

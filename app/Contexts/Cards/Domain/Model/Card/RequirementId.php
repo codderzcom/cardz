@@ -6,6 +6,6 @@ use App\Contexts\Shared\Infrastructure\Support\GuidBasedImmutableId;
 use JetBrains\PhpStorm\Immutable;
 
 #[Immutable]
-final class AchievementId extends GuidBasedImmutableId
+final class RequirementId extends GuidBasedImmutableId
 {
 }

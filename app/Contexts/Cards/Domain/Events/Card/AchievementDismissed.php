@@ -2,7 +2,7 @@
 
 namespace App\Contexts\Cards\Domain\Events\Card;
 
-use App\Contexts\Cards\Domain\Model\Card\AchievementId;
+use App\Contexts\Cards\Domain\Model\Card\RequirementId;
 use App\Contexts\Cards\Domain\Model\Card\CardId;
 use JetBrains\PhpStorm\Immutable;
 
@@ -11,13 +11,13 @@ final class AchievementDismissed extends BaseCardDomainEvent
 {
     private function __construct(
         public CardId $cardId,
-        public AchievementId $achievementId
+        public RequirementId $requirementId
     ) {
         parent::__construct($cardId);
     }
 
-    public static function with(CardId $cardId, AchievementId $achievementId): static
+    public static function with(CardId $cardId, RequirementId $requirementId): static
     {
-        return new static($cardId, $achievementId);
+        return new static($cardId, $requirementId);
     }
 }

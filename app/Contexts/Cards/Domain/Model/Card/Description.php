@@ -2,12 +2,12 @@
 
 namespace App\Contexts\Cards\Domain\Model\Card;
 
+use App\Contexts\Cards\Domain\Model\Shared\ValueObject;
 use JetBrains\PhpStorm\Immutable;
 use JetBrains\PhpStorm\Pure;
-use Stringable;
 
 #[Immutable]
-final class Description implements Stringable
+final class Description extends ValueObject
 {
     private function __construct(private string $description)
     {

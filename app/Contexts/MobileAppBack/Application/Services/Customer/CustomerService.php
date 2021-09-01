@@ -6,7 +6,6 @@ use App\Contexts\MobileAppBack\Domain\Card\CardCode;
 use App\Contexts\MobileAppBack\Domain\Card\CardId;
 use App\Contexts\MobileAppBack\Domain\Customer\CustomerCode;
 use App\Contexts\MobileAppBack\Domain\Customer\CustomerId;
-use App\Contexts\MobileAppBack\Domain\Exceptions\ReconstructionException;
 use App\Contexts\MobileAppBack\Infrastructure\ACL\Cards\CardsAdapter;
 use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
 use App\Contexts\Shared\Contracts\ServiceResultInterface;
@@ -22,14 +21,14 @@ class CustomerService
 
     public function listAllCardsByCustomer(string $customerId): ServiceResultInterface
     {
-        $cards = EloquentCard::query()->where('customerId', '=', $customerId)->get();
+        $cards = EloquentCard::query()->where('customer_id', '=', $customerId)->get();
         return $this->resultFactory->ok($cards);
     }
 
     public function getCard(string $customerId, string $cardId): ServiceResultInterface
     {
         $card = EloquentCard::query()
-            ->where('customerId', '=', $customerId)
+            ->where('customer_id', '=', $customerId)
             ->where('cardId', '=', $cardId)
             ->first();
         if ($card === null) {
@@ -41,7 +40,7 @@ class CustomerService
     public function getCardCode(string $customerId, string $cardId): ServiceResultInterface
     {
         $card = EloquentCard::query()
-            ->where('customerId', '=', $customerId)
+            ->where('customer_id', '=', $customerId)
             ->where('cardId', '=', $cardId)
             ->get();
         if ($card === null) {

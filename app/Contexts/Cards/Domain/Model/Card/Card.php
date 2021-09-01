@@ -8,7 +8,7 @@ use App\Contexts\Cards\Domain\Events\Card\CardBlocked;
 use App\Contexts\Cards\Domain\Events\Card\CardCompleted;
 use App\Contexts\Cards\Domain\Events\Card\CardIssued;
 use App\Contexts\Cards\Domain\Events\Card\CardRevoked;
-use App\Contexts\Cards\Domain\Model\AggregateRoot;
+use App\Contexts\Cards\Domain\Model\Shared\AggregateRoot;
 use App\Contexts\Cards\Domain\Model\Shared\CustomerId;
 use App\Contexts\Cards\Domain\Model\Shared\PlanId;
 use Carbon\Carbon;
@@ -37,9 +37,9 @@ final class Card extends AggregateRoot
     }
 
     #[Pure]
-    public static function make(CardId $cardId, PlanId $planId, CustomerId $customerId, Description $description): static
+    public static function make(CardId $cardId, PlanId $planId, CustomerId $customerId, Description $description): self
     {
-        return new static($cardId, $planId, $customerId, $description);
+        return new self($cardId, $planId, $customerId, $description);
     }
 
     public function issue(): CardIssued
@@ -66,19 +66,17 @@ final class Card extends AggregateRoot
         return CardBlocked::with($this->cardId);
     }
 
-    public function noteAchievement(string $description): AchievementNoted
+    public function noteAchievement(RequirementId $requirementId, string $description): AchievementNoted
     {
-        $achievement = $this->createAchievement($description);
-        if ($achievement) {
-            $this->achievements[(string) $achievement->achievementId] = $achievement;
-        }
-        return AchievementNoted::with($this->cardId, $achievement->achievementId);
+        $achievement = Achievement::of($requirementId, $description);
+        $this->achievements[(string) $achievement->getRequirementId()] = $achievement;
+        return AchievementNoted::with($this->cardId, $achievement->getRequirementId());
     }
 
-    public function dismissAchievement(AchievementId $achievementId): AchievementDismissed
+    public function dismissAchievement(RequirementId $requirementId): AchievementDismissed
     {
-        unset($this->achievements[(string) $achievementId]);
-        return AchievementDismissed::with($this->cardId, $achievementId);
+        unset($this->achievements[(string) $requirementId]);
+        return AchievementDismissed::with($this->cardId, $requirementId);
     }
 
     public function getDescription(): ?Description
@@ -112,17 +110,6 @@ final class Card extends AggregateRoot
     public function isBlocked(): bool
     {
         return $this->blocked !== null;
-    }
-
-    private function createAchievement(string $description): ?Achievement
-    {
-        $reflection = new ReflectionClass(Achievement::class);
-        $constructor = $reflection->getConstructor();
-        $constructor?->setAccessible(true);
-        /** @var ?Achievement $achievement */
-        $achievement = $reflection->newInstanceWithoutConstructor();
-        $constructor?->invoke($achievement, AchievementId::make(), $description);
-        return $achievement;
     }
 
     private function from(

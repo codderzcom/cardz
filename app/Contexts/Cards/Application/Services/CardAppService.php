@@ -4,10 +4,10 @@ namespace App\Contexts\Cards\Application\Services;
 
 use App\Contexts\Cards\Application\Contracts\CardRepositoryInterface;
 use App\Contexts\Cards\Application\IntegrationEvents\{AchievementDismissed, AchievementNoted, CardBlocked, CardCompleted, CardIssued, CardRevoked,};
-use App\Contexts\Cards\Domain\Model\Card\AchievementId;
 use App\Contexts\Cards\Domain\Model\Card\Card;
 use App\Contexts\Cards\Domain\Model\Card\CardId;
 use App\Contexts\Cards\Domain\Model\Card\Description;
+use App\Contexts\Cards\Domain\Model\Card\RequirementId;
 use App\Contexts\Cards\Domain\Model\Shared\CustomerId;
 use App\Contexts\Cards\Domain\Model\Shared\PlanId;
 use App\Contexts\Shared\Contracts\ReportingBusInterface;
@@ -84,28 +84,28 @@ class CardAppService
         return $this->reportResult($result, $this->reportingBus);
     }
 
-    public function noteAchievement(string $cardId, string $achievementDescription): ServiceResultInterface
+    public function noteAchievement(string $cardId, string $requirementId, string $achievementDescription): ServiceResultInterface
     {
         $card = $this->cardRepository->take(CardId::of($cardId));
         if ($card === null) {
             return $this->resultFactory->notFound("$cardId not found");
         }
 
-        $card->noteAchievement($achievementDescription);
+        $card->noteAchievement(RequirementId::of($requirementId), $achievementDescription);
         $this->cardRepository->persist($card);
 
         $result = $this->resultFactory->ok($card, new AchievementNoted($card->cardId));
         return $this->reportResult($result, $this->reportingBus);
     }
 
-    public function dismissAchievement(string $cardId, string $achievementId): ServiceResultInterface
+    public function dismissAchievement(string $cardId, string $requirementId): ServiceResultInterface
     {
         $card = $this->cardRepository->take(CardId::of($cardId));
         if ($card === null) {
             return $this->resultFactory->notFound("$cardId not found");
         }
 
-        $card->dismissAchievement(AchievementId::of($achievementId));
+        $card->dismissAchievement(RequirementId::of($requirementId));
         $this->cardRepository->persist($card);
 
         $result = $this->resultFactory->ok($card, new AchievementDismissed($card->cardId));
