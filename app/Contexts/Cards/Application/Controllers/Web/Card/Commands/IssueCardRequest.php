@@ -17,7 +17,7 @@ class IssueCardRequest extends FormRequest
 
     public string $description;
 
-    public function rules()
+    public function rules(): array
     {
         return [
             'planId' => 'required',
@@ -33,7 +33,7 @@ class IssueCardRequest extends FormRequest
         $this->description = $this->input('description');
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             'planId.required' => 'planId required',

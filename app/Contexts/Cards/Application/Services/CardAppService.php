@@ -52,7 +52,8 @@ class CardAppService
         $card->complete();
         $this->cardRepository->persist($card);
 
-        return $this->resultFactory->ok($card, new CardCompleted($card->cardId));
+        $result = $this->resultFactory->ok($card, new CardCompleted($card->cardId));
+        return $this->reportResult($result, $this->reportingBus);
     }
 
     public function revokeCard(string $cardId): ServiceResultInterface
@@ -65,7 +66,8 @@ class CardAppService
         $card->revoke();
         $this->cardRepository->persist($card);
 
-        return $this->resultFactory->ok($card, new CardRevoked($card->cardId));
+        $result = $this->resultFactory->ok($card, new CardRevoked($card->cardId));
+        return $this->reportResult($result, $this->reportingBus);
     }
 
     public function blockCard(string $cardId): ServiceResultInterface
@@ -78,7 +80,8 @@ class CardAppService
         $card->block();
         $this->cardRepository->persist($card);
 
-        return $this->resultFactory->ok($card, new CardBlocked($card->cardId));
+        $result = $this->resultFactory->ok($card, new CardBlocked($card->cardId));
+        return $this->reportResult($result, $this->reportingBus);
     }
 
     public function noteAchievement(string $cardId, string $achievementDescription): ServiceResultInterface
@@ -91,7 +94,8 @@ class CardAppService
         $card->noteAchievement($achievementDescription);
         $this->cardRepository->persist($card);
 
-        return $this->resultFactory->ok($card, new AchievementNoted($card->cardId));
+        $result = $this->resultFactory->ok($card, new AchievementNoted($card->cardId));
+        return $this->reportResult($result, $this->reportingBus);
     }
 
     public function dismissAchievement(string $cardId, string $achievementId): ServiceResultInterface
@@ -104,7 +108,8 @@ class CardAppService
         $card->dismissAchievement(AchievementId::of($achievementId));
         $this->cardRepository->persist($card);
 
-        return $this->resultFactory->ok($card, new AchievementDismissed($card->cardId));
+        $result = $this->resultFactory->ok($card, new AchievementDismissed($card->cardId));
+        return $this->reportResult($result, $this->reportingBus);
     }
 
 }

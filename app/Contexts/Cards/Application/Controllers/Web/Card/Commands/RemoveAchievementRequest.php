@@ -6,11 +6,19 @@ use App\Contexts\Cards\Domain\Model\Card\AchievementId;
 
 class RemoveAchievementRequest extends BaseCommandRequest
 {
-    public AchievementId $achievementId;
+    protected const RULES = [
+        'achievementId' => 'required',
+    ];
+
+    protected const MESSAGES = [
+        'achievementId.required' => 'achievementId required',
+    ];
+
+    public string $achievementId;
 
     public function passedValidation(): void
     {
-        $this->achievementId = new AchievementId($this->input('achievementId'));
+        $this->achievementId = $this->input('achievementId');
     }
 
     protected function prepareForValidation(): void

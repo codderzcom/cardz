@@ -109,7 +109,7 @@ class CardRepository implements CardRepositoryInterface
     }
 
     /**
-     * @return array<Achievement>|null
+     * @return Achievement[]|null
      */
     private function achievementsFromData(?array $achievementsData = null): ?array
     {

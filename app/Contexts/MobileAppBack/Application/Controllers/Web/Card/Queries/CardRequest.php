@@ -2,21 +2,28 @@
 
 namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Card\Queries;
 
-use App\Contexts\MobileAppBack\Domain\Card\CardId;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Validator;
 
 class CardRequest extends FormRequest
 {
-    public CardId $cardId;
+    public string $cardId;
 
-    public function withValidator(Validator $validator): void
+    public function rules(): array
     {
-        $this->cardId = CardId::of($this->route('cardId') ?? '');
+        return [
+            'cardId' => 'required',
+        ];
     }
 
-    public function rules()
+    public function passedValidation(): void
     {
-        return [];
+        $this->cardId = $this->input('cardId');
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'cardId' => $this->route('cardId'),
+        ]);
     }
 }

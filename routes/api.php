@@ -93,6 +93,7 @@ Route::group(['prefix' => '/mab/v1'], function () {
     });
 
     Route::group(['prefix' => '/card'], function () {
+        Route::get('/card-by-code/{codeId}', [MABCardController::class, 'getCardByCode'])->name('MABCardGetByCode');
         Route::get('{cardId}', [MABCardController::class, 'getCard'])->name('MABCardGet');
         Route::get('{cardId}/code', [MABCardController::class, 'generateCode'])->name('MABCardGenerateCode');
         Route::get('{cardId}/achievement', [MABCardController::class, 'listAllAchievements'])->name('MABCardListAllAchievements');

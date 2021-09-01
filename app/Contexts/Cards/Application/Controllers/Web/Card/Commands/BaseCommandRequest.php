@@ -6,38 +6,36 @@ use Illuminate\Foundation\Http\FormRequest;
 
 abstract class BaseCommandRequest extends FormRequest
 {
+    protected const RULES = [
+        'cardId' => 'required',
+    ];
+
+    protected const MESSAGES = [
+        'cardId.required' => 'cardId required',
+    ];
+
     public string $cardId;
 
-    public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
+    public function rules(): array
     {
-        parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
+        return array_merge(self::RULES, static::RULES);
     }
 
-    public function rules()
+    public function messages(): array
     {
-        return [
-            //'cardId' => 'required'
-        ];
+        return array_merge(self::MESSAGES, static::MESSAGES);
+    }
+
+    public function passedValidation(): void
+    {
+        $this->cardId = $this->input('cardId');
     }
 
     protected function prepareForValidation(): void
     {
-        $this->inferCardId();
         $this->merge([
-            'cardId' => $this->cardId,
+            'cardId' => $this->route('cardId'),
         ]);
-    }
-
-    protected function inferCardId(): void
-    {
-        $this->cardId = $this->route('cardId');
-    }
-
-    public function messages()
-    {
-        return [
-            'cardId.required' => 'cardId required',
-        ];
     }
 
 }
