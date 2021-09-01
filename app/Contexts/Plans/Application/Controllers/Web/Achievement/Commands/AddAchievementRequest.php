@@ -13,7 +13,7 @@ class AddAchievementRequest extends BaseCommandRequest
 
     public function passedValidation(): void
     {
-        $this->planId = new PlanId($this->input('planId'));
+        $this->planId = PlanId::of($this->input('planId'));
         $this->description = $this->input('description');
     }
 
@@ -26,6 +26,6 @@ class AddAchievementRequest extends BaseCommandRequest
 
     protected function inferAchievementId(): void
     {
-        $this->achievementId = new AchievementId();
+        $this->achievementId = AchievementId::make();
     }
 }

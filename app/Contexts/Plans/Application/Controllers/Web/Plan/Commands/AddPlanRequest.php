@@ -11,7 +11,7 @@ class AddPlanRequest extends BaseCommandRequest
 
     public function passedValidation(): void
     {
-        $this->workspaceId = new WorkspaceId($this->input('workspaceId'));
+        $this->workspaceId = WorkspaceId::of($this->input('workspaceId'));
         $this->description = $this->input('description');
     }
 
@@ -25,6 +25,6 @@ class AddPlanRequest extends BaseCommandRequest
 
     protected function inferPlanId(): void
     {
-        $this->planId = new PlanId();
+        $this->planId = PlanId::make();
     }
 }

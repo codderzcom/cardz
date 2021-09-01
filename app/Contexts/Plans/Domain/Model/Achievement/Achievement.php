@@ -67,8 +67,8 @@ final class Achievement
         ?Carbon $added = null,
         ?Carbon $removed = null,
     ): void {
-        $this->achievementId = new AchievementId($achievementId);
-        $this->planId = new PlanId($planId);
+        $this->achievementId = AchievementId::of($achievementId);
+        $this->planId = PlanId::of($planId);
         $this->description = $description;
         $this->added = $added;
         $this->removed = $removed;

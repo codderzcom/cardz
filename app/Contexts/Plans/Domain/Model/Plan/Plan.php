@@ -97,8 +97,8 @@ final class Plan
         ?Carbon $stopped = null,
         ?Carbon $archived = null,
     ): void {
-        $this->planId = new PlanId($planId);
-        $this->workspaceId = new WorkspaceId($workspaceId);
+        $this->planId = PlanId::of($planId);
+        $this->workspaceId = WorkspaceId::of($workspaceId);
         $this->description = $description;
         $this->added = $added;
         $this->launched = $launched;

@@ -28,6 +28,6 @@ abstract class BaseCommandRequest extends FormRequest
 
     protected function inferPlanId(): void
     {
-        $this->planId = new PlanId($this->route('planId'));
+        $this->planId = PlanId::of($this->route('planId'));
     }
 }

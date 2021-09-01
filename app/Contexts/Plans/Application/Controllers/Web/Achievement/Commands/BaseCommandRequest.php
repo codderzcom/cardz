@@ -28,6 +28,6 @@ abstract class BaseCommandRequest extends FormRequest
 
     protected function inferAchievementId(): void
     {
-        $this->achievementId = new AchievementId($this->route('achievementId'));
+        $this->achievementId = AchievementId::of($this->route('achievementId'));
     }
 }

@@ -2,12 +2,11 @@
 
 namespace App\Contexts\MobileAppBack\Domain\Exceptions;
 
-use App\Contexts\MobileAppBack\Application\Contracts\DomainExceptionInterface;
 use Exception;
 use JetBrains\PhpStorm\Pure;
 use Throwable;
 
-class ReconstructionException extends Exception implements DomainExceptionInterface
+class ReconstructionException extends Exception
 {
     #[Pure]
     public function __construct(
