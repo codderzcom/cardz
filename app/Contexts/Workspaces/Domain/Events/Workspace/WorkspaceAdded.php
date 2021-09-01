@@ -6,7 +6,7 @@ use App\Contexts\Workspaces\Domain\Model\Workspace\WorkspaceId;
 use JetBrains\PhpStorm\Immutable;
 
 #[Immutable]
-class WorkspaceAdded extends BaseWorkspaceDomainEvent
+final class WorkspaceAdded extends BaseWorkspaceDomainEvent
 {
     public static function with(WorkspaceId $workspaceId): static
     {

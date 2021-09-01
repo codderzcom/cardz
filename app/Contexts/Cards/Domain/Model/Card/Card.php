@@ -15,7 +15,7 @@ use Carbon\Carbon;
 use JetBrains\PhpStorm\Pure;
 use ReflectionClass;
 
-class Card extends AggregateRoot
+final class Card extends AggregateRoot
 {
     private ?Carbon $issued = null;
 

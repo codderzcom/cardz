@@ -9,7 +9,7 @@ use App\Contexts\Plans\Domain\Model\Plan\PlanId;
 use Carbon\Carbon;
 use JetBrains\PhpStorm\Pure;
 
-class Achievement
+final class Achievement
 {
     private ?Carbon $added = null;
 

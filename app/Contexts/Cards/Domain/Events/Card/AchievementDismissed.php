@@ -7,7 +7,7 @@ use App\Contexts\Cards\Domain\Model\Card\CardId;
 use JetBrains\PhpStorm\Immutable;
 
 #[Immutable]
-class AchievementDismissed extends BaseCardDomainEvent
+final class AchievementDismissed extends BaseCardDomainEvent
 {
     private function __construct(
         public CardId $cardId,

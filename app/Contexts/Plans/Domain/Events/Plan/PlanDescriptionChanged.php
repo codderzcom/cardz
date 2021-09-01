@@ -6,7 +6,7 @@ use App\Contexts\Plans\Domain\Model\Plan\PlanId;
 use JetBrains\PhpStorm\Immutable;
 
 #[Immutable]
-class PlanDescriptionChanged extends BasePlanDomainEvent
+final class PlanDescriptionChanged extends BasePlanDomainEvent
 {
     public static function with(PlanId $planId): static
     {

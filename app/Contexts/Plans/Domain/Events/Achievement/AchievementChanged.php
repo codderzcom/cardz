@@ -6,7 +6,7 @@ use App\Contexts\Plans\Domain\Model\Achievement\AchievementId;
 use JetBrains\PhpStorm\Immutable;
 
 #[Immutable]
-class AchievementChanged extends BaseAchievementDomainEvent
+final class AchievementChanged extends BaseAchievementDomainEvent
 {
     public static function with(AchievementId $achievementId): static
     {

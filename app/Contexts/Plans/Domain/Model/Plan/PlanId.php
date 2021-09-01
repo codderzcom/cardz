@@ -4,7 +4,7 @@ namespace App\Contexts\Plans\Domain\Model\Plan;
 
 use Ramsey\Uuid\Guid\Guid;
 
-class PlanId
+final class PlanId
 {
     public function __construct(private ?string $id = null)
     {

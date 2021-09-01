@@ -7,7 +7,7 @@ use App\Contexts\Workspaces\Domain\Events\Workspace\WorkspaceProfileChanged;
 use Carbon\Carbon;
 use JetBrains\PhpStorm\Pure;
 
-class Workspace
+final class Workspace
 {
     private ?Carbon $added = null;
 

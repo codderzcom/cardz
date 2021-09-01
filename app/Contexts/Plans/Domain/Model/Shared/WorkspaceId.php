@@ -4,7 +4,7 @@ namespace App\Contexts\Plans\Domain\Model\Shared;
 
 use Ramsey\Uuid\Guid\Guid;
 
-class WorkspaceId
+final class WorkspaceId
 {
     public function __construct(private ?string $id = null)
     {

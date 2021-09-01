@@ -7,7 +7,7 @@ use JetBrains\PhpStorm\Immutable;
 use JetBrains\PhpStorm\Pure;
 
 #[Immutable]
-class Profile
+final class Profile
 {
     private function __construct(
         public ?string $name,

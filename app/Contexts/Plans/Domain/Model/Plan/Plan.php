@@ -11,7 +11,7 @@ use App\Contexts\Plans\Domain\Model\Shared\WorkspaceId;
 use Carbon\Carbon;
 use JetBrains\PhpStorm\Pure;
 
-class Plan
+final class Plan
 {
     private ?Carbon $added = null;
 

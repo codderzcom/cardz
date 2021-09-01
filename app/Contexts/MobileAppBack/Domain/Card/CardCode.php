@@ -8,7 +8,7 @@ use DateInterval;
 use JetBrains\PhpStorm\Pure;
 use Throwable;
 
-class CardCode
+final class CardCode
 {
     private Carbon $expires;
 

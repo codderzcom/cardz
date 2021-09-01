@@ -6,7 +6,7 @@ use App\Contexts\Cards\Domain\Model\Card\CardId;
 use JetBrains\PhpStorm\Immutable;
 
 #[Immutable]
-class CardBlocked extends BaseCardDomainEvent
+final class CardBlocked extends BaseCardDomainEvent
 {
     public static function with(CardId $cardId): static
     {

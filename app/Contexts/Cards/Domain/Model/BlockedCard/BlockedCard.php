@@ -6,7 +6,7 @@ use App\Contexts\Cards\Domain\Events\BlockedCard\BlockedCardUnblocked;
 use App\Contexts\Cards\Domain\Model\AggregateRoot;
 use Carbon\Carbon;
 
-class BlockedCard extends AggregateRoot
+final class BlockedCard extends AggregateRoot
 {
     public function __construct(
         public BlockedCardId $blockedCardId,

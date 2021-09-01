@@ -7,7 +7,7 @@ use App\Contexts\Cards\Domain\Model\BlockedCard\BlockedCardId;
 use JetBrains\PhpStorm\Immutable;
 
 #[Immutable]
-class BlockedCardUnblocked extends BaseDomainEvent
+final class BlockedCardUnblocked extends BaseDomainEvent
 {
     protected function __construct(
         public BlockedCardId $blockedCardId
