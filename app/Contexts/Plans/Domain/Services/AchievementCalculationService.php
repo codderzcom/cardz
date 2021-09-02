@@ -16,17 +16,53 @@ class AchievementCalculationService
         AchievementCollection $required,
         AchievementCollection $achieved,
     ): array {
-        $this->selectAchievementStrategy($plan);
+        $strategy = $this->selectAchievementFilterStrategy($plan);
+        return $strategy($required, $achieved);
     }
 
-    private function selectAchievementStrategy(Plan $plan)
+    public function isPlanCompleted(Plan $plan, AchievementCollection $required, AchievementCollection $achieved): bool
+    {
+        $strategy = $this->selectAchievementFulfillmentStrategy($plan);
+        return $strategy($required, $achieved);
+    }
+
+    private function selectAchievementFilterStrategy(Plan $plan): callable
     {
         //ToDo: выбрать стратегию применения достижений в зависимости от программы ляльности
-        return;
+        return [$this, 'simpleCompletenessCalculationStrategy'];
+    }
+
+    private function selectAchievementFulfillmentStrategy(Plan $plan): callable
+    {
+        //ToDo: выбрать стратегию завершённости программы
+        return [$this, 'simpleAchievementsFilter'];
     }
 
     private function simpleAchievementsFilter(AchievementCollection $required, AchievementCollection $achieved): AchievementCollection
     {
-        return $required->copy();
+        $filtered = $required->copy();
+        foreach ($required as $key => $requiredItem) {
+            foreach ($achieved as $achievedItem) {
+                if ((string) $requiredItem->achievementId === (string) $achievedItem->achievementId) {
+                    unset($filtered[$key]);
+                    break;
+                }
+            }
+        }
+        return $filtered;
+    }
+
+    private function simpleCompletenessCalculationStrategy(AchievementCollection $required, AchievementCollection $achieved): bool
+    {
+        $filtered = $required->copy();
+        foreach ($required as $key => $requiredItem) {
+            foreach ($achieved as $achievedItem) {
+                if ((string) $requiredItem->achievementId === (string) $achievedItem->achievementId) {
+                    unset($filtered[$key]);
+                    break;
+                }
+            }
+        }
+        return $filtered->length() <= 0;
     }
 }

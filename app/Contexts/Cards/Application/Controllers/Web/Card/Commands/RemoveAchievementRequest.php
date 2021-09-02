@@ -2,7 +2,7 @@
 
 namespace App\Contexts\Cards\Application\Controllers\Web\Card\Commands;
 
-class RemoveAchievementRequest extends BaseCommandRequest
+final class RemoveAchievementRequest extends BaseCommandRequest
 {
     protected const RULES = [
         'requirementId' => 'required',

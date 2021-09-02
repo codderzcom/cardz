@@ -2,6 +2,6 @@
 
 namespace App\Contexts\Plans\Application\Controllers\Web\Plan\Commands;
 
-class LaunchPlanRequest extends BaseCommandRequest
+final class LaunchPlanRequest extends BaseCommandRequest
 {
 }

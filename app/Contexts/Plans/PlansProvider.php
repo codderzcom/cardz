@@ -4,6 +4,7 @@ namespace App\Contexts\Plans;
 
 use App\Contexts\Plans\Application\Contracts\AchievementRepositoryInterface;
 use App\Contexts\Plans\Application\Contracts\PlanRepositoryInterface;
+use App\Contexts\Plans\Application\Controllers\Consumers\PlanAddedConsumer;
 use App\Contexts\Plans\Infrastructure\Persistence\AchievementRepository;
 use App\Contexts\Plans\Infrastructure\Persistence\PlanRepository;
 use App\Contexts\Shared\Contracts\ReportingBusInterface;
@@ -19,5 +20,6 @@ class PlansProvider extends ServiceProvider
 
     public function boot(ReportingBusInterface $reportingBus)
     {
+        $reportingBus->subscribe($this->app->make(PlanAddedConsumer::class));
     }
 }

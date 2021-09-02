@@ -2,32 +2,40 @@
 
 namespace App\Contexts\Plans\Application\Controllers\Web\Achievement\Commands;
 
-use App\Contexts\Plans\Domain\Model\Achievement\AchievementId;
 use Illuminate\Foundation\Http\FormRequest;
 
 abstract class BaseCommandRequest extends FormRequest
 {
-    public AchievementId $achievementId;
+    protected const RULES = [
+        'achievementId' => 'required',
+    ];
 
-    public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
+    protected const MESSAGES = [
+        'achievementId.required' => 'achievementId required',
+    ];
+
+    public string $achievementId;
+
+    public function rules(): array
     {
-        parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
+        return array_merge(self::RULES, static::RULES);
     }
 
-    public function rules()
+    public function messages(): array
     {
-        return [
-            //'achievementId' => 'required'
-        ];
+        return array_merge(self::MESSAGES, static::MESSAGES);
+    }
+
+    public function passedValidation(): void
+    {
+        $this->achievementId = $this->input('achievementId');
     }
 
     protected function prepareForValidation(): void
     {
-        $this->inferAchievementId();
+        $this->merge([
+            'achievementId' => $this->route('achievementId'),
+        ]);
     }
 
-    protected function inferAchievementId(): void
-    {
-        $this->achievementId = AchievementId::of($this->route('achievementId'));
-    }
 }

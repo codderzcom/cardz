@@ -6,10 +6,12 @@ use App\Contexts\Plans\Domain\Events\Achievement\AchievementAdded;
 use App\Contexts\Plans\Domain\Events\Achievement\AchievementChanged;
 use App\Contexts\Plans\Domain\Events\Achievement\AchievementRemoved;
 use App\Contexts\Plans\Domain\Model\Plan\PlanId;
+use App\Contexts\Plans\Domain\Model\Shared\AggregateRoot;
+use App\Contexts\Plans\Domain\Model\Shared\Description;
 use Carbon\Carbon;
 use JetBrains\PhpStorm\Pure;
 
-final class Achievement
+final class Achievement extends AggregateRoot
 {
     private ?Carbon $added = null;
 
@@ -18,13 +20,14 @@ final class Achievement
     private function __construct(
         public AchievementId $achievementId,
         public PlanId $planId,
-        private ?string $description = null
+        private Description $description,
     ) {
     }
 
-    #[Pure] public static function create(AchievementId $achievementId, PlanId $planId, ?string $description = null): static
+    #[Pure]
+    public static function make(AchievementId $achievementId, PlanId $planId, Description $description = null): self
     {
-        return new static($achievementId, $planId, $description);
+        return new self($achievementId, $planId, $description);
     }
 
     public function add(): AchievementAdded
@@ -39,13 +42,13 @@ final class Achievement
         return AchievementRemoved::with($this->achievementId);
     }
 
-    public function change(?string $description): AchievementChanged
+    public function change(Description $description): AchievementChanged
     {
         $this->description = $description;
         return AchievementChanged::with($this->achievementId);
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): Description
     {
         return $this->description;
     }
@@ -61,15 +64,15 @@ final class Achievement
     }
 
     private function from(
-        ?string $achievementId,
-        ?string $planId,
-        ?string $description = null,
+        string $achievementId,
+        string $planId,
+        string $description = null,
         ?Carbon $added = null,
         ?Carbon $removed = null,
     ): void {
         $this->achievementId = AchievementId::of($achievementId);
         $this->planId = PlanId::of($planId);
-        $this->description = $description;
+        $this->description = Description::of($description);
         $this->added = $added;
         $this->removed = $removed;
     }

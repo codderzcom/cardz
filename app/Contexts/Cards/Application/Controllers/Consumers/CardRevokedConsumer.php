@@ -8,7 +8,7 @@ use App\Contexts\Shared\Contracts\Informable;
 use App\Contexts\Shared\Contracts\Reportable;
 use App\Contexts\Shared\Contracts\ReportingBusInterface;
 
-class CardRevokedConsumer implements Informable
+final class CardRevokedConsumer implements Informable
 {
     public function __construct(public ReportingBusInterface $reportingBus)
     {
@@ -23,7 +23,7 @@ class CardRevokedConsumer implements Informable
     {
         /** @var CardRevoked $event */
         $event = $reportable;
-        $this->reportingBus->report(new CardArchived($reportable->getInstanceId(), $reportable->getInstanceOf()));
+        $this->reportingBus->report(new CardArchived($reportable->getInstanceId()));
     }
 
 }

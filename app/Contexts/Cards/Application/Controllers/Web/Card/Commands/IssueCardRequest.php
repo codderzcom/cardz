@@ -4,7 +4,7 @@ namespace App\Contexts\Cards\Application\Controllers\Web\Card\Commands;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class IssueCardRequest extends FormRequest
+final class IssueCardRequest extends FormRequest
 {
     //protected function failedValidation(Validator $validator)
     //{

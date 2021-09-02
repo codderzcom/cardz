@@ -23,6 +23,11 @@ class AchievementCollection implements ArrayAccess, Iterator
         return new static(...$this->achievements);
     }
 
+    public function length(): int
+    {
+        return count($this->achievements);
+    }
+
     public function offsetExists($offset): bool
     {
         return isset($this->achievements[$offset]);
@@ -40,7 +45,7 @@ class AchievementCollection implements ArrayAccess, Iterator
     public function offsetSet($offset, $value): void
     {
         if (!($value instanceof Achievement)) {
-            throw new ParameterAssertionException("Value is not an achievement");
+            throw new ParameterAssertionException("Value is not an instance of Achievement");
         }
         $this->achievements[$offset] = $value;
     }

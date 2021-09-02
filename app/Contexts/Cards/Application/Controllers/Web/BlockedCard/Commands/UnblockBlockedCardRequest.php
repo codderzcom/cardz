@@ -4,7 +4,7 @@ namespace App\Contexts\Cards\Application\Controllers\Web\BlockedCard\Commands;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UnblockBlockedCardRequest extends FormRequest
+final class UnblockBlockedCardRequest extends FormRequest
 {
     public string $blockedCardId;
 

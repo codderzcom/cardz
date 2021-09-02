@@ -2,7 +2,7 @@
 
 namespace App\Contexts\Cards\Application\Controllers\Web\Card\Commands;
 
-class AddAchievementRequest extends BaseCommandRequest
+final class AddAchievementRequest extends BaseCommandRequest
 {
     protected const RULES = [
         'description' => 'required',

@@ -39,7 +39,7 @@ class AchievementRepository implements AchievementRepositoryInterface
         $data = [
             'id' => (string) $achievement->achievementId,
             'plan_id' => (string) $achievement->planId,
-            'description' => $achievement->getDescription(),
+            'description' => (string) $achievement->getDescription(),
             'added_at' => $properties['added'],
             'removed_at' => $properties['removed'],
         ];

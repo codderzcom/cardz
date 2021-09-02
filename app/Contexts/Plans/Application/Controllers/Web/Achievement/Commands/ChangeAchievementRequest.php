@@ -2,12 +2,22 @@
 
 namespace App\Contexts\Plans\Application\Controllers\Web\Achievement\Commands;
 
-class ChangeAchievementRequest extends BaseCommandRequest
+final class ChangeAchievementRequest extends BaseCommandRequest
 {
+    protected const RULES = [
+        'description' => 'required',
+    ];
+
+    protected const MESSAGES = [
+        'description.required' => 'description required',
+    ];
+
     public string $description;
 
     public function passedValidation(): void
     {
-        $this->description = $this->input('description') ?: 'Error';
+        parent::passedValidation();
+        $this->description = $this->input('description');
     }
+
 }

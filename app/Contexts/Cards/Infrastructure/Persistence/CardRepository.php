@@ -47,7 +47,7 @@ class CardRepository implements CardRepositoryInterface
             'id' => (string) $card->cardId,
             'plan_id' => (string) $card->planId,
             'customer_id' => (string) $card->customerId,
-            'description' => $card->getDescription(),
+            'description' => (string) $card->getDescription(),
             'issued_at' => $properties['issued'],
             'completed_at' => $properties['completed'],
             'revoked_at' => $properties['revoked'],

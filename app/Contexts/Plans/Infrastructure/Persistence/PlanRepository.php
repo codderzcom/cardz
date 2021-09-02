@@ -41,7 +41,7 @@ class PlanRepository implements PlanRepositoryInterface
         $data = [
             'id' => (string) $plan->planId,
             'workspace_id' => (string) $plan->workspaceId,
-            'description' => $plan->getDescription(),
+            'description' => (string) $plan->getDescription(),
             'added_at' => $properties['added'],
             'launched_at' => $properties['launched'],
             'stopped_at' => $properties['stopped'],

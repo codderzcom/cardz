@@ -7,5 +7,5 @@ use JetBrains\PhpStorm\Immutable;
 #[Immutable]
 class AchievementRemoved extends BaseIntegrationEvent
 {
-
+    protected ?string $instanceOf = 'Achievement';
 }

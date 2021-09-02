@@ -2,30 +2,34 @@
 
 namespace App\Contexts\Plans\Application\Controllers\Web\Achievement\Commands;
 
-use App\Contexts\Plans\Domain\Model\Achievement\AchievementId;
-use App\Contexts\Plans\Domain\Model\Plan\PlanId;
+use Illuminate\Foundation\Http\FormRequest;
 
-class AddAchievementRequest extends BaseCommandRequest
+final class AddAchievementRequest extends FormRequest
 {
-    public PlanId $planId;
+    public string $planId;
 
-    public ?string $description;
+    public string $description;
 
-    public function passedValidation(): void
-    {
-        $this->planId = PlanId::of($this->input('planId'));
-        $this->description = $this->input('description');
-    }
-
-    public function messages()
+    public function rules(): array
     {
         return [
+            'planId' => 'required',
+            'description' => 'required',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'planId.required' => 'planId required',
             'description.required' => 'description required',
         ];
     }
 
-    protected function inferAchievementId(): void
+    public function passedValidation(): void
     {
-        $this->achievementId = AchievementId::make();
+        $this->planId = $this->input('planId');
+        $this->description = $this->input('description');
     }
+
 }
