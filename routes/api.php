@@ -29,7 +29,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => '/cards/v1'], function () {
-        Route::post('', [CardController::class, 'issue'])->name('IssueCard');
+    Route::post('/card', [CardController::class, 'issue'])->name('IssueCard');
+
     Route::group(['prefix' => '/card/{cardId}'], function () {
         Route::post('complete', [CardController::class, 'complete'])->name('CompleteCard');
         Route::post('revoke', [CardController::class, 'revoke'])->name('RevokeCard');

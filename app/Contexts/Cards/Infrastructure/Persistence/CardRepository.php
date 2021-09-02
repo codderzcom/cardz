@@ -32,6 +32,7 @@ class CardRepository implements CardRepositoryInterface
         $reflection = new ReflectionClass($card);
         $properties = [
             'issued' => null,
+            'satisfied' => null,
             'completed' => null,
             'revoked' => null,
             'blocked' => null,
@@ -49,6 +50,7 @@ class CardRepository implements CardRepositoryInterface
             'customer_id' => (string) $card->customerId,
             'description' => (string) $card->getDescription(),
             'issued_at' => $properties['issued'],
+            'satisfied_at' => $properties['satisfied'],
             'completed_at' => $properties['completed'],
             'revoked_at' => $properties['revoked'],
             'blocked_at' => $properties['blocked'],
@@ -98,6 +100,7 @@ class CardRepository implements CardRepositoryInterface
             $eloquentCard->customer_id,
             $eloquentCard->description,
             $eloquentCard->issued_at,
+            $eloquentCard->satisfied_at,
             $eloquentCard->completed_at,
             $eloquentCard->revoked_at,
             $eloquentCard->blocked_at,

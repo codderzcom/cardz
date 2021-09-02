@@ -8,6 +8,7 @@ use App\Contexts\Cards\Domain\Events\Card\CardBlocked;
 use App\Contexts\Cards\Domain\Events\Card\CardCompleted;
 use App\Contexts\Cards\Domain\Events\Card\CardIssued;
 use App\Contexts\Cards\Domain\Events\Card\CardRevoked;
+use App\Contexts\Cards\Domain\Events\Card\CardSatisfied;
 use App\Contexts\Cards\Domain\Model\Shared\AggregateRoot;
 use App\Contexts\Cards\Domain\Model\Shared\CustomerId;
 use App\Contexts\Cards\Domain\Model\Shared\PlanId;
@@ -18,6 +19,8 @@ use ReflectionClass;
 final class Card extends AggregateRoot
 {
     private ?Carbon $issued = null;
+
+    private ?Carbon $satisfied = null;
 
     private ?Carbon $completed = null;
 
@@ -46,6 +49,12 @@ final class Card extends AggregateRoot
     {
         $this->issued = Carbon::now();
         return CardIssued::with($this->cardId);
+    }
+
+    public function satisfy(): CardSatisfied
+    {
+        $this->satisfied = Carbon::now();
+        return CardSatisfied::with($this->cardId);
     }
 
     public function complete(): CardCompleted
@@ -97,6 +106,11 @@ final class Card extends AggregateRoot
         return $this->issued !== null;
     }
 
+    public function isSatisfied(): bool
+    {
+        return $this->satisfied !== null;
+    }
+
     public function isCompleted(): bool
     {
         return $this->completed !== null;
@@ -118,6 +132,7 @@ final class Card extends AggregateRoot
         string $customerId,
         string $description,
         ?Carbon $issued = null,
+        ?Carbon $satisfied = null,
         ?Carbon $completed = null,
         ?Carbon $revoked = null,
         ?Carbon $blocked = null,
@@ -128,6 +143,7 @@ final class Card extends AggregateRoot
         $this->customerId = CustomerId::of($customerId);
         $this->description = Description::of($description);
         $this->issued = $issued;
+        $this->satisfied = $satisfied;
         $this->completed = $completed;
         $this->revoked = $revoked;
         $this->blocked = $blocked;

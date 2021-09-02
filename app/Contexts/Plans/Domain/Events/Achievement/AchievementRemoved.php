@@ -8,8 +8,8 @@ use JetBrains\PhpStorm\Immutable;
 #[Immutable]
 final class AchievementRemoved extends BaseAchievementDomainEvent
 {
-    public static function with(AchievementId $achievementId): static
+    public static function with(AchievementId $achievementId): self
     {
-        return new static($achievementId);
+        return new self($achievementId);
     }
 }

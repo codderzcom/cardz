@@ -6,7 +6,7 @@ use App\Contexts\Cards\Domain\Model\Card\CardId;
 use JetBrains\PhpStorm\Immutable;
 
 #[Immutable]
-final class CardCompleted extends BaseCardDomainEvent
+final class CardSatisfied extends BaseCardDomainEvent
 {
     public static function with(CardId $cardId): self
     {

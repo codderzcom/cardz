@@ -8,8 +8,8 @@ use JetBrains\PhpStorm\Immutable;
 #[Immutable]
 final class PlanStopped extends BasePlanDomainEvent
 {
-    public static function with(PlanId $planId): static
+    public static function with(PlanId $planId): self
     {
-        return new static($planId);
+        return new self($planId);
     }
 }

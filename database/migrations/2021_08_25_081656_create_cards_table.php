@@ -20,6 +20,7 @@ class CreateCardsTable extends Migration
 
             $table->string('description')->nullable();
             $table->dateTime('issued_at')->nullable();
+            $table->dateTime('satisfied_at')->nullable();
             $table->dateTime('completed_at')->nullable();
             $table->dateTime('revoked_at')->nullable();
             $table->dateTime('blocked_at')->nullable();

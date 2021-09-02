@@ -14,6 +14,7 @@ class Card extends Model
 
     protected $casts = [
         'issued_at' => 'datetime',
+        'satisfied_at' => 'datetime',
         'completed_at' => 'datetime',
         'revoked_at' => 'datetime',
         'blocked_at' => 'datetime',

@@ -8,8 +8,8 @@ use JetBrains\PhpStorm\Immutable;
 #[Immutable]
 final class CardBlocked extends BaseCardDomainEvent
 {
-    public static function with(CardId $cardId): static
+    public static function with(CardId $cardId): self
     {
-        return new static($cardId);
+        return new self($cardId);
     }
 }

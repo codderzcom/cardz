@@ -8,8 +8,8 @@ use JetBrains\PhpStorm\Immutable;
 #[Immutable]
 final class WorkspaceProfileChanged extends BaseWorkspaceDomainEvent
 {
-    public static function with(WorkspaceId $workspaceId): static
+    public static function with(WorkspaceId $workspaceId): self
     {
-        return new static($workspaceId);
+        return new self($workspaceId);
     }
 }

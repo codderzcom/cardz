@@ -16,8 +16,8 @@ final class AchievementNoted extends BaseCardDomainEvent
         parent::__construct($cardId);
     }
 
-    public static function with(CardId $cardId, RequirementId $requirementId): static
+    public static function with(CardId $cardId, RequirementId $requirementId): self
     {
-        return new static($cardId, $requirementId);
+        return new self($cardId, $requirementId);
     }
 }

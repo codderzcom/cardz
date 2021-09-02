@@ -15,8 +15,8 @@ final class BlockedCardUnblocked extends BaseDomainEvent
         parent::__construct();
     }
 
-    public static function with(BlockedCardId $blockedCardId): static
+    public static function with(BlockedCardId $blockedCardId): self
     {
-        return new static($blockedCardId);
+        return new self($blockedCardId);
     }
 }
