@@ -15,7 +15,7 @@ class AchievementCalculationService
         Plan $plan,
         AchievementCollection $required,
         AchievementCollection $achieved,
-    ): array {
+    ): AchievementCollection {
         $strategy = $this->selectAchievementFilterStrategy($plan);
         return $strategy($required, $achieved);
     }
@@ -29,13 +29,13 @@ class AchievementCalculationService
     private function selectAchievementFilterStrategy(Plan $plan): callable
     {
         //ToDo: выбрать стратегию применения достижений в зависимости от программы ляльности
-        return [$this, 'simpleCompletenessCalculationStrategy'];
+        return [$this, 'simpleAchievementsFilter'];
     }
 
     private function selectAchievementFulfillmentStrategy(Plan $plan): callable
     {
         //ToDo: выбрать стратегию завершённости программы
-        return [$this, 'simpleAchievementsFilter'];
+        return [$this, 'simpleCompletenessCalculationStrategy'];
     }
 
     private function simpleAchievementsFilter(AchievementCollection $required, AchievementCollection $achieved): AchievementCollection
@@ -49,7 +49,7 @@ class AchievementCalculationService
                 }
             }
         }
-        return $filtered;
+        return $filtered->copy();
     }
 
     private function simpleCompletenessCalculationStrategy(AchievementCollection $required, AchievementCollection $achieved): bool

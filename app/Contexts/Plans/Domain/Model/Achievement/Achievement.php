@@ -25,7 +25,7 @@ final class Achievement extends AggregateRoot
     }
 
     #[Pure]
-    public static function make(AchievementId $achievementId, PlanId $planId, Description $description = null): self
+    public static function make(AchievementId $achievementId, PlanId $planId, Description $description): self
     {
         return new self($achievementId, $planId, $description);
     }

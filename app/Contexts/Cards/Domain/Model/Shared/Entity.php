@@ -3,9 +3,7 @@
 namespace App\Contexts\Cards\Domain\Model\Shared;
 
 use App\Contexts\Cards\Domain\Persistable;
-use Carbon\Carbon;
-use ReflectionClass;
-use Stringable;
+use App\Contexts\Shared\Infrastructure\Support\ArrayPresenterTrait;
 use function json_try_encode;
 
 abstract class Entity implements Persistable

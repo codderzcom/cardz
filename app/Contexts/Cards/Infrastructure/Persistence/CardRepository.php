@@ -92,8 +92,6 @@ class CardRepository implements CardRepositoryInterface
         /** @var Card $card */
         $card = $reflection->newInstanceWithoutConstructor();
 
-        $achievements = $eloquentCard->achievements ? json_try_decode($eloquentCard->achievements, true) : [];
-
         $creator?->invoke($card,
             $eloquentCard->id,
             $eloquentCard->plan_id,
@@ -103,7 +101,7 @@ class CardRepository implements CardRepositoryInterface
             $eloquentCard->completed_at,
             $eloquentCard->revoked_at,
             $eloquentCard->blocked_at,
-            $this->achievementsFromData($achievements)
+            $this->achievementsFromData($eloquentCard->achievements)
         );
         return $card;
     }
@@ -111,15 +109,19 @@ class CardRepository implements CardRepositoryInterface
     /**
      * @return Achievement[]|null
      */
-    private function achievementsFromData(?array $achievementsData = null): ?array
+    private function achievementsFromData($achievementsData): ?array
     {
-        if ($achievementsData === null) {
+        if (is_string($achievementsData)) {
+            $achievementsData = json_try_decode($achievementsData);
+        }
+        if (!is_array($achievementsData)) {
             return [];
         }
+
         $achievements = [];
         foreach ($achievementsData as $achievementData) {
-            $id = $achievementData['requirementId'];
-            $achievements[$id] = Achievement::of(RequirementId::of($id), $achievementsData['description']);
+            $id = $achievementData->requirementId;
+            $achievements[$id] = Achievement::of(RequirementId::of($id), $achievementData->description);
         }
         return $achievements;
     }

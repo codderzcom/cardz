@@ -2,81 +2,48 @@
 
 namespace App\Contexts\Plans\Domain\Model\Achievement;
 
-use App\Contexts\Shared\Exceptions\ParameterAssertionException;
+use App\Contexts\Shared\Infrastructure\Support\ArrayAccessSupportTrait;
 use ArrayAccess;
 use Iterator;
 use JetBrains\PhpStorm\Pure;
 
 class AchievementCollection implements ArrayAccess, Iterator
 {
-    /** @var Achievement[] */
-    private array $achievements;
+    use ArrayAccessSupportTrait;
 
-    public function __construct(Achievement ...$achievements)
+    private function __construct(Achievement ...$achievements)
     {
-        $this->achievements = $achievements ?? [];
+        $this->arrayItems = $achievements ?? [];
+    }
+
+    private function getItemType(): string
+    {
+        return Achievement::class;
     }
 
     #[Pure]
-    public function copy(): AchievementCollection
+    public static function of(Achievement ...$achievements): static
     {
-        return new static(...$this->achievements);
+        return new static(...$achievements);
     }
 
-    public function length(): int
+    public function offsetGet($offset): ?Achievement
     {
-        return count($this->achievements);
-    }
-
-    public function offsetExists($offset): bool
-    {
-        return isset($this->achievements[$offset]);
-    }
-
-    public function offsetGet($offset): Achievement
-    {
-        return $this->achievements[$offset];
-    }
-
-    /**
-     * @param mixed $offset
-     * @param Achievement $value
-     */
-    public function offsetSet($offset, $value): void
-    {
-        if (!($value instanceof Achievement)) {
-            throw new ParameterAssertionException("Value is not an instance of Achievement");
-        }
-        $this->achievements[$offset] = $value;
-    }
-
-    public function offsetUnset($offset): void
-    {
-        unset($this->achievements[$offset]);
+        return $this->arrayItems[$offset] ?: null;
     }
 
     public function current(): Achievement
     {
-        return current($this->achievements);
+        return current($this->arrayItems);
     }
 
-    public function next(): Achievement
+    public function extractAchievementIdCollection(): AchievementIdCollection
     {
-        return next($this->achievements);
-    }
-
-    public function key(): ?int
-    {
-        return key($this->achievements);
-    }
-
-    public function valid(): bool
-    {
-        return current($this->achievements) !== false;
-    }
-
-    public function rewind(): void
-    {
-        reset($this->achievements);
+        $achievementIds = [];
+        /** @var Achievement $achievement */
+        foreach ($this->arrayItems as $achievement) {
+            $achievementIds[] = $achievement->achievementId;
+        }
+        return AchievementIdCollection::of(...$achievementIds);
     }
 }

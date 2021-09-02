@@ -4,7 +4,10 @@ namespace App\Contexts\Plans\Infrastructure\Persistence;
 
 use App\Contexts\Plans\Application\Contracts\AchievementRepositoryInterface;
 use App\Contexts\Plans\Domain\Model\Achievement\Achievement;
+use App\Contexts\Plans\Domain\Model\Achievement\AchievementCollection;
 use App\Contexts\Plans\Domain\Model\Achievement\AchievementId;
+use App\Contexts\Plans\Domain\Model\Achievement\AchievementIdCollection;
+use App\Contexts\Plans\Domain\Model\Plan\PlanId;
 use App\Models\Achievement as EloquentAchievement;
 use ReflectionClass;
 
@@ -59,6 +62,28 @@ class AchievementRepository implements AchievementRepositoryInterface
             return null;
         }
         return $this->achievementFromData($eloquentAchievement);
+    }
+
+    public function takeByAchievementIds(AchievementIdCollection $achievementIds): AchievementCollection
+    {
+        $achievements = [];
+        $eloquentAchievements = EloquentAchievement::query()->whereIn('id', $achievementIds->toIds())->get();
+        /** @var EloquentAchievement $eloquentAchievement */
+        foreach ($eloquentAchievements as $eloquentAchievement) {
+            $achievements[] = $this->achievementFromData($eloquentAchievement);
+        }
+        return AchievementCollection::of(...$achievements);
+    }
+
+    public function takeByPlanId(PlanId $planId): AchievementCollection
+    {
+        $achievements = [];
+        $eloquentAchievements = EloquentAchievement::query()->where('plan_id', '=', (string) $planId)->get();
+        /** @var EloquentAchievement $eloquentAchievement */
+        foreach ($eloquentAchievements as $eloquentAchievement) {
+            $achievements[] = $this->achievementFromData($eloquentAchievement);
+        }
+        return AchievementCollection::of(...$achievements);
     }
 
     private function achievementFromData(EloquentAchievement $eloquentAchievement): Achievement

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contexts\Cards\Domain\Model\Shared;
+namespace App\Contexts\Shared\Infrastructure\Support;
 
 use Carbon\Carbon;
 use ReflectionClass;
