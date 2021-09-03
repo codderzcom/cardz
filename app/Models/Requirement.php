@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Achievement extends Model
+class Requirement extends Model
 {
-    public $table = 'achievements';
+    public $table = 'requirements';
 
     public $incrementing = false;
 

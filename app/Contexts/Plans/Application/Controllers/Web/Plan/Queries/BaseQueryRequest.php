@@ -2,7 +2,6 @@
 
 namespace App\Contexts\Plans\Application\Controllers\Web\Plan\Queries;
 
-use App\Contexts\Plans\Domain\Model\Plan\PlanId;
 use Illuminate\Foundation\Http\FormRequest;
 
 abstract class BaseQueryRequest extends FormRequest

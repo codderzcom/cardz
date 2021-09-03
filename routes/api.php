@@ -2,13 +2,13 @@
 
 use App\Contexts\Cards\Application\Controllers\Web\BlockedCard\BlockedCardController;
 use App\Contexts\Cards\Application\Controllers\Web\Card\CardController;
-use App\Contexts\MobileAppBack\Application\Controllers\Web\Customer\CustomerController as MABCustomerController;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Customer\CardController as MABCustomerCardController;
-use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\PlanController as MABPlanController;
+use App\Contexts\MobileAppBack\Application\Controllers\Web\Customer\CustomerController as MABCustomerController;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\CardController as MABCardController;
+use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\PlanController as MABPlanController;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\WorkspaceController as MABWorkspaceController;
-use App\Contexts\Plans\Application\Controllers\Web\Achievement\AchievementController;
 use App\Contexts\Plans\Application\Controllers\Web\Plan\PlanController;
+use App\Contexts\Plans\Application\Controllers\Web\Requirement\RequirementController;
 use App\Contexts\Workspaces\Application\Controllers\Web\Workspace\WorkspaceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -47,7 +47,7 @@ Route::group(['prefix' => '/cards/v1'], function () {
 
 Route::group(['prefix' => '/plans/v1'], function () {
     Route::post('/plan', [PlanController::class, 'add'])->name('AddPlan');
-    Route::post('/achievement', [AchievementController::class, 'add'])->name('AddAchievement');
+    Route::post('/requirement', [RequirementController::class, 'add'])->name('AddRequirement');
 
     Route::group(['prefix' => '/plan/{planId}'], function () {
         Route::post('launch', [PlanController::class, 'launch'])->name('LaunchPlan');
@@ -59,9 +59,9 @@ Route::group(['prefix' => '/plans/v1'], function () {
         Route::post('is-satisfied-by-requirements', [PlanController::class, 'isSatisfiedByRequirements'])->name('PlanIsSatisfiedByRequirements');
     });
 
-    Route::group(['prefix' => '/achievement/{achievementId}'], function () {
-        Route::put('', [AchievementController::class, 'change'])->name('ChangeAchievement');
-        Route::delete('', [AchievementController::class, 'remove'])->name('RemoveAchievement');
+    Route::group(['prefix' => '/requirement/{requirementId}'], function () {
+        Route::put('', [RequirementController::class, 'change'])->name('ChangeRequirement');
+        Route::delete('', [RequirementController::class, 'remove'])->name('RemoveRequirement');
     });
 });
 

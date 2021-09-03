@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Contexts\Plans\Application\Controllers\Web\Achievement\Commands;
+namespace App\Contexts\Plans\Application\Controllers\Web\Requirement\Commands;
 
 use Illuminate\Foundation\Http\FormRequest;
 
 abstract class BaseCommandRequest extends FormRequest
 {
     protected const RULES = [
-        'achievementId' => 'required',
+        'requirementId' => 'required',
     ];
 
     protected const MESSAGES = [
-        'achievementId.required' => 'achievementId required',
+        'requirementId.required' => 'requirementId required',
     ];
 
-    public string $achievementId;
+    public string $requirementId;
 
     public function rules(): array
     {
@@ -28,13 +28,13 @@ abstract class BaseCommandRequest extends FormRequest
 
     public function passedValidation(): void
     {
-        $this->achievementId = $this->input('achievementId');
+        $this->requirementId = $this->input('requirementId');
     }
 
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'achievementId' => $this->route('achievementId'),
+            'requirementId' => $this->route('requirementId'),
         ]);
     }
 

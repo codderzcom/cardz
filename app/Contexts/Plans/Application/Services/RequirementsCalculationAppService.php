@@ -2,14 +2,10 @@
 
 namespace App\Contexts\Plans\Application\Services;
 
-use App\Contexts\Plans\Application\Contracts\AchievementRepositoryInterface;
 use App\Contexts\Plans\Application\Contracts\PlanRepositoryInterface;
-use App\Contexts\Plans\Domain\Model\Achievement\Achievement;
-use App\Contexts\Plans\Domain\Model\Achievement\AchievementCollection;
-use App\Contexts\Plans\Domain\Model\Achievement\AchievementId;
-use App\Contexts\Plans\Domain\Model\Achievement\AchievementIdCollection;
+use App\Contexts\Plans\Application\Contracts\RequirementRepositoryInterface;
 use App\Contexts\Plans\Domain\Model\Plan\PlanId;
-use App\Contexts\Plans\Domain\Model\Shared\Description;
+use App\Contexts\Plans\Domain\Model\Requirement\RequirementIdCollection;
 use App\Contexts\Plans\Domain\Services\AchievementCalculationService;
 use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
 use App\Contexts\Shared\Contracts\ServiceResultInterface;
@@ -21,7 +17,7 @@ class RequirementsCalculationAppService
 
     public function __construct(
         private PlanRepositoryInterface $planRepository,
-        private AchievementRepositoryInterface $achievementRepository,
+        private RequirementRepositoryInterface $requirementRepository,
         private AchievementCalculationService $achievementCalculationService,
         private ServiceResultFactoryInterface $resultFactory,
     ) {
@@ -34,10 +30,10 @@ class RequirementsCalculationAppService
             return $this->resultFactory->notFound("$planId not found");
         }
 
-        $achievementIds = AchievementIdCollection::ofIds(...$requirementIds);
-        $achievedRequirements = $this->achievementRepository->takeByAchievementIds($achievementIds);
-        $planRequirements = $this->achievementRepository->takeByPlanId($plan->planId);
-        $requiredRequirements = $this->achievementCalculationService->getRequiredAchievements(
+        $requirementIdCollection = RequirementIdCollection::ofIds(...$requirementIds);
+        $achievedRequirements = $this->requirementRepository->takeByRequirementIds($requirementIdCollection);
+        $planRequirements = $this->requirementRepository->takeByPlanId($plan->planId);
+        $requiredRequirements = $this->achievementCalculationService->getRequirements(
             $plan,
             $planRequirements,
             $achievedRequirements
@@ -53,10 +49,9 @@ class RequirementsCalculationAppService
             return $this->resultFactory->notFound("$planId not found");
         }
 
-
-        $achievementIds = AchievementIdCollection::ofIds(...$requirementIds);
-        $achievedRequirements = $this->achievementRepository->takeByAchievementIds($achievementIds);
-        $planRequirements = $this->achievementRepository->takeByPlanId($plan->planId);
+        $requirementIdCollection = RequirementIdCollection::ofIds(...$requirementIds);
+        $achievedRequirements = $this->requirementRepository->takeByRequirementIds($requirementIdCollection);
+        $planRequirements = $this->requirementRepository->takeByPlanId($plan->planId);
         $isSatisfied = $this->achievementCalculationService->isPlanCompleted(
             $plan,
             $planRequirements,

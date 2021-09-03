@@ -1,51 +1,51 @@
 <?php
 
-namespace App\Contexts\Plans\Domain\Model\Achievement;
+namespace App\Contexts\Plans\Domain\Model\Requirement;
 
-use App\Contexts\Plans\Domain\Events\Achievement\AchievementAdded;
-use App\Contexts\Plans\Domain\Events\Achievement\AchievementChanged;
-use App\Contexts\Plans\Domain\Events\Achievement\AchievementRemoved;
+use App\Contexts\Plans\Domain\Events\Requirement\RequirementAdded;
+use App\Contexts\Plans\Domain\Events\Requirement\RequirementChanged;
+use App\Contexts\Plans\Domain\Events\Requirement\RequirementRemoved;
 use App\Contexts\Plans\Domain\Model\Plan\PlanId;
 use App\Contexts\Plans\Domain\Model\Shared\AggregateRoot;
 use App\Contexts\Plans\Domain\Model\Shared\Description;
 use Carbon\Carbon;
 use JetBrains\PhpStorm\Pure;
 
-final class Achievement extends AggregateRoot
+final class Requirement extends AggregateRoot
 {
     private ?Carbon $added = null;
 
     private ?Carbon $removed = null;
 
     private function __construct(
-        public AchievementId $achievementId,
+        public RequirementId $requirementId,
         public PlanId $planId,
         private Description $description,
     ) {
     }
 
     #[Pure]
-    public static function make(AchievementId $achievementId, PlanId $planId, Description $description): self
+    public static function make(RequirementId $requirementId, PlanId $planId, Description $description): self
     {
-        return new self($achievementId, $planId, $description);
+        return new self($requirementId, $planId, $description);
     }
 
-    public function add(): AchievementAdded
+    public function add(): RequirementAdded
     {
         $this->added = Carbon::now();
-        return AchievementAdded::with($this->achievementId);
+        return RequirementAdded::with($this->requirementId);
     }
 
-    public function remove(): AchievementRemoved
+    public function remove(): RequirementRemoved
     {
         $this->removed = Carbon::now();
-        return AchievementRemoved::with($this->achievementId);
+        return RequirementRemoved::with($this->requirementId);
     }
 
-    public function change(Description $description): AchievementChanged
+    public function change(Description $description): RequirementChanged
     {
         $this->description = $description;
-        return AchievementChanged::with($this->achievementId);
+        return RequirementChanged::with($this->requirementId);
     }
 
     public function getDescription(): Description
@@ -64,13 +64,13 @@ final class Achievement extends AggregateRoot
     }
 
     private function from(
-        string $achievementId,
+        string $requirementId,
         string $planId,
         string $description = null,
         ?Carbon $added = null,
         ?Carbon $removed = null,
     ): void {
-        $this->achievementId = AchievementId::of($achievementId);
+        $this->requirementId = RequirementId::of($requirementId);
         $this->planId = PlanId::of($planId);
         $this->description = Description::of($description);
         $this->added = $added;

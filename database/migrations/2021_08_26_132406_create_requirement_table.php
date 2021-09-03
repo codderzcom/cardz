@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAchievementsTable extends Migration
+class CreateRequirementTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateAchievementsTable extends Migration
      */
     public function up()
     {
-        Schema::create('achievements', function (Blueprint $table) {
+        Schema::create('requirements', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('plan_id')->index();
 

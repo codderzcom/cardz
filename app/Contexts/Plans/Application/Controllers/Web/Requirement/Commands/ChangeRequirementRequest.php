@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Contexts\Plans\Application\Controllers\Web\Achievement\Commands;
+namespace App\Contexts\Plans\Application\Controllers\Web\Requirement\Commands;
 
-final class ChangeAchievementRequest extends BaseCommandRequest
+final class ChangeRequirementRequest extends BaseCommandRequest
 {
     protected const RULES = [
         'description' => 'required',

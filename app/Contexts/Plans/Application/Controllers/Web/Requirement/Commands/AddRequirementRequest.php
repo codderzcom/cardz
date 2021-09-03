@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Contexts\Plans\Application\Controllers\Web\Achievement\Commands;
+namespace App\Contexts\Plans\Application\Controllers\Web\Requirement\Commands;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-final class AddAchievementRequest extends FormRequest
+final class AddRequirementRequest extends FormRequest
 {
     public string $planId;
 
