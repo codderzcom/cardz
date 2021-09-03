@@ -14,7 +14,6 @@ use App\Contexts\Cards\Domain\Model\Shared\CustomerId;
 use App\Contexts\Cards\Domain\Model\Shared\PlanId;
 use Carbon\Carbon;
 use JetBrains\PhpStorm\Pure;
-use ReflectionClass;
 
 final class Card extends AggregateRoot
 {
@@ -28,8 +27,11 @@ final class Card extends AggregateRoot
 
     private ?Carbon $blocked = null;
 
-    /** @var array<Achievement> */
+    /** @var Achievement[] */
     private array $achievements = [];
+
+    /** @var Achievement[] */
+    private array $requirements = [];
 
     private function __construct(
         public CardId $cardId,
@@ -45,9 +47,10 @@ final class Card extends AggregateRoot
         return new self($cardId, $planId, $customerId, $description);
     }
 
-    public function issue(): CardIssued
+    public function issue(Achievement ... $requirements): CardIssued
     {
         $this->issued = Carbon::now();
+        $this->requirements = $requirements;
         return CardIssued::with($this->cardId);
     }
 
@@ -94,11 +97,19 @@ final class Card extends AggregateRoot
     }
 
     /**
-     * @return array<Achievement>
+     * @return Achievement[]
      */
     public function getAchievements(): array
     {
         return $this->achievements;
+    }
+
+    /**
+     * @return Achievement[]
+     */
+    public function getRequirements(): array
+    {
+        return $this->requirements;
     }
 
     public function isIssued(): bool
@@ -137,6 +148,7 @@ final class Card extends AggregateRoot
         ?Carbon $revoked = null,
         ?Carbon $blocked = null,
         array $achievements = [],
+        array $requirements = [],
     ): void {
         $this->cardId = CardId::of($cardId);
         $this->planId = PlanId::of($planId);
@@ -148,5 +160,6 @@ final class Card extends AggregateRoot
         $this->revoked = $revoked;
         $this->blocked = $blocked;
         $this->achievements = $achievements;
+        $this->requirements = $requirements;
     }
 }

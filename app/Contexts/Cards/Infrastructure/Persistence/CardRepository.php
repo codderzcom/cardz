@@ -8,7 +8,6 @@ use App\Contexts\Cards\Domain\Model\Card\Card;
 use App\Contexts\Cards\Domain\Model\Card\CardId;
 use App\Contexts\Cards\Domain\Model\Card\RequirementId;
 use App\Models\Card as EloquentCard;
-use JetBrains\PhpStorm\Pure;
 use ReflectionClass;
 use function json_try_decode;
 use function json_try_encode;
@@ -25,6 +24,19 @@ class CardRepository implements CardRepositoryInterface
             ['id' => $card->cardId],
             $this->cardAsData($card)
         );
+    }
+
+    public function take(CardId $cardId = null): ?Card
+    {
+        /** @var EloquentCard $eloquentCard */
+        $eloquentCard = EloquentCard::query()->where([
+            'id' => (string) $cardId,
+            'blocked_at' => null,
+        ])?->first();
+        if ($eloquentCard === null) {
+            return null;
+        }
+        return $this->cardFromData($eloquentCard);
     }
 
     private function cardAsData(Card $card): array
@@ -54,36 +66,20 @@ class CardRepository implements CardRepositoryInterface
             'completed_at' => $properties['completed'],
             'revoked_at' => $properties['revoked'],
             'blocked_at' => $properties['blocked'],
-            'achievements' => json_try_encode($this->achievementsAsData($card->getAchievements())),
+            'achievements' => json_try_encode($this->achievementsAsData(...$card->getAchievements())),
+            'requirements' => json_try_encode($this->achievementsAsData(...$card->getRequirements())),
         ];
 
         return $data;
     }
 
-    /**
-     * @param array<Achievement> $achievements
-     */
-    #[Pure] private function achievementsAsData(array $achievements): array
+    private function achievementsAsData(Achievement ...$achievements): array
     {
         $achievementsData = [];
-        /** @var Achievement $achievement */
         foreach ($achievements as $achievement) {
             $achievementsData[] = $achievement->toArray();
         }
         return $achievementsData;
-    }
-
-    public function take(CardId $cardId = null): ?Card
-    {
-        /** @var EloquentCard $eloquentCard */
-        $eloquentCard = EloquentCard::query()->where([
-            'id' => (string) $cardId,
-            'blocked_at' => null,
-        ])?->first();
-        if ($eloquentCard === null) {
-            return null;
-        }
-        return $this->cardFromData($eloquentCard);
     }
 
     private function cardFromData(EloquentCard $eloquentCard): Card
@@ -104,15 +100,13 @@ class CardRepository implements CardRepositoryInterface
             $eloquentCard->completed_at,
             $eloquentCard->revoked_at,
             $eloquentCard->blocked_at,
-            $this->achievementsFromData($eloquentCard->achievements)
+            $this->achievementsFromData($eloquentCard->achievements),
+            $this->achievementsFromData($eloquentCard->requirements),
         );
         return $card;
     }
 
-    /**
-     * @return Achievement[]|null
-     */
-    private function achievementsFromData($achievementsData): ?array
+    private function achievementsFromData($achievementsData): array
     {
         if (is_string($achievementsData)) {
             $achievementsData = json_try_decode($achievementsData);

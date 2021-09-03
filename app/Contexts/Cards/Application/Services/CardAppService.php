@@ -3,15 +3,17 @@
 namespace App\Contexts\Cards\Application\Services;
 
 use App\Contexts\Cards\Application\Contracts\CardRepositoryInterface;
+use App\Contexts\Cards\Application\Contracts\PlanRequirementReadStorageInterface;
 use App\Contexts\Cards\Application\IntegrationEvents\{AchievementDismissed, AchievementNoted, CardBlocked, CardCompleted, CardIssued, CardRevoked,};
+use App\Contexts\Cards\Domain\Model\Card\Achievement;
 use App\Contexts\Cards\Domain\Model\Card\Card;
 use App\Contexts\Cards\Domain\Model\Card\CardId;
 use App\Contexts\Cards\Domain\Model\Card\Description;
 use App\Contexts\Cards\Domain\Model\Card\RequirementId;
 use App\Contexts\Cards\Domain\Model\Shared\CustomerId;
 use App\Contexts\Cards\Domain\Model\Shared\PlanId;
+use App\Contexts\Cards\Domain\ReadModel\PlanRequirement;
 use App\Contexts\Cards\Infrastructure\ACL\Plans\PlansAdapter;
-use App\Contexts\Plans\Domain\Model\Requirement\Requirement;
 use App\Contexts\Shared\Contracts\ReportingBusInterface;
 use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
 use App\Contexts\Shared\Contracts\ServiceResultInterface;
@@ -27,6 +29,7 @@ class CardAppService
         private CardRepositoryInterface $cardRepository,
         private ReportingBusInterface $reportingBus,
         private ServiceResultFactoryInterface $resultFactory,
+        private PlanRequirementReadStorageInterface $planRequirementReadStorage,
         private PlansAdapter $plansAdapter,
     ) {
     }
@@ -40,10 +43,14 @@ class CardAppService
             Description::of($description),
         );
 
-        $card->issue();
+        $card->issue(
+            ...$this->planRequirementReadStorage
+            ->allByPlanId(PlanId::of($planId))
+            ->toAchievements()
+        );
         $this->cardRepository->persist($card);
-        $result = $this->resultFactory->ok($card, new CardIssued($card->cardId));
 
+        $result = $this->resultFactory->ok($card, new CardIssued($card->cardId));
         return $this->reportResult($result, $this->reportingBus);
     }
 
@@ -143,5 +150,14 @@ class CardAppService
             $achievedIds[] = $achievement->requirementId;
         }
         return $this->plansAdapter->unachievedRequirements($card->plan_id, ...$achievedIds);
+    }
+
+    private function planRequirementsToAchievements(PlanRequirement ...$planRequirements): array
+    {
+        $achievements = [];
+        foreach ($planRequirements as $planRequirement) {
+            $achievements[] = Achievement::of($planRequirement->getRequirementId(), $planRequirement->getDescription());
+        }
+        return $achievements;
     }
 }

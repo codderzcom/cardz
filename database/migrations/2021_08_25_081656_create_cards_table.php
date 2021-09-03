@@ -25,6 +25,7 @@ class CreateCardsTable extends Migration
             $table->dateTime('revoked_at')->nullable();
             $table->dateTime('blocked_at')->nullable();
             $table->jsonb('achievements')->nullable();
+            $table->jsonb('requirements')->nullable();
 
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
