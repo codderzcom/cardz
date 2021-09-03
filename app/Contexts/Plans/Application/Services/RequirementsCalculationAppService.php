@@ -23,15 +23,15 @@ class RequirementsCalculationAppService
     ) {
     }
 
-    public function restOfRequirements(string $planId, string ...$requirementIds): ServiceResultInterface
+    public function restOfRequirements(string $planId, string ...$achievedRequirementIds): ServiceResultInterface
     {
         $plan = $this->planRepository->take(PlanId::of($planId));
         if ($plan === null) {
             return $this->resultFactory->notFound("$planId not found");
         }
 
-        $requirementIdCollection = RequirementIdCollection::ofIds(...$requirementIds);
-        $achievedRequirements = $this->requirementRepository->takeByRequirementIds($requirementIdCollection);
+        $achievedRequirementIdCollection = RequirementIdCollection::ofIds(...$achievedRequirementIds);
+        $achievedRequirements = $this->requirementRepository->takeByRequirementIds($achievedRequirementIdCollection);
         $planRequirements = $this->requirementRepository->takeByPlanId($plan->planId);
         $requiredRequirements = $this->achievementCalculationService->getRequirements(
             $plan,

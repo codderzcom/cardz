@@ -10,6 +10,7 @@ use App\Contexts\Cards\Application\Controllers\Web\Card\Commands\{AddAchievement
     RemoveAchievementRequest,
     RevokeCardRequest
 };
+use App\Contexts\Cards\Application\Controllers\Web\Card\Queries\GetCardRequirementsRequest;
 use App\Contexts\Cards\Application\Services\CardAppService;
 use Illuminate\Http\JsonResponse;
 
@@ -64,6 +65,20 @@ class CardController extends BaseController
         return $this->response($this->cardAppService->dismissAchievement(
             $request->cardId,
             $request->requirementId
+        ));
+    }
+
+    public function getCardRequirements(GetCardRequirementsRequest $request): JsonResponse
+    {
+        return $this->response($this->cardAppService->getCardRequirements(
+            $request->cardId,
+        ));
+    }
+
+    public function getCardUnachievedRequirements(GetCardRequirementsRequest $request): JsonResponse
+    {
+        return $this->response($this->cardAppService->getCardUnachievedRequirements(
+            $request->cardId,
         ));
     }
 

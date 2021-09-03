@@ -38,6 +38,9 @@ Route::group(['prefix' => '/cards/v1'], function () {
 
         Route::post('achievement', [CardController::class, 'addAchievement'])->name('AddAchievement');
         Route::delete('achievement/{achievementId}', [CardController::class, 'removeAchievement'])->name('RemoveAchievement');
+
+        Route::get('requirements', [CardController::class, 'getCardRequirements'])->name('GetCardRequirements');
+        Route::get('unachieved-requirements', [CardController::class, 'getCardUnachievedRequirements'])->name('GetCardUnavhievedRequirements');
     });
 
     Route::group(['prefix' => '/blocked-card'], function () {

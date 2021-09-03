@@ -25,6 +25,43 @@ class RequirementRepository implements RequirementRepositoryInterface
         );
     }
 
+    public function take(RequirementId $requirementId): ?Requirement
+    {
+        if ($requirementId === null) {
+            return null;
+        }
+        /** @var EloquentRequirement $eloquentRequirement */
+        $eloquentRequirement = EloquentRequirement::query()->where([
+            'id' => (string) $requirementId,
+        ])?->first();
+        if ($eloquentRequirement === null) {
+            return null;
+        }
+        return $this->requirementFromData($eloquentRequirement);
+    }
+
+    public function takeByRequirementIds(RequirementIdCollection $requirementIdCollection): RequirementCollection
+    {
+        $requirements = [];
+        $eloquentRequirements = EloquentRequirement::query()->whereIn('id', $requirementIdCollection->toIds())->get();
+        /** @var EloquentRequirement $eloquentRequirement */
+        foreach ($eloquentRequirements as $eloquentRequirement) {
+            $requirements[] = $this->requirementFromData($eloquentRequirement);
+        }
+        return RequirementCollection::of(...$requirements);
+    }
+
+    public function takeByPlanId(PlanId $planId): RequirementCollection
+    {
+        $requirements = [];
+        $eloquentRequirements = EloquentRequirement::query()->where('plan_id', '=', (string) $planId)->get();
+        /** @var EloquentRequirement $eloquentRequirement */
+        foreach ($eloquentRequirements as $eloquentRequirement) {
+            $requirements[] = $this->requirementFromData($eloquentRequirement);
+        }
+        return RequirementCollection::of(...$requirements);
+    }
+
     private function requirementAsData(Requirement $requirement): array
     {
         $reflection = new ReflectionClass($requirement);
@@ -49,21 +86,6 @@ class RequirementRepository implements RequirementRepositoryInterface
         return $data;
     }
 
-    public function take(RequirementId $requirementId): ?Requirement
-    {
-        if ($requirementId === null) {
-            return null;
-        }
-        /** @var EloquentRequirement $eloquentRequirement */
-        $eloquentRequirement = EloquentRequirement::query()->where([
-            'id' => (string) $requirementId,
-        ])?->first();
-        if ($eloquentRequirement === null) {
-            return null;
-        }
-        return $this->requirementFromData($eloquentRequirement);
-    }
-
     private function requirementFromData(EloquentRequirement $eloquentRequirement): Requirement
     {
         $reflection = new ReflectionClass(Requirement::class);
@@ -80,27 +102,5 @@ class RequirementRepository implements RequirementRepositoryInterface
             $eloquentRequirement->removed_at,
         );
         return $requirement;
-    }
-
-    public function takeByRequirementIds(RequirementIdCollection $requirementIdCollection): RequirementCollection
-    {
-        $requirements = [];
-        $eloquentRequirements = EloquentRequirement::query()->whereIn('id', $requirementIdCollection->toIds())->get();
-        /** @var EloquentRequirement $eloquentRequirement */
-        foreach ($eloquentRequirements as $eloquentRequirement) {
-            $requirements[] = $this->requirementFromData($eloquentRequirement);
-        }
-        return RequirementCollection::of(...$requirements);
-    }
-
-    public function takeByPlanId(PlanId $planId): RequirementCollection
-    {
-        $requirements = [];
-        $eloquentRequirements = EloquentRequirement::query()->where('plan_id', '=', (string) $planId)->get();
-        /** @var EloquentRequirement $eloquentRequirement */
-        foreach ($eloquentRequirements as $eloquentRequirement) {
-            $requirements[] = $this->requirementFromData($eloquentRequirement);
-        }
-        return RequirementCollection::of(...$requirements);
     }
 }

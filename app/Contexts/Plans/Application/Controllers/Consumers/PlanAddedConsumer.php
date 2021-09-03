@@ -10,7 +10,7 @@ use App\Contexts\Shared\Contracts\ReportingBusInterface;
 
 final class PlanAddedConsumer implements Informable
 {
-    public function __construct(public ReportingBusInterface $reportingBus)
+    public function __construct(private ReportingBusInterface $reportingBus)
     {
     }
 
