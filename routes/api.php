@@ -8,7 +8,6 @@ use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\CardControl
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\PlanController as MABPlanController;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\WorkspaceController as MABWorkspaceController;
 use App\Contexts\Plans\Application\Controllers\Web\Plan\PlanController;
-use App\Contexts\Plans\Application\Controllers\Web\Requirement\RequirementController;
 use App\Contexts\Workspaces\Application\Controllers\Web\Workspace\WorkspaceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -50,21 +49,17 @@ Route::group(['prefix' => '/cards/v1'], function () {
 
 Route::group(['prefix' => '/plans/v1'], function () {
     Route::post('/plan', [PlanController::class, 'add'])->name('AddPlan');
-    Route::post('/requirement', [RequirementController::class, 'add'])->name('AddRequirement');
 
     Route::group(['prefix' => '/plan/{planId}'], function () {
         Route::post('launch', [PlanController::class, 'launch'])->name('LaunchPlan');
         Route::post('stop', [PlanController::class, 'stop'])->name('StopPlan');
         Route::post('archive', [PlanController::class, 'archive'])->name('ArchivePlan');
+
         Route::put('description', [PlanController::class, 'changeDescription'])->name('ChangePlanDescription');
 
-        Route::post('rest-of-requirements', [PlanController::class, 'restOfRequirements'])->name('PlanRestOfRequirements');
-        Route::post('is-satisfied-by-requirements', [PlanController::class, 'isSatisfiedByRequirements'])->name('PlanIsSatisfiedByRequirements');
-    });
-
-    Route::group(['prefix' => '/requirement/{requirementId}'], function () {
-        Route::put('', [RequirementController::class, 'change'])->name('ChangeRequirement');
-        Route::delete('', [RequirementController::class, 'remove'])->name('RemoveRequirement');
+        Route::post('requirement', [PlanController::class, 'addRequirement'])->name('AddPlanRequirement');
+        Route::delete('requirement', [PlanController::class, 'removeRequirement'])->name('RemovePlanRequirement');
+        Route::put('requirements', [PlanController::class, 'changeRequirements'])->name('ChangePlanRequirements');
     });
 });
 

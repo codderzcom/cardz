@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Contexts\Plans\Application\Controllers\Web\Requirement\Commands;
+namespace App\Contexts\Plans\Application\Controllers\Web\Plan\Commands;
 
-final class ChangeRequirementRequest extends BaseCommandRequest
+final class AddRequirementRequest extends BaseCommandRequest
 {
     protected const RULES = [
         'description' => 'required',

@@ -70,16 +70,16 @@ class CardController extends BaseController
 
     public function getCardRequirements(GetCardRequirementsRequest $request): JsonResponse
     {
-        return $this->response($this->cardAppService->getCardRequirements(
-            $request->cardId,
-        ));
+        //return $this->response($this->cardAppService->getCardRequirements(
+        //    $request->cardId,
+        //));
     }
 
     public function getCardUnachievedRequirements(GetCardRequirementsRequest $request): JsonResponse
     {
-        return $this->response($this->cardAppService->getCardUnachievedRequirements(
-            $request->cardId,
-        ));
+        //return $this->response($this->cardAppService->getCardUnachievedRequirements(
+        //    $request->cardId,
+        //));
     }
 
 }

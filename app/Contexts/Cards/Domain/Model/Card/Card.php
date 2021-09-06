@@ -9,6 +9,7 @@ use App\Contexts\Cards\Domain\Events\Card\CardCompleted;
 use App\Contexts\Cards\Domain\Events\Card\CardIssued;
 use App\Contexts\Cards\Domain\Events\Card\CardRevoked;
 use App\Contexts\Cards\Domain\Events\Card\CardSatisfied;
+use App\Contexts\Cards\Domain\Events\Card\RequirementsAccepted;
 use App\Contexts\Cards\Domain\Model\Shared\AggregateRoot;
 use App\Contexts\Cards\Domain\Model\Shared\CustomerId;
 use App\Contexts\Cards\Domain\Model\Shared\PlanId;
@@ -47,11 +48,10 @@ final class Card extends AggregateRoot
         return new self($cardId, $planId, $customerId, $description);
     }
 
-    public function issue(Achievement ... $requirements): CardIssued
+    public function issue(Achievement ... $requirements): array
     {
         $this->issued = Carbon::now();
-        $this->requirements = $requirements;
-        return CardIssued::with($this->cardId);
+        return [CardIssued::with($this->cardId), $this->acceptRequirements(...$requirements)];
     }
 
     public function satisfy(): CardSatisfied
@@ -89,6 +89,12 @@ final class Card extends AggregateRoot
     {
         unset($this->achievements[(string) $requirementId]);
         return AchievementDismissed::with($this->cardId, $requirementId);
+    }
+
+    public function acceptRequirements(Achievement ... $requirements): RequirementsAccepted
+    {
+        $this->requirements = $requirements;
+        return RequirementsAccepted::with($this->cardId);
     }
 
     public function getDescription(): ?Description

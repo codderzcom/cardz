@@ -3,7 +3,14 @@
 namespace App\Contexts\Plans\Application\Controllers\Web\Plan;
 
 use App\Contexts\Plans\Application\Controllers\Web\BaseController;
-use App\Contexts\Plans\Application\Controllers\Web\Plan\Commands\{AddPlanRequest, ArchivePlanRequest, ChangePlanDescriptionRequest, LaunchPlanRequest, StopPlanRequest,};
+use App\Contexts\Plans\Application\Controllers\Web\Plan\Commands\{AddPlanRequest,
+    AddRequirementRequest,
+    ArchivePlanRequest,
+    ChangePlanDescriptionRequest,
+    ChangeRequirementsRequest,
+    LaunchPlanRequest,
+    RemoveRequirementRequest,
+    StopPlanRequest};
 use App\Contexts\Plans\Application\Controllers\Web\Plan\Queries\{GetPlanIsSatisfiedByRequirementsRequest, GetPlanRestOfRequirementsRequest,};
 use App\Contexts\Plans\Application\Services\PlanAppService;
 use App\Contexts\Plans\Application\Services\RequirementsCalculationAppService;
@@ -54,19 +61,28 @@ class PlanController extends BaseController
         ));
     }
 
-    public function restOfRequirements(GetPlanRestOfRequirementsRequest $request): JsonResponse
+    public function addRequirement(AddRequirementRequest $request): JsonResponse
     {
-        return $this->response($this->requirementsCalculationAppService->restOfRequirements(
+        return $this->response($this->planAppService->addRequirement(
             $request->planId,
-            ...$request->requirementIds,
+            $request->description,
         ));
     }
 
-    public function isSatisfiedByRequirements(GetPlanIsSatisfiedByRequirementsRequest $request): JsonResponse
+    public function removeRequirement(RemoveRequirementRequest $request): JsonResponse
     {
-        return $this->response($this->requirementsCalculationAppService->isSatisfiedByRequirements(
+        return $this->response($this->planAppService->removeRequirement(
             $request->planId,
-            ...$request->requirementIds,
+            $request->description,
         ));
     }
+
+    public function changeRequirements(ChangeRequirementsRequest $request): JsonResponse
+    {
+        return $this->response($this->planAppService->changeRequirements(
+            $request->planId,
+            ...$request->descriptions,
+        ));
+    }
+
 }

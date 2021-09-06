@@ -6,6 +6,7 @@ use App\Contexts\Plans\Domain\Events\Plan\PlanAdded;
 use App\Contexts\Plans\Domain\Events\Plan\PlanArchived;
 use App\Contexts\Plans\Domain\Events\Plan\PlanDescriptionChanged;
 use App\Contexts\Plans\Domain\Events\Plan\PlanLaunched;
+use App\Contexts\Plans\Domain\Events\Plan\PlanRequirementsChanged;
 use App\Contexts\Plans\Domain\Events\Plan\PlanStopped;
 use App\Contexts\Plans\Domain\Model\Shared\AggregateRoot;
 use App\Contexts\Plans\Domain\Model\Shared\Description;
@@ -15,6 +16,8 @@ use JetBrains\PhpStorm\Pure;
 
 final class Plan extends AggregateRoot
 {
+    private Requirements $requirements;
+
     private ?Carbon $added = null;
 
     private ?Carbon $launched = null;
@@ -23,11 +26,13 @@ final class Plan extends AggregateRoot
 
     private ?Carbon $archived = null;
 
+    #[Pure]
     private function __construct(
         public PlanId $planId,
         public WorkspaceId $workspaceId,
         private Description $description,
     ) {
+        $this->requirements = Requirements::of();
     }
 
     #[Pure]
@@ -66,9 +71,20 @@ final class Plan extends AggregateRoot
         return PlanDescriptionChanged::with($this->planId);
     }
 
+    public function changeRequirements(Requirements $requirements): PlanRequirementsChanged
+    {
+        $this->requirements = $requirements;
+        return PlanRequirementsChanged::with($this->planId);
+    }
+
     public function getDescription(): Description
     {
         return $this->description;
+    }
+
+    public function getRequirements(): Requirements
+    {
+        return $this->requirements;
     }
 
     public function isAdded(): bool
@@ -95,6 +111,7 @@ final class Plan extends AggregateRoot
         string $planId,
         string $workspaceId,
         string $description,
+        array $requirements,
         ?Carbon $added = null,
         ?Carbon $launched = null,
         ?Carbon $stopped = null,
@@ -103,6 +120,7 @@ final class Plan extends AggregateRoot
         $this->planId = PlanId::of($planId);
         $this->workspaceId = WorkspaceId::of($workspaceId);
         $this->description = Description::of($description);
+        $this->requirements = Requirements::of(...$requirements);
         $this->added = $added;
         $this->launched = $launched;
         $this->stopped = $stopped;
