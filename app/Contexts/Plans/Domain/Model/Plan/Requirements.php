@@ -62,10 +62,10 @@ final class Requirements extends ValueObject
         return new self(...$requirements);
     }
 
-    public function filterRemaining(Requirements $requirements): self
+    public function filterRemaining(self $requirements): self
     {
         $currentRequirements = $this->requirements;
-        foreach ($requirements as $requirement) {
+        foreach ($requirements->requirements as $requirement) {
             foreach ($currentRequirements as $index => $currentRequirement) {
                 if ($requirement->equals($currentRequirement)) {
                     unset($currentRequirements[$index]);

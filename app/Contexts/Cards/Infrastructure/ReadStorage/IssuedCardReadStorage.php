@@ -3,24 +3,38 @@
 namespace App\Contexts\Cards\Infrastructure\ReadStorage;
 
 use App\Contexts\Cards\Application\Contracts\IssuedCardReadStorageInterface;
-use App\Contexts\Cards\Domain\Model\Card\CardId;
 use App\Contexts\Cards\Domain\ReadModel\IssuedCard;
-use App\Contexts\Cards\Domain\ReadModel\StatefulRequirement;
 use App\Models\Card as EloquentCard;
-use App\Models\Requirement as EloquentRequirement;
 
 class IssuedCardReadStorage implements IssuedCardReadStorageInterface
 {
-    public function find(CardId $cardId): ?IssuedCard
+    public function find(string $cardId): ?IssuedCard
     {
         /** @var EloquentCard $card */
-        $card = EloquentCard::query()->find((string) $cardId);
+        $card = EloquentCard::query()->find($cardId);
         if ($card === null) {
             return null;
         }
 
-        $requirements =  $this->getCardRequirements($card);
-        $statefulRequirements = $this->getStatefulRequirements($card, ...$requirements);
+        return $this->issuedCardFromEloquent($card);
+    }
+
+    public function allForPlanId(string $planId): array
+    {
+        /** @var EloquentCard $card */
+        $cards = EloquentCard::query()->where('plan_id', '=', $planId)->get();
+        $issuedCards = [];
+        foreach ($cards as $card) {
+            $issuedCards[] = $this->issuedCardFromEloquent($card);
+        }
+
+        return $issuedCards;
+    }
+
+    private function issuedCardFromEloquent(EloquentCard $card): IssuedCard
+    {
+        $achievements = is_string($card->achievements) ? json_try_decode($card->achievements) : $card->achievements;
+        $requirements = is_string($card->requirements) ? json_try_decode($card->requirements) : $card->requirements;
 
         return IssuedCard::make(
             $card->id,
@@ -30,38 +44,8 @@ class IssuedCardReadStorage implements IssuedCardReadStorageInterface
             $card->completed !== null,
             $card->revoked !== null,
             $card->blocked !== null,
-            ...$statefulRequirements
+            $achievements,
+            $requirements
         );
     }
-
-    private function getStatefulRequirements(EloquentCard $card, EloquentRequirement ...$requirements): array
-    {
-        $statefulRequirements = [];
-        $achievements = is_string($card->achievements) ? json_try_decode($card->achievements) : $card->achievements;
-        foreach ($requirements as $requirement) {
-            $achieved = false;
-            $id = $requirement->id;
-            $description = $requirement->description;
-            foreach ($achievements as $achievement)
-            {
-                if ($achievement->requirement_id === $id) {
-                    $achieved = true;
-                    $description = $achievement->description;
-                    break;
-                }
-            }
-            $statefulRequirements[] = StatefulRequirement::make($id, $description, $achieved);
-        }
-        return $statefulRequirements;
-    }
-
-    private function getCardRequirements(EloquentCard $card): array
-    {
-        $requirements = EloquentRequirement::query()
-            ->where('plan_id', '=', $card->planId)
-            ->get();
-
-        return $requirements;
-    }
-
 }

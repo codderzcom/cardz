@@ -3,26 +3,30 @@
 namespace App\Contexts\Cards\Domain\ReadModel;
 
 use App\Contexts\Shared\Infrastructure\Support\ArrayPresenterTrait;
+use JetBrains\PhpStorm\Pure;
 
 final class IssuedCard
 {
     use ArrayPresenterTrait;
 
-    private array $statefulRequirements;
-
     private function __construct(
-        private string $cardId,
-        private string $planId,
-        private string $customerId,
-        private bool $satisfied,
-        private bool $completed,
-        private bool $revoked,
-        private bool $blocked,
-        StatefulRequirement ...$statefulRequirements,
+        public string $cardId,
+        public string $planId,
+        public string $customerId,
+        public bool $satisfied,
+        public bool $completed,
+        public bool $revoked,
+        public bool $blocked,
+        public array $achievements,
+        public array $requirements,
     ) {
-        $this->statefulRequirements = $statefulRequirements;
     }
 
+    /**
+     * @param string[] $achievements
+     * @param string[] $requirements
+     */
+    #[Pure]
     public static function make(
         string $cardId,
         string $planId,
@@ -31,7 +35,8 @@ final class IssuedCard
         bool $completed,
         bool $revoked,
         bool $blocked,
-        StatefulRequirement ...$statefulRequirements,
+        array $achievements,
+        array $requirements,
     ): self {
         return new self(
             $cardId,
@@ -41,7 +46,8 @@ final class IssuedCard
             $completed,
             $revoked,
             $blocked,
-            ...$statefulRequirements,
+            $achievements,
+            $requirements,
         );
     }
 }

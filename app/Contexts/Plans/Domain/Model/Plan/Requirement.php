@@ -24,7 +24,7 @@ final class Requirement extends ValueObject
     }
 
     #[Pure]
-    public function equals(Requirement $requirement): bool
+    public function equals(self $requirement): bool
     {
         return $requirement->getDescription() === $this->description;
     }

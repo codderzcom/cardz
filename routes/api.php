@@ -31,15 +31,14 @@ Route::group(['prefix' => '/cards/v1'], function () {
     Route::post('/card', [CardController::class, 'issue'])->name('IssueCard');
 
     Route::group(['prefix' => '/card/{cardId}'], function () {
+        Route::get('issued', [CardController::class, 'getIssuedCard'])->name('GetIssuedCard');
+
         Route::post('complete', [CardController::class, 'complete'])->name('CompleteCard');
         Route::post('revoke', [CardController::class, 'revoke'])->name('RevokeCard');
         Route::post('block', [CardController::class, 'block'])->name('BlockCard');
 
         Route::post('achievement', [CardController::class, 'addAchievement'])->name('AddAchievement');
         Route::delete('achievement/{achievementId}', [CardController::class, 'removeAchievement'])->name('RemoveAchievement');
-
-        Route::get('requirements', [CardController::class, 'getCardRequirements'])->name('GetCardRequirements');
-        Route::get('unachieved-requirements', [CardController::class, 'getCardUnachievedRequirements'])->name('GetCardUnavhievedRequirements');
     });
 
     Route::group(['prefix' => '/blocked-card'], function () {

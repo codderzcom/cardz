@@ -10,17 +10,15 @@ use App\Contexts\Plans\Application\Controllers\Web\Plan\Commands\{AddPlanRequest
     ChangeRequirementsRequest,
     LaunchPlanRequest,
     RemoveRequirementRequest,
-    StopPlanRequest};
-use App\Contexts\Plans\Application\Controllers\Web\Plan\Queries\{GetPlanIsSatisfiedByRequirementsRequest, GetPlanRestOfRequirementsRequest,};
+    StopPlanRequest
+};
 use App\Contexts\Plans\Application\Services\PlanAppService;
-use App\Contexts\Plans\Application\Services\RequirementsCalculationAppService;
 use Illuminate\Http\JsonResponse;
 
 class PlanController extends BaseController
 {
     public function __construct(
         private PlanAppService $planAppService,
-        private RequirementsCalculationAppService $requirementsCalculationAppService
     ) {
     }
 

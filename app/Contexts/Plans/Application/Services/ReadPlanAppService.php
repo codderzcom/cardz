@@ -2,14 +2,14 @@
 
 namespace App\Contexts\Plans\Application\Services;
 
-use App\Contexts\Plans\Application\Contracts\ReadPlanRepositoryInterface;
+use App\Contexts\Plans\Application\Contracts\ReadPlanStorageInterface;
 use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
 use App\Contexts\Shared\Contracts\ServiceResultInterface;
 
 class ReadPlanAppService
 {
     public function __construct(
-        private ReadPlanRepositoryInterface $readPlanRepository,
+        private ReadPlanStorageInterface $readPlanRepository,
         private ServiceResultFactoryInterface $serviceResultFactory,
     ) {
     }
@@ -20,6 +20,6 @@ class ReadPlanAppService
         if ($readPlan === null) {
             return $this->serviceResultFactory->notFound("ReadPlan not found for $planId");
         }
-        $this->serviceResultFactory->ok($readPlan);
+        return $this->serviceResultFactory->ok($readPlan);
     }
 }

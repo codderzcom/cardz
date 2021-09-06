@@ -39,6 +39,20 @@ class CardRepository implements CardRepositoryInterface
         return $this->cardFromData($eloquentCard);
     }
 
+    public function takeNonSatisfied(?CardId $cardId = null): ?Card
+    {
+        /** @var EloquentCard $eloquentCard */
+        $eloquentCard = EloquentCard::query()->where([
+            'id' => (string) $cardId,
+            'blocked_at' => null,
+            'satisfied_at' => null,
+        ])?->first();
+        if ($eloquentCard === null) {
+            return null;
+        }
+        return $this->cardFromData($eloquentCard);
+    }
+
     private function cardAsData(Card $card): array
     {
         $reflection = new ReflectionClass($card);
@@ -66,20 +80,11 @@ class CardRepository implements CardRepositoryInterface
             'completed_at' => $properties['completed'],
             'revoked_at' => $properties['revoked'],
             'blocked_at' => $properties['blocked'],
-            'achievements' => json_try_encode($this->achievementsAsData(...$card->getAchievements())),
-            'requirements' => json_try_encode($this->achievementsAsData(...$card->getRequirements())),
+            'achievements' => $card->getAchievements()->toArray(),
+            'requirements' => $card->getRequirements()->toArray(),
         ];
 
         return $data;
-    }
-
-    private function achievementsAsData(Achievement ...$achievements): array
-    {
-        $achievementsData = [];
-        foreach ($achievements as $achievement) {
-            $achievementsData[] = $achievement->toArray();
-        }
-        return $achievementsData;
     }
 
     private function cardFromData(EloquentCard $eloquentCard): Card
@@ -89,6 +94,9 @@ class CardRepository implements CardRepositoryInterface
         $creator?->setAccessible(true);
         /** @var Card $card */
         $card = $reflection->newInstanceWithoutConstructor();
+
+        $achievements = is_string($eloquentCard->achievements) ? json_try_decode($eloquentCard->achievements) : $eloquentCard->achievements;
+        $requirements = is_string($eloquentCard->requirements) ? json_try_decode($eloquentCard->requirements) : $eloquentCard->requirements;
 
         $creator?->invoke($card,
             $eloquentCard->id,
@@ -100,26 +108,9 @@ class CardRepository implements CardRepositoryInterface
             $eloquentCard->completed_at,
             $eloquentCard->revoked_at,
             $eloquentCard->blocked_at,
-            $this->achievementsFromData($eloquentCard->achievements),
-            $this->achievementsFromData($eloquentCard->requirements),
+            $achievements,
+            $requirements,
         );
         return $card;
-    }
-
-    private function achievementsFromData($achievementsData): array
-    {
-        if (is_string($achievementsData)) {
-            $achievementsData = json_try_decode($achievementsData);
-        }
-        if (!is_array($achievementsData)) {
-            return [];
-        }
-
-        $achievements = [];
-        foreach ($achievementsData as $achievementData) {
-            $id = $achievementData->requirementId;
-            $achievements[$id] = Achievement::of(RequirementId::of($id), $achievementData->description);
-        }
-        return $achievements;
     }
 }

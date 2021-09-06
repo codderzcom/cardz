@@ -3,21 +3,17 @@
 namespace App\Contexts\Cards\Application\Controllers\Web\Card;
 
 use App\Contexts\Cards\Application\Controllers\Web\BaseController;
-use App\Contexts\Cards\Application\Controllers\Web\Card\Commands\{AddAchievementRequest,
-    BlockCardRequest,
-    CompleteCardRequest,
-    IssueCardRequest,
-    RemoveAchievementRequest,
-    RevokeCardRequest
-};
-use App\Contexts\Cards\Application\Controllers\Web\Card\Queries\GetCardRequirementsRequest;
+use App\Contexts\Cards\Application\Controllers\Web\Card\Commands\{AchievementRequest, BlockCardRequest, CompleteCardRequest, IssueCardRequest, RevokeCardRequest};
+use App\Contexts\Cards\Application\Controllers\Web\Card\Queries\GetIssuedCardRequest;
 use App\Contexts\Cards\Application\Services\CardAppService;
+use App\Contexts\Cards\Application\Services\ReadIssuedCardAppService;
 use Illuminate\Http\JsonResponse;
 
 class CardController extends BaseController
 {
     public function __construct(
         private CardAppService $cardAppService,
+        private ReadIssuedCardAppService $readIssuedCardAppService,
     ) {
     }
 
@@ -51,35 +47,26 @@ class CardController extends BaseController
         ));
     }
 
-    public function addAchievement(AddAchievementRequest $request): JsonResponse
+    public function addAchievement(AchievementRequest $request): JsonResponse
     {
         return $this->response($this->cardAppService->noteAchievement(
             $request->cardId,
-            $request->requirementId,
             $request->achievementDescription,
         ));
     }
 
-    public function removeAchievement(RemoveAchievementRequest $request): JsonResponse
+    public function removeAchievement(AchievementRequest $request): JsonResponse
     {
         return $this->response($this->cardAppService->dismissAchievement(
             $request->cardId,
-            $request->requirementId
+            $request->achievementDescription,
         ));
     }
 
-    public function getCardRequirements(GetCardRequirementsRequest $request): JsonResponse
+    public function getIssuedCard(GetIssuedCardRequest $request): JsonResponse
     {
-        //return $this->response($this->cardAppService->getCardRequirements(
-        //    $request->cardId,
-        //));
+        return $this->response($this->readIssuedCardAppService->getIssuedCard(
+            $request->cardId,
+        ));
     }
-
-    public function getCardUnachievedRequirements(GetCardRequirementsRequest $request): JsonResponse
-    {
-        //return $this->response($this->cardAppService->getCardUnachievedRequirements(
-        //    $request->cardId,
-        //));
-    }
-
 }

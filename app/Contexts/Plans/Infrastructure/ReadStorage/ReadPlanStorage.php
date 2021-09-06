@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Contexts\Plans\Infrastructure\Persistence;
+namespace App\Contexts\Plans\Infrastructure\ReadStorage;
 
-use App\Contexts\Plans\Application\Contracts\ReadPlanRepositoryInterface;
+use App\Contexts\Plans\Application\Contracts\ReadPlanStorageInterface;
 use App\Contexts\Plans\Domain\ReadModel\ReadPlan;
 use App\Models\Plan as EloquentPlan;
+use function json_try_decode;
 
-class ReadPlanRepository implements ReadPlanRepositoryInterface
+class ReadPlanStorage implements ReadPlanStorageInterface
 {
     public function take(string $planId): ?ReadPlan
     {

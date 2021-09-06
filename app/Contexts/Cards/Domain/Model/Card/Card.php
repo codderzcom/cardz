@@ -28,11 +28,9 @@ final class Card extends AggregateRoot
 
     private ?Carbon $blocked = null;
 
-    /** @var Achievement[] */
-    private array $achievements = [];
+    private Achievements $achievements;
 
-    /** @var Achievement[] */
-    private array $requirements = [];
+    private Achievements $requirements;
 
     private function __construct(
         public CardId $cardId,
@@ -40,6 +38,8 @@ final class Card extends AggregateRoot
         public CustomerId $customerId,
         public Description $description,
     ) {
+        $this->achievements = Achievements::of();
+        $this->requirements = Achievements::of();
     }
 
     #[Pure]
@@ -48,10 +48,10 @@ final class Card extends AggregateRoot
         return new self($cardId, $planId, $customerId, $description);
     }
 
-    public function issue(Achievement ... $requirements): array
+    public function issue(): CardIssued
     {
         $this->issued = Carbon::now();
-        return [CardIssued::with($this->cardId), $this->acceptRequirements(...$requirements)];
+        return CardIssued::with($this->cardId);
     }
 
     public function satisfy(): CardSatisfied
@@ -78,20 +78,19 @@ final class Card extends AggregateRoot
         return CardBlocked::with($this->cardId);
     }
 
-    public function noteAchievement(RequirementId $requirementId, string $description): AchievementNoted
+    public function noteAchievement(Achievement $achievement): AchievementNoted
     {
-        $achievement = Achievement::of($requirementId, $description);
-        $this->achievements[(string) $achievement->getRequirementId()] = $achievement;
-        return AchievementNoted::with($this->cardId, $achievement->getRequirementId());
+        $this->achievements = $this->achievements->add($achievement);
+        return AchievementNoted::with($this->cardId);
     }
 
-    public function dismissAchievement(RequirementId $requirementId): AchievementDismissed
+    public function dismissAchievement(Achievement $achievement): AchievementDismissed
     {
-        unset($this->achievements[(string) $requirementId]);
-        return AchievementDismissed::with($this->cardId, $requirementId);
+        $this->achievements = $this->achievements->remove($achievement);
+        return AchievementDismissed::with($this->cardId);
     }
 
-    public function acceptRequirements(Achievement ... $requirements): RequirementsAccepted
+    public function acceptRequirements(Achievements $requirements): RequirementsAccepted
     {
         $this->requirements = $requirements;
         return RequirementsAccepted::with($this->cardId);
@@ -102,18 +101,12 @@ final class Card extends AggregateRoot
         return $this->description;
     }
 
-    /**
-     * @return Achievement[]
-     */
-    public function getAchievements(): array
+    public function getAchievements(): Achievements
     {
         return $this->achievements;
     }
 
-    /**
-     * @return Achievement[]
-     */
-    public function getRequirements(): array
+    public function getRequirements(): Achievements
     {
         return $this->requirements;
     }
@@ -165,7 +158,7 @@ final class Card extends AggregateRoot
         $this->completed = $completed;
         $this->revoked = $revoked;
         $this->blocked = $blocked;
-        $this->achievements = $achievements;
-        $this->requirements = $requirements;
+        $this->achievements = Achievements::of(...$achievements);
+        $this->requirements = Achievements::of(...$requirements);
     }
 }

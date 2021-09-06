@@ -3,6 +3,7 @@
 namespace App\Contexts\Cards\Infrastructure\ACL\Plans;
 
 use App\Contexts\Plans\Application\Services\ReadPlanAppService;
+use App\Contexts\Plans\Domain\ReadModel\ReadPlan;
 use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
 use App\Contexts\Shared\Contracts\ServiceResultInterface;
 
@@ -21,7 +22,8 @@ class PlansAdapter
         if (!$result->isOk()) {
             return $result;
         }
+        /** @var ReadPlan $payload */
         $payload = $result->getPayload();
-        return $this->serviceResultFactory->ok($payload['requirements']);
+        return $this->serviceResultFactory->ok($payload->requirements);
     }
 }

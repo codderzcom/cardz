@@ -2,10 +2,15 @@
 
 namespace App\Contexts\Cards\Application\Contracts;
 
-use App\Contexts\Cards\Domain\Model\Card\CardId;
 use App\Contexts\Cards\Domain\ReadModel\IssuedCard;
 
 interface IssuedCardReadStorageInterface
 {
-    public function find(CardId $cardId): ?IssuedCard;
+    public function find(string $cardId): ?IssuedCard;
+
+    /**
+     * @param string $planId
+     * @return IssuedCard[]
+     */
+    public function allForPlanId(string $planId): array;
 }

@@ -8,25 +8,31 @@ use JetBrains\PhpStorm\Pure;
 final class Achievement extends ValueObject
 {
     private function __construct(
-        private RequirementId $requirementId,
-        private string $description
+        private string $description,
     ) {
     }
 
     #[Pure]
-    public static function of(RequirementId $requirementId, string $description): self
+    public static function of(string $description): self
     {
-        return new self($requirementId, $description);
-    }
-
-    public function getRequirementId(): RequirementId
-    {
-        return $this->requirementId;
+        return new self($description);
     }
 
     public function getDescription(): string
     {
         return $this->description;
+    }
+
+    #[Pure]
+    public function equals(self $requirement): bool
+    {
+        return $requirement->getDescription() === $this->description;
+    }
+
+    private function from(
+        string $description,
+    ): void {
+        $this->description = $description;
     }
 }
 
