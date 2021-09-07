@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contexts\MobileAppBack\Application\Services\Plan;
+namespace App\Contexts\MobileAppBack\Application\Services\Workspace;
 
 class PlanService
 {

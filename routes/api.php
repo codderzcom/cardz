@@ -80,15 +80,17 @@ Route::group(['prefix' => '/mab/v1'], function () {
         Route::group(['prefix' => '{workspaceId}/card'], function () {
             Route::get('by-code/{codeId}', [MABCardController::class, 'getCardByCode'])->name('MABCustomerGetByCode');
             Route::get('by-id/{cardId}', [MABCardController::class, 'getCard'])->name('MABCustomerGetByCode');
+        });
 
-            Route::post('', [MABCardController::class, 'issue'])->name('IssueCard');
-            Route::post('{cardId}/complete', [MABCardController::class, 'completeCard'])->name('MABCustomerComplete');
-            Route::post('{cardId}/revoke', [MABCardController::class, 'revokeCard'])->name('MABCustomerRevoke');
-            Route::post('{cardId}/block', [MABCardController::class, 'blockCard'])->name('MABCustomerBlock');
-            Route::post('{cardId}/unblock', [MABCardController::class, 'unblockCard'])->name('MABCustomerUnblock');
+        Route::group(['prefix' => '{workspaceId}/card/{cardId}'], function () {
+            Route::post('', [MABCardController::class, 'issue'])->name('MABCustomerIssueCard');
+            Route::post('complete', [MABCardController::class, 'complete'])->name('MABCustomerCompleteCard');
+            Route::post('revoke', [MABCardController::class, 'revoke'])->name('MABCustomerRevokeCard');
+            Route::post('block', [MABCardController::class, 'block'])->name('MABCustomerBlockCard');
+            Route::post('unblock', [MABCardController::class, 'unblock'])->name('MABCustomerUnblockCard');
 
-            Route::post('{cardId}/achievements', [MABCardController::class, 'addAchievement'])->name('MABCustomerAddAchievement');
-            Route::post('{cardId}/achievements/mark', [MABCardController::class, 'markAchievement'])->name('MABCustomerMarkAchievement');
+            Route::post('achievement', [MABCardController::class, 'noteAchievement'])->name('MABCustomerNoteAchievement');
+            Route::delete('achievement', [MABCardController::class, 'dismissAchievement'])->name('MABCustomerDismissAchievement');
         });
 
         Route::group(['prefix' => '/plan'], function () {
@@ -111,7 +113,6 @@ Route::group(['prefix' => '/mab/v1'], function () {
 
             Route::get('{cardId}', [MABCustomerCardController::class, 'getCard'])->name('MABCustomerCard');
             Route::get('{cardId}/code', [MABCustomerCardController::class, 'generateCardCode'])->name('MABCustomerCardCode');
-            Route::get('{cardId}/achievements', [MABCustomerCardController::class, 'achievements'])->name('MABCustomerCardAchievements');
         });
     });
 });

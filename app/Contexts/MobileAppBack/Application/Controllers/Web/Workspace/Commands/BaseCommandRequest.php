@@ -7,14 +7,14 @@ use Illuminate\Foundation\Http\FormRequest;
 abstract class BaseCommandRequest extends FormRequest
 {
     protected const RULES = [
-        'cardId' => 'required',
+        'workspaceId' => 'required',
     ];
 
     protected const MESSAGES = [
-        'cardId.required' => 'cardId required',
+        'workspaceId.required' => 'workspaceId required',
     ];
 
-    public string $cardId;
+    public string $workspaceId;
 
     public function rules(): array
     {
@@ -28,13 +28,13 @@ abstract class BaseCommandRequest extends FormRequest
 
     public function passedValidation(): void
     {
-        $this->cardId = $this->input('cardId');
+        $this->workspaceId = $this->input('workspaceId');
     }
 
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'cardId' => $this->route('cardId'),
+            'workspaceId' => $this->route('workspaceId'),
         ]);
     }
 

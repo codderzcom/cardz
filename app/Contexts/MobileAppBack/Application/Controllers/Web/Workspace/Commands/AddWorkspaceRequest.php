@@ -4,7 +4,7 @@ namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Comma
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddWorkspaceRequest extends FormRequest
+final class AddWorkspaceRequest extends FormRequest
 {
     public string $customerId;
 

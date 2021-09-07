@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contexts\MobileAppBack\Domain\Card;
+namespace App\Contexts\MobileAppBack\Domain\Model\Card;
 
 use App\Contexts\MobileAppBack\Domain\Exceptions\ReconstructionException;
 use Carbon\Carbon;

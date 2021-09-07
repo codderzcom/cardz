@@ -3,7 +3,7 @@
 namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace;
 
 use App\Contexts\MobileAppBack\Application\Controllers\Web\BaseController;
-use App\Contexts\MobileAppBack\Application\Services\Plan\PlanService;
+use App\Contexts\MobileAppBack\Application\Services\Workspace\PlanService;
 use App\Models\Plan as EloquentPlan;
 use Illuminate\Http\JsonResponse;
 

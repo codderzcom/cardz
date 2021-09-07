@@ -2,31 +2,34 @@
 
 namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands;
 
-final class IssueCardRequest extends BaseCommandRequest
+final class CardCommandRequest extends BaseCommandRequest
 {
     protected const RULES = [
         'planId' => 'required',
-        'customerId' => 'required',
-        'description' => 'required',
+        'cardId' => 'required',
     ];
 
     protected const MESSAGES = [
         'planId.required' => 'planId required',
-        'customerId.required' => 'customerId required',
-        'description.required' => 'description required',
+        'cardId.required' => 'cardId required',
     ];
-
-    public string $customerId;
 
     public string $planId;
 
-    public string $description;
+    public string $cardId;
 
     public function passedValidation(): void
     {
         parent::passedValidation();
         $this->planId = $this->input('planId');
-        $this->customerId = $this->input('customerId');
-        $this->description = $this->input('description');
+        $this->cardId = $this->input('cardId');
+    }
+
+    protected function prepareForValidation(): void
+    {
+        parent::prepareForValidation();
+        $this->merge([
+            'cardId' => $this->route('cardId'),
+        ]);
     }
 }

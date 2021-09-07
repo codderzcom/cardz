@@ -2,23 +2,23 @@
 
 namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands;
 
-final class IssueCardRequest extends BaseCommandRequest
+final class AchievementCardCommandRequest extends BaseCommandRequest
 {
     protected const RULES = [
         'planId' => 'required',
-        'customerId' => 'required',
+        'cardId' => 'required',
         'description' => 'required',
     ];
 
     protected const MESSAGES = [
         'planId.required' => 'planId required',
-        'customerId.required' => 'customerId required',
+        'cardId.required' => 'cardId required',
         'description.required' => 'description required',
     ];
 
-    public string $customerId;
-
     public string $planId;
+
+    public string $cardId;
 
     public string $description;
 
@@ -26,7 +26,7 @@ final class IssueCardRequest extends BaseCommandRequest
     {
         parent::passedValidation();
         $this->planId = $this->input('planId');
-        $this->customerId = $this->input('customerId');
+        $this->cardId = $this->input('cardId');
         $this->description = $this->input('description');
     }
 }

@@ -5,7 +5,7 @@ namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Comma
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
-class ChangeWorkspaceProfileRequest extends FormRequest
+final class ChangeWorkspaceProfileRequest extends FormRequest
 {
     public string $workspaceId;
 

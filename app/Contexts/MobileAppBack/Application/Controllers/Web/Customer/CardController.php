@@ -18,14 +18,14 @@ class CardController extends BaseController
 
     public function listAllCards(ListAllCardsRequest $request): JsonResponse
     {
-        return $this->response($this->customerService->listAllCardsByCustomer(
+        return $this->response($this->customerService->getIssuedCards(
             $request->customerId,
         ));
     }
 
     public function getCard(CardRequest $request): JsonResponse
     {
-        return $this->response($this->customerService->getCard(
+        return $this->response($this->customerService->getIssuedCard(
             $request->customerId,
             $request->cardId,
         ));
