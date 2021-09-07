@@ -2,11 +2,12 @@
 
 namespace App\Contexts\Cards\Infrastructure\Persistence;
 
+use App\Contexts\Cards\Application\Contracts\BlockedCardRepositoryInterface;
 use App\Contexts\Cards\Domain\Model\BlockedCard\BlockedCard;
 use App\Contexts\Cards\Domain\Model\BlockedCard\BlockedCardId;
 use App\Models\Card as EloquentCard;
 
-class BlockedCardRepository
+class BlockedCardRepository implements BlockedCardRepositoryInterface
 {
     public function persist(?BlockedCard $blockedCard = null): void
     {

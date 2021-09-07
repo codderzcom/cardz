@@ -2,6 +2,7 @@
 
 namespace App\Contexts\Cards\Application\Controllers\Consumers;
 
+use App\Contexts\Cards\Application\IntegrationEvents\AchievementDismissed;
 use App\Contexts\Cards\Application\IntegrationEvents\AchievementNoted;
 use App\Contexts\Cards\Application\IntegrationEvents\RequirementsAccepted;
 use App\Contexts\Cards\Application\Services\CardAppService;
@@ -18,14 +19,15 @@ final class SatisfactionCheckRequiredConsumer implements Informable
     public function accepts(Reportable $reportable): bool
     {
         return $reportable instanceof RequirementsAccepted
-            || $reportable instanceof AchievementNoted;
+            || $reportable instanceof AchievementNoted
+            || $reportable instanceof AchievementDismissed;
     }
 
     //ToDo: для Eventual Consistency что-то другое придётся изобретать
     public function inform(Reportable $reportable): void
     {
         $event = $reportable;
-        $this->cardAppService->tryToSatisfy($event->getInstanceId());
+        $this->cardAppService->checkSatisfaction($event->getInstanceId());
     }
 
 }

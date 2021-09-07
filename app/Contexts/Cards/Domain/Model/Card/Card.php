@@ -8,6 +8,7 @@ use App\Contexts\Cards\Domain\Events\Card\CardBlocked;
 use App\Contexts\Cards\Domain\Events\Card\CardCompleted;
 use App\Contexts\Cards\Domain\Events\Card\CardIssued;
 use App\Contexts\Cards\Domain\Events\Card\CardRevoked;
+use App\Contexts\Cards\Domain\Events\Card\CardSatisfactionWthdrawn;
 use App\Contexts\Cards\Domain\Events\Card\CardSatisfied;
 use App\Contexts\Cards\Domain\Events\Card\RequirementsAccepted;
 use App\Contexts\Cards\Domain\Model\Shared\AggregateRoot;
@@ -58,6 +59,12 @@ final class Card extends AggregateRoot
     {
         $this->satisfied = Carbon::now();
         return CardSatisfied::with($this->cardId);
+    }
+
+    public function withdrawSatisfaction(): CardSatisfactionWthdrawn
+    {
+        $this->satisfied = null;
+        return CardSatisfactionWthdrawn::with($this->cardId);
     }
 
     public function complete(): CardCompleted

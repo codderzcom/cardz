@@ -14,7 +14,7 @@ class PlanController extends BaseController
     ) {
     }
 
-    public function listAll(ListAllPlansRequest $request): JsonResponse
+    public function getPlans(ListAllPlansRequest $request): JsonResponse
     {
         $plans = EloquentPlan::query()->where('workspaceId', '=', $request->workspaceId);
         return $this->success($plans);
@@ -29,7 +29,7 @@ class PlanController extends BaseController
         return $this->success($plan->toArray());
     }
 
-    public function add(AddPlanRequest $request): JsonResponse
+    public function addPlan(AddPlanRequest $request): JsonResponse
     {
         $this->planService->addPlan($request->description, $request->avhievements);
         $this->success();

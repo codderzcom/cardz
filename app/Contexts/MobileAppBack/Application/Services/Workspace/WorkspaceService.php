@@ -12,7 +12,6 @@ class WorkspaceService
 {
     public function __construct(
         private IssuedCardReadStorageInterface $issuedCardReadStorage,
-        private CardsAdapter $cardsAdapter,
         private ServiceResultFactoryInterface $serviceResultFactory,
     ) {
     }
@@ -27,10 +26,4 @@ class WorkspaceService
         return;
     }
 
-    public function issueCard(string $planId, string $customerId, string $description): ServiceResultInterface
-    {
-        $cardId = $this->cardsAdapter->issueCard($planId, $customerId, $description);
-        $card = EloquentCard::query()->find($cardId);
-        return $this->serviceResultFactory->ok($card);
-    }
 }

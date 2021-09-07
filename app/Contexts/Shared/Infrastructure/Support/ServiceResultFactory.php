@@ -9,7 +9,7 @@ use App\Contexts\Shared\Contracts\ServiceResultInterface;
 
 class ServiceResultFactory implements ServiceResultFactoryInterface
 {
-    public function ok($payload, Reportable ...$reportables): ServiceResultInterface
+    public function ok($payload = null, Reportable ...$reportables): ServiceResultInterface
     {
         return ServiceResult::make(ServiceResultCode::OK(), $payload, null, null, ...$reportables);
     }

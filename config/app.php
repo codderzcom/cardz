@@ -177,6 +177,7 @@ return [
 
         App\Contexts\Shared\SharedProvider::class,
         App\Contexts\Cards\CardsProvider::class,
+        App\Contexts\MobileAppBack\MobileAppBackProvider::class,
         App\Contexts\Plans\PlansProvider::class,
         App\Contexts\Workspaces\WorkspacesProvider::class,
     ],

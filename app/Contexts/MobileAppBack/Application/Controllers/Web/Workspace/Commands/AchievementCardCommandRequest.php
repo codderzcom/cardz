@@ -29,4 +29,12 @@ final class AchievementCardCommandRequest extends BaseCommandRequest
         $this->cardId = $this->input('cardId');
         $this->description = $this->input('description');
     }
+
+    protected function prepareForValidation(): void
+    {
+        parent::prepareForValidation();
+        $this->merge([
+            'cardId' => $this->route('cardId'),
+        ]);
+    }
 }

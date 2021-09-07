@@ -19,7 +19,7 @@ class PlansAdapter
     public function getRequirements(string $planId): ServiceResultInterface
     {
         $result = $this->readPlanAppService->getReadPlan($planId);
-        if (!$result->isOk()) {
+        if ($result->isNotOk()) {
             return $result;
         }
         /** @var ReadPlan $payload */

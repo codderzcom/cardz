@@ -19,7 +19,7 @@ class WorkspaceController extends BaseController
     ) {
     }
 
-    public function listAll(): JsonResponse
+    public function getWorkspaces(): JsonResponse
     {
         $workspaces = EloquentWorkspace::query()->all();
         return $this->success($workspaces);
@@ -40,13 +40,13 @@ class WorkspaceController extends BaseController
         return $this->success($workspace->toArray());
     }
 
-    public function add(AddWorkspaceRequest $request): JsonResponse
+    public function addWorkspace(AddWorkspaceRequest $request): JsonResponse
     {
         $this->workspaceService->addWorkspace($request->customerId);
         return $this->success();
     }
 
-    public function changeProfile(ChangeWorkspaceProfileRequest $request): JsonResponse
+    public function changeWorkspaceProfile(ChangeWorkspaceProfileRequest $request): JsonResponse
     {
         $this->workspaceService->changeProfile($request->customerId);
         return $this->success();

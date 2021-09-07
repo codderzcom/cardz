@@ -9,9 +9,9 @@ use App\Contexts\Cards\Application\IntegrationEvents\{AchievementDismissed,
     CardCompleted,
     CardIssued,
     CardRevoked,
+    CardSatisfactionWithdrawn,
     CardSatisfied,
-    RequirementsAccepted
-};
+    RequirementsAccepted};
 use App\Contexts\Cards\Domain\Model\Card\Achievement;
 use App\Contexts\Cards\Domain\Model\Card\Achievements;
 use App\Contexts\Cards\Domain\Model\Card\Card;
@@ -57,7 +57,7 @@ class CardAppService
     {
         $card = $this->cardRepository->take(CardId::of($cardId));
         if ($card === null) {
-            return $this->resultFactory->notFound("$cardId not found");
+            return $this->resultFactory->notFound("Card $cardId not found");
         }
 
         $card->complete();
@@ -71,7 +71,7 @@ class CardAppService
     {
         $card = $this->cardRepository->take(CardId::of($cardId));
         if ($card === null) {
-            return $this->resultFactory->notFound("$cardId not found");
+            return $this->resultFactory->notFound("Card $cardId not found");
         }
 
         $card->revoke();
@@ -85,7 +85,7 @@ class CardAppService
     {
         $card = $this->cardRepository->take(CardId::of($cardId));
         if ($card === null) {
-            return $this->resultFactory->notFound("$cardId not found");
+            return $this->resultFactory->notFound("Card $cardId not found");
         }
 
         $card->block();
@@ -99,7 +99,7 @@ class CardAppService
     {
         $card = $this->cardRepository->take(CardId::of($cardId));
         if ($card === null) {
-            return $this->resultFactory->notFound("$cardId not found");
+            return $this->resultFactory->notFound("Card $cardId not found");
         }
 
         $card->noteAchievement(Achievement::of($achievementDescription));
@@ -113,7 +113,7 @@ class CardAppService
     {
         $card = $this->cardRepository->take(CardId::of($cardId));
         if ($card === null) {
-            return $this->resultFactory->notFound("$cardId not found");
+            return $this->resultFactory->notFound("Card $cardId not found");
         }
 
         $card->dismissAchievement(Achievement::of($achievementDescription));
@@ -127,7 +127,7 @@ class CardAppService
     {
         $card = $this->cardRepository->take(CardId::of($cardId));
         if ($card === null) {
-            return $this->resultFactory->notFound("$cardId not found");
+            return $this->resultFactory->notFound("Card $cardId not found");
         }
 
         $card->acceptRequirements(Achievements::of(...$requirements));
@@ -137,21 +137,39 @@ class CardAppService
         return $this->reportResult($result, $this->reportingBus);
     }
 
-    public function tryToSatisfy(string $cardId): ServiceResultInterface
+    public function checkSatisfaction(string $cardId): ServiceResultInterface
     {
         $card = $this->cardRepository->take(CardId::of($cardId));
         if ($card === null) {
-            return $this->resultFactory->notFound("Unsatisfied $cardId not found");
+            return $this->resultFactory->notFound("Card $cardId not found");
         }
 
         $remainingRequirements = $card->getRequirements()->filterRemaining($card->getAchievements());
-        if (!$remainingRequirements->isEmpty()) {
-            return $this->resultFactory->ok($card);
+
+        if ($remainingRequirements->isEmpty() && !$card->isSatisfied()) {
+            return $this->satisfy($card);
         }
+
+        if (!$remainingRequirements->isEmpty() && $card->isSatisfied()) {
+            return $this->withdrawSatisfaction($card);
+        }
+
+        return $this->resultFactory->ok($card);
+    }
+
+    private function satisfy(Card $card): ServiceResultInterface
+    {
         $card->satisfy();
         $this->cardRepository->persist($card);
-
         $result = $this->resultFactory->ok($card, new CardSatisfied($card->cardId));
+        return $this->reportResult($result, $this->reportingBus);
+    }
+
+    private function withdrawSatisfaction(Card $card): ServiceResultInterface
+    {
+        $card->withdrawSatisfaction();
+        $this->cardRepository->persist($card);
+        $result = $this->resultFactory->ok($card, new CardSatisfactionWithdrawn($card->cardId));
         return $this->reportResult($result, $this->reportingBus);
     }
 }
