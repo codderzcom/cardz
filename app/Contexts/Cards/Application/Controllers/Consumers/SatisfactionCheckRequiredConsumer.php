@@ -4,6 +4,7 @@ namespace App\Contexts\Cards\Application\Controllers\Consumers;
 
 use App\Contexts\Cards\Application\IntegrationEvents\AchievementDismissed;
 use App\Contexts\Cards\Application\IntegrationEvents\AchievementNoted;
+use App\Contexts\Cards\Application\IntegrationEvents\CardIssued;
 use App\Contexts\Cards\Application\IntegrationEvents\RequirementsAccepted;
 use App\Contexts\Cards\Application\Services\CardAppService;
 use App\Contexts\Shared\Contracts\Informable;
@@ -20,7 +21,7 @@ final class SatisfactionCheckRequiredConsumer implements Informable
     {
         return $reportable instanceof RequirementsAccepted
             || $reportable instanceof AchievementNoted
-            || $reportable instanceof AchievementDismissed;
+            || $reportable instanceof CardIssued;
     }
 
     //ToDo: для Eventual Consistency что-то другое придётся изобретать

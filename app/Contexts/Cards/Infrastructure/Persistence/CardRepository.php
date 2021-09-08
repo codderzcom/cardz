@@ -3,14 +3,11 @@
 namespace App\Contexts\Cards\Infrastructure\Persistence;
 
 use App\Contexts\Cards\Application\Contracts\CardRepositoryInterface;
-use App\Contexts\Cards\Domain\Model\Card\Achievement;
 use App\Contexts\Cards\Domain\Model\Card\Card;
 use App\Contexts\Cards\Domain\Model\Card\CardId;
-use App\Contexts\Cards\Domain\Model\Card\RequirementId;
 use App\Models\Card as EloquentCard;
 use ReflectionClass;
 use function json_try_decode;
-use function json_try_encode;
 
 class CardRepository implements CardRepositoryInterface
 {

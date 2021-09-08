@@ -58,7 +58,7 @@ Route::group(['prefix' => '/plans/v1'], function () {
 
         Route::post('/requirement', [PlanController::class, 'addRequirement'])->name('AddPlanRequirement');
         Route::delete('/requirement', [PlanController::class, 'removeRequirement'])->name('RemovePlanRequirement');
-        Route::put('/requirements', [PlanController::class, 'changeRequirements'])->name('ChangePlanRequirements');
+        Route::put('/requirement', [PlanController::class, 'changeRequirements'])->name('ChangePlanRequirements');
     });
 });
 

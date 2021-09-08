@@ -4,6 +4,7 @@ namespace App\Contexts\Cards\Domain\Model\Card;
 
 use App\Contexts\Cards\Domain\Events\Card\AchievementDismissed;
 use App\Contexts\Cards\Domain\Events\Card\AchievementNoted;
+use App\Contexts\Cards\Domain\Events\Card\BaseCardDomainEvent;
 use App\Contexts\Cards\Domain\Events\Card\CardBlocked;
 use App\Contexts\Cards\Domain\Events\Card\CardCompleted;
 use App\Contexts\Cards\Domain\Events\Card\CardIssued;
@@ -99,7 +100,9 @@ final class Card extends AggregateRoot
 
     public function acceptRequirements(Achievements $requirements): RequirementsAccepted
     {
-        $this->requirements = $requirements;
+        if (!$this->isSatisfied() && !$this->isCompleted()) {
+            $this->requirements = $requirements;
+        }
         return RequirementsAccepted::with($this->cardId);
     }
 

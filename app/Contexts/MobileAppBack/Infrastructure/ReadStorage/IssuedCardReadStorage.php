@@ -52,10 +52,10 @@ class IssuedCardReadStorage implements IssuedCardReadStorageInterface
             $card->id,
             $card->plan_id,
             $card->customer_id,
-            $card->satisfied !== null,
-            $card->completed !== null,
-            $card->revoked !== null,
-            $card->blocked !== null,
+            $card->satisfied_at !== null,
+            $card->completed_at !== null,
+            $card->revoked_at !== null,
+            $card->blocked_at !== null,
             $achievements,
             $requirements
         );

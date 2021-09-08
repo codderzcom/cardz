@@ -116,10 +116,21 @@ class CardAppService
             return $this->resultFactory->notFound("Card $cardId not found");
         }
 
+        $events = [];
+
         $card->dismissAchievement(Achievement::of($achievementDescription));
+        $events[] = new AchievementDismissed($card->cardId);
+
+        if (!$card->isCompleted()
+            && $card->isSatisfied()
+            && !$card->getRequirements()->copy()->filterRemaining($card->getAchievements())->isEmpty()
+        ) {
+            $card->withdrawSatisfaction();
+            $events[] = new CardSatisfactionWithdrawn($card->cardId);
+        }
         $this->cardRepository->persist($card);
 
-        $result = $this->resultFactory->ok($card, new AchievementDismissed($card->cardId));
+        $result = $this->resultFactory->ok($card, ...$events);
         return $this->reportResult($result, $this->reportingBus);
     }
 
@@ -144,32 +155,20 @@ class CardAppService
             return $this->resultFactory->notFound("Card $cardId not found");
         }
 
-        $remainingRequirements = $card->getRequirements()->filterRemaining($card->getAchievements());
-
-        if ($remainingRequirements->isEmpty() && !$card->isSatisfied()) {
-            return $this->satisfy($card);
+        if ($card->isSatisfied() || $card->isCompleted()) {
+            return $this->resultFactory->ok($card);
         }
 
-        if (!$remainingRequirements->isEmpty() && $card->isSatisfied()) {
-            return $this->withdrawSatisfaction($card);
+        $requirementsLeft = !$card->getRequirements()->copy()->filterRemaining($card->getAchievements())->isEmpty();
+
+        if ($requirementsLeft) {
+            return $this->resultFactory->ok($card);
         }
 
-        return $this->resultFactory->ok($card);
-    }
-
-    private function satisfy(Card $card): ServiceResultInterface
-    {
         $card->satisfy();
         $this->cardRepository->persist($card);
         $result = $this->resultFactory->ok($card, new CardSatisfied($card->cardId));
         return $this->reportResult($result, $this->reportingBus);
     }
 
-    private function withdrawSatisfaction(Card $card): ServiceResultInterface
-    {
-        $card->withdrawSatisfaction();
-        $this->cardRepository->persist($card);
-        $result = $this->resultFactory->ok($card, new CardSatisfactionWithdrawn($card->cardId));
-        return $this->reportResult($result, $this->reportingBus);
-    }
 }

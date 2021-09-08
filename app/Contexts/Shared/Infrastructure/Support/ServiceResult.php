@@ -95,6 +95,6 @@ class ServiceResult implements ServiceResultInterface
 
     public function isNotOk(): bool
     {
-        return $this->code->equals(ServiceResultCode::OK());
+        return !$this->code->equals(ServiceResultCode::OK());
     }
 }

@@ -34,6 +34,10 @@ final class CardIssuedConsumer implements Informable
         }
 
         $requirements = $this->plansAdapter->getRequirements($issuedCard->planId);
+
+        if ($requirements->isNotOk()) {
+            return;
+        }
         $this->cardAppService->acceptRequirements($issuedCard->cardId, ...$requirements->getPayload());
     }
 
