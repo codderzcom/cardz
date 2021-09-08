@@ -2,27 +2,32 @@
 
 namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Validator;
-
-final class ChangeWorkspaceProfileRequest extends FormRequest
+final class ChangeWorkspaceProfileRequest extends BaseCommandRequest
 {
-    public string $workspaceId;
+    protected const RULES = [
+        'name' => 'required',
+        'description' => 'required',
+        'address' => 'required',
+    ];
 
-    public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
-    {
-        parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
-    }
+    protected const MESSAGES = [
+        'name.required' => 'name required',
+        'description.required' => 'description required',
+        'address.required' => 'address required',
+    ];
 
-    protected function withValidator(Validator $validator): void
-    {
-        $this->workspaceId = $this->route('workspaceId');
-    }
+    public string $name;
 
-    public function rules()
+    public string $description;
+
+    public string $address;
+
+    public function passedValidation(): void
     {
-        return [
-        ];
+        parent::passedValidation();
+        $this->name = $this->input('name');
+        $this->description = $this->input('description');
+        $this->address = $this->input('address');
     }
 
 }

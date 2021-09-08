@@ -5,11 +5,9 @@ namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\BaseController;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\AddWorkspaceRequest;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\ChangeWorkspaceProfileRequest;
-use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\IssueCardRequest;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Queries\GetWorkspaceRequest;
+use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Queries\KeeperQueryRequest;
 use App\Contexts\MobileAppBack\Application\Services\Workspace\WorkspaceService;
-use App\Models\Plan as EloquentPlan;
-use App\Models\Workspace as EloquentWorkspace;
 use Illuminate\Http\JsonResponse;
 
 class WorkspaceController extends BaseController
@@ -19,45 +17,37 @@ class WorkspaceController extends BaseController
     ) {
     }
 
-    public function getWorkspaces(): JsonResponse
+    public function getWorkspacesForKeeper(KeeperQueryRequest $request): JsonResponse
     {
-        $workspaces = EloquentWorkspace::query()->all();
-        return $this->success($workspaces);
-    }
-
-    public function listAllPlans(ListAllPlansRequest $request): JsonResponse
-    {
-        $plans = EloquentPlan::query()->where('workspaceId', '=', $request->workspaceId);
-        return $this->success($plans);
+        return $this->response($this->workspaceService->getBusinessWorkspaces(
+            $request->keeperId,
+        ));
     }
 
     public function getWorkspace(GetWorkspaceRequest $request): JsonResponse
     {
-        $workspace = EloquentWorkspace::query()->find($request->workspaceId);
-        if ($workspace === null) {
-            return $this->notFound();
-        }
-        return $this->success($workspace->toArray());
+        return $this->response($this->workspaceService->getBusinessWorkspace(
+            $request->workspaceId,
+        ));
     }
 
     public function addWorkspace(AddWorkspaceRequest $request): JsonResponse
     {
-        $this->workspaceService->addWorkspace($request->customerId);
-        return $this->success();
+        return $this->response($this->workspaceService->addWorkspace(
+            $request->keeperId,
+            $request->name,
+            $request->description,
+            $request->address,
+        ));
     }
 
     public function changeWorkspaceProfile(ChangeWorkspaceProfileRequest $request): JsonResponse
     {
-        $this->workspaceService->changeProfile($request->customerId);
-        return $this->success();
-    }
-
-    public function issueCard(IssueCardRequest $request): JsonResponse
-    {
-        return $this->response($this->cardService->issueCard(
-            $request->planId,
-            $request->customerId,
+        return $this->response($this->workspaceService->changeProfile(
+            $request->workspaceId,
+            $request->name,
             $request->description,
+            $request->address,
         ));
     }
 }

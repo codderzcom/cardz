@@ -4,6 +4,7 @@ use App\Contexts\Cards\Application\Controllers\Web\BlockedCard\BlockedCardContro
 use App\Contexts\Cards\Application\Controllers\Web\Card\CardController;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Customer\CardController as MABCustomerCardController;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Customer\CustomerController as MABCustomerController;
+use App\Contexts\MobileAppBack\Application\Controllers\Web\Customer\WorkspaceController as MABCustomerWorkspaceController;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\CardController as MABCardController;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\PlanController as MABPlanController;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\WorkspaceController as MABWorkspaceController;
@@ -70,12 +71,10 @@ Route::group(['prefix' => '/workspaces/v1'], function () {
 });
 
 Route::group(['prefix' => '/mab/v1'], function () {
-
-    Route::get('/workspace', [MABWorkspaceController::class, 'getWorkspaces'])->name('MABWorkspaceListAll');
+    Route::get('/workspace/for-keeper/{keeperId}', [MABWorkspaceController::class, 'getWorkspacesForKeeper'])->name('MABWorkspaceListAll');
     Route::post('/workspace', [MABWorkspaceController::class, 'addWorkspace'])->name('MABWorkspaceAdd');
 
     Route::group(['prefix' => '/workspace/{workspaceId}'], function () {
-
         Route::get('/', [MABWorkspaceController::class, 'getWorkspace'])->name('MABWorkspaceGet');
         Route::put('/profile', [MABWorkspaceController::class, 'changeWorkspaceProfile'])->name('MABWorkspaceChangeProfile');
 
@@ -113,7 +112,9 @@ Route::group(['prefix' => '/mab/v1'], function () {
 
     Route::group(['prefix' => '/customer/{customerId}'], function () {
         Route::get('/code', [MABCustomerController::class, 'generateCode'])->name('MABCustomerCode');
-        Route::get('/cards', [MABCustomerCardController::class, 'getCards'])->name('MABCustomerCardListAllCards');
+        Route::get('/cards', [MABCustomerCardController::class, 'getCards'])->name('MABCustomerCardListAll');
+
+        Route::get('/workspaces', [MABCustomerWorkspaceController::class, 'all'])->name('MABCustomerWorkspaceListAll');
 
         Route::group(['prefix' => '/card/{cardId}'], function () {
             Route::get('/', [MABCustomerCardController::class, 'getCard'])->name('MABCustomerCard');

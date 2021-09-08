@@ -25,7 +25,7 @@ class AssertPlanInWorkspace implements PolicyAssertionInterface
     public function assert(): bool
     {
         $plan = EloquentPlan::query()
-            ->where('plan_id', '=', (string) $this->planId)
+            ->where('id', '=', (string) $this->planId)
             ->where('workspace_id', '=', (string) $this->workspaceId)
             ->first();
         return $plan !== null;

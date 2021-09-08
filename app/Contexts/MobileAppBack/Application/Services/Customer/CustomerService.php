@@ -2,6 +2,7 @@
 
 namespace App\Contexts\MobileAppBack\Application\Services\Customer;
 
+use App\Contexts\MobileAppBack\Application\Contracts\CustomerWorkspaceReadStorageInterface;
 use App\Contexts\MobileAppBack\Application\Contracts\IssuedCardReadStorageInterface;
 use App\Contexts\MobileAppBack\Domain\Model\Card\CardCode;
 use App\Contexts\MobileAppBack\Domain\Model\Card\CardId;
@@ -16,6 +17,7 @@ class CustomerService
 {
     public function __construct(
         private IssuedCardReadStorageInterface $issuedCardReadStorage,
+        private CustomerWorkspaceReadStorageInterface $customerWorkspaceReadStorage,
         private ServiceResultFactoryInterface $serviceResultFactory,
     ) {
     }
@@ -51,5 +53,10 @@ class CustomerService
         return $this->serviceResultFactory->ok($code);
     }
 
+    public function getCustomerWorkspaces(): ServiceResultInterface
+    {
+        $workspaces = $this->customerWorkspaceReadStorage->all();
+        return $this->serviceResultFactory->ok($workspaces);
+    }
 }
 

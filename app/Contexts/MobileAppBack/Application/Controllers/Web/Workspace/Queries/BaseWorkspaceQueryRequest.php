@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Customer\Queries;
+namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Queries;
 
 use Illuminate\Foundation\Http\FormRequest;
 
