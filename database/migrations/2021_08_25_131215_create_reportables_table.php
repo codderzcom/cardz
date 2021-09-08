@@ -17,8 +17,8 @@ class CreateReportablesTable extends Migration
             $table->id();
             $table->jsonb('data');
 
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+            $table->timestamp('created_at')->useCurrent()->index();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->index();
         });
     }
 

@@ -2,40 +2,35 @@
 
 namespace App\Contexts\Workspaces\Application\Controllers\Web\Workspace;
 
-use App\Contexts\Shared\Contracts\ReportingBusInterface;
-use App\Contexts\Workspaces\Application\Contracts\WorkspaceRepositoryInterface;
 use App\Contexts\Workspaces\Application\Controllers\Web\BaseController;
 use App\Contexts\Workspaces\Application\Controllers\Web\Workspace\Commands\{AddWorkspaceRequest, ChangeWorkspaceProfileRequest};
-use App\Contexts\Workspaces\Application\IntegrationEvents\WorkspaceAdded;
-use App\Contexts\Workspaces\Application\IntegrationEvents\WorkspaceProfileChanged;
-use App\Contexts\Workspaces\Domain\Model\Workspace\Workspace;
+use App\Contexts\Workspaces\Application\Services\WorkspaceAppService;
 use Illuminate\Http\JsonResponse;
 
 class WorkspaceController extends BaseController
 {
     public function __construct(
-        private WorkspaceRepositoryInterface $workspaceRepository,
-        ReportingBusInterface $reportingBus
+        private WorkspaceAppService $workspaceAppService,
     ) {
-        parent::__construct($reportingBus);
     }
 
     public function add(AddWorkspaceRequest $request): JsonResponse
     {
-        $workspace = Workspace::create(
-            $request->workspaceId,
-            $request->profile,
-        );
-        $workspace?->add();
-        $this->workspaceRepository->persist($workspace);
-        return $this->success(new WorkspaceAdded($request->workspaceId, 'Workspace'));
+        return $this->response($this->workspaceAppService->add(
+            $request->keeperId,
+            $request->name,
+            $request->description,
+            $request->address,
+        ));
     }
 
     public function changeProfile(ChangeWorkspaceProfileRequest $request): JsonResponse
     {
-        $workspace = $this->workspaceRepository->take($request->workspaceId);
-        $workspace?->changeProfile($request->profile);
-        $this->workspaceRepository->persist($workspace);
-        return $this->success(new WorkspaceProfileChanged($request->workspaceId, 'Workspace'));
+        return $this->response($this->workspaceAppService->changeProfile(
+            $request->workspaceId,
+            $request->name,
+            $request->description,
+            $request->address,
+        ));
     }
 }

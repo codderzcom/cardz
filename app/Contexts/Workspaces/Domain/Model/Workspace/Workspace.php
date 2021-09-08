@@ -4,23 +4,25 @@ namespace App\Contexts\Workspaces\Domain\Model\Workspace;
 
 use App\Contexts\Workspaces\Domain\Events\Workspace\WorkspaceAdded;
 use App\Contexts\Workspaces\Domain\Events\Workspace\WorkspaceProfileChanged;
+use App\Contexts\Workspaces\Domain\Model\Shared\AggregateRoot;
 use Carbon\Carbon;
 use JetBrains\PhpStorm\Pure;
 
-final class Workspace
+final class Workspace extends AggregateRoot
 {
     private ?Carbon $added = null;
 
     private function __construct(
         public WorkspaceId $workspaceId,
+        public KeeperId $keeperId,
         public Profile $profile,
     ) {
     }
 
     #[Pure]
-    public static function create(WorkspaceId $workspaceId, Profile $profile): static
+    public static function make(WorkspaceId $workspaceId, KeeperId $keeperId, Profile $profile): self
     {
-        return new static($workspaceId, $profile);
+        return new self($workspaceId, $keeperId, $profile);
     }
 
     public function add(): WorkspaceAdded
@@ -41,12 +43,14 @@ final class Workspace
     }
 
     private function from(
-        ?string $workspaceId,
-        $profile = null,
-        ?Carbon $added = null,
+        string $workspaceId,
+        string $keeperId,
+        ?Carbon $added,
+        array $profile,
     ): void {
-        $this->workspaceId = new WorkspaceId($workspaceId);
-        $this->profile = Profile::fromData($profile);
+        $this->workspaceId = WorkspaceId::of($workspaceId);
+        $this->keeperId = KeeperId::of($keeperId);
         $this->added = $added;
+        $this->profile = Profile::ofData($profile);
     }
 }

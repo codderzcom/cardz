@@ -65,7 +65,7 @@ Route::group(['prefix' => '/plans/v1'], function () {
 Route::group(['prefix' => '/workspaces/v1'], function () {
     Route::group(['prefix' => '/workspace'], function () {
         Route::post('/', [WorkspaceController::class, 'add'])->name('AddWorkspace');
-        Route::post('/{workspaceId}/profile', [WorkspaceController::class, 'changeProfile'])->name('ChangeWorkspaceProfile');
+        Route::put('/{workspaceId}/profile', [WorkspaceController::class, 'changeProfile'])->name('ChangeWorkspaceProfile');
     });
 });
 

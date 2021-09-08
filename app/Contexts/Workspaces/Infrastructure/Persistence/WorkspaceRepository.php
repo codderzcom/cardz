@@ -22,6 +22,18 @@ class WorkspaceRepository implements WorkspaceRepositoryInterface
         );
     }
 
+    public function take(WorkspaceId $workspaceId): ?Workspace
+    {
+        /** @var EloquentWorkspace $eloquentWorkspace */
+        $eloquentWorkspace = EloquentWorkspace::query()->where([
+            'id' => (string) $workspaceId,
+        ])?->first();
+        if ($eloquentWorkspace === null) {
+            return null;
+        }
+        return $this->workspaceFromData($eloquentWorkspace);
+    }
+
     private function workspaceAsData(Workspace $workspace): array
     {
         $reflection = new ReflectionClass($workspace);
@@ -35,24 +47,12 @@ class WorkspaceRepository implements WorkspaceRepositoryInterface
             $properties[$key] = $property->getValue($workspace);
         }
 
-        $data = [
+        return [
             'id' => (string) $workspace->workspaceId,
-            'profile' => json_try_encode($workspace->profile->toArray()),
+            'keeper_id' => (string) $workspace->keeperId,
             'added_at' => $properties['added'],
+            'profile' => $workspace->profile->toArray(),
         ];
-        return $data;
-    }
-
-    public function take(WorkspaceId $workspaceId): ?Workspace
-    {
-        /** @var EloquentWorkspace $eloquentWorkspace */
-        $eloquentWorkspace = EloquentWorkspace::query()->where([
-            'id' => (string) $workspaceId,
-        ])?->first();
-        if ($eloquentWorkspace === null) {
-            return null;
-        }
-        return $this->workspaceFromData($eloquentWorkspace);
     }
 
     private function workspaceFromData(EloquentWorkspace $eloquentWorkspace): Workspace
@@ -63,10 +63,13 @@ class WorkspaceRepository implements WorkspaceRepositoryInterface
         /** @var Workspace $workspace */
         $workspace = $reflection->newInstanceWithoutConstructor();
 
+        $profile = is_string($eloquentWorkspace->profile) ? json_try_decode($eloquentWorkspace->profile) : $eloquentWorkspace->profile;
+
         $creator?->invoke($workspace,
             $eloquentWorkspace->id,
-            $eloquentWorkspace->profile,
+            $eloquentWorkspace->keeper_id,
             $eloquentWorkspace->added_at,
+            $profile,
         );
         return $workspace;
     }

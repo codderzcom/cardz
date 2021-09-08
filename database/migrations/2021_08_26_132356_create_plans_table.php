@@ -15,18 +15,18 @@ class CreatePlansTable extends Migration
     {
         Schema::create('plans', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('workspace_id')->index();
+            $table->uuid('workspace_id')->index();
 
             $table->string('description')->nullable();
             $table->jsonb('requirements')->nullable();
 
-            $table->dateTime('added_at')->nullable();
-            $table->dateTime('launched_at')->nullable();
-            $table->dateTime('stopped_at')->nullable();
-            $table->dateTime('archived_at')->nullable();
+            $table->dateTime('added_at')->nullable()->index();
+            $table->dateTime('launched_at')->nullable()->index();
+            $table->dateTime('stopped_at')->nullable()->index();
+            $table->dateTime('archived_at')->nullable()->index();
 
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+            $table->timestamp('created_at')->useCurrent()->index();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->index();
         });
     }
 
