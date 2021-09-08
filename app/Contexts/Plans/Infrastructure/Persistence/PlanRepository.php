@@ -26,6 +26,7 @@ class PlanRepository implements PlanRepositoryInterface
     {
         $reflection = new ReflectionClass($plan);
         $properties = [
+            'requirements' => null,
             'added' => null,
             'launched' => null,
             'stopped' => null,
@@ -41,7 +42,8 @@ class PlanRepository implements PlanRepositoryInterface
         $data = [
             'id' => (string) $plan->planId,
             'workspace_id' => (string) $plan->workspaceId,
-            'description' => $plan->getDescription(),
+            'description' => (string) $plan->getDescription(),
+            'requirements' => $plan->getRequirements()->toArray(),
             'added_at' => $properties['added'],
             'launched_at' => $properties['launched'],
             'stopped_at' => $properties['stopped'],
@@ -71,10 +73,13 @@ class PlanRepository implements PlanRepositoryInterface
         /** @var Plan $plan */
         $plan = $reflection->newInstanceWithoutConstructor();
 
+        $requirements = is_string($eloquentPlan->requirements) ? json_try_decode($eloquentPlan->requirements) : $eloquentPlan->requirements;
+
         $creator?->invoke($plan,
             $eloquentPlan->id,
             $eloquentPlan->workspace_id,
             $eloquentPlan->description,
+            $requirements,
             $eloquentPlan->added_at,
             $eloquentPlan->launched_at,
             $eloquentPlan->stopped_at,

@@ -13,6 +13,7 @@ class Plan extends Model
     protected $guarded = [];
 
     protected $casts = [
+        'requirements' => 'array',
         'added_at' => 'datetime',
         'launched_at' => 'datetime',
         'stopped_at' => 'datetime',

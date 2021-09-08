@@ -2,11 +2,12 @@
 
 namespace App\Contexts\Plans\Domain\Events;
 
+use App\Contexts\Plans\Domain\Persistable;
 use Carbon\Carbon;
 use ReflectionClass;
 use Throwable;
 
-abstract class BaseDomainEvent
+abstract class BaseDomainEvent implements Persistable
 {
     private Carbon $on;
 

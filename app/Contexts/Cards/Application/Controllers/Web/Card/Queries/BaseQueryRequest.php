@@ -2,26 +2,40 @@
 
 namespace App\Contexts\Cards\Application\Controllers\Web\Card\Queries;
 
-use App\Contexts\Cards\Domain\Model\Card\CardId;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Validator;
 
 abstract class BaseQueryRequest extends FormRequest
 {
-    public ?CardId $cardId = null;
+    protected const RULES = [
+        'cardId' => 'required',
+    ];
 
-    public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
+    protected const MESSAGES = [
+        'cardId.required' => 'cardId required',
+    ];
+
+    public string $cardId;
+
+    public function rules(): array
     {
-        parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
+        return array_merge(self::RULES, static::RULES);
     }
 
-    public function withValidator(Validator $validator)
+    public function messages(): array
     {
-        $this->cardId = new CardId($this->route('cardId'));
+        return array_merge(self::MESSAGES, static::MESSAGES);
     }
 
-    public function rules()
+    public function passedValidation(): void
     {
-        return [];
+        $this->cardId = $this->input('cardId');
     }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'cardId' => $this->route('cardId'),
+        ]);
+    }
+
 }

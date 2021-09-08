@@ -3,10 +3,10 @@
 namespace App\Contexts\Cards\Domain\Model\BlockedCard;
 
 use App\Contexts\Cards\Domain\Events\BlockedCard\BlockedCardUnblocked;
-use App\Contexts\Cards\Domain\Model\AggregateRoot;
+use App\Contexts\Cards\Domain\Model\Shared\AggregateRoot;
 use Carbon\Carbon;
 
-class BlockedCard extends AggregateRoot
+final class BlockedCard extends AggregateRoot
 {
     public function __construct(
         public BlockedCardId $blockedCardId,

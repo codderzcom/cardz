@@ -10,7 +10,7 @@ use App\Contexts\Workspaces\Application\IntegrationEvents\WorkspaceProfileFilled
 
 class WorkspaceAddedConsumer implements Informable
 {
-    public function __construct(public ReportingBusInterface $reportingBus)
+    public function __construct(private ReportingBusInterface $reportingBus)
     {
     }
 

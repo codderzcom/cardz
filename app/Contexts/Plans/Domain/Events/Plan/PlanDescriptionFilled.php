@@ -6,10 +6,10 @@ use App\Contexts\Plans\Domain\Model\Plan\PlanId;
 use JetBrains\PhpStorm\Immutable;
 
 #[Immutable]
-class PlanDescriptionFilled extends BasePlanDomainEvent
+final class PlanDescriptionFilled extends BasePlanDomainEvent
 {
-    public static function with(PlanId $planId): static
+    public static function with(PlanId $planId): self
     {
-        return new static($planId);
+        return new self($planId);
     }
 }

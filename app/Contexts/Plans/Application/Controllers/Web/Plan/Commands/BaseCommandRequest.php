@@ -2,32 +2,40 @@
 
 namespace App\Contexts\Plans\Application\Controllers\Web\Plan\Commands;
 
-use App\Contexts\Plans\Domain\Model\Plan\PlanId;
 use Illuminate\Foundation\Http\FormRequest;
 
 abstract class BaseCommandRequest extends FormRequest
 {
-    public PlanId $planId;
+    protected const RULES = [
+        'planId' => 'required',
+    ];
 
-    public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
+    protected const MESSAGES = [
+        'planId.required' => 'planId required',
+    ];
+
+    public string $planId;
+
+    public function rules(): array
     {
-        parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
+        return array_merge(self::RULES, static::RULES);
     }
 
-    public function rules()
+    public function messages(): array
     {
-        return [
-            //'planId' => 'required'
-        ];
+        return array_merge(self::MESSAGES, static::MESSAGES);
+    }
+
+    public function passedValidation(): void
+    {
+        $this->planId = $this->input('planId');
     }
 
     protected function prepareForValidation(): void
     {
-        $this->inferPlanId();
+        $this->merge([
+            'planId' => $this->route('planId'),
+        ]);
     }
 
-    protected function inferPlanId(): void
-    {
-        $this->planId = new PlanId($this->route('planId'));
-    }
 }

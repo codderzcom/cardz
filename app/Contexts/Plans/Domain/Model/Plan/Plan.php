@@ -6,13 +6,18 @@ use App\Contexts\Plans\Domain\Events\Plan\PlanAdded;
 use App\Contexts\Plans\Domain\Events\Plan\PlanArchived;
 use App\Contexts\Plans\Domain\Events\Plan\PlanDescriptionChanged;
 use App\Contexts\Plans\Domain\Events\Plan\PlanLaunched;
+use App\Contexts\Plans\Domain\Events\Plan\PlanRequirementsChanged;
 use App\Contexts\Plans\Domain\Events\Plan\PlanStopped;
+use App\Contexts\Plans\Domain\Model\Shared\AggregateRoot;
+use App\Contexts\Plans\Domain\Model\Shared\Description;
 use App\Contexts\Plans\Domain\Model\Shared\WorkspaceId;
 use Carbon\Carbon;
 use JetBrains\PhpStorm\Pure;
 
-class Plan
+final class Plan extends AggregateRoot
 {
+    private Requirements $requirements;
+
     private ?Carbon $added = null;
 
     private ?Carbon $launched = null;
@@ -21,16 +26,19 @@ class Plan
 
     private ?Carbon $archived = null;
 
+    #[Pure]
     private function __construct(
         public PlanId $planId,
         public WorkspaceId $workspaceId,
-        private ?string $description = null
+        private Description $description,
     ) {
+        $this->requirements = Requirements::of();
     }
 
-    #[Pure] public static function create(PlanId $planId, WorkspaceId $workspaceId, ?string $description = null): static
+    #[Pure]
+    public static function make(PlanId $planId, WorkspaceId $workspaceId, Description $description = null): self
     {
-        return new static($planId, $workspaceId, $description);
+        return new self($planId, $workspaceId, $description);
     }
 
     public function add(): PlanAdded
@@ -57,15 +65,26 @@ class Plan
         return PlanArchived::with($this->planId);
     }
 
-    public function changeDescription(?string $description): PlanDescriptionChanged
+    public function changeDescription(Description $description): PlanDescriptionChanged
     {
         $this->description = $description;
         return PlanDescriptionChanged::with($this->planId);
     }
 
-    public function getDescription(): ?string
+    public function changeRequirements(Requirements $requirements): PlanRequirementsChanged
+    {
+        $this->requirements = $requirements;
+        return PlanRequirementsChanged::with($this->planId);
+    }
+
+    public function getDescription(): Description
     {
         return $this->description;
+    }
+
+    public function getRequirements(): Requirements
+    {
+        return $this->requirements;
     }
 
     public function isAdded(): bool
@@ -89,17 +108,19 @@ class Plan
     }
 
     private function from(
-        ?string $planId,
-        ?string $workspaceId,
-        ?string $description = null,
+        string $planId,
+        string $workspaceId,
+        string $description,
+        array $requirements,
         ?Carbon $added = null,
         ?Carbon $launched = null,
         ?Carbon $stopped = null,
         ?Carbon $archived = null,
     ): void {
-        $this->planId = new PlanId($planId);
-        $this->workspaceId = new WorkspaceId($workspaceId);
-        $this->description = $description;
+        $this->planId = PlanId::of($planId);
+        $this->workspaceId = WorkspaceId::of($workspaceId);
+        $this->description = Description::of($description);
+        $this->requirements = Requirements::of(...$requirements);
         $this->added = $added;
         $this->launched = $launched;
         $this->stopped = $stopped;

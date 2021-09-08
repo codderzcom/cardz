@@ -2,32 +2,40 @@
 
 namespace App\Contexts\Cards\Application\Controllers\Web\Card\Commands;
 
-use App\Contexts\Cards\Domain\Model\Card\CardId;
 use Illuminate\Foundation\Http\FormRequest;
 
 abstract class BaseCommandRequest extends FormRequest
 {
-    public CardId $cardId;
+    protected const RULES = [
+        'cardId' => 'required',
+    ];
 
-    public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
+    protected const MESSAGES = [
+        'cardId.required' => 'cardId required',
+    ];
+
+    public string $cardId;
+
+    public function rules(): array
     {
-        parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
+        return array_merge(self::RULES, static::RULES);
     }
 
-    public function rules()
+    public function messages(): array
     {
-        return [
-            //'cardId' => 'required'
-        ];
+        return array_merge(self::MESSAGES, static::MESSAGES);
+    }
+
+    public function passedValidation(): void
+    {
+        $this->cardId = $this->input('cardId');
     }
 
     protected function prepareForValidation(): void
     {
-        $this->inferCardId();
+        $this->merge([
+            'cardId' => $this->route('cardId'),
+        ]);
     }
 
-    protected function inferCardId(): void
-    {
-        $this->cardId = new CardId($this->route('cardId'));
-    }
 }

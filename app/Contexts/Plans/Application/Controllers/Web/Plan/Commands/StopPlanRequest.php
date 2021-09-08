@@ -2,6 +2,6 @@
 
 namespace App\Contexts\Plans\Application\Controllers\Web\Plan\Commands;
 
-class StopPlanRequest extends BaseCommandRequest
+final class StopPlanRequest extends BaseCommandRequest
 {
 }

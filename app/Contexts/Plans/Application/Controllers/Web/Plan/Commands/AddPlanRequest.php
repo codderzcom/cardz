@@ -2,20 +2,23 @@
 
 namespace App\Contexts\Plans\Application\Controllers\Web\Plan\Commands;
 
-use App\Contexts\Plans\Domain\Model\Plan\PlanId;
-use App\Contexts\Plans\Domain\Model\Shared\WorkspaceId;
+use Illuminate\Foundation\Http\FormRequest;
 
-class AddPlanRequest extends BaseCommandRequest
+final class AddPlanRequest extends FormRequest
 {
-    public ?string $description;
+    public string $workspaceId;
 
-    public function passedValidation(): void
+    public string $description;
+
+    public function rules(): array
     {
-        $this->workspaceId = new WorkspaceId($this->input('workspaceId'));
-        $this->description = $this->input('description');
+        return [
+            'workspaceId' => 'required',
+            'description' => 'required',
+        ];
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             'workspaceId.required' => 'workspaceId required',
@@ -23,8 +26,10 @@ class AddPlanRequest extends BaseCommandRequest
         ];
     }
 
-    protected function inferPlanId(): void
+    public function passedValidation(): void
     {
-        $this->planId = new PlanId();
+        $this->workspaceId = $this->input('workspaceId');
+        $this->description = $this->input('description');
     }
+
 }

@@ -15,12 +15,13 @@ class CreateWorkspacesTable extends Migration
     {
         Schema::create('workspaces', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->uuid('keeper_id')->index();
 
+            $table->dateTime('added_at')->nullable()->index();
             $table->jsonb('profile');
-            $table->dateTime('added_at')->nullable();
 
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+            $table->timestamp('created_at')->useCurrent()->index();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->index();
         });
     }
 

@@ -2,26 +2,37 @@
 
 namespace App\Contexts\Cards\Domain\Model\Card;
 
-use App\Contexts\Cards\Domain\Model\Entity;
-use JetBrains\PhpStorm\ArrayShape;
+use App\Contexts\Cards\Domain\Model\Shared\ValueObject;
 use JetBrains\PhpStorm\Pure;
 
-class Achievement extends Entity
+final class Achievement extends ValueObject
 {
     private function __construct(
-        public AchievementId $achievementId,
-        public string $description
+        private string $description,
     ) {
     }
 
     #[Pure]
-    #[ArrayShape(['id' => "string", 'description' => "string"])]
-    public function toArray(): array
+    public static function of(string $description): self
     {
-        return [
-            'id' => (string) $this->achievementId,
-            'description' => $this->description,
-        ];
+        return new self($description);
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    #[Pure]
+    public function equals(self $requirement): bool
+    {
+        return $requirement->getDescription() === $this->description;
+    }
+
+    private function from(
+        string $description,
+    ): void {
+        $this->description = $description;
     }
 }
 

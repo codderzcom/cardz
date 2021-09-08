@@ -2,13 +2,22 @@
 
 namespace App\Contexts\Plans\Application\Controllers\Web\Plan\Commands;
 
-class ChangePlanDescriptionRequest extends BaseCommandRequest
+final class ChangePlanDescriptionRequest extends BaseCommandRequest
 {
+    protected const RULES = [
+        'description' => 'required',
+    ];
+
+    protected const MESSAGES = [
+        'description.required' => 'description required',
+    ];
+
     public string $description;
 
     public function passedValidation(): void
     {
-        $this->description = $this->input('description') ?: 'Error';
+        parent::passedValidation();
+        $this->description = $this->input('description');
     }
 
 }

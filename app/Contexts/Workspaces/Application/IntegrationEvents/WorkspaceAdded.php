@@ -5,7 +5,7 @@ namespace App\Contexts\Workspaces\Application\IntegrationEvents;
 use JetBrains\PhpStorm\Immutable;
 
 #[Immutable]
-class WorkspaceAdded extends BaseIntegrationEvent
+final class WorkspaceAdded extends BaseIntegrationEvent
 {
-
+    protected ?string $instanceOf = 'Workspace';
 }

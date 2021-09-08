@@ -2,110 +2,71 @@
 
 namespace App\Contexts\Cards\Application\Controllers\Web\Card;
 
-use App\Contexts\Cards\Application\Contracts\CardRepositoryInterface;
 use App\Contexts\Cards\Application\Controllers\Web\BaseController;
-use App\Contexts\Cards\Application\Controllers\Web\Card\Commands\{AddAchievementRequest,
-    BlockCardRequest,
-    CompleteCardRequest,
-    IssueCardRequest,
-    RemoveAchievementRequest,
-    RevokeCardRequest};
-use App\Contexts\Cards\Application\Controllers\Web\Card\Queries\GenerateCardCodeRequest;
-use App\Contexts\Cards\Application\IntegrationEvents\AchievementDismissed;
-use App\Contexts\Cards\Application\IntegrationEvents\AchievementNoted;
-use App\Contexts\Cards\Application\IntegrationEvents\CardBlocked;
-use App\Contexts\Cards\Application\IntegrationEvents\CardCompleted;
-use App\Contexts\Cards\Application\IntegrationEvents\CardIssued;
-use App\Contexts\Cards\Application\IntegrationEvents\CardRevoked;
-use App\Contexts\Cards\Domain\Model\Card\Card;
-use App\Contexts\Shared\Contracts\ReportingBusInterface;
+use App\Contexts\Cards\Application\Controllers\Web\Card\Commands\{AchievementRequest, BlockCardRequest, CompleteCardRequest, IssueCardRequest, RevokeCardRequest};
+use App\Contexts\Cards\Application\Controllers\Web\Card\Queries\GetIssuedCardRequest;
+use App\Contexts\Cards\Application\Services\CardAppService;
+use App\Contexts\Cards\Application\Services\ReadIssuedCardAppService;
 use Illuminate\Http\JsonResponse;
 
 class CardController extends BaseController
 {
     public function __construct(
-        private CardRepositoryInterface $cardRepository,
-        ReportingBusInterface $reportingBus
+        private CardAppService $cardAppService,
+        private ReadIssuedCardAppService $readIssuedCardAppService,
     ) {
-        parent::__construct($reportingBus);
     }
 
-    public function generateCode(GenerateCardCodeRequest $generateCardCodeRequest): JsonResponse
+    public function issue(IssueCardRequest $request)
     {
-        return $this->success(null, ['code' => base64_encode($generateCardCodeRequest->cardId)]);
-    }
-
-    public function issue(IssueCardRequest $request): JsonResponse
-    {
-        $card = Card::create(
-            $request->cardId,
+        return $this->response($this->cardAppService->issueCard(
             $request->planId,
             $request->customerId,
             $request->description,
-        );
-        $card->issue();
-        $this->cardRepository->persist($card);
-        return $this->success(new CardIssued($request->cardId, 'Card'), ['cardId' => (string) $card->cardId]);
+        ));
     }
 
     public function complete(CompleteCardRequest $request): JsonResponse
     {
-        $card = $this->cardRepository->take($request->cardId);
-        if ($card === null) {
-            return $this->notFound(['cardId' => (string) $request->cardId]);
-        }
-
-        $card?->complete();
-        $this->cardRepository->persist($card);
-        return $this->success(new CardCompleted($request->cardId, 'Card'));
+        return $this->response($this->cardAppService->completeCard(
+            $request->cardId,
+        ));
     }
 
     public function revoke(RevokeCardRequest $request): JsonResponse
     {
-        $card = $this->cardRepository->take($request->cardId);
-        if ($card === null) {
-            return $this->notFound(['cardId' => (string) $request->cardId]);
-        }
-
-        $card?->revoke();
-        $this->cardRepository->persist($card);
-        return $this->success(new CardRevoked($request->cardId, 'Card'));
+        return $this->response($this->cardAppService->revokeCard(
+            $request->cardId,
+        ));
     }
 
     public function block(BlockCardRequest $request): JsonResponse
     {
-        $card = $this->cardRepository->take($request->cardId);
-        if ($card === null) {
-            return $this->notFound(['cardId' => (string) $request->cardId]);
-        }
-
-        $card?->block();
-        $this->cardRepository->persist($card);
-        return $this->success(new CardBlocked($request->cardId, 'Card'));
+        return $this->response($this->cardAppService->blockCard(
+            $request->cardId,
+        ));
     }
 
-    public function addAchievement(AddAchievementRequest $request): JsonResponse
+    public function addAchievement(AchievementRequest $request): JsonResponse
     {
-        $card = $this->cardRepository->take($request->cardId);
-        if ($card === null) {
-            return $this->notFound(['cardId' => (string) $request->cardId]);
-        }
-
-        $card?->noteAchievement($request->description);
-        $this->cardRepository->persist($card);
-        return $this->success(new AchievementNoted($request->cardId, 'Card'));
+        return $this->response($this->cardAppService->noteAchievement(
+            $request->cardId,
+            $request->achievementDescription,
+        ));
     }
 
-    public function removeAchievement(RemoveAchievementRequest $request): JsonResponse
+    public function removeAchievement(AchievementRequest $request): JsonResponse
     {
-        $card = $this->cardRepository->take($request->cardId);
-        if ($card === null) {
-            return $this->notFound(['cardId' => (string) $request->cardId]);
-        }
-
-        $card?->dismissAchievement($request->achievementId);
-        $this->cardRepository->persist($card);
-        return $this->success(new AchievementDismissed($request->cardId, 'Card'));
+        return $this->response($this->cardAppService->dismissAchievement(
+            $request->cardId,
+            $request->achievementDescription,
+        ));
     }
 
+    public function getIssuedCard(GetIssuedCardRequest $request): JsonResponse
+    {
+        return $this->response($this->readIssuedCardAppService->getIssuedCard(
+            $request->cardId,
+        ));
+    }
 }

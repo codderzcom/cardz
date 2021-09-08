@@ -2,35 +2,43 @@
 
 namespace App\Contexts\Workspaces\Application\Controllers\Web\Workspace\Commands;
 
-use App\Contexts\Workspaces\Domain\Model\Workspace\Profile;
-use App\Contexts\Workspaces\Domain\Model\Workspace\WorkspaceId;
+use Illuminate\Foundation\Http\FormRequest;
 
-class AddWorkspaceRequest extends BaseCommandRequest
+class AddWorkspaceRequest extends FormRequest
 {
-    public WorkspaceId $workspaceId;
+    public string $keeperId;
 
-    public Profile $profile;
+    public string $name;
 
-    public function passedValidation(): void
-    {
-        $this->profile = Profile::create(
-            $this->input('name'),
-            $this->input('description'),
-            $this->input('address'),
-        );
-    }
+    public string $description;
 
-    public function messages()
+    public string $address;
+
+    public function rules(): array
     {
         return [
+            'keeperId' => 'required',
+            'name' => 'required',
+            'description' => 'required',
+            'address' => 'required',
+        ];
+    }
+
+    public function passedValidation(): void
+{
+        $this->keeperId = $this->input('keeperId');
+        $this->name = $this->input('name');
+        $this->description = $this->input('description');
+        $this->address = $this->input('address');
+    }
+
+    public function messages(): array
+    {
+        return [
+            'keeperId.required' => 'keeperId required',
             'name.required' => 'name required',
             'description.required' => 'description required',
             'address.required' => 'address required',
         ];
-    }
-
-    protected function inferWorkspaceId(): void
-    {
-        $this->workspaceId = new WorkspaceId();
     }
 }

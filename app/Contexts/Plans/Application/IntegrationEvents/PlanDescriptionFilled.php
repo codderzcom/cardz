@@ -7,5 +7,5 @@ use JetBrains\PhpStorm\Immutable;
 #[Immutable]
 class PlanDescriptionFilled extends BaseIntegrationEvent
 {
-
+    protected ?string $instanceOf = 'Plan';
 }

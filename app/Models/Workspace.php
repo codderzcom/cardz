@@ -14,5 +14,6 @@ class Workspace extends Model
 
     protected $casts = [
         'added_at' => 'datetime',
+        'profile' => 'array',
     ];
 }

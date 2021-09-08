@@ -7,27 +7,36 @@ use Illuminate\Foundation\Http\FormRequest;
 
 abstract class BaseCommandRequest extends FormRequest
 {
-    public WorkspaceId $workspaceId;
+    protected const RULES = [
+        'workspaceId' => 'required',
+    ];
 
-    public function __construct(array $query = [], array $request = [], array $attributes = [], array $cookies = [], array $files = [], array $server = [], $content = null)
+    protected const MESSAGES = [
+        'workspaceId.required' => 'workspaceId required',
+    ];
+
+    public string $workspaceId;
+
+    public function rules(): array
     {
-        parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
+        return array_merge(self::RULES, static::RULES);
     }
 
-    public function rules()
+    public function messages(): array
     {
-        return [
-            //'workspaceId' => 'required'
-        ];
+        return array_merge(self::MESSAGES, static::MESSAGES);
+    }
+
+    public function passedValidation(): void
+    {
+        $this->workspaceId = $this->input('workspaceId');
     }
 
     protected function prepareForValidation(): void
     {
-        $this->inferWorkspaceId();
+        $this->merge([
+            'workspaceId' => $this->route('workspaceId'),
+        ]);
     }
 
-    protected function inferWorkspaceId(): void
-    {
-        $this->workspaceId = new WorkspaceId($this->route('workspaceId'));
-    }
 }

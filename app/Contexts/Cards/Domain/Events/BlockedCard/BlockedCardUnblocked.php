@@ -7,7 +7,7 @@ use App\Contexts\Cards\Domain\Model\BlockedCard\BlockedCardId;
 use JetBrains\PhpStorm\Immutable;
 
 #[Immutable]
-class BlockedCardUnblocked extends BaseDomainEvent
+final class BlockedCardUnblocked extends BaseDomainEvent
 {
     protected function __construct(
         public BlockedCardId $blockedCardId
@@ -15,8 +15,8 @@ class BlockedCardUnblocked extends BaseDomainEvent
         parent::__construct();
     }
 
-    public static function with(BlockedCardId $blockedCardId): static
+    public static function with(BlockedCardId $blockedCardId): self
     {
-        return new static($blockedCardId);
+        return new self($blockedCardId);
     }
 }

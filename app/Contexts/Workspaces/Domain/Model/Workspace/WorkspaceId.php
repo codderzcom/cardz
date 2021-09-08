@@ -2,19 +2,8 @@
 
 namespace App\Contexts\Workspaces\Domain\Model\Workspace;
 
-use Ramsey\Uuid\Guid\Guid;
+use App\Contexts\Shared\Infrastructure\Support\GuidBasedImmutableId;
 
-class WorkspaceId
+final class WorkspaceId extends GuidBasedImmutableId
 {
-    public function __construct(private ?string $id = null)
-    {
-        if ($this->id === null) {
-            $this->id = (string) Guid::uuid4();
-        }
-    }
-
-    public function __toString(): string
-    {
-        return $this->id;
-    }
 }
