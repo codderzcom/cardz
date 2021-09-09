@@ -2,39 +2,39 @@
 
 namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands;
 
-final class AchievementCardCommandRequest extends BaseCommandRequest
+class PlanCommandRequest extends BaseCommandRequest
 {
     protected const RULES = [
         'planId' => 'required',
-        'cardId' => 'required',
-        'description' => 'required',
     ];
 
     protected const MESSAGES = [
         'planId.required' => 'planId required',
-        'cardId.required' => 'cardId required',
-        'description.required' => 'description required',
     ];
 
     public string $planId;
 
-    public string $cardId;
+    public function rules(): array
+    {
+        return array_merge(parent::rules(), self::RULES, static::RULES);
+    }
 
-    public string $description;
+    public function messages(): array
+    {
+        return array_merge(parent::messages(), self::MESSAGES, static::MESSAGES);
+    }
 
     public function passedValidation(): void
     {
         parent::passedValidation();
         $this->planId = $this->input('planId');
-        $this->cardId = $this->input('cardId');
-        $this->description = $this->input('description');
     }
 
     protected function prepareForValidation(): void
     {
         parent::prepareForValidation();
         $this->merge([
-            'cardId' => $this->route('cardId'),
+            'planId' => $this->route('planId'),
         ]);
     }
 }

@@ -97,16 +97,20 @@ Route::group(['prefix' => '/mab/v1'], function () {
 
         Route::group(['prefix' => '/plan'], function () {
             Route::get('/', [MABPlanController::class, 'getPlans'])->name('MABPlanListAll');
-            Route::post('/', [MABPlanController::class, 'addPlan'])->name('MABPlanAdd');
+            Route::post('/', [MABPlanController::class, 'add'])->name('MABPlanAdd');
         });
 
         Route::group(['prefix' => '/plan/{planId}'], function () {
-            Route::get('', [MABPlanController::class, 'getPlan'])->name('MABPlanGet');
+            Route::get('/', [MABPlanController::class, 'getPlan'])->name('MABPlanGet');
 
-            Route::post('/description', [MABPlanController::class, 'setDescription'])->name('MABPlanSetDescription');
-            Route::post('/achievements', [MABPlanController::class, 'setAchievements'])->name('MABPlanSetAchievements');
-            Route::post('/launch', [MABPlanController::class, 'launchPlan'])->name('MABPlanLaunch');
-            Route::post('/stop', [MABPlanController::class, 'stopPlan'])->name('MABPlanStop');
+            Route::put('/description', [MABPlanController::class, 'changeDescription'])->name('MABPlanChangeDescription');
+            Route::put('/launch', [MABPlanController::class, 'launch'])->name('MABPlanLaunch');
+            Route::put('/stop', [MABPlanController::class, 'stop'])->name('MABPlanStop');
+            Route::put('/archive', [MABPlanController::class, 'archive'])->name('MABPlanStop');
+
+            Route::post('/requirement', [MABPlanController::class, 'addRequirement'])->name('MABPlanAddRequirement');
+            Route::delete('/requirement', [MABPlanController::class, 'removeRequirement'])->name('MABPlanRemoveRequirement');
+            Route::put('/requirement', [MABPlanController::class, 'changeRequirements'])->name('MABPlanChangeRequirements');
         });
     });
 

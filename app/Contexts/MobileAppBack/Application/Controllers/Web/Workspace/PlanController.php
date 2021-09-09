@@ -3,8 +3,15 @@
 namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace;
 
 use App\Contexts\MobileAppBack\Application\Controllers\Web\BaseController;
+use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\{AddPlanRequest,
+    AddPlanRequirementRequest,
+    ChangePlanDescriptionRequest,
+    ChangePlanRequirementsRequest,
+    PlanCommandRequest,
+    RemovePlanRequirementRequest};
+use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Queries\GetPlanRequest;
+use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Queries\GetWorkspaceRequest;
 use App\Contexts\MobileAppBack\Application\Services\Workspace\PlanService;
-use App\Models\Plan as EloquentPlan;
 use Illuminate\Http\JsonResponse;
 
 class PlanController extends BaseController
@@ -14,48 +21,80 @@ class PlanController extends BaseController
     ) {
     }
 
-    public function getPlans(ListAllPlansRequest $request): JsonResponse
+    public function getPlans(GetWorkspaceRequest $request): JsonResponse
     {
-        $plans = EloquentPlan::query()->where('workspaceId', '=', $request->workspaceId);
-        return $this->success($plans);
+        return $this->response($this->planService->getWorkspacePlans(
+            $request->workspaceId,
+        ));
     }
 
-    public function getPlan(PlanRequest $request): JsonResponse
+    public function getPlan(GetPlanRequest $request): JsonResponse
     {
-        $plan = EloquentPlan::query()->find($request->planId);
-        if ($plan === null) {
-            return $this->notFound();
-        }
-        return $this->success($plan->toArray());
+        return $this->response($this->planService->getWorkspacePlan(
+            $request->workspaceId,
+            $request->planId,
+        ));
     }
 
-    public function addPlan(AddPlanRequest $request): JsonResponse
+    public function add(AddPlanRequest $request): JsonResponse
     {
-        $this->planService->addPlan($request->description, $request->avhievements);
-        $this->success();
+        return $this->response($this->planService->add(
+            $request->workspaceId,
+            $request->description,
+        ));
     }
 
-    public function setDescription(SetDescriptionRequest $request): JsonResponse
+    public function launch(PlanCommandRequest $request): JsonResponse
     {
-        $this->planService->setDescription($request->planId, $request->description);
-        $this->success();
+        return $this->response($this->planService->launch(
+            $request->planId,
+        ));
     }
 
-    public function setAchievements(SetAchievementsRequest $request): JsonResponse
+    public function stop(PlanCommandRequest $request): JsonResponse
     {
-        $this->planService->setAchievements($request->planId, $request->avhievements);
-        $this->success();
+        $this->response($this->planService->stop(
+            $request->planId,
+        ));
     }
 
-    public function launchPlan(LaunchPlanRequest $request): JsonResponse
+    public function archive(PlanCommandRequest $request): JsonResponse
     {
-        $this->planService->launchPlan($request->planId);
-        $this->success();
+        return $this->response($this->planService->archive(
+            $request->planId,
+        ));
     }
 
-    public function stopPlan(StopPlanRequest $request): JsonResponse
+    public function changeDescription(ChangePlanDescriptionRequest $request): JsonResponse
     {
-        $this->planService->stopPlan($request->planId);
-        $this->success();
+        return $this->response($this->planService->changeDescription(
+            $request->planId,
+            $request->description,
+        ));
     }
+
+    public function addRequirement(AddPlanRequirementRequest $request): JsonResponse
+    {
+        return $this->response($this->planService->addRequirement(
+            $request->planId,
+            $request->description,
+        ));
+    }
+
+    public function removeRequirement(RemovePlanRequirementRequest $request): JsonResponse
+    {
+        return $this->response($this->planService->removeRequirement(
+            $request->planId,
+            $request->description,
+        ));
+    }
+
+    public function changeRequirements(ChangePlanRequirementsRequest $request): JsonResponse
+    {
+        return $this->response($this->planService->changeRequirements(
+            $request->planId,
+            ...$request->descriptions,
+        ));
+    }
+
 }

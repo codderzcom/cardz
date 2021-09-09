@@ -2,30 +2,29 @@
 
 namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Queries;
 
-class CardByIdRequest extends BaseWorkspaceQueryRequest
+class GetPlanRequest extends BaseWorkspaceQueryRequest
 {
     protected const RULES = [
-        'cardId' => 'required',
+        'planId' => 'required',
     ];
 
     protected const MESSAGES = [
-        'cardId.required' => 'cardId required',
+        'planId.required' => 'planId required',
     ];
 
-    public string $cardId;
+    public string $planId;
 
     public function passedValidation(): void
     {
         parent::passedValidation();
-        $this->cardId = $this->input('cardId');
+        $this->planId = $this->input('planId');
     }
 
     protected function prepareForValidation(): void
     {
         parent::prepareForValidation();
         $this->merge([
-            'cardId' => $this->route('cardId'),
+            'planId' => $this->route('planId'),
         ]);
     }
-
 }

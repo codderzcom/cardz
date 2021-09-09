@@ -3,7 +3,7 @@
 namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace;
 
 use App\Contexts\MobileAppBack\Application\Controllers\Web\BaseController;
-use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\AchievementCardCommandRequest;
+use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\AchievementCardRequest;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\CardCommandRequest;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\IssueCardRequest;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Queries\CardByCodeRequest;
@@ -74,7 +74,7 @@ class CardController extends BaseController
         ));
     }
 
-    public function noteAchievement(AchievementCardCommandRequest $request): JsonResponse
+    public function noteAchievement(AchievementCardRequest $request): JsonResponse
     {
         return $this->response($this->cardService->noteAchievement(
             $request->workspaceId,
@@ -83,7 +83,7 @@ class CardController extends BaseController
         ));
     }
 
-    public function dismissAchievement(AchievementCardCommandRequest $request): JsonResponse
+    public function dismissAchievement(AchievementCardRequest $request): JsonResponse
     {
         return $this->response($this->cardService->dismissAchievement(
             $request->workspaceId,
