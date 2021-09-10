@@ -8,6 +8,7 @@ use App\Contexts\MobileAppBack\Application\Controllers\Web\Customer\WorkspaceCon
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\CardController as MABCardController;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\PlanController as MABPlanController;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\WorkspaceController as MABWorkspaceController;
+use App\Contexts\Personal\Application\Controllers\Web\Person\PersonController;
 use App\Contexts\Plans\Application\Controllers\Web\Plan\PlanController;
 use App\Contexts\Workspaces\Application\Controllers\Web\Workspace\WorkspaceController;
 use Illuminate\Http\Request;
@@ -68,6 +69,11 @@ Route::group(['prefix' => '/workspaces/v1'], function () {
         Route::post('/', [WorkspaceController::class, 'add'])->name('AddWorkspace');
         Route::put('/{workspaceId}/profile', [WorkspaceController::class, 'changeProfile'])->name('ChangeWorkspaceProfile');
     });
+});
+
+Route::group(['prefix' => '/personal/v1/person/{personId}'], function () {
+    Route::post('/', [PersonController::class, 'join'])->name('JoinPerson');
+    Route::put('/name', [PersonController::class, 'changeName'])->name('ChangePersonName');
 });
 
 Route::group(['prefix' => '/mab/v1'], function () {

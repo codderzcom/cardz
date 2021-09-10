@@ -179,6 +179,7 @@ return [
         App\Contexts\Cards\CardsProvider::class,
         App\Contexts\MobileAppBack\MobileAppBackProvider::class,
         App\Contexts\Plans\PlansProvider::class,
+        App\Contexts\Personal\PersonalProvider::class,
         App\Contexts\Workspaces\WorkspacesProvider::class,
     ],
 
