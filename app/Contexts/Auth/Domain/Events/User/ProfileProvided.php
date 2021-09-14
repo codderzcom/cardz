@@ -3,7 +3,6 @@
 namespace App\Contexts\Auth\Domain\Events\User;
 
 use App\Contexts\Auth\Domain\Model\User\UserId;
-use App\Contexts\Auth\Domain\User\Events\BaseUserDomainEvent;
 use JetBrains\PhpStorm\Immutable;
 
 #[Immutable]

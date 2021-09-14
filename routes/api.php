@@ -1,5 +1,6 @@
 <?php
 
+use App\Contexts\Auth\Application\Controllers\Web\User\UserController;
 use App\Contexts\Cards\Application\Controllers\Web\BlockedCard\BlockedCardController;
 use App\Contexts\Cards\Application\Controllers\Web\Card\CardController;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Customer\CardController as MABCustomerCardController;
@@ -27,6 +28,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::group(['prefix' => '/auth/v1'], function () {
+    Route::post('/user/register', [UserController::class, 'register'])->name('RegisterUser');
 });
 
 Route::group(['prefix' => '/cards/v1'], function () {

@@ -97,4 +97,9 @@ class ServiceResult implements ServiceResultInterface
     {
         return !$this->code->equals(ServiceResultCode::OK());
     }
+
+    public function isOk(): bool
+    {
+        return $this->code->equals(ServiceResultCode::OK());
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Contexts\Auth\Infrastructure\Persistence;
 use App\Contexts\Auth\Application\Contracts\UserRepositoryInterface;
 use App\Contexts\Auth\Domain\Model\User\User;
 use App\Contexts\Auth\Domain\Model\User\UserId;
+use App\Contexts\Auth\Domain\Model\User\UserIdentity;
 use App\Models\User as EloquentUser;
 use ReflectionClass;
 
@@ -17,7 +18,7 @@ class UserRepository implements UserRepositoryInterface
         }
 
         EloquentUser::query()->updateOrCreate(
-            ['id' => (string) $user->getId()],
+            ['id' => (string) $user->userId],
             $this->userAsData($user)
         );
     }
@@ -32,11 +33,31 @@ class UserRepository implements UserRepositoryInterface
         return $this->userFromData($eloquentUser);
     }
 
+    public function takeWithIdentity(UserIdentity $userIdentity): ?User
+    {
+        $query = EloquentUser::query();
+        if ($userIdentity->getEmail() !== null) {
+            $query->where('email', '=' ,$userIdentity->getEmail());
+        }
+        if ($userIdentity->getPhone() !== null) {
+            $query->where('phone', '=' ,$userIdentity->getPhone());
+        }
+        /** @var EloquentUser $eloquentUser */
+        $eloquentUser = $query->first();
+        if ($eloquentUser === null) {
+            return null;
+        }
+        return $this->userFromData($eloquentUser);
+    }
+
     private function userAsData(User $user): array
     {
         $reflection = new ReflectionClass($user);
         $properties = [
             'registrationInitiated' => null,
+            'emailVerified' => null,
+            'password' => null,
+            'rememberToken' => null,
         ];
 
         foreach ($properties as $key => $property) {
@@ -51,7 +72,10 @@ class UserRepository implements UserRepositoryInterface
             'email' => $properties['email'],
             'phone' => $properties['phone'],
             'name' => $properties['name'],
+            'password' => $properties['password'],
+            'remember_token' => $properties['rememberToken'],
             'registration_initiated_at' => $properties['registrationInitiated'],
+            'email_verified_at' => $properties['emailVerified'],
         ];
 
         return $data;
@@ -70,7 +94,10 @@ class UserRepository implements UserRepositoryInterface
             $eloquentUser->email,
             $eloquentUser->phone,
             $eloquentUser->name,
-            $eloquentUser->registration_initiated_at
+            $eloquentUser->password,
+            $eloquentUser->getRememberToken(),
+            $eloquentUser->registration_initiated_at,
+            $eloquentUser->email_verified_at,
         );
         return $user;
     }

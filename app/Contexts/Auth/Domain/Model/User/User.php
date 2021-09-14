@@ -10,36 +10,39 @@ use JetBrains\PhpStorm\Pure;
 
 final class User extends AggregateRoot
 {
-    private ?Carbon $registrationInitiated = null;
-
     private ?Profile $profile = null;
 
+    private ?string $password = null;
+
+    private ?string $rememberToken = null;
+
+    private ?Carbon $registrationInitiated = null;
+
+    private ?Carbon $emailVerified = null;
+
     private function __construct(
+        public UserId $userId,
         public UserIdentity $identity,
     ) {
     }
 
     #[Pure]
-    public static function make(UserIdentity $identity): self
+    public static function make(UserId $userId, UserIdentity $identity): self
     {
-        return new self($identity);
+        return new self($userId, $identity);
     }
 
-    public function initiateRegistration(): RegistrationInitiated
+    public function initiateRegistration(string $password): RegistrationInitiated
     {
         $this->registrationInitiated = Carbon::now();
-        return RegistrationInitiated::with($this->getId());
+        $this->password = $password;
+        return RegistrationInitiated::with($this->userId);
     }
 
     public function provideProfile(Profile $profile): ProfileProvided
     {
         $this->profile = $profile;
-        return ProfileProvided::with($this->getId());
-    }
-
-    public function isRegistrationInitiated(): bool
-    {
-        return $this->registrationInitiated !== null;
+        return ProfileProvided::with($this->userId);
     }
 
     public function getProfile(): ?Profile
@@ -47,16 +50,32 @@ final class User extends AggregateRoot
         return $this->profile;
     }
 
-    public function getId(): UserId
+    public function isRegistrationInitiated(): bool
     {
-        return $this->identity->userId;
+        return $this->registrationInitiated !== null;
+    }
+
+    public function isEmailVerified(): bool
+    {
+        return $this->emailVerified !== null;
+    }
+
+    public function getRememberToken(): ?string
+    {
+        return $this->rememberToken;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
     }
 
     #[Pure]
     public function toArray(): array
     {
         return [
-            'userId' => (string) $this->identity,
+            'userId' => (string) $this->userId,
+            'identity' => (string) $this->identity,
             'email' => $this->identity->getEmail(),
             'phone' => $this->identity->getPhone(),
             'name' => $this->profile->getName(),
@@ -68,10 +87,17 @@ final class User extends AggregateRoot
         ?string $email,
         ?string $phone,
         ?string $name,
+        ?string $password,
+        ?string $rememberToken,
         ?Carbon $registrationInitiated,
-    ):void {
-        $this->identity = UserIdentity::of(UserId::of($userId), $email, $phone);
+        ?Carbon $emailVerified,
+    ): void {
+        $this->userId = UserId::of($userId);
+        $this->identity = UserIdentity::of($email, $phone);
         $this->profile = Profile::of($name);
+        $this->password = $password;
+        $this->rememberToken = $rememberToken;
         $this->registrationInitiated = $registrationInitiated;
+        $this->emailVerified = $emailVerified;
     }
 }

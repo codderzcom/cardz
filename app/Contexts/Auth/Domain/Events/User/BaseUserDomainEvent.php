@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contexts\Auth\Domain\User\Events;
+namespace App\Contexts\Auth\Domain\Events\User;
 
 use App\Contexts\Auth\Domain\Events\BaseDomainEvent;
 use App\Contexts\Auth\Domain\Model\User\UserId;
