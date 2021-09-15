@@ -125,6 +125,8 @@ Route::group(['prefix' => '/mab/v1'], function () {
         });
     });
 
+    Route::post('/customer/get-token', [MABCustomerController::class, 'getToken'])->name('MABCustomerGetToken');
+
     Route::group(['prefix' => '/customer/{customerId}'], function () {
         Route::get('/code', [MABCustomerController::class, 'generateCode'])->name('MABCustomerCode');
         Route::get('/cards', [MABCustomerCardController::class, 'getCards'])->name('MABCustomerCardListAll');
@@ -137,3 +139,4 @@ Route::group(['prefix' => '/mab/v1'], function () {
         });
     });
 });
+

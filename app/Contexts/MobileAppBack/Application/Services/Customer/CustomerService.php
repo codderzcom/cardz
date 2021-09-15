@@ -2,6 +2,7 @@
 
 namespace App\Contexts\MobileAppBack\Application\Services\Customer;
 
+use App\Contexts\Auth\Application\Services\UserAppService;
 use App\Contexts\MobileAppBack\Application\Contracts\CustomerWorkspaceReadStorageInterface;
 use App\Contexts\MobileAppBack\Application\Contracts\IssuedCardReadStorageInterface;
 use App\Contexts\MobileAppBack\Domain\Model\Card\CardCode;
@@ -18,6 +19,7 @@ class CustomerService
     public function __construct(
         private IssuedCardReadStorageInterface $issuedCardReadStorage,
         private CustomerWorkspaceReadStorageInterface $customerWorkspaceReadStorage,
+        private UserAppService $userAppService,
         private ServiceResultFactoryInterface $serviceResultFactory,
     ) {
     }
@@ -57,6 +59,17 @@ class CustomerService
     {
         $workspaces = $this->customerWorkspaceReadStorage->all();
         return $this->serviceResultFactory->ok($workspaces);
+    }
+
+    public function getToken(string $identity, string $password, string $deviceName): ServiceResultInterface
+    {
+        //ToDo: тут обращение к соседнему контексту.
+        $result = $this->userAppService->getToken($identity, $password, $deviceName);
+        if ($result->isNotOk()) {
+            return $this->serviceResultFactory->error("Unacceptable credentials");
+        }
+
+        return $this->serviceResultFactory->ok($result->getPayload());
     }
 }
 
