@@ -23,7 +23,7 @@ final class CardRevokedConsumer implements Informable
     {
         /** @var CardRevoked $event */
         $event = $reportable;
-        $this->reportingBus->report(new CardArchived($reportable->getInstanceId()));
+        $this->reportingBus->report(new CardArchived($event->getInstanceId()));
     }
 
 }

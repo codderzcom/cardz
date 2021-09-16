@@ -7,6 +7,7 @@ class ForceXmlHttpRequest
 {
     public function handle($request, Closure $next)
     {
+        $request->headers->set('Accept', 'application/json');
         $request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
         return $next($request);

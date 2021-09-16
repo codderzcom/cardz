@@ -23,7 +23,7 @@ final class CardCompletedConsumer implements Informable
     {
         /** @var CardCompleted $event */
         $event = $reportable;
-        $this->reportingBus->report(new CardArchived($reportable->getInstanceId()));
+        $this->reportingBus->report(new CardArchived($event->getInstanceId()));
     }
 
 }
