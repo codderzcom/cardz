@@ -2,6 +2,7 @@
 
 namespace App\Contexts\Plans\Domain\Model\Plan;
 
+use App\Contexts\Plans\Domain\Model\Requirement\Requirement;
 use App\Contexts\Plans\Domain\Model\Shared\ValueObject;
 use JetBrains\PhpStorm\Immutable;
 use JetBrains\PhpStorm\Pure;

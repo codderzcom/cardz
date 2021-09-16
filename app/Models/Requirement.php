@@ -14,6 +14,5 @@ class Requirement extends Model
 
     protected $casts = [
         'added_at' => 'datetime',
-        'removed_at' => 'datetime',
     ];
 }

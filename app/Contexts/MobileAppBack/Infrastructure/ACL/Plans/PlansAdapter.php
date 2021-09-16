@@ -79,9 +79,9 @@ class PlansAdapter
         return $this->serviceResultFactory->ok();
     }
 
-    public function changeRequirements(string $planId, string ...$descriptions): ServiceResultInterface
+    public function changeRequirement(string $planId, string $description): ServiceResultInterface
     {
-        $result = $this->planAppService->changeRequirements($planId, ...$descriptions);
+        $result = $this->planAppService->changeRequirement($planId, $description);
         if ($result->isNotOk()){
             return $result;
         }

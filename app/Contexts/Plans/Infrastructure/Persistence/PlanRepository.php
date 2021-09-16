@@ -10,7 +10,7 @@ use ReflectionClass;
 
 class PlanRepository implements PlanRepositoryInterface
 {
-    public function persist(?Plan $plan): void
+    public function persist(Plan $plan): void
     {
         if ($plan === null) {
             return;
@@ -22,11 +22,23 @@ class PlanRepository implements PlanRepositoryInterface
         );
     }
 
+    public function take(PlanId $planId): ?Plan
+    {
+        /** @var EloquentPlan $eloquentPlan */
+        $eloquentPlan = EloquentPlan::query()->where([
+            'id' => (string) $planId,
+            'archived_at' => null,
+        ])?->first();
+        if ($eloquentPlan === null) {
+            return null;
+        }
+        return $this->planFromData($eloquentPlan);
+    }
+
     private function planAsData(Plan $plan): array
     {
         $reflection = new ReflectionClass($plan);
         $properties = [
-            'requirements' => null,
             'added' => null,
             'launched' => null,
             'stopped' => null,
@@ -43,26 +55,12 @@ class PlanRepository implements PlanRepositoryInterface
             'id' => (string) $plan->planId,
             'workspace_id' => (string) $plan->workspaceId,
             'description' => (string) $plan->getDescription(),
-            'requirements' => $plan->getRequirements()->toArray(),
             'added_at' => $properties['added'],
             'launched_at' => $properties['launched'],
             'stopped_at' => $properties['stopped'],
             'archived_at' => $properties['archived'],
         ];
         return $data;
-    }
-
-    public function take(PlanId $planId): ?Plan
-    {
-        /** @var EloquentPlan $eloquentPlan */
-        $eloquentPlan = EloquentPlan::query()->where([
-            'id' => (string) $planId,
-            'archived_at' => null,
-        ])?->first();
-        if ($eloquentPlan === null) {
-            return null;
-        }
-        return $this->planFromData($eloquentPlan);
     }
 
     private function planFromData(EloquentPlan $eloquentPlan): Plan
@@ -73,13 +71,10 @@ class PlanRepository implements PlanRepositoryInterface
         /** @var Plan $plan */
         $plan = $reflection->newInstanceWithoutConstructor();
 
-        $requirements = is_string($eloquentPlan->requirements) ? json_try_decode($eloquentPlan->requirements) : $eloquentPlan->requirements;
-
         $creator?->invoke($plan,
             $eloquentPlan->id,
             $eloquentPlan->workspace_id,
             $eloquentPlan->description,
-            $requirements,
             $eloquentPlan->added_at,
             $eloquentPlan->launched_at,
             $eloquentPlan->stopped_at,

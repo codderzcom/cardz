@@ -22,19 +22,4 @@ final class ReadPlan
         public bool $isArchived,
     ) {
     }
-
-    #[Pure]
-    public static function of(Plan $plan): self
-    {
-        return new self(
-            (string) $plan->planId,
-            (string) $plan->workspaceId,
-            (string) $plan->getDescription(),
-            $plan->getRequirements()->toArray(),
-            $plan->isAdded(),
-            $plan->isLaunched(),
-            $plan->isStopped(),
-            $plan->isArchived(),
-        );
-    }
 }

@@ -11,6 +11,7 @@ use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\PlanControl
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\WorkspaceController as MABWorkspaceController;
 use App\Contexts\Personal\Application\Controllers\Web\Person\PersonController;
 use App\Contexts\Plans\Application\Controllers\Web\Plan\PlanController;
+use App\Contexts\Plans\Application\Controllers\Web\Requirement\RequirementController;
 use App\Contexts\Workspaces\Application\Controllers\Web\Workspace\WorkspaceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -63,9 +64,9 @@ Route::group(['prefix' => '/plans/v1'], function () {
 
         Route::put('/description', [PlanController::class, 'changeDescription'])->name('ChangePlanDescription');
 
-        Route::post('/requirement', [PlanController::class, 'addRequirement'])->name('AddPlanRequirement');
-        Route::delete('/requirement', [PlanController::class, 'removeRequirement'])->name('RemovePlanRequirement');
-        Route::put('/requirement', [PlanController::class, 'changeRequirements'])->name('ChangePlanRequirements');
+        Route::post('/requirement', [RequirementController::class, 'add'])->name('AddPlanRequirement');
+        Route::delete('/requirement', [RequirementController::class, 'remove'])->name('RemovePlanRequirement');
+        Route::put('/requirement', [RequirementController::class, 'change'])->name('ChangePlanRequirement');
     });
 });
 
@@ -126,7 +127,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
                 Route::post('/requirement', [MABPlanController::class, 'addRequirement'])->name('MABPlanAddRequirement');
                 Route::delete('/requirement', [MABPlanController::class, 'removeRequirement'])->name('MABPlanRemoveRequirement');
-                Route::put('/requirement', [MABPlanController::class, 'changeRequirements'])->name('MABPlanChangeRequirements');
+                Route::put('/requirement', [MABPlanController::class, 'changeRequirement'])->name('MABPlanChangeRequirement');
             });
         });
 
