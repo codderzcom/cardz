@@ -8,7 +8,7 @@ final class RegisterUserRequest extends FormRequest
 {
     public string $name;
     public string $password;
-    public string $email;
+    public ?string $email;
     public ?string $phone;
 
     public function rules(): array
@@ -16,7 +16,7 @@ final class RegisterUserRequest extends FormRequest
         return [
             'name' => 'required',
             'password' => 'required',
-            'email' => 'required',
+            'email' => 'required_without:phone',
         ];
     }
 
@@ -25,7 +25,7 @@ final class RegisterUserRequest extends FormRequest
         return [
             'name.required' => 'name required',
             'password.required' => 'password required',
-            'email.required' => 'email required',
+            'email.required_without' => 'email required if phone is not provided',
         ];
     }
 

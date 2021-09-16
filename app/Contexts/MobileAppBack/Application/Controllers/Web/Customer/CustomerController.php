@@ -5,6 +5,7 @@ namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Customer;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\BaseController;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Customer\Queries\GenerateCustomerCodeRequest;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Customer\Queries\GetTokenRequest;
+use App\Contexts\MobileAppBack\Application\Controllers\Web\Customer\Queries\RegisterRequest;
 use App\Contexts\MobileAppBack\Application\Services\Customer\CustomerService;
 use Illuminate\Http\JsonResponse;
 
@@ -26,6 +27,17 @@ class CustomerController extends BaseController
     {
         return $this->response($this->customerService->getToken(
             $request->identity,
+            $request->password,
+            $request->deviceName,
+        ));
+    }
+
+    public function register(RegisterRequest $request): JsonResponse
+    {
+        return $this->response($this->customerService->register(
+            $request->email,
+            $request->phone,
+            $request->name,
             $request->password,
             $request->deviceName,
         ));
