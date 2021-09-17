@@ -17,11 +17,11 @@ final class Achievements extends ValueObject
     }
 
     #[Pure]
-    public static function of(string ...$descriptions): self
+    public static function of(array ...$achievementsData): self
     {
         $achievements = [];
-        foreach ($descriptions as $description) {
-            $achievements[] = Achievement::of($description);
+        foreach ($achievementsData as $achievementData) {
+            $achievements[] = Achievement::of($achievementData[0], $achievementData[1]);
         }
         return new self(...$achievements);
     }
@@ -37,7 +37,7 @@ final class Achievements extends ValueObject
     {
         $data = [];
         foreach ($this->achievements as $achievement) {
-            $data[] = $achievement->getDescription();
+            $data[] = $achievement->toArray();
         }
         return $data;
     }

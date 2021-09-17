@@ -95,21 +95,21 @@ class CardAppService
         return $this->reportResult($result, $this->reportingBus);
     }
 
-    public function noteAchievement(string $cardId, string $achievementDescription): ServiceResultInterface
+    public function noteAchievement(string $cardId, string $achievementId, string $achievementDescription): ServiceResultInterface
     {
         $card = $this->cardRepository->take(CardId::of($cardId));
         if ($card === null) {
             return $this->resultFactory->notFound("Card $cardId not found");
         }
 
-        $card->noteAchievement(Achievement::of($achievementDescription));
+        $card->noteAchievement(Achievement::of($achievementId, $achievementDescription));
         $this->cardRepository->persist($card);
 
         $result = $this->resultFactory->ok($card, new AchievementNoted($card->cardId));
         return $this->reportResult($result, $this->reportingBus);
     }
 
-    public function dismissAchievement(string $cardId, string $achievementDescription): ServiceResultInterface
+    public function dismissAchievement(string $cardId, string $achievementId, string $achievementDescription): ServiceResultInterface
     {
         $card = $this->cardRepository->take(CardId::of($cardId));
         if ($card === null) {
@@ -118,12 +118,12 @@ class CardAppService
 
         $events = [];
 
-        $card->dismissAchievement(Achievement::of($achievementDescription));
+        $card->dismissAchievement(Achievement::of($achievementId, $achievementDescription));
         $events[] = new AchievementDismissed($card->cardId);
 
         if (!$card->isCompleted()
             && $card->isSatisfied()
-            && !$card->getRequirements()->copy()->filterRemaining($card->getAchievements())->isEmpty()
+            && !$card->getRequirements()->filterRemaining($card->getAchievements())->isEmpty()
         ) {
             $card->withdrawSatisfaction();
             $events[] = new CardSatisfactionWithdrawn($card->cardId);
@@ -134,7 +134,7 @@ class CardAppService
         return $this->reportResult($result, $this->reportingBus);
     }
 
-    public function acceptRequirements(string $cardId, string ...$requirements): ServiceResultInterface
+    public function acceptRequirements(string $cardId, array ...$requirements): ServiceResultInterface
     {
         $card = $this->cardRepository->take(CardId::of($cardId));
         if ($card === null) {
@@ -159,7 +159,7 @@ class CardAppService
             return $this->resultFactory->ok($card);
         }
 
-        $requirementsLeft = !$card->getRequirements()->copy()->filterRemaining($card->getAchievements())->isEmpty();
+        $requirementsLeft = !$card->getRequirements()->filterRemaining($card->getAchievements())->isEmpty();
 
         if ($requirementsLeft) {
             return $this->resultFactory->ok($card);

@@ -8,6 +8,7 @@ use App\Contexts\Cards\Application\Contracts\IssuedCardReadStorageInterface;
 use App\Contexts\Cards\Application\Controllers\Consumers\CardCompletedConsumer;
 use App\Contexts\Cards\Application\Controllers\Consumers\CardIssuedConsumer;
 use App\Contexts\Cards\Application\Controllers\Consumers\CardRevokedConsumer;
+use App\Contexts\Cards\Application\Controllers\Consumers\PlansRequirementDescriptionChangedConsumer;
 use App\Contexts\Cards\Application\Controllers\Consumers\PlansRequirementsChangedConsumer;
 use App\Contexts\Cards\Application\Controllers\Consumers\SatisfactionCheckRequiredConsumer;
 use App\Contexts\Cards\Infrastructure\Persistence\BlockedCardRepository;
@@ -31,6 +32,7 @@ class CardsProvider extends ServiceProvider
         $reportingBus->subscribe($this->app->make(CardIssuedConsumer::class));
         $reportingBus->subscribe($this->app->make(CardRevokedConsumer::class));
         $reportingBus->subscribe($this->app->make(PlansRequirementsChangedConsumer::class));
+        $reportingBus->subscribe($this->app->make(PlansRequirementDescriptionChangedConsumer::class));
         $reportingBus->subscribe($this->app->make(SatisfactionCheckRequiredConsumer::class));
     }
 }

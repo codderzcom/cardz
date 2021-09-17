@@ -6,7 +6,7 @@ use App\Contexts\MobileAppBack\Application\Controllers\Web\BaseController;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\{AddPlanRequest,
     AddPlanRequirementRequest,
     ChangePlanDescriptionRequest,
-    ChangePlanRequirementRequest,
+    ChangePlanRequirementDescriptionRequest,
     PlanCommandRequest,
     RemovePlanRequirementRequest};
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Queries\GetPlanRequest;
@@ -85,14 +85,15 @@ class PlanController extends BaseController
     {
         return $this->response($this->planService->removeRequirement(
             $request->planId,
-            $request->description,
+            $request->requirementId,
         ));
     }
 
-    public function changeRequirement(ChangePlanRequirementRequest $request): JsonResponse
+    public function changeRequirement(ChangePlanRequirementDescriptionRequest $request): JsonResponse
     {
         return $this->response($this->planService->changeRequirement(
             $request->planId,
+            $request->requirementId,
             $request->description,
         ));
     }

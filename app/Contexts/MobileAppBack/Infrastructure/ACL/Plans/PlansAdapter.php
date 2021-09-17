@@ -3,6 +3,7 @@
 namespace App\Contexts\MobileAppBack\Infrastructure\ACL\Plans;
 
 use App\Contexts\Plans\Application\Services\PlanAppService;
+use App\Contexts\Plans\Application\Services\RequirementAppService;
 use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
 use App\Contexts\Shared\Contracts\ServiceResultInterface;
 
@@ -11,6 +12,7 @@ class PlansAdapter
     //ToDo: здесь могло бы быть обращение по HTTP
     public function __construct(
         private PlanAppService $planAppService,
+        private RequirementAppService $requirementAppService,
         private ServiceResultFactoryInterface $serviceResultFactory,
     ) {
     }
@@ -63,25 +65,25 @@ class PlansAdapter
 
     public function addRequirement(string $planId, string $description): ServiceResultInterface
     {
-        $result = $this->planAppService->addRequirement($planId, $description);
+        $result = $this->requirementAppService->add($planId, $description);
         if ($result->isNotOk()){
             return $result;
         }
         return $this->serviceResultFactory->ok();
     }
 
-    public function removeRequirement(string $planId, string $description): ServiceResultInterface
+    public function removeRequirement(string $planId, string $requirementId): ServiceResultInterface
     {
-        $result = $this->planAppService->removeRequirement($planId, $description);
+        $result = $this->requirementAppService->remove($planId, $requirementId);
         if ($result->isNotOk()){
             return $result;
         }
         return $this->serviceResultFactory->ok();
     }
 
-    public function changeRequirement(string $planId, string $description): ServiceResultInterface
+    public function changeRequirement(string $planId, string $requirementId, string $description): ServiceResultInterface
     {
-        $result = $this->planAppService->changeRequirement($planId, $description);
+        $result = $this->requirementAppService->change($planId, $requirementId, $description);
         if ($result->isNotOk()){
             return $result;
         }

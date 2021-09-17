@@ -6,6 +6,7 @@ use App\Contexts\Plans\Application\Contracts\PlanRepositoryInterface;
 use App\Contexts\Plans\Application\Contracts\ReadPlanStorageInterface;
 use App\Contexts\Plans\Application\Contracts\RequirementRepositoryInterface;
 use App\Contexts\Plans\Application\Controllers\Consumers\PlanAddedConsumer;
+use App\Contexts\Plans\Application\Controllers\Consumers\RequirementsForPlanModifiedConsumer;
 use App\Contexts\Plans\Infrastructure\Persistence\PlanRepository;
 use App\Contexts\Plans\Infrastructure\Persistence\RequirementRepository;
 use App\Contexts\Plans\Infrastructure\ReadStorage\ReadPlanStorage;
@@ -24,5 +25,6 @@ class PlansProvider extends ServiceProvider
     public function boot(ReportingBusInterface $reportingBus)
     {
         $reportingBus->subscribe($this->app->make(PlanAddedConsumer::class));
+        $reportingBus->subscribe($this->app->make(RequirementsForPlanModifiedConsumer::class));
     }
 }

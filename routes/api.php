@@ -126,8 +126,8 @@ Route::middleware('auth:sanctum')->group(function () {
                 Route::put('/archive', [MABPlanController::class, 'archive'])->name('MABPlanStop');
 
                 Route::post('/requirement', [MABPlanController::class, 'addRequirement'])->name('MABPlanAddRequirement');
-                Route::delete('/requirement', [MABPlanController::class, 'removeRequirement'])->name('MABPlanRemoveRequirement');
-                Route::put('/requirement', [MABPlanController::class, 'changeRequirement'])->name('MABPlanChangeRequirement');
+                Route::delete('/requirement/{requirementId}', [MABPlanController::class, 'removeRequirement'])->name('MABPlanRemoveRequirement');
+                Route::put('/requirement/{requirementId}', [MABPlanController::class, 'changeRequirement'])->name('MABPlanChangeRequirement');
             });
         });
 

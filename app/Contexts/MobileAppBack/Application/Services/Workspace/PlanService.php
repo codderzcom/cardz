@@ -125,9 +125,9 @@ class PlanService
         return $this->serviceResultFactory->ok($plan);
     }
 
-    public function removeRequirement(string $planId, string $description): ServiceResultInterface
+    public function removeRequirement(string $planId, string $requirementId): ServiceResultInterface
     {
-        $result = $this->plansAdapter->removeRequirement($planId, $description);
+        $result = $this->plansAdapter->removeRequirement($planId, $requirementId);
         if ($result->isNotOk()) {
             return $result;
         }
@@ -140,9 +140,9 @@ class PlanService
         return $this->serviceResultFactory->ok($plan);
     }
 
-    public function changeRequirement(string $planId, string $description): ServiceResultInterface
+    public function changeRequirement(string $planId, string $requirementId, string $description): ServiceResultInterface
     {
-        $result = $this->plansAdapter->changeRequirement($planId, $description);
+        $result = $this->plansAdapter->changeRequirement($planId, $requirementId, $description);
         if ($result->isNotOk()) {
             return $result;
         }

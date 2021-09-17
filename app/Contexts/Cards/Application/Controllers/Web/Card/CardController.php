@@ -51,6 +51,7 @@ class CardController extends BaseController
     {
         return $this->response($this->cardAppService->noteAchievement(
             $request->cardId,
+            $request->achievementId,
             $request->achievementDescription,
         ));
     }
@@ -59,6 +60,7 @@ class CardController extends BaseController
     {
         return $this->response($this->cardAppService->dismissAchievement(
             $request->cardId,
+            $request->achievementId,
             $request->achievementDescription,
         ));
     }

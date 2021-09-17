@@ -6,6 +6,7 @@ use App\Contexts\MobileAppBack\Application\Contracts\WorkspacePlanReadStorageInt
 use App\Contexts\MobileAppBack\Domain\ReadModel\Workspace\BusinessWorkspace;
 use App\Contexts\MobileAppBack\Domain\ReadModel\Workspace\WorkspacePlan;
 use App\Models\Plan as EloquentPlan;
+use App\Models\Requirement as EloquentRequirement;
 
 class WorkspacePlanReadStorage implements WorkspacePlanReadStorageInterface
 {
@@ -16,8 +17,9 @@ class WorkspacePlanReadStorage implements WorkspacePlanReadStorageInterface
         if ($plan === null) {
             return null;
         }
+        $eloquentRequirements = EloquentRequirement::query()->where('plan_id', '=', $planId)->get() ?? [];
 
-        return $this->planFromEloquent($plan);
+        return $this->planFromEloquent($plan, ...$eloquentRequirements);
     }
 
     /**
@@ -36,10 +38,12 @@ class WorkspacePlanReadStorage implements WorkspacePlanReadStorageInterface
         return $workspacePlans;
     }
 
-    private function planFromEloquent(EloquentPlan $plan): WorkspacePlan
+    private function planFromEloquent(EloquentPlan $plan, EloquentRequirement ...$eloquentRequirements): WorkspacePlan
     {
-        $requirements = is_string($plan->requirements) ? json_try_decode($plan->requiremets) : $plan->requirements;
-
+        $requirements = [];
+        foreach ($eloquentRequirements as $eloquentRequirement) {
+            $requirements[] = [$eloquentRequirement->id, $eloquentRequirement->description];
+        }
         return WorkspacePlan::make(
             $plan->id,
             $plan->workspace_id,
