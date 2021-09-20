@@ -3,6 +3,7 @@
 namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace;
 
 use App\Contexts\MobileAppBack\Application\Controllers\Web\BaseController;
+use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\DismissAchievementCardRequest;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\AchievementCardRequest;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\CardCommandRequest;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\IssueCardRequest;
@@ -32,7 +33,7 @@ class CardController extends BaseController
         ));
     }
 
-    public function issueCard(IssueCardRequest $request): JsonResponse
+    public function issue(IssueCardRequest $request): JsonResponse
     {
         return $this->response($this->cardService->issue(
             $request->workspaceId,
@@ -42,7 +43,7 @@ class CardController extends BaseController
         ));
     }
 
-    public function completeCard(CardCommandRequest $request): JsonResponse
+    public function complete(CardCommandRequest $request): JsonResponse
     {
         return $this->response($this->cardService->complete(
             $request->workspaceId,
@@ -50,7 +51,7 @@ class CardController extends BaseController
         ));
     }
 
-    public function revokeCard(CardCommandRequest $request): JsonResponse
+    public function revoke(CardCommandRequest $request): JsonResponse
     {
         return $this->response($this->cardService->revoke(
             $request->workspaceId,
@@ -58,7 +59,7 @@ class CardController extends BaseController
         ));
     }
 
-    public function blockCard(CardCommandRequest $request): JsonResponse
+    public function block(CardCommandRequest $request): JsonResponse
     {
         return $this->response($this->cardService->block(
             $request->workspaceId,
@@ -66,7 +67,7 @@ class CardController extends BaseController
         ));
     }
 
-    public function unblockCard(CardCommandRequest $request): JsonResponse
+    public function unblock(CardCommandRequest $request): JsonResponse
     {
         return $this->response($this->cardService->unblock(
             $request->workspaceId,
@@ -79,6 +80,7 @@ class CardController extends BaseController
         return $this->response($this->cardService->noteAchievement(
             $request->workspaceId,
             $request->cardId,
+            $request->achievementId,
             $request->description,
         ));
     }
@@ -88,6 +90,7 @@ class CardController extends BaseController
         return $this->response($this->cardService->dismissAchievement(
             $request->workspaceId,
             $request->cardId,
+            $request->achievementId,
             $request->description,
         ));
     }

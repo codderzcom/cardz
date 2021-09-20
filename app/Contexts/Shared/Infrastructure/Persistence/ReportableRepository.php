@@ -10,7 +10,8 @@ class ReportableRepository
     public function persist(Reportable $reportable): void
     {
         $eloquentReportable = new EloquentReportable();
-        $eloquentReportable->data = (string) $reportable;
+        $eloquentReportable->name = (string) $reportable;
+        $eloquentReportable->data = $reportable->payload();
         $eloquentReportable->save([
 
         ]);

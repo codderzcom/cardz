@@ -25,7 +25,7 @@ final class PlansRequirementDescriptionChangedConsumer implements Informable
     {
         /** @var PlansRequirementChanged $event */
         $event = $reportable;
-        $requirementId = $event->getInstanceId();
+        $requirementId = $event->id();
         $requirement = EloquentRequirement::query()->find($requirementId);
         if ($requirement === null) {
             return;

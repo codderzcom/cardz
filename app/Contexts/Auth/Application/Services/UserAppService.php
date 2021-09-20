@@ -10,6 +10,7 @@ use App\Contexts\Auth\Domain\Model\User\Profile;
 use App\Contexts\Auth\Domain\Model\User\User;
 use App\Contexts\Auth\Domain\Model\User\UserId;
 use App\Contexts\Auth\Domain\Model\User\UserIdentity;
+use App\Contexts\Auth\Domain\ReadModel\Token;
 use App\Contexts\Shared\Contracts\ReportingBusInterface;
 use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
 use App\Contexts\Shared\Contracts\ServiceResultInterface;
@@ -66,7 +67,10 @@ class UserAppService
         }
 
         $token = $eloquentUser->createToken($deviceName)->plainTextToken;
-        $result = $this->serviceResultFactory->ok($token, new TokenGenerated($eloquentUser->id));
+        $result = $this->serviceResultFactory->ok(
+            new Token($eloquentUser->id, $token),
+            new TokenGenerated($eloquentUser->id)
+        );
 
         return $this->reportResult($result, $this->reportingBus);
     }

@@ -3,7 +3,12 @@
 namespace App\Contexts\Cards\Application\Controllers\Web\Card;
 
 use App\Contexts\Cards\Application\Controllers\Web\BaseController;
-use App\Contexts\Cards\Application\Controllers\Web\Card\Commands\{AchievementRequest, BlockCardRequest, CompleteCardRequest, IssueCardRequest, RevokeCardRequest};
+use App\Contexts\Cards\Application\Controllers\Web\Card\Commands\{DismissAchievementRequest,
+    NoteAchievementRequest,
+    BlockCardRequest,
+    CompleteCardRequest,
+    IssueCardRequest,
+    RevokeCardRequest};
 use App\Contexts\Cards\Application\Controllers\Web\Card\Queries\GetIssuedCardRequest;
 use App\Contexts\Cards\Application\Services\CardAppService;
 use App\Contexts\Cards\Application\Services\ReadIssuedCardAppService;
@@ -47,7 +52,7 @@ class CardController extends BaseController
         ));
     }
 
-    public function addAchievement(AchievementRequest $request): JsonResponse
+    public function addAchievement(NoteAchievementRequest $request): JsonResponse
     {
         return $this->response($this->cardAppService->noteAchievement(
             $request->cardId,
@@ -56,12 +61,11 @@ class CardController extends BaseController
         ));
     }
 
-    public function removeAchievement(AchievementRequest $request): JsonResponse
+    public function removeAchievement(DismissAchievementRequest $request): JsonResponse
     {
         return $this->response($this->cardAppService->dismissAchievement(
             $request->cardId,
             $request->achievementId,
-            $request->achievementDescription,
         ));
     }
 

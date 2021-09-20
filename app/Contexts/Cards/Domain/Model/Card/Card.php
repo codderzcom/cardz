@@ -92,9 +92,9 @@ final class Card extends AggregateRoot
         return AchievementNoted::with($this->cardId);
     }
 
-    public function dismissAchievement(Achievement $achievement): AchievementDismissed
+    public function dismissAchievement(string $achievementId): AchievementDismissed
     {
-        $this->achievements = $this->achievements->remove($achievement);
+        $this->achievements = $this->achievements->removeById($achievementId);
         return AchievementDismissed::with($this->cardId);
     }
 

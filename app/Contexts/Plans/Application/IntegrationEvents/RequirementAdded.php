@@ -5,7 +5,6 @@ namespace App\Contexts\Plans\Application\IntegrationEvents;
 use JetBrains\PhpStorm\Immutable;
 
 #[Immutable]
-class RequirementAdded extends BaseIntegrationEvent
+final class RequirementAdded extends RequirementOfPlan
 {
-    protected ?string $instanceOf = 'Requirement';
 }

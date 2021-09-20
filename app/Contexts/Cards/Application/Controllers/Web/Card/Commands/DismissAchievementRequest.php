@@ -2,16 +2,14 @@
 
 namespace App\Contexts\Cards\Application\Controllers\Web\Card\Commands;
 
-final class AchievementRequest extends BaseCommandRequest
+final class DismissAchievementRequest extends BaseCommandRequest
 {
     protected const RULES = [
         'achievementId' => 'required',
-        'description' => 'required',
     ];
 
     protected const MESSAGES = [
         'achievementId.required' => 'achievementId required',
-        'description.required' => 'achievement description required',
     ];
 
     public string $achievementId;
@@ -22,6 +20,5 @@ final class AchievementRequest extends BaseCommandRequest
     {
         parent::passedValidation();
         $this->achievementId = $this->input('achievementId');
-        $this->achievementDescription = $this->input('description');
     }
 }

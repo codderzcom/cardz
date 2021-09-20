@@ -28,7 +28,7 @@ final class SatisfactionCheckRequiredConsumer implements Informable
     public function inform(Reportable $reportable): void
     {
         $event = $reportable;
-        $this->cardAppService->checkSatisfaction($event->getInstanceId());
+        $this->cardAppService->checkSatisfaction($event->id());
     }
 
 }

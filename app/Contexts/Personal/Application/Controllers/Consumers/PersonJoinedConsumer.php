@@ -23,6 +23,6 @@ final class PersonJoinedConsumer implements Informable
     {
         /** @var PersonJoined $event */
         $event = $reportable;
-        $this->reportingBus->report(new PersonNameFilled($event->getInstanceId()));
+        $this->reportingBus->report(new PersonNameFilled($event->id()));
     }
 }

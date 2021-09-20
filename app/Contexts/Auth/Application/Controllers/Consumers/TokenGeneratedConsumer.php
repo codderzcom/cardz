@@ -25,12 +25,12 @@ final class TokenGeneratedConsumer implements Informable
         $event = $reportable;
         /** @var Model $tokenModel */
         $tokenModel = Sanctum::$personalAccessTokenModel;
-        $token = $tokenModel::query()->where('tokenable_id', '=', $event->getInstanceId())->latest()->first();
+        $token = $tokenModel::query()->where('tokenable_id', '=', $event->id())->latest()->first();
         if ($token === null) {
             return;
         }
         $tokenModel::query()
-            ->where('tokenable_id', '=', $event->getInstanceId())
+            ->where('tokenable_id', '=', $event->id())
             ->where('name', '=', $token->name)
             ->whereNotIn('id', [$token->id])
             ->delete();

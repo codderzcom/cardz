@@ -7,5 +7,7 @@ use JetBrains\PhpStorm\Immutable;
 #[Immutable]
 final class CardUnblocked extends BaseIntegrationEvent
 {
-    protected ?string $instanceOf = 'Card';
+    protected string $in = 'Cards';
+
+    protected string $of = 'Card';
 }

@@ -109,7 +109,7 @@ class CardAppService
         return $this->reportResult($result, $this->reportingBus);
     }
 
-    public function dismissAchievement(string $cardId, string $achievementId, string $achievementDescription): ServiceResultInterface
+    public function dismissAchievement(string $cardId, string $achievementId): ServiceResultInterface
     {
         $card = $this->cardRepository->take(CardId::of($cardId));
         if ($card === null) {
@@ -118,7 +118,7 @@ class CardAppService
 
         $events = [];
 
-        $card->dismissAchievement(Achievement::of($achievementId, $achievementDescription));
+        $card->dismissAchievement($achievementId);
         $events[] = new AchievementDismissed($card->cardId);
 
         if (!$card->isCompleted()

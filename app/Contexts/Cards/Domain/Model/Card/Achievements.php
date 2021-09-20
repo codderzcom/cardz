@@ -62,6 +62,18 @@ final class Achievements extends ValueObject
         return new self(...$achievements);
     }
 
+    public function removeById(string $achievementId): self
+    {
+        $achievements = $this->achievements;
+        foreach ($achievements as $index => $presentAchievement) {
+            if ($presentAchievement->getId() === $achievementId) {
+                unset($achievements[$index]);
+                break;
+            }
+        }
+        return new self(...$achievements);
+    }
+
     public function filterRemaining(self $achievements): self
     {
         $currentAchievements = $this->achievements;

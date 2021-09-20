@@ -6,40 +6,33 @@ use App\Contexts\Shared\Contracts\Reportable;
 
 abstract class BaseIntegrationEvent implements Reportable
 {
-    protected ?string $instanceOf = null;
+    protected string $in = 'N/A';
 
-    public function __construct(protected ?string $instanceId)
-    {
+    protected string $of = 'N/A';
+
+    public function __construct(
+        protected string $id
+    ) {
     }
 
     public function __toString(): string
     {
-        return $this->toJSON();
+        return substr(strrchr('\\' . get_class($this), '\\'), 1)
+            . ' in ' . $this->in
+            . ' of ' . $this->of;
     }
 
-    public function toJSON(): string
+    public function id(): string
     {
-        return json_try_encode($this->toArray());
+        return $this->id;
     }
 
-    protected function toArray(): array
+    public function payload(): array
     {
         return [
-            'instance' => [
-                'id' => $this->instanceId,
-                'of' => $this->instanceOf,
-            ],
-            'happened' => static::class,
+            'id' => $this->id,
+            'of' => $this->of,
+            'in' => $this->in,
         ];
-    }
-
-    public function getInstanceId(): ?string
-    {
-        return $this->instanceId;
-    }
-
-    public function getInstanceOf(): ?string
-    {
-        return $this->instanceOf;
     }
 }

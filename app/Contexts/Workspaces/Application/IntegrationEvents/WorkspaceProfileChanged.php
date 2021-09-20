@@ -7,5 +7,7 @@ use JetBrains\PhpStorm\Immutable;
 #[Immutable]
 final class WorkspaceProfileChanged extends BaseIntegrationEvent
 {
-    protected ?string $instanceOf = 'Workspace';
+    protected string $in = 'Workspaces';
+
+    protected string $of = 'Workspace';
 }

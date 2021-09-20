@@ -64,18 +64,18 @@ class CardsAdapter
         return $this->serviceResultFactory->ok();
     }
 
-    public function noteAchievement(string $cardId, string $description): ServiceResultInterface
+    public function noteAchievement(string $cardId, string $achievementId, string $description): ServiceResultInterface
     {
-        $result = $this->cardAppService->noteAchievement($cardId, $description);
+        $result = $this->cardAppService->noteAchievement($cardId, $achievementId, $description);
         if ($result->isNotOk()){
             return $result;
         }
         return $this->serviceResultFactory->ok();
     }
 
-    public function dismissAchievement(string $cardId, string $description): ServiceResultInterface
+    public function dismissAchievement(string $cardId, string $achievementId, string $description): ServiceResultInterface
     {
-        $result = $this->cardAppService->dismissAchievement($cardId, $description);
+        $result = $this->cardAppService->dismissAchievement($cardId, $achievementId, $description);
         if ($result->isNotOk()){
             return $result;
         }

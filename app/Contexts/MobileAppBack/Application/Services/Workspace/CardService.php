@@ -135,13 +135,13 @@ class CardService
         return $this->serviceResultFactory->ok($card);
     }
 
-    public function noteAchievement(string $workspaceId, string $cardId, string $description): ServiceResultInterface
+    public function noteAchievement(string $workspaceId, string $cardId, string $achievementId, string $description): ServiceResultInterface
     {
         if (!AssertCardInWorkspace::of(CardId::of($cardId), WorkspaceId::of($workspaceId))->assert()) {
             return $this->serviceResultFactory->violation("Illegal workspace");
         }
 
-        $result = $this->cardsAdapter->noteAchievement($cardId, $description);
+        $result = $this->cardsAdapter->noteAchievement($cardId, $achievementId, $description);
         if ($result->isNotOk()) {
             return $result;
         }
@@ -154,13 +154,13 @@ class CardService
         return $this->serviceResultFactory->ok($card);
     }
 
-    public function dismissAchievement(string $workspaceId, string $cardId,  string $description): ServiceResultInterface
+    public function dismissAchievement(string $workspaceId, string $cardId,  string $achievementId, string $description): ServiceResultInterface
     {
         if (!AssertCardInWorkspace::of(CardId::of($cardId), WorkspaceId::of($workspaceId))->assert()) {
             return $this->serviceResultFactory->violation("Illegal workspace");
         }
 
-        $result = $this->cardsAdapter->dismissAchievement($cardId, $description);
+        $result = $this->cardsAdapter->dismissAchievement($cardId, $achievementId, $description);
         if ($result->isNotOk()) {
             return $result;
         }

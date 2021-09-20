@@ -133,7 +133,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::group(['prefix' => '/customer/{customerId}'], function () {
             Route::get('/code', [MABCustomerController::class, 'generateCode'])->name('MABCustomerCode');
-            Route::get('/cards', [MABCustomerCardController::class, 'getCards'])->name('MABCustomerCardListAll');
+            Route::get('/card', [MABCustomerCardController::class, 'getCards'])->name('MABCustomerCardListAll');
 
             Route::get('/workspaces', [MABCustomerWorkspaceController::class, 'all'])->name('MABCustomerWorkspaceListAll');
 

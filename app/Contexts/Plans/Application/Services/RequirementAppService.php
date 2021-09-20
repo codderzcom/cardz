@@ -38,7 +38,7 @@ class RequirementAppService
         $requirement->add();
         $this->requirementRepository->persist($requirement);
 
-        $result = $this->resultFactory->ok($plan, new RequirementAdded($requirement->requirementId));
+        $result = $this->resultFactory->ok($plan, new RequirementAdded($requirement->requirementId, $requirement->planId));
         return $this->reportResult($result, $this->reportingBus);
     }
 
@@ -60,7 +60,7 @@ class RequirementAppService
         $requirement->remove();
         $this->requirementRepository->remove($requirement);
 
-        $result = $this->resultFactory->ok($plan, new RequirementRemoved($requirement->requirementId));
+        $result = $this->resultFactory->ok($plan, new RequirementRemoved($requirement->requirementId, $requirement->planId));
         return $this->reportResult($result, $this->reportingBus);
     }
 
@@ -82,7 +82,7 @@ class RequirementAppService
         $requirement->change($description);
         $this->requirementRepository->persist($requirement);
 
-        $result = $this->resultFactory->ok($plan, new RequirementChanged($plan->planId));
+        $result = $this->resultFactory->ok($plan, new RequirementChanged($requirement->requirementId, $plan->planId));
         return $this->reportResult($result, $this->reportingBus);
     }
 

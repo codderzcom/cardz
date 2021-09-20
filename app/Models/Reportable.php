@@ -9,4 +9,8 @@ class Reportable extends Model
     public $table = 'reportables';
 
     protected $guarded = [];
+
+    protected $casts = [
+        'data' => 'array',
+    ];
 }
