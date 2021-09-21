@@ -134,6 +134,19 @@ class CardAppService
         return $this->reportResult($result, $this->reportingBus);
     }
 
+    public function fixAchievementDescription(string $cardId, string $achievementId, string $achievementDescription): ServiceResultInterface
+    {
+        $card = $this->cardRepository->take(CardId::of($cardId));
+        if ($card === null) {
+            return $this->resultFactory->notFound("Card $cardId not found");
+        }
+
+        $card->fixAchievementDescription(Achievement::of($achievementId, $achievementDescription));
+        $this->cardRepository->persist($card);
+
+        return $this->resultFactory->ok();
+    }
+
     public function acceptRequirements(string $cardId, array ...$requirements): ServiceResultInterface
     {
         $card = $this->cardRepository->take(CardId::of($cardId));

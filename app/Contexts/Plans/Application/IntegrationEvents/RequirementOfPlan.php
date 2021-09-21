@@ -28,9 +28,12 @@ class RequirementOfPlan extends BaseIntegrationEvent
 
     public function payload(): array
     {
-        return [
-            'planId' => $this->planId,
-        ];
+        return array_merge(
+            parent::payload(),
+            [
+                'planId' => $this->planId,
+            ]
+        );
     }
 
 }

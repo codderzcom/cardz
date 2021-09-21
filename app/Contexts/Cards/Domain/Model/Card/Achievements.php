@@ -54,9 +54,21 @@ final class Achievements extends ValueObject
     {
         $achievements = $this->achievements;
         foreach ($achievements as $index => $presentAchievement) {
-            if ($achievement->equals($presentAchievement)) {
+            if ($presentAchievement->equals($achievement)) {
                 unset($achievements[$index]);
                 break;
+            }
+        }
+        return new self(...$achievements);
+    }
+
+    #[Pure]
+    public function replace(Achievement $achievement): self
+    {
+        $achievements = $this->achievements;
+        foreach ($achievements as $index => $presentAchievement) {
+            if ($presentAchievement->equals($achievement)) {
+                $achievements[$index] = $achievement;
             }
         }
         return new self(...$achievements);

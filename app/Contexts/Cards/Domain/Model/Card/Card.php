@@ -2,6 +2,7 @@
 
 namespace App\Contexts\Cards\Domain\Model\Card;
 
+use App\Contexts\Cards\Domain\Events\Card\AchievementDescriptionFixed;
 use App\Contexts\Cards\Domain\Events\Card\AchievementDismissed;
 use App\Contexts\Cards\Domain\Events\Card\AchievementNoted;
 use App\Contexts\Cards\Domain\Events\Card\BaseCardDomainEvent;
@@ -104,6 +105,13 @@ final class Card extends AggregateRoot
             $this->requirements = $requirements;
         }
         return RequirementsAccepted::with($this->cardId);
+    }
+
+    public function fixAchievementDescription(Achievement $achievement): AchievementDescriptionFixed
+    {
+        $this->achievements = $this->achievements->replace($achievement);
+        $this->requirements = $this->requirements->replace($achievement);
+        return AchievementDescriptionFixed::with($this->cardId);
     }
 
     public function getDescription(): ?Description
