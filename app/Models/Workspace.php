@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Workspace extends Model
 {
@@ -16,4 +17,9 @@ class Workspace extends Model
         'added_at' => 'datetime',
         'profile' => 'array',
     ];
+
+    public function plans(): HasMany
+    {
+        return $this->hasMany(Plan::class);
+    }
 }

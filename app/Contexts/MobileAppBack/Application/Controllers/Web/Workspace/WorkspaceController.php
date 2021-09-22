@@ -27,6 +27,7 @@ class WorkspaceController extends BaseController
     public function getWorkspace(GetWorkspaceRequest $request): JsonResponse
     {
         return $this->response($this->workspaceService->getBusinessWorkspace(
+            $request->keeperId,
             $request->workspaceId,
         ));
     }
@@ -44,6 +45,7 @@ class WorkspaceController extends BaseController
     public function changeWorkspaceProfile(ChangeWorkspaceProfileRequest $request): JsonResponse
     {
         return $this->response($this->workspaceService->changeProfile(
+            $request->keeperId,
             $request->workspaceId,
             $request->name,
             $request->description,

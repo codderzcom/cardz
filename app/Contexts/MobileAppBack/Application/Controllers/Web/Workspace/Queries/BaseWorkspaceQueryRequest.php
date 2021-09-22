@@ -8,13 +8,17 @@ class BaseWorkspaceQueryRequest extends FormRequest
 {
     protected const RULES = [
         'workspaceId' => 'required',
+        'keeperId' => 'required',
     ];
 
     protected const MESSAGES = [
         'workspaceId.required' => 'workspaceId required',
+        'keeperId.required' => 'keeperId required',
     ];
 
     public string $workspaceId;
+
+    public string $keeperId;
 
     public function rules(): array
     {
@@ -29,12 +33,14 @@ class BaseWorkspaceQueryRequest extends FormRequest
     public function passedValidation(): void
     {
         $this->workspaceId = $this->input('workspaceId');
+        $this->keeperId = $this->input('keeperId');
     }
 
     protected function prepareForValidation(): void
     {
         $this->merge([
             'workspaceId' => $this->route('workspaceId'),
+            'keeperId' => $this->user()->id,
         ]);
     }
 

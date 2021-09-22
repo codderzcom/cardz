@@ -30,7 +30,7 @@ class KeeperQueryRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'keeperId' => $this->route('keeperId'),
+            'keeperId' => $this->user()->id,
         ]);
     }
 

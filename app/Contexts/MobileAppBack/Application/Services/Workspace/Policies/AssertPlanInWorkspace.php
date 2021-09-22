@@ -2,7 +2,7 @@
 
 namespace App\Contexts\MobileAppBack\Application\Services\Workspace\Policies;
 
-use App\Contexts\MobileAppBack\Domain\Model\Plan\PlanId;
+use App\Contexts\MobileAppBack\Domain\Model\Workspace\PlanId;
 use App\Contexts\MobileAppBack\Domain\Model\Workspace\WorkspaceId;
 use App\Contexts\Shared\Contracts\PolicyAssertionInterface;
 use App\Models\Plan as EloquentPlan;

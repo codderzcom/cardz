@@ -2,8 +2,6 @@
 
 namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Queries;
 
-use App\Contexts\MobileAppBack\Application\Controllers\Web\Customer\Queries\BaseWorkspaceQueryRequest;
-
 class CardByCodeRequest extends BaseWorkspaceQueryRequest
 {
     protected const RULES = [

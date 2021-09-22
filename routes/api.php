@@ -82,13 +82,12 @@ Route::group(['prefix' => '/personal/v1/person/{personId}'], function () {
     Route::put('/name', [PersonController::class, 'changeName'])->name('ChangePersonName');
 });
 
-Route::post('/mab/v1/customer/get-token', [MABCustomerController::class, 'getToken'])->name('MABCustomerGetToken');
-Route::post('/mab/v1/customer/register', [MABCustomerController::class, 'register'])->name('MABCustomerRegister');
+Route::group(['prefix' => '/mab/v1'], function () {
+    Route::post('/customer/get-token', [MABCustomerController::class, 'getToken'])->name('MABCustomerGetToken');
+    Route::post('/customer/register', [MABCustomerController::class, 'register'])->name('MABCustomerRegister');
 
-
-Route::middleware('auth:sanctum')->group(function () {
-    Route::group(['prefix' => '/mab/v1'], function () {
-        Route::get('/workspace/for-keeper/{keeperId}', [MABWorkspaceController::class, 'getWorkspacesForKeeper'])->name('MABWorkspaceListAll');
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/workspace', [MABWorkspaceController::class, 'getWorkspacesForKeeper'])->name('MABWorkspaceListAll');
         Route::post('/workspace', [MABWorkspaceController::class, 'addWorkspace'])->name('MABWorkspaceAdd');
 
         Route::group(['prefix' => '/workspace/{workspaceId}'], function () {
@@ -131,7 +130,7 @@ Route::middleware('auth:sanctum')->group(function () {
             });
         });
 
-        Route::group(['prefix' => '/customer/{customerId}'], function () {
+        Route::group(['prefix' => '/customer'], function () {
             Route::get('/code', [MABCustomerController::class, 'generateCode'])->name('MABCustomerCode');
             Route::get('/card', [MABCustomerCardController::class, 'getCards'])->name('MABCustomerCardListAll');
 
