@@ -31,4 +31,9 @@ class GuidBasedImmutableId implements Stringable
     {
         return $this->id;
     }
+
+    final public function equals(self $immutableId): bool
+    {
+        return $this->id === $immutableId->id;
+    }
 }

@@ -17,11 +17,11 @@ final class Achievements extends ValueObject
     }
 
     #[Pure]
-    public static function of(string ...$descriptions): self
+    public static function of(array ...$achievementsData): self
     {
         $achievements = [];
-        foreach ($descriptions as $description) {
-            $achievements[] = Achievement::of($description);
+        foreach ($achievementsData as $achievementData) {
+            $achievements[] = Achievement::of($achievementData[0], $achievementData[1]);
         }
         return new self(...$achievements);
     }
@@ -37,7 +37,7 @@ final class Achievements extends ValueObject
     {
         $data = [];
         foreach ($this->achievements as $achievement) {
-            $data[] = $achievement->getDescription();
+            $data[] = $achievement->toArray();
         }
         return $data;
     }
@@ -54,7 +54,31 @@ final class Achievements extends ValueObject
     {
         $achievements = $this->achievements;
         foreach ($achievements as $index => $presentAchievement) {
-            if ($achievement->equals($presentAchievement)) {
+            if ($presentAchievement->equals($achievement)) {
+                unset($achievements[$index]);
+                break;
+            }
+        }
+        return new self(...$achievements);
+    }
+
+    #[Pure]
+    public function replace(Achievement $achievement): self
+    {
+        $achievements = $this->achievements;
+        foreach ($achievements as $index => $presentAchievement) {
+            if ($presentAchievement->equals($achievement)) {
+                $achievements[$index] = $achievement;
+            }
+        }
+        return new self(...$achievements);
+    }
+
+    public function removeById(string $achievementId): self
+    {
+        $achievements = $this->achievements;
+        foreach ($achievements as $index => $presentAchievement) {
+            if ($presentAchievement->getId() === $achievementId) {
                 unset($achievements[$index]);
                 break;
             }

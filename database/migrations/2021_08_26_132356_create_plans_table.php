@@ -18,7 +18,6 @@ class CreatePlansTable extends Migration
             $table->uuid('workspace_id')->index();
 
             $table->string('description')->nullable();
-            $table->jsonb('requirements')->nullable();
 
             $table->dateTime('added_at')->nullable()->index();
             $table->dateTime('launched_at')->nullable()->index();

@@ -7,5 +7,7 @@ use JetBrains\PhpStorm\Immutable;
 #[Immutable]
 final class UserNameProvided extends BaseIntegrationEvent
 {
-    protected ?string $instanceOf = 'User';
+    protected string $in = 'Auth';
+
+    protected string $of = 'User';
 }

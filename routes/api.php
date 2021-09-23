@@ -11,6 +11,7 @@ use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\PlanControl
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\WorkspaceController as MABWorkspaceController;
 use App\Contexts\Personal\Application\Controllers\Web\Person\PersonController;
 use App\Contexts\Plans\Application\Controllers\Web\Plan\PlanController;
+use App\Contexts\Plans\Application\Controllers\Web\Requirement\RequirementController;
 use App\Contexts\Workspaces\Application\Controllers\Web\Workspace\WorkspaceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -63,9 +64,9 @@ Route::group(['prefix' => '/plans/v1'], function () {
 
         Route::put('/description', [PlanController::class, 'changeDescription'])->name('ChangePlanDescription');
 
-        Route::post('/requirement', [PlanController::class, 'addRequirement'])->name('AddPlanRequirement');
-        Route::delete('/requirement', [PlanController::class, 'removeRequirement'])->name('RemovePlanRequirement');
-        Route::put('/requirement', [PlanController::class, 'changeRequirements'])->name('ChangePlanRequirements');
+        Route::post('/requirement', [RequirementController::class, 'add'])->name('AddPlanRequirement');
+        Route::delete('/requirement', [RequirementController::class, 'remove'])->name('RemovePlanRequirement');
+        Route::put('/requirement', [RequirementController::class, 'change'])->name('ChangePlanRequirement');
     });
 });
 
@@ -81,13 +82,12 @@ Route::group(['prefix' => '/personal/v1/person/{personId}'], function () {
     Route::put('/name', [PersonController::class, 'changeName'])->name('ChangePersonName');
 });
 
-Route::post('/mab/v1/customer/get-token', [MABCustomerController::class, 'getToken'])->name('MABCustomerGetToken');
-Route::post('/mab/v1/customer/register', [MABCustomerController::class, 'register'])->name('MABCustomerRegister');
+Route::group(['prefix' => '/mab/v1'], function () {
+    Route::post('/customer/get-token', [MABCustomerController::class, 'getToken'])->name('MABCustomerGetToken');
+    Route::post('/customer/register', [MABCustomerController::class, 'register'])->name('MABCustomerRegister');
 
-
-Route::middleware('auth:sanctum')->group(function () {
-    Route::group(['prefix' => '/mab/v1'], function () {
-        Route::get('/workspace/for-keeper/{keeperId}', [MABWorkspaceController::class, 'getWorkspacesForKeeper'])->name('MABWorkspaceListAll');
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/workspace', [MABWorkspaceController::class, 'getWorkspacesForKeeper'])->name('MABWorkspaceListAll');
         Route::post('/workspace', [MABWorkspaceController::class, 'addWorkspace'])->name('MABWorkspaceAdd');
 
         Route::group(['prefix' => '/workspace/{workspaceId}'], function () {
@@ -125,14 +125,14 @@ Route::middleware('auth:sanctum')->group(function () {
                 Route::put('/archive', [MABPlanController::class, 'archive'])->name('MABPlanStop');
 
                 Route::post('/requirement', [MABPlanController::class, 'addRequirement'])->name('MABPlanAddRequirement');
-                Route::delete('/requirement', [MABPlanController::class, 'removeRequirement'])->name('MABPlanRemoveRequirement');
-                Route::put('/requirement', [MABPlanController::class, 'changeRequirements'])->name('MABPlanChangeRequirements');
+                Route::delete('/requirement/{requirementId}', [MABPlanController::class, 'removeRequirement'])->name('MABPlanRemoveRequirement');
+                Route::put('/requirement/{requirementId}', [MABPlanController::class, 'changeRequirement'])->name('MABPlanChangeRequirement');
             });
         });
 
-        Route::group(['prefix' => '/customer/{customerId}'], function () {
+        Route::group(['prefix' => '/customer'], function () {
             Route::get('/code', [MABCustomerController::class, 'generateCode'])->name('MABCustomerCode');
-            Route::get('/cards', [MABCustomerCardController::class, 'getCards'])->name('MABCustomerCardListAll');
+            Route::get('/card', [MABCustomerCardController::class, 'getCards'])->name('MABCustomerCardListAll');
 
             Route::get('/workspaces', [MABCustomerWorkspaceController::class, 'all'])->name('MABCustomerWorkspaceListAll');
 

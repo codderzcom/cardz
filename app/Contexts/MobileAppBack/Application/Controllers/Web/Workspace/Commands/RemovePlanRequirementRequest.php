@@ -5,27 +5,26 @@ namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Comma
 final class RemovePlanRequirementRequest extends PlanCommandRequest
 {
     protected const RULES = [
-        'description' => 'required',
+        'requirementId' => 'required',
     ];
 
     protected const MESSAGES = [
-        'description.required' => 'description required',
+        'requirementId.required' => 'requirementId required',
     ];
 
-    public string $description;
-
+    public string $requirementId;
 
     public function passedValidation(): void
     {
         parent::passedValidation();
-        $this->description = $this->input('description');
+        $this->requirementId = $this->input('requirementId');
     }
 
     protected function prepareForValidation(): void
     {
         parent::prepareForValidation();
         $this->merge([
-            'description' => $this->input('description'),
+            'requirementId' => $this->route('requirementId'),
         ]);
     }
 }

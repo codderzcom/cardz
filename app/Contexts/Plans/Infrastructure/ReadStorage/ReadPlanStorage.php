@@ -5,7 +5,8 @@ namespace App\Contexts\Plans\Infrastructure\ReadStorage;
 use App\Contexts\Plans\Application\Contracts\ReadPlanStorageInterface;
 use App\Contexts\Plans\Domain\ReadModel\ReadPlan;
 use App\Models\Plan as EloquentPlan;
-use function json_try_decode;
+use App\Models\Requirement as EloquentRequirement;
+use JetBrains\PhpStorm\Pure;
 
 class ReadPlanStorage implements ReadPlanStorageInterface
 {
@@ -18,12 +19,18 @@ class ReadPlanStorage implements ReadPlanStorageInterface
         if ($eloquentPlan === null) {
             return null;
         }
-        return $this->readPlanFromData($eloquentPlan);
+        $eloquentRequirements = EloquentRequirement::query()->where('plan_id', '=', $planId)->get() ?? [];
+
+        return $this->readPlanFromData($eloquentPlan, ...$eloquentRequirements);
     }
 
-    private function readPlanFromData(EloquentPlan $eloquentPlan): ReadPlan
+    #[Pure]
+    private function readPlanFromData(EloquentPlan $eloquentPlan, EloquentRequirement ...$eloquentRequirements): ReadPlan
     {
-        $requirements = is_string($eloquentPlan->requirements) ? json_try_decode($eloquentPlan->requirements) : $eloquentPlan->requirements;
+        $requirements = [];
+        foreach ($eloquentRequirements as $eloquentRequirement) {
+            $requirements[] = [$eloquentRequirement->id, $eloquentRequirement->description];
+        }
         return new ReadPlan(
             $eloquentPlan->id,
             $eloquentPlan->workspace_id,

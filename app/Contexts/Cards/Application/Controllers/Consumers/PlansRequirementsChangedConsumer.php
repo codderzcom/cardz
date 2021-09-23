@@ -29,7 +29,7 @@ final class PlansRequirementsChangedConsumer implements Informable
     {
         /** @var PlansPlanRequirementsChanged $event */
         $event = $reportable;
-        $planId = $event->getInstanceId();
+        $planId = $event->id();
         $issuedCards = $this->issuedCardReadStorage->allForPlanId($planId);
         $requirements = $this->plansAdapter->getRequirements($planId);
         foreach ($issuedCards as $issuedCard) {

@@ -28,7 +28,7 @@ final class CardIssuedConsumer implements Informable
     {
         /** @var CardIssued $event */
         $event = $reportable;
-        $issuedCard = $this->issuedCardReadStorage->find($event->getInstanceId());
+        $issuedCard = $this->issuedCardReadStorage->find($event->id());
         if ($issuedCard === null) {
             return;
         }

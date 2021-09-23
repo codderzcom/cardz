@@ -5,7 +5,9 @@ namespace App\Contexts\Plans\Application\IntegrationEvents;
 use JetBrains\PhpStorm\Immutable;
 
 #[Immutable]
-class PlanStopped extends BaseIntegrationEvent
+final class PlanStopped extends BaseIntegrationEvent
 {
-    protected ?string $instanceOf = 'Plan';
+    protected string $in = 'Plans';
+
+    protected string $of = 'Plan';
 }

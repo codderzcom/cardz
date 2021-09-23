@@ -3,7 +3,11 @@
 namespace App\Contexts\MobileAppBack\Application\Services\Workspace;
 
 use App\Contexts\MobileAppBack\Application\Contracts\BusinessWorkspaceReadStorageInterface;
+use App\Contexts\MobileAppBack\Application\Services\Workspace\Policies\AssertWorkspaceForKeeper;
+use App\Contexts\MobileAppBack\Domain\Model\Workspace\KeeperId;
+use App\Contexts\MobileAppBack\Domain\Model\Workspace\WorkspaceId;
 use App\Contexts\MobileAppBack\Infrastructure\ACL\Workspaces\WorkspacesAdapter;
+use App\Contexts\Shared\Contracts\PolicyEngineInterface;
 use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
 use App\Contexts\Shared\Contracts\ServiceResultInterface;
 
@@ -12,6 +16,7 @@ class WorkspaceService
     public function __construct(
         private WorkspacesAdapter $workspacesAdapter,
         private BusinessWorkspaceReadStorageInterface $businessWorkspaceReadStorage,
+        private PolicyEngineInterface $policyEngine,
         private ServiceResultFactoryInterface $serviceResultFactory,
     ) {
     }
@@ -22,13 +27,14 @@ class WorkspaceService
         return $this->serviceResultFactory->ok($workspaces);
     }
 
-    public function getBusinessWorkspace(string $workspaceId): ServiceResultInterface
+    public function getBusinessWorkspace(string $keeperId, string $workspaceId): ServiceResultInterface
     {
-        $workspace = $this->businessWorkspaceReadStorage->find($workspaceId);
-        if ($workspace === null) {
-            return $this->serviceResultFactory->notFound("Workspace $workspaceId not found");
-        }
-        return $this->serviceResultFactory->ok($workspace);
+        return $this->policyEngine->passTrough(
+            function () use ($workspaceId) {
+                return $this->getBusinessWorkspaceResult($workspaceId);
+            },
+            AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId)),
+        );
     }
 
     public function addWorkspace(string $keeperId, string $name, string $description, string $address): ServiceResultInterface
@@ -39,22 +45,25 @@ class WorkspaceService
         }
 
         $workspaceId = $result->getPayload();
-
-        $workspace = $this->businessWorkspaceReadStorage->find($workspaceId);
-        if ($workspace === null) {
-            return $this->serviceResultFactory->violation("Workspace $workspaceId could not be found after creation");
-        }
-
-        return $this->serviceResultFactory->ok($workspace);
+        return $this->getBusinessWorkspaceResult($workspaceId);
     }
 
-    public function changeProfile(string $workspaceId, string $name, string $description, string $address): ServiceResultInterface
+    public function changeProfile(string $keeperId, string $workspaceId, string $name, string $description, string $address): ServiceResultInterface
     {
-        $result = $this->workspacesAdapter->changeProfile($workspaceId, $name, $description, $address);
-        if ($result->isNotOk()) {
-            return $result;
-        }
+        return $this->policyEngine->passTrough(
+            function () use ($workspaceId, $name, $description, $address) {
+                $result = $this->workspacesAdapter->changeProfile($workspaceId, $name, $description, $address);
+                if ($result->isNotOk()) {
+                    return $result;
+                }
+                return $this->getBusinessWorkspaceResult($workspaceId);
+            },
+            AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId)),
+        );
+    }
 
+    private function getBusinessWorkspaceResult(string $workspaceId): ServiceResultInterface
+    {
         $workspace = $this->businessWorkspaceReadStorage->find($workspaceId);
         if ($workspace === null) {
             return $this->serviceResultFactory->violation("Workspace $workspaceId not found");

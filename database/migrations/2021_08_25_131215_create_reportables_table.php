@@ -15,6 +15,8 @@ class CreateReportablesTable extends Migration
     {
         Schema::create('reportables', function (Blueprint $table) {
             $table->id();
+
+            $table->string('name');
             $table->jsonb('data');
 
             $table->timestamp('created_at')->useCurrent()->index();

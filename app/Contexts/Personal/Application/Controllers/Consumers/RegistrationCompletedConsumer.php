@@ -26,7 +26,7 @@ final class RegistrationCompletedConsumer implements Informable
         /** @var RegistrationCompleted $event */
         $event = $reportable;
         //ToDo: тут перед этим readmodel типа пишется или как? Или это считать как API-запрос в соседний контекст..
-        $user = EloquentUser::query()->find($event->getInstanceId());
+        $user = EloquentUser::query()->find($event->id());
         if ($user) {
             $this->personAppService->join($user->id, $user->name);
         }

@@ -8,14 +8,20 @@ use JetBrains\PhpStorm\Pure;
 final class Achievement extends ValueObject
 {
     private function __construct(
+        private string $id,
         private string $description,
     ) {
     }
 
     #[Pure]
-    public static function of(string $description): self
+    public static function of(string $id, string $description): self
     {
-        return new self($description);
+        return new self($id, $description);
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
     }
 
     public function getDescription(): string
@@ -26,12 +32,19 @@ final class Achievement extends ValueObject
     #[Pure]
     public function equals(self $requirement): bool
     {
-        return $requirement->getDescription() === $this->description;
+        return $this->id === $requirement->id;
+    }
+
+    public function toArray(): array
+    {
+        return [$this->id, $this->description];
     }
 
     private function from(
+        string $id,
         string $description,
     ): void {
+        $this->id = $id;
         $this->description = $description;
     }
 }

@@ -6,7 +6,7 @@ use App\Contexts\MobileAppBack\Application\Controllers\Web\BaseController;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\{AddPlanRequest,
     AddPlanRequirementRequest,
     ChangePlanDescriptionRequest,
-    ChangePlanRequirementsRequest,
+    ChangePlanRequirementDescriptionRequest,
     PlanCommandRequest,
     RemovePlanRequirementRequest};
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Queries\GetPlanRequest;
@@ -24,6 +24,7 @@ class PlanController extends BaseController
     public function getPlans(GetWorkspaceRequest $request): JsonResponse
     {
         return $this->response($this->planService->getWorkspacePlans(
+            $request->keeperId,
             $request->workspaceId,
         ));
     }
@@ -31,6 +32,7 @@ class PlanController extends BaseController
     public function getPlan(GetPlanRequest $request): JsonResponse
     {
         return $this->response($this->planService->getWorkspacePlan(
+            $request->keeperId,
             $request->workspaceId,
             $request->planId,
         ));
@@ -39,6 +41,7 @@ class PlanController extends BaseController
     public function add(AddPlanRequest $request): JsonResponse
     {
         return $this->response($this->planService->add(
+            $request->keeperId,
             $request->workspaceId,
             $request->description,
         ));
@@ -47,6 +50,8 @@ class PlanController extends BaseController
     public function launch(PlanCommandRequest $request): JsonResponse
     {
         return $this->response($this->planService->launch(
+            $request->keeperId,
+            $request->workspaceId,
             $request->planId,
         ));
     }
@@ -54,6 +59,8 @@ class PlanController extends BaseController
     public function stop(PlanCommandRequest $request): JsonResponse
     {
         $this->response($this->planService->stop(
+            $request->keeperId,
+            $request->workspaceId,
             $request->planId,
         ));
     }
@@ -61,6 +68,8 @@ class PlanController extends BaseController
     public function archive(PlanCommandRequest $request): JsonResponse
     {
         return $this->response($this->planService->archive(
+            $request->keeperId,
+            $request->workspaceId,
             $request->planId,
         ));
     }
@@ -68,6 +77,8 @@ class PlanController extends BaseController
     public function changeDescription(ChangePlanDescriptionRequest $request): JsonResponse
     {
         return $this->response($this->planService->changeDescription(
+            $request->keeperId,
+            $request->workspaceId,
             $request->planId,
             $request->description,
         ));
@@ -76,6 +87,8 @@ class PlanController extends BaseController
     public function addRequirement(AddPlanRequirementRequest $request): JsonResponse
     {
         return $this->response($this->planService->addRequirement(
+            $request->keeperId,
+            $request->workspaceId,
             $request->planId,
             $request->description,
         ));
@@ -84,16 +97,21 @@ class PlanController extends BaseController
     public function removeRequirement(RemovePlanRequirementRequest $request): JsonResponse
     {
         return $this->response($this->planService->removeRequirement(
+            $request->keeperId,
+            $request->workspaceId,
             $request->planId,
-            $request->description,
+            $request->requirementId,
         ));
     }
 
-    public function changeRequirements(ChangePlanRequirementsRequest $request): JsonResponse
+    public function changeRequirement(ChangePlanRequirementDescriptionRequest $request): JsonResponse
     {
-        return $this->response($this->planService->changeRequirements(
+        return $this->response($this->planService->changeRequirement(
+            $request->keeperId,
+            $request->workspaceId,
             $request->planId,
-            ...$request->descriptions,
+            $request->requirementId,
+            $request->description,
         ));
     }
 

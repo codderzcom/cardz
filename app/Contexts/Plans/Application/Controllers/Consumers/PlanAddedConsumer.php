@@ -23,7 +23,7 @@ final class PlanAddedConsumer implements Informable
     {
         /** @var PlanAdded $event */
         $event = $reportable;
-        $this->reportingBus->report(new PlanDescriptionFilled($event->getInstanceId()));
+        $this->reportingBus->report(new PlanDescriptionFilled($event->id()));
     }
 
 }

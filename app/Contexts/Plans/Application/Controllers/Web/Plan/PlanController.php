@@ -4,14 +4,13 @@ namespace App\Contexts\Plans\Application\Controllers\Web\Plan;
 
 use App\Contexts\Plans\Application\Controllers\Web\BaseController;
 use App\Contexts\Plans\Application\Controllers\Web\Plan\Commands\{AddPlanRequest,
-    AddRequirementRequest,
     ArchivePlanRequest,
     ChangePlanDescriptionRequest,
-    ChangeRequirementsRequest,
     LaunchPlanRequest,
-    RemoveRequirementRequest,
-    StopPlanRequest
-};
+    StopPlanRequest};
+use App\Contexts\Plans\Application\Controllers\Web\Requirement\Commands\AddRequirementRequest;
+use App\Contexts\Plans\Application\Controllers\Web\Requirement\Commands\ChangeRequirementRequest;
+use App\Contexts\Plans\Application\Controllers\Web\Requirements\Commands\RemoveRequirementRequest;
 use App\Contexts\Plans\Application\Services\PlanAppService;
 use Illuminate\Http\JsonResponse;
 
@@ -56,30 +55,6 @@ class PlanController extends BaseController
         return $this->response($this->planAppService->changeDescription(
             $request->planId,
             $request->description,
-        ));
-    }
-
-    public function addRequirement(AddRequirementRequest $request): JsonResponse
-    {
-        return $this->response($this->planAppService->addRequirement(
-            $request->planId,
-            $request->description,
-        ));
-    }
-
-    public function removeRequirement(RemoveRequirementRequest $request): JsonResponse
-    {
-        return $this->response($this->planAppService->removeRequirement(
-            $request->planId,
-            $request->description,
-        ));
-    }
-
-    public function changeRequirements(ChangeRequirementsRequest $request): JsonResponse
-    {
-        return $this->response($this->planAppService->changeRequirements(
-            $request->planId,
-            ...$request->descriptions,
         ));
     }
 

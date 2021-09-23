@@ -7,5 +7,7 @@ use JetBrains\PhpStorm\Immutable;
 #[Immutable]
 final class PersonJoined extends BaseIntegrationEvent
 {
-    protected ?string $instanceOf = 'Person';
+    protected string $in = 'Personal';
+
+    protected string $of = 'Person';
 }

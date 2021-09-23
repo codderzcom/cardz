@@ -2,9 +2,11 @@
 
 namespace App\Contexts\MobileAppBack\Application\Services\Workspace\Policies;
 
-use App\Contexts\MobileAppBack\Domain\Model\Plan\PlanId;
+use App\Contexts\MobileAppBack\Domain\Model\Workspace\PlanId;
 use App\Contexts\MobileAppBack\Domain\Model\Workspace\WorkspaceId;
 use App\Contexts\Shared\Contracts\PolicyAssertionInterface;
+use App\Contexts\Shared\Contracts\PolicyViolationInterface;
+use App\Contexts\Shared\Infrastructure\Policy\PolicyViolation;
 use App\Models\Plan as EloquentPlan;
 use JetBrains\PhpStorm\Pure;
 
@@ -30,4 +32,10 @@ class AssertPlanInWorkspace implements PolicyAssertionInterface
             ->first();
         return $plan !== null;
     }
+
+    public function violation(): ?PolicyViolationInterface
+    {
+        return PolicyViolation::of("Plan {$this->planId} is not in workspace {$this->workspaceId}");
+    }
+
 }

@@ -34,7 +34,7 @@ class BaseCustomerQueryRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'customerId' => $this->route('customerId'),
+            'customerId' => $this->user()->id,
         ]);
     }
 

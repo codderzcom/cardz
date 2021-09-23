@@ -23,7 +23,7 @@ class WorkspaceAddedConsumer implements Informable
     {
         /** @var WorkspaceAdded $event */
         $event = $reportable;
-        $this->reportingBus->report(new WorkspaceProfileFilled($event->getInstanceId()));
+        $this->reportingBus->report(new WorkspaceProfileFilled($event->id()));
     }
 
 }

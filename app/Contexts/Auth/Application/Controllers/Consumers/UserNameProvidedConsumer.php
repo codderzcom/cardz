@@ -23,7 +23,7 @@ final class UserNameProvidedConsumer implements Informable
     {
         /** @var UserNameProvided $event */
         $event = $reportable;
-        $this->reportingBus->report(new RegistrationCompleted($event->getInstanceId()));
+        $this->reportingBus->report(new RegistrationCompleted($event->id()));
     }
 
 }
