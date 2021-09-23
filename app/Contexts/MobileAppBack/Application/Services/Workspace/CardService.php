@@ -14,6 +14,7 @@ use App\Contexts\MobileAppBack\Domain\Model\Workspace\KeeperId;
 use App\Contexts\MobileAppBack\Domain\Model\Workspace\PlanId;
 use App\Contexts\MobileAppBack\Domain\Model\Workspace\WorkspaceId;
 use App\Contexts\MobileAppBack\Infrastructure\ACL\Cards\CardsAdapter;
+use App\Contexts\Shared\Contracts\PolicyEngineInterface;
 use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
 use App\Contexts\Shared\Contracts\ServiceResultInterface;
 
@@ -22,6 +23,7 @@ class CardService
     public function __construct(
         private IssuedCardReadStorageInterface $issuedCardReadStorage,
         private CardsAdapter $cardsAdapter,
+        private PolicyEngineInterface $policyEngine,
         private ServiceResultFactoryInterface $serviceResultFactory,
     ) {
     }
@@ -44,122 +46,116 @@ class CardService
 
     public function issue(string $keeperId, string $workspaceId, string $planId, string $customerId, string $description): ServiceResultInterface
     {
-        if (!AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert()) {
-            return $this->serviceResultFactory->violation("Workspace $workspaceId is not for keeper $keeperId");
-        }
-        if (!AssertPlanInWorkspace::of(PlanId::of($planId), WorkspaceId::of($workspaceId))->assert()) {
-            return $this->serviceResultFactory->violation("Plan $planId is not in $workspaceId");
-        }
+        return $this->policyEngine->passTrough(
+            function () use ($planId, $customerId, $description) {
+                $result = $this->cardsAdapter->issueCard($planId, $customerId, $description);
+                if ($result->isNotOk()) {
+                    return $result;
+                }
+                $cardId = $result->getPayload();
+                return $this->getIssuedCardResult($cardId);
+            },
 
-        $result = $this->cardsAdapter->issueCard($planId, $customerId, $description);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-        $cardId = $result->getPayload();
-
-        return $this->getIssuedCardResult($cardId);
+            AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId)),
+            AssertPlanInWorkspace::of(PlanId::of($planId), WorkspaceId::of($workspaceId)),
+        );
     }
 
     public function complete(string $keeperId, string $workspaceId, string $cardId): ServiceResultInterface
     {
-        if (!AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert()) {
-            return $this->serviceResultFactory->violation("Workspace $workspaceId is not for keeper $keeperId");
-        }
-        if (!AssertCardInWorkspace::of(CardId::of($cardId), WorkspaceId::of($workspaceId))->assert()) {
-            return $this->serviceResultFactory->violation("Illegal workspace");
-        }
+        return $this->policyEngine->passTrough(
+            function () use ($cardId) {
+                $result = $this->cardsAdapter->completeCard($cardId);
+                if ($result->isNotOk()) {
+                    return $result;
+                }
+                return $this->getIssuedCardResult($cardId);
+            },
 
-        $result = $this->cardsAdapter->completeCard($cardId);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-
-        return $this->getIssuedCardResult($cardId);
+            AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId)),
+            AssertCardInWorkspace::of(CardId::of($cardId), WorkspaceId::of($workspaceId)),
+        );
     }
 
     public function revoke(string $keeperId, string $workspaceId, string $cardId): ServiceResultInterface
     {
-        if (!AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert()) {
-            return $this->serviceResultFactory->violation("Workspace $workspaceId is not for keeper $keeperId");
-        }
-        if (!AssertCardInWorkspace::of(CardId::of($cardId), WorkspaceId::of($workspaceId))->assert()) {
-            return $this->serviceResultFactory->violation("Illegal workspace");
-        }
+        return $this->policyEngine->passTrough(
+            function () use ($cardId) {
+                $result = $this->cardsAdapter->revokeCard($cardId);
+                if ($result->isNotOk()) {
+                    return $result;
+                }
+                return $this->getIssuedCardResult($cardId);
+            },
 
-        $result = $this->cardsAdapter->revokeCard($cardId);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-
-        return $this->getIssuedCardResult($cardId);
+            AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId)),
+            AssertCardInWorkspace::of(CardId::of($cardId), WorkspaceId::of($workspaceId)),
+        );
     }
 
     public function block(string $keeperId, string $workspaceId, string $cardId): ServiceResultInterface
     {
-        if (!AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert()) {
-            return $this->serviceResultFactory->violation("Workspace $workspaceId is not for keeper $keeperId");
-        }
-        if (!AssertCardInWorkspace::of(CardId::of($cardId), WorkspaceId::of($workspaceId))->assert()) {
-            return $this->serviceResultFactory->violation("Illegal workspace");
-        }
+        return $this->policyEngine->passTrough(
+            function () use ($cardId) {
+                $result = $this->cardsAdapter->blockCard($cardId);
+                if ($result->isNotOk()) {
+                    return $result;
+                }
+                return $this->getIssuedCardResult($cardId);
+            },
 
-        $result = $this->cardsAdapter->blockCard($cardId);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-
-        return $this->getIssuedCardResult($cardId);
+            AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId)),
+            AssertCardInWorkspace::of(CardId::of($cardId), WorkspaceId::of($workspaceId)),
+        );
     }
 
     public function unblock(string $keeperId, string $workspaceId, string $cardId): ServiceResultInterface
     {
-        if (!AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert()) {
-            return $this->serviceResultFactory->violation("Workspace $workspaceId is not for keeper $keeperId");
-        }
-        if (!AssertCardInWorkspace::of(CardId::of($cardId), WorkspaceId::of($workspaceId))->assert()) {
-            return $this->serviceResultFactory->violation("Illegal workspace");
-        }
+        return $this->policyEngine->passTrough(
+            function () use ($cardId) {
+                $result = $this->cardsAdapter->unblockCard($cardId);
+                if ($result->isNotOk()) {
+                    return $result;
+                }
 
-        $result = $this->cardsAdapter->unblockCard($cardId);
-        if ($result->isNotOk()) {
-            return $result;
-        }
+                return $this->getIssuedCardResult($cardId);
+            },
 
-        return $this->getIssuedCardResult($cardId);
+            AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId)),
+            AssertCardInWorkspace::of(CardId::of($cardId), WorkspaceId::of($workspaceId)),
+        );
     }
 
     public function noteAchievement(string $keeperId, string $workspaceId, string $cardId, string $achievementId, string $description): ServiceResultInterface
     {
-        if (!AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert()) {
-            return $this->serviceResultFactory->violation("Workspace $workspaceId is not for keeper $keeperId");
-        }
-        if (!AssertCardInWorkspace::of(CardId::of($cardId), WorkspaceId::of($workspaceId))->assert()) {
-            return $this->serviceResultFactory->violation("Illegal workspace");
-        }
+        return $this->policyEngine->passTrough(
+            function () use ($cardId, $achievementId, $description) {
+                $result = $this->cardsAdapter->noteAchievement($cardId, $achievementId, $description);
+                if ($result->isNotOk()) {
+                    return $result;
+                }
+                return $this->getIssuedCardResult($cardId);
+            },
 
-        $result = $this->cardsAdapter->noteAchievement($cardId, $achievementId, $description);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-
-        return $this->getIssuedCardResult($cardId);
+            AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId)),
+            AssertCardInWorkspace::of(CardId::of($cardId), WorkspaceId::of($workspaceId)),
+        );
     }
 
-    public function dismissAchievement(string $keeperId, string $workspaceId, string $cardId,  string $achievementId, string $description): ServiceResultInterface
+    public function dismissAchievement(string $keeperId, string $workspaceId, string $cardId, string $achievementId, string $description): ServiceResultInterface
     {
-        if (!AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert()) {
-            return $this->serviceResultFactory->violation("Workspace $workspaceId is not for keeper $keeperId");
-        }
-        if (!AssertCardInWorkspace::of(CardId::of($cardId), WorkspaceId::of($workspaceId))->assert()) {
-            return $this->serviceResultFactory->violation("Illegal workspace");
-        }
+        return $this->policyEngine->passTrough(
+            function () use ($cardId, $achievementId, $description) {
+                $result = $this->cardsAdapter->dismissAchievement($cardId, $achievementId, $description);
+                if ($result->isNotOk()) {
+                    return $result;
+                }
+                return $this->getIssuedCardResult($cardId);
+            },
 
-        $result = $this->cardsAdapter->dismissAchievement($cardId, $achievementId, $description);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-
-        return $this->getIssuedCardResult($cardId);
+            AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId)),
+            AssertCardInWorkspace::of(CardId::of($cardId), WorkspaceId::of($workspaceId)),
+        );
     }
 
     private function getIssuedCardResult(string $cardId): ServiceResultInterface

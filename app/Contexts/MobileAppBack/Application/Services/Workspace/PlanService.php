@@ -9,6 +9,7 @@ use App\Contexts\MobileAppBack\Domain\Model\Workspace\KeeperId;
 use App\Contexts\MobileAppBack\Domain\Model\Workspace\PlanId;
 use App\Contexts\MobileAppBack\Domain\Model\Workspace\WorkspaceId;
 use App\Contexts\MobileAppBack\Infrastructure\ACL\Plans\PlansAdapter;
+use App\Contexts\Shared\Contracts\PolicyEngineInterface;
 use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
 use App\Contexts\Shared\Contracts\ServiceResultInterface;
 
@@ -17,6 +18,7 @@ class PlanService
     public function __construct(
         private PlansAdapter $plansAdapter,
         private WorkspacePlanReadStorageInterface $workspacePlanReadStorage,
+        private PolicyEngineInterface $policyEngine,
         private ServiceResultFactoryInterface $serviceResultFactory,
     ) {
     }
@@ -26,26 +28,28 @@ class PlanService
         string $workspaceId,
         string $planId
     ): ServiceResultInterface {
-        if (!AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert()) {
-            return $this->serviceResultFactory->violation("Workspace $workspaceId is not for keeper $keeperId");
-        }
-        if (!AssertPlanInWorkspace::of(PlanId::of($planId), WorkspaceId::of($workspaceId))->assert()) {
-            return $this->serviceResultFactory->violation("Plan $planId is not in $workspaceId");
-        }
+        return $this->policyEngine->passTrough(
+            function () use ($planId) {
+                return $this->getWorkspacePlanResult($planId);
+            },
 
-        return $this->getWorkspacePlanResult($planId);
+            AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId)),
+            AssertPlanInWorkspace::of(PlanId::of($planId), WorkspaceId::of($workspaceId)),
+        );
     }
 
     public function getWorkspacePlans(
         string $keeperId,
         string $workspaceId
     ): ServiceResultInterface {
-        if (!AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert()) {
-            return $this->serviceResultFactory->violation("Workspace $workspaceId is not for keeper $keeperId");
-        }
+        return $this->policyEngine->passTrough(
+            function () use ($workspaceId) {
+                $plans = $this->workspacePlanReadStorage->allForWorkspace($workspaceId);
+                return $this->serviceResultFactory->ok($plans);
+            },
 
-        $plans = $this->workspacePlanReadStorage->allForWorkspace($workspaceId);
-        return $this->serviceResultFactory->ok($plans);
+            AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId)),
+        );
     }
 
     public function add(
@@ -53,17 +57,18 @@ class PlanService
         string $workspaceId,
         string $description
     ): ServiceResultInterface {
-        if (!AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert()) {
-            return $this->serviceResultFactory->violation("Workspace $workspaceId is not for keeper $keeperId");
-        }
+        return $this->policyEngine->passTrough(
+            function () use ($workspaceId, $description) {
+                $result = $this->plansAdapter->add($workspaceId, $description);
+                if ($result->isNotOk()) {
+                    return $result;
+                }
+                $planId = $result->getPayload();
+                return $this->getWorkspacePlanResult($planId);
+            },
 
-        $result = $this->plansAdapter->add($workspaceId, $description);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-        $planId = $result->getPayload();
-
-        return $this->getWorkspacePlanResult($planId);
+            AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId)),
+        );
     }
 
     public function launch(
@@ -71,19 +76,18 @@ class PlanService
         string $workspaceId,
         string $planId
     ): ServiceResultInterface {
-        if (!AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert()) {
-            return $this->serviceResultFactory->violation("Workspace $workspaceId is not for keeper $keeperId");
-        }
-        if (!AssertPlanInWorkspace::of(PlanId::of($planId), WorkspaceId::of($workspaceId))->assert()) {
-            return $this->serviceResultFactory->violation("Plan $planId is not in $workspaceId");
-        }
+        return $this->policyEngine->passTrough(
+            function () use ($planId) {
+                $result = $this->plansAdapter->launch($planId);
+                if ($result->isNotOk()) {
+                    return $result;
+                }
+                return $this->getWorkspacePlanResult($planId);
+            },
 
-        $result = $this->plansAdapter->launch($planId);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-
-        return $this->getWorkspacePlanResult($planId);
+            AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId)),
+            AssertPlanInWorkspace::of(PlanId::of($planId), WorkspaceId::of($workspaceId)),
+        );
     }
 
     public function stop(
@@ -91,19 +95,18 @@ class PlanService
         string $workspaceId,
         string $planId
     ): ServiceResultInterface {
-        if (!AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert()) {
-            return $this->serviceResultFactory->violation("Workspace $workspaceId is not for keeper $keeperId");
-        }
-        if (!AssertPlanInWorkspace::of(PlanId::of($planId), WorkspaceId::of($workspaceId))->assert()) {
-            return $this->serviceResultFactory->violation("Plan $planId is not in $workspaceId");
-        }
+        return $this->policyEngine->passTrough(
+            function () use ($planId) {
+                $result = $this->plansAdapter->stop($planId);
+                if ($result->isNotOk()) {
+                    return $result;
+                }
+                return $this->getWorkspacePlanResult($planId);
+            },
 
-        $result = $this->plansAdapter->stop($planId);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-
-        return $this->getWorkspacePlanResult($planId);
+            AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId)),
+            AssertPlanInWorkspace::of(PlanId::of($planId), WorkspaceId::of($workspaceId)),
+        );
     }
 
     public function archive(
@@ -111,19 +114,18 @@ class PlanService
         string $workspaceId,
         string $planId
     ): ServiceResultInterface {
-        if (!AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert()) {
-            return $this->serviceResultFactory->violation("Workspace $workspaceId is not for keeper $keeperId");
-        }
-        if (!AssertPlanInWorkspace::of(PlanId::of($planId), WorkspaceId::of($workspaceId))->assert()) {
-            return $this->serviceResultFactory->violation("Plan $planId is not in $workspaceId");
-        }
+        return $this->policyEngine->passTrough(
+            function () use ($planId) {
+                $result = $this->plansAdapter->archive($planId);
+                if ($result->isNotOk()) {
+                    return $result;
+                }
+                return $this->getWorkspacePlanResult($planId);
+            },
 
-        $result = $this->plansAdapter->archive($planId);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-
-        return $this->getWorkspacePlanResult($planId);
+            AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId)),
+            AssertPlanInWorkspace::of(PlanId::of($planId), WorkspaceId::of($workspaceId)),
+        );
     }
 
     public function changeDescription(
@@ -132,19 +134,18 @@ class PlanService
         string $planId,
         string $description
     ): ServiceResultInterface {
-        if (!AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert()) {
-            return $this->serviceResultFactory->violation("Workspace $workspaceId is not for keeper $keeperId");
-        }
-        if (!AssertPlanInWorkspace::of(PlanId::of($planId), WorkspaceId::of($workspaceId))->assert()) {
-            return $this->serviceResultFactory->violation("Plan $planId is not in $workspaceId");
-        }
+        return $this->policyEngine->passTrough(
+            function () use ($planId, $description) {
+                $result = $this->plansAdapter->changeDescription($planId, $description);
+                if ($result->isNotOk()) {
+                    return $result;
+                }
+                return $this->getWorkspacePlanResult($planId);
+            },
 
-        $result = $this->plansAdapter->changeDescription($planId, $description);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-
-        return $this->getWorkspacePlanResult($planId);
+            AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId)),
+            AssertPlanInWorkspace::of(PlanId::of($planId), WorkspaceId::of($workspaceId)),
+        );
     }
 
     public function addRequirement(
@@ -153,19 +154,18 @@ class PlanService
         string $planId,
         string $description
     ): ServiceResultInterface {
-        if (!AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert()) {
-            return $this->serviceResultFactory->violation("Workspace $workspaceId is not for keeper $keeperId");
-        }
-        if (!AssertPlanInWorkspace::of(PlanId::of($planId), WorkspaceId::of($workspaceId))->assert()) {
-            return $this->serviceResultFactory->violation("Plan $planId is not in $workspaceId");
-        }
+        return $this->policyEngine->passTrough(
+            function () use ($planId, $description) {
+                $result = $this->plansAdapter->addRequirement($planId, $description);
+                if ($result->isNotOk()) {
+                    return $result;
+                }
+                return $this->getWorkspacePlanResult($planId);
+            },
 
-        $result = $this->plansAdapter->addRequirement($planId, $description);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-
-        return $this->getWorkspacePlanResult($planId);
+            AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId)),
+            AssertPlanInWorkspace::of(PlanId::of($planId), WorkspaceId::of($workspaceId)),
+        );
     }
 
     public function removeRequirement(
@@ -174,19 +174,18 @@ class PlanService
         string $planId,
         string $requirementId
     ): ServiceResultInterface {
-        if (!AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert()) {
-            return $this->serviceResultFactory->violation("Workspace $workspaceId is not for keeper $keeperId");
-        }
-        if (!AssertPlanInWorkspace::of(PlanId::of($planId), WorkspaceId::of($workspaceId))->assert()) {
-            return $this->serviceResultFactory->violation("Plan $planId is not in $workspaceId");
-        }
+        return $this->policyEngine->passTrough(
+            function () use ($planId, $requirementId) {
+                $result = $this->plansAdapter->removeRequirement($planId, $requirementId);
+                if ($result->isNotOk()) {
+                    return $result;
+                }
+                return $this->getWorkspacePlanResult($planId);
+            },
 
-        $result = $this->plansAdapter->removeRequirement($planId, $requirementId);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-
-        return $this->getWorkspacePlanResult($planId);
+            AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId)),
+            AssertPlanInWorkspace::of(PlanId::of($planId), WorkspaceId::of($workspaceId)),
+        );
     }
 
     public function changeRequirement(
@@ -196,19 +195,18 @@ class PlanService
         string $requirementId,
         string $description
     ): ServiceResultInterface {
-        if (!AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert()) {
-            return $this->serviceResultFactory->violation("Workspace $workspaceId is not for keeper $keeperId");
-        }
-        if (!AssertPlanInWorkspace::of(PlanId::of($planId), WorkspaceId::of($workspaceId))->assert()) {
-            return $this->serviceResultFactory->violation("Plan $planId is not in $workspaceId");
-        }
+        return $this->policyEngine->passTrough(
+            function () use ($planId, $requirementId, $description) {
+                $result = $this->plansAdapter->changeRequirement($planId, $requirementId, $description);
+                if ($result->isNotOk()) {
+                    return $result;
+                }
+                return $this->getWorkspacePlanResult($planId);
+            },
 
-        $result = $this->plansAdapter->changeRequirement($planId, $requirementId, $description);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-
-        return $this->getWorkspacePlanResult($planId);
+            AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId)),
+            AssertPlanInWorkspace::of(PlanId::of($planId), WorkspaceId::of($workspaceId)),
+        );
     }
 
     private function getWorkspacePlanResult(string $planId): ServiceResultInterface

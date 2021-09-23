@@ -5,6 +5,8 @@ namespace App\Contexts\MobileAppBack\Application\Services\Workspace\Policies;
 use App\Contexts\MobileAppBack\Domain\Model\Card\CardId;
 use App\Contexts\MobileAppBack\Domain\Model\Workspace\WorkspaceId;
 use App\Contexts\Shared\Contracts\PolicyAssertionInterface;
+use App\Contexts\Shared\Contracts\PolicyViolationInterface;
+use App\Contexts\Shared\Infrastructure\Policy\PolicyViolation;
 use App\Models\Card as EloquentCard;
 use JetBrains\PhpStorm\Pure;
 
@@ -29,4 +31,10 @@ class AssertCardInWorkspace implements PolicyAssertionInterface
             ->find((string) $this->cardId);
         return $card !== null;
     }
+
+    public function violation(): ?PolicyViolationInterface
+    {
+        return PolicyViolation::of("Card {$this->cardId} is not in workspace {$this->workspaceId}");
+    }
+
 }

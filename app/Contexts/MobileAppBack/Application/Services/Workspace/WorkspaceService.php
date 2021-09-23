@@ -7,6 +7,7 @@ use App\Contexts\MobileAppBack\Application\Services\Workspace\Policies\AssertWor
 use App\Contexts\MobileAppBack\Domain\Model\Workspace\KeeperId;
 use App\Contexts\MobileAppBack\Domain\Model\Workspace\WorkspaceId;
 use App\Contexts\MobileAppBack\Infrastructure\ACL\Workspaces\WorkspacesAdapter;
+use App\Contexts\Shared\Contracts\PolicyEngineInterface;
 use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
 use App\Contexts\Shared\Contracts\ServiceResultInterface;
 
@@ -15,6 +16,7 @@ class WorkspaceService
     public function __construct(
         private WorkspacesAdapter $workspacesAdapter,
         private BusinessWorkspaceReadStorageInterface $businessWorkspaceReadStorage,
+        private PolicyEngineInterface $policyEngine,
         private ServiceResultFactoryInterface $serviceResultFactory,
     ) {
     }
@@ -27,11 +29,12 @@ class WorkspaceService
 
     public function getBusinessWorkspace(string $keeperId, string $workspaceId): ServiceResultInterface
     {
-        if (!AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert()) {
-            return $this->serviceResultFactory->violation("Workspace $workspaceId is not in for keeper $keeperId");
-        }
-
-        return $this->getBusinessWorkspaceResult($workspaceId);
+        return $this->policyEngine->passTrough(
+            function () use ($workspaceId) {
+                return $this->getBusinessWorkspaceResult($workspaceId);
+            },
+            AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId)),
+        );
     }
 
     public function addWorkspace(string $keeperId, string $name, string $description, string $address): ServiceResultInterface
@@ -47,16 +50,16 @@ class WorkspaceService
 
     public function changeProfile(string $keeperId, string $workspaceId, string $name, string $description, string $address): ServiceResultInterface
     {
-        if (!AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert()) {
-            return $this->serviceResultFactory->violation("Workspace $workspaceId is not in for keeper $keeperId");
-        }
-
-        $result = $this->workspacesAdapter->changeProfile($workspaceId, $name, $description, $address);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-
-        return $this->getBusinessWorkspaceResult($workspaceId);
+        return $this->policyEngine->passTrough(
+            function () use ($workspaceId, $name, $description, $address) {
+                $result = $this->workspacesAdapter->changeProfile($workspaceId, $name, $description, $address);
+                if ($result->isNotOk()) {
+                    return $result;
+                }
+                return $this->getBusinessWorkspaceResult($workspaceId);
+            },
+            AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId)),
+        );
     }
 
     private function getBusinessWorkspaceResult(string $workspaceId): ServiceResultInterface
