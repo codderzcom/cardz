@@ -10,7 +10,7 @@ use App\Contexts\Shared\Infrastructure\Policy\PolicyViolation;
 use App\Models\Card as EloquentCard;
 use JetBrains\PhpStorm\Pure;
 
-class AssertCardForKeeper implements PolicyAssertionInterface
+final class AssertCardForKeeper implements PolicyAssertionInterface
 {
     private function __construct(
         private CardId $cardId,
@@ -35,7 +35,7 @@ class AssertCardForKeeper implements PolicyAssertionInterface
         return $card !== null;
     }
 
-    public function violation(): ?PolicyViolationInterface
+    public function violation(): PolicyViolationInterface
     {
         return PolicyViolation::of("Card {$this->cardId} is not for keeper {$this->keeperId}");
     }

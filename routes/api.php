@@ -3,6 +3,8 @@
 use App\Contexts\Auth\Application\Controllers\Web\User\UserController;
 use App\Contexts\Cards\Application\Controllers\Web\BlockedCard\BlockedCardController;
 use App\Contexts\Cards\Application\Controllers\Web\Card\CardController;
+use App\Contexts\Collaboration\Application\Controllers\Web\Invite\InviteController;
+use App\Contexts\Collaboration\Application\Controllers\Web\Relation\RelationController;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Customer\CardController as MABCustomerCardController;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Customer\CustomerController as MABCustomerController;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Customer\WorkspaceController as MABCustomerWorkspaceController;
@@ -74,6 +76,17 @@ Route::group(['prefix' => '/workspaces/v1'], function () {
     Route::group(['prefix' => '/workspace'], function () {
         Route::post('/', [WorkspaceController::class, 'add'])->name('AddWorkspace');
         Route::put('/{workspaceId}/profile', [WorkspaceController::class, 'changeProfile'])->name('ChangeWorkspaceProfile');
+    });
+});
+
+Route::group(['prefix' => '/collaboration/v1'], function () {
+    Route::post('/relation/{relationId}/leave', [RelationController::class, 'leave'])->name('LeaveRelation');
+
+    Route::post('/invite', [InviteController::class, 'propose'])->name('ProposeInvite');
+    Route::group(['prefix' => '/invite/{inviteId}'], function () {
+        Route::post('/accept', [InviteController::class, 'accept'])->name('AcceptInvite');
+        Route::post('/reject', [InviteController::class, 'reject'])->name('RejectInvite');
+        Route::post('/discard', [InviteController::class, 'discard'])->name('DiscardInvite');
     });
 });
 

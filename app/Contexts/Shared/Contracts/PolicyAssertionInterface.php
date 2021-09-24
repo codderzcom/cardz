@@ -6,5 +6,5 @@ interface PolicyAssertionInterface
 {
     public function assert(): bool;
 
-    public function violation(): ?PolicyViolationInterface;
+    public function violation(): PolicyViolationInterface;
 }

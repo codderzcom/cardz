@@ -10,7 +10,7 @@ use App\Contexts\Shared\Infrastructure\Policy\PolicyViolation;
 use App\Models\Plan as EloquentPlan;
 use JetBrains\PhpStorm\Pure;
 
-class AssertPlanInWorkspace implements PolicyAssertionInterface
+final class AssertPlanInWorkspace implements PolicyAssertionInterface
 {
     private function __construct(
         private PlanId $planId,
@@ -33,7 +33,7 @@ class AssertPlanInWorkspace implements PolicyAssertionInterface
         return $plan !== null;
     }
 
-    public function violation(): ?PolicyViolationInterface
+    public function violation(): PolicyViolationInterface
     {
         return PolicyViolation::of("Plan {$this->planId} is not in workspace {$this->workspaceId}");
     }

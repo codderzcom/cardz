@@ -5,6 +5,7 @@ namespace App\Contexts\Collaboration;
 use App\Contexts\Collaboration\Application\Contracts\AddedWorkspaceReadStorageInterface;
 use App\Contexts\Collaboration\Application\Contracts\InviteRepositoryInterface;
 use App\Contexts\Collaboration\Application\Contracts\RelationRepositoryInterface;
+use App\Contexts\Collaboration\Application\Controllers\Consumers\InviteAcceptedConsumer;
 use App\Contexts\Collaboration\Application\Controllers\Consumers\WorkspacesWorkspaceAddedConsumer;
 use App\Contexts\Collaboration\Infrastructure\Persistence\InviteRepository;
 use App\Contexts\Collaboration\Infrastructure\Persistence\RelationRepository;
@@ -23,6 +24,7 @@ class CollaborationProvider extends ServiceProvider
 
     public function boot(ReportingBusInterface $reportingBus)
     {
+        $reportingBus->subscribe($this->app->make(InviteAcceptedConsumer::class));
         $reportingBus->subscribe($this->app->make(WorkspacesWorkspaceAddedConsumer::class));
     }
 }

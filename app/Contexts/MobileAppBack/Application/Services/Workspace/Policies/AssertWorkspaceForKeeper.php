@@ -10,7 +10,7 @@ use App\Contexts\Shared\Infrastructure\Policy\PolicyViolation;
 use App\Models\Workspace as EloquentWorkspace;
 use JetBrains\PhpStorm\Pure;
 
-class AssertWorkspaceForKeeper implements PolicyAssertionInterface
+final class AssertWorkspaceForKeeper implements PolicyAssertionInterface
 {
     private function __construct(
         private WorkspaceId $workspaceId,
@@ -33,7 +33,7 @@ class AssertWorkspaceForKeeper implements PolicyAssertionInterface
         return $workspace !== null;
     }
 
-    public function violation(): ?PolicyViolationInterface
+    public function violation(): PolicyViolationInterface
     {
         return PolicyViolation::of("Workspace {$this->workspaceId} is not for keeper {$this->keeperId}");
     }
