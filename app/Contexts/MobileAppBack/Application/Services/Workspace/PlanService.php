@@ -5,7 +5,7 @@ namespace App\Contexts\MobileAppBack\Application\Services\Workspace;
 use App\Contexts\MobileAppBack\Application\Contracts\WorkspacePlanReadStorageInterface;
 use App\Contexts\MobileAppBack\Application\Services\Workspace\Policies\AssertPlanInWorkspace;
 use App\Contexts\MobileAppBack\Application\Services\Workspace\Policies\AssertWorkspaceForKeeper;
-use App\Contexts\MobileAppBack\Domain\Model\Workspace\KeeperId;
+use App\Contexts\MobileAppBack\Domain\Model\Collaboration\KeeperId;
 use App\Contexts\MobileAppBack\Domain\Model\Workspace\PlanId;
 use App\Contexts\MobileAppBack\Domain\Model\Workspace\WorkspaceId;
 use App\Contexts\MobileAppBack\Infrastructure\ACL\Plans\PlansAdapter;

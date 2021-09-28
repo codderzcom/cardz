@@ -10,7 +10,7 @@ use App\Contexts\MobileAppBack\Application\Services\Workspace\Policies\AssertWor
 use App\Contexts\MobileAppBack\Domain\Exceptions\ReconstructionException;
 use App\Contexts\MobileAppBack\Domain\Model\Card\CardCode;
 use App\Contexts\MobileAppBack\Domain\Model\Card\CardId;
-use App\Contexts\MobileAppBack\Domain\Model\Workspace\KeeperId;
+use App\Contexts\MobileAppBack\Domain\Model\Collaboration\KeeperId;
 use App\Contexts\MobileAppBack\Domain\Model\Workspace\PlanId;
 use App\Contexts\MobileAppBack\Domain\Model\Workspace\WorkspaceId;
 use App\Contexts\MobileAppBack\Infrastructure\ACL\Cards\CardsAdapter;

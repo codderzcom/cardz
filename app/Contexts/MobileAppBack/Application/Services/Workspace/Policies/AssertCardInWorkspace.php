@@ -10,7 +10,7 @@ use App\Contexts\Shared\Infrastructure\Policy\PolicyViolation;
 use App\Models\Card as EloquentCard;
 use JetBrains\PhpStorm\Pure;
 
-class AssertCardInWorkspace implements PolicyAssertionInterface
+final class AssertCardInWorkspace implements PolicyAssertionInterface
 {
     private function __construct(
         private CardId $cardId,
@@ -32,7 +32,7 @@ class AssertCardInWorkspace implements PolicyAssertionInterface
         return $card !== null;
     }
 
-    public function violation(): ?PolicyViolationInterface
+    public function violation(): PolicyViolationInterface
     {
         return PolicyViolation::of("Card {$this->cardId} is not in workspace {$this->workspaceId}");
     }

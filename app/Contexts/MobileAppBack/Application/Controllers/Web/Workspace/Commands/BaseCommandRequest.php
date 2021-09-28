@@ -8,17 +8,17 @@ abstract class BaseCommandRequest extends FormRequest
 {
     protected const RULES = [
         'workspaceId' => 'required',
-        'keeperId' => 'required',
+        'collaboratorId' => 'required',
     ];
 
     protected const MESSAGES = [
         'workspaceId.required' => 'workspaceId required',
-        'keeperId.required' => 'keeperId required',
+        'collaboratorId.required' => 'collaboratorId required',
     ];
 
     public string $workspaceId;
 
-    public string $keeperId;
+    public string $collaboratorId;
 
     public function rules(): array
     {
@@ -33,14 +33,14 @@ abstract class BaseCommandRequest extends FormRequest
     public function passedValidation(): void
     {
         $this->workspaceId = $this->input('workspaceId');
-        $this->keeperId = $this->input('keeperId');
+        $this->collaboratorId = $this->input('collaboratorId');
     }
 
     protected function prepareForValidation(): void
     {
         $this->merge([
             'workspaceId' => $this->route('workspaceId'),
-            'keeperId' => $this->user()->id,
+            'collaboratorId' => $this->user()->id,
         ]);
     }
 

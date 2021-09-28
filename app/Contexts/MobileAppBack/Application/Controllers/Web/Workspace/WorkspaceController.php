@@ -45,7 +45,7 @@ class WorkspaceController extends BaseController
     public function changeWorkspaceProfile(ChangeWorkspaceProfileRequest $request): JsonResponse
     {
         return $this->response($this->workspaceService->changeProfile(
-            $request->keeperId,
+            $request->collaboratorId,
             $request->workspaceId,
             $request->name,
             $request->description,
