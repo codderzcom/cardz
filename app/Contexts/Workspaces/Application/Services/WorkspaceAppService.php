@@ -2,13 +2,13 @@
 
 namespace App\Contexts\Workspaces\Application\Services;
 
-use App\Contexts\Workspaces\Application\Contracts\KeeperRepositoryInterface;
-use App\Contexts\Workspaces\Application\Contracts\WorkspaceRepositoryInterface;
-use App\Contexts\Workspaces\Application\IntegrationEvents\WorkspaceAdded;
-use App\Contexts\Workspaces\Application\IntegrationEvents\WorkspaceProfileChanged;
 use App\Contexts\Workspaces\Domain\Model\Workspace\KeeperId;
 use App\Contexts\Workspaces\Domain\Model\Workspace\Profile;
 use App\Contexts\Workspaces\Domain\Model\Workspace\WorkspaceId;
+use App\Contexts\Workspaces\Infrastructure\Persistence\Contracts\KeeperRepositoryInterface;
+use App\Contexts\Workspaces\Infrastructure\Persistence\Contracts\WorkspaceRepositoryInterface;
+use App\Contexts\Workspaces\Integration\Events\WorkspaceAdded;
+use App\Contexts\Workspaces\Integration\Events\WorkspaceProfileChanged;
 use App\Shared\Contracts\ReportingBusInterface;
 use App\Shared\Contracts\ServiceResultFactoryInterface;
 use App\Shared\Contracts\ServiceResultInterface;

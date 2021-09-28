@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Contexts\Workspaces\Application\IntegrationEvents;
+namespace App\Contexts\Workspaces\Integration\Events;
 
 use JetBrains\PhpStorm\Immutable;
 
 #[Immutable]
-final class WorkspaceProfileFilled extends BaseIntegrationEvent
+final class WorkspaceAdded extends BaseIntegrationEvent
 {
     protected string $in = 'Workspaces';
 

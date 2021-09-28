@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contexts\Workspaces\Application\IntegrationEvents;
+namespace App\Contexts\Workspaces\Integration\Events;
 
 use App\Shared\Contracts\Reportable;
 

@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Contexts\Workspaces\Application\Controllers\Web\Workspace\Commands;
+namespace App\Contexts\Workspaces\Presentation\Controllers\Http\Workspace\Commands;
 
-use App\Contexts\Workspaces\Domain\Model\Workspace\WorkspaceId;
 use Illuminate\Foundation\Http\FormRequest;
 
 abstract class BaseCommandRequest extends FormRequest

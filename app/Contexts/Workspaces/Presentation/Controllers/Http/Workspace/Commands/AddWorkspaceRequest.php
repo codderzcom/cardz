@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contexts\Workspaces\Application\Controllers\Web\Workspace\Commands;
+namespace App\Contexts\Workspaces\Presentation\Controllers\Http\Workspace\Commands;
 
 use Illuminate\Foundation\Http\FormRequest;
 

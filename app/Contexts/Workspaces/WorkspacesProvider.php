@@ -2,11 +2,11 @@
 
 namespace App\Contexts\Workspaces;
 
-use App\Contexts\Workspaces\Application\Contracts\KeeperRepositoryInterface;
-use App\Contexts\Workspaces\Application\Contracts\WorkspaceRepositoryInterface;
-use App\Contexts\Workspaces\Application\Controllers\Consumers\WorkspaceAddedConsumer;
-use App\Contexts\Workspaces\Infrastructure\Persistence\KeeperRepository;
-use App\Contexts\Workspaces\Infrastructure\Persistence\WorkspaceRepository;
+use App\Contexts\Workspaces\Infrastructure\Persistence\Contracts\KeeperRepositoryInterface;
+use App\Contexts\Workspaces\Infrastructure\Persistence\Contracts\WorkspaceRepositoryInterface;
+use App\Contexts\Workspaces\Infrastructure\Persistence\Eloquent\KeeperRepository;
+use App\Contexts\Workspaces\Infrastructure\Persistence\Eloquent\WorkspaceRepository;
+use App\Contexts\Workspaces\Integration\Consumers\WorkspaceAddedConsumer;
 use App\Shared\Contracts\ReportingBusInterface;
 use Illuminate\Support\ServiceProvider;
 

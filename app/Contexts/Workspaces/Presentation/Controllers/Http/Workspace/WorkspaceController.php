@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Contexts\Workspaces\Application\Controllers\Web\Workspace;
+namespace App\Contexts\Workspaces\Presentation\Controllers\Http\Workspace;
 
-use App\Contexts\Workspaces\Application\Controllers\Web\BaseController;
-use App\Contexts\Workspaces\Application\Controllers\Web\Workspace\Commands\{AddWorkspaceRequest, ChangeWorkspaceProfileRequest};
 use App\Contexts\Workspaces\Application\Services\WorkspaceAppService;
+use App\Contexts\Workspaces\Presentation\Controllers\Http\BaseController;
+use App\Contexts\Workspaces\Presentation\Controllers\Http\Workspace\Commands\{AddWorkspaceRequest, ChangeWorkspaceProfileRequest};
 use Illuminate\Http\JsonResponse;
 
 class WorkspaceController extends BaseController

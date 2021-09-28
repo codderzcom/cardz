@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Contexts\Workspaces\Application\Controllers\Consumers;
+namespace App\Contexts\Workspaces\Integration\Consumers;
 
-use App\Contexts\Workspaces\Application\IntegrationEvents\WorkspaceAdded;
-use App\Contexts\Workspaces\Application\IntegrationEvents\WorkspaceProfileFilled;
+use App\Contexts\Workspaces\Integration\Events\WorkspaceAdded;
+use App\Contexts\Workspaces\Integration\Events\WorkspaceProfileFilled;
 use App\Shared\Contracts\Informable;
 use App\Shared\Contracts\Reportable;
 use App\Shared\Contracts\ReportingBusInterface;

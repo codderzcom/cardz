@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Contexts\Workspaces\Infrastructure\Persistence;
+namespace App\Contexts\Workspaces\Infrastructure\Persistence\Eloquent;
 
-use App\Contexts\Workspaces\Application\Contracts\KeeperRepositoryInterface;
 use App\Contexts\Workspaces\Domain\Model\Workspace\Keeper;
 use App\Contexts\Workspaces\Domain\Model\Workspace\KeeperId;
+use App\Contexts\Workspaces\Infrastructure\Persistence\Contracts\KeeperRepositoryInterface;
 use App\Models\User as EloquentKeeper;
 
 class KeeperRepository implements KeeperRepositoryInterface

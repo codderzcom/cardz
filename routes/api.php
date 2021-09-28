@@ -14,7 +14,7 @@ use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\WorkspaceCo
 use App\Contexts\Personal\Application\Controllers\Web\Person\PersonController;
 use App\Contexts\Plans\Application\Controllers\Web\Plan\PlanController;
 use App\Contexts\Plans\Application\Controllers\Web\Requirement\RequirementController;
-use App\Contexts\Workspaces\Application\Controllers\Web\Workspace\WorkspaceController;
+use App\Contexts\Workspaces\Presentation\Controllers\Http\Workspace\WorkspaceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 

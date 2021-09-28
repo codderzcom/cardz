@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Contexts\Workspaces\Application\Controllers\Web\Workspace\Commands;
-
-use App\Contexts\Workspaces\Domain\Model\Workspace\Profile;
+namespace App\Contexts\Workspaces\Presentation\Controllers\Http\Workspace\Commands;
 
 class ChangeWorkspaceProfileRequest extends BaseCommandRequest
 {
