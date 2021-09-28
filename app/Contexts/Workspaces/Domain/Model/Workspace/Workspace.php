@@ -20,15 +20,13 @@ final class Workspace extends AggregateRoot
     }
 
     #[Pure]
-    public static function make(WorkspaceId $workspaceId, KeeperId $keeperId, Profile $profile): self
+    public static function add(WorkspaceId $workspaceId, KeeperId $keeperId, Profile $profile): self
     {
-        return new self($workspaceId, $keeperId, $profile);
-    }
-
-    public function add(): WorkspaceAdded
-    {
-        $this->added = Carbon::now();
-        return WorkspaceAdded::with($this->workspaceId);
+        $workspace = new self($workspaceId, $keeperId, $profile);
+        $workspace->added = Carbon::now();
+        //ToDo: emit
+        WorkspaceAdded::with($workspace->workspaceId);
+        return $workspace;
     }
 
     public function changeProfile(Profile $profile): WorkspaceProfileChanged

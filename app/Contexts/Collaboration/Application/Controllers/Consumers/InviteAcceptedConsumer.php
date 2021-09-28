@@ -2,19 +2,17 @@
 
 namespace App\Contexts\Collaboration\Application\Controllers\Consumers;
 
-use App\Contexts\Collaboration\Application\Contracts\InviteRepositoryInterface;
+use App\Contexts\Collaboration\Application\Contracts\AcceptedInviteReadStorageInterface;
 use App\Contexts\Collaboration\Application\IntegrationEvents\InviteAccepted;
-use App\Contexts\Collaboration\Application\Services\RelationAppService;
-use App\Contexts\Collaboration\Domain\Model\Invite\InviteId;
-use App\Contexts\Collaboration\Domain\Model\Relation\RelationType;
+use App\Contexts\Collaboration\Application\Services\MemberAppService;
 use App\Contexts\Shared\Contracts\Informable;
 use App\Contexts\Shared\Contracts\Reportable;
 
 final class InviteAcceptedConsumer implements Informable
 {
     public function __construct(
-        private InviteRepositoryInterface $inviteRepository,
-        private RelationAppService $relationAppService,
+        private MemberAppService $memberAppService,
+        private AcceptedInviteReadStorageInterface $acceptedInviteReadStorage,
     ) {
     }
 
@@ -27,10 +25,10 @@ final class InviteAcceptedConsumer implements Informable
     {
         /** @var InviteAccepted $event */
         $event = $reportable;
-        $invite = $this->inviteRepository->take(InviteId::of($event->id()));
-        if ($invite === null) {
+        $acceptedInvite = $this->acceptedInviteReadStorage->take($event->id());
+        if ($acceptedInvite === null) {
             return;
         }
-        $this->relationAppService->enter($invite->collaboratorId, $invite->workspaceId, RelationType::MEMBER());
+        $this->memberAppService->acceptInvite($acceptedInvite->memberId, $acceptedInvite->workspaceId);
     }
 }

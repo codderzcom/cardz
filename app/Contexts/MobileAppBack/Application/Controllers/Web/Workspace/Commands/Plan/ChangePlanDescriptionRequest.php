@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands;
+namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\Plan;
 
-
-final class AddPlanRequest extends BaseCommandRequest
+final class ChangePlanDescriptionRequest extends PlanCommandRequest
 {
     protected const RULES = [
         'description' => 'required',
@@ -14,6 +13,7 @@ final class AddPlanRequest extends BaseCommandRequest
     ];
 
     public string $description;
+
 
     public function passedValidation(): void
     {
@@ -28,5 +28,4 @@ final class AddPlanRequest extends BaseCommandRequest
             'description' => $this->input('description'),
         ]);
     }
-
 }

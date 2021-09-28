@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands;
+namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\Plan;
 
 final class RemovePlanRequirementRequest extends PlanCommandRequest
 {

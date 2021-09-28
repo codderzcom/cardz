@@ -1,27 +1,23 @@
 <?php
 
-namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands;
+namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\Plan;
 
-final class ChangePlanRequirementDescriptionRequest extends PlanCommandRequest
+final class AddPlanRequirementRequest extends PlanCommandRequest
 {
     protected const RULES = [
-        'requirementId' => 'required',
         'description' => 'required',
     ];
 
     protected const MESSAGES = [
-        'requirementId.required' => 'requirementId required',
         'description.required' => 'description required',
     ];
 
-    public string $requirementId;
-
     public string $description;
+
 
     public function passedValidation(): void
     {
         parent::passedValidation();
-        $this->requirementId = $this->input('requirementId');
         $this->description = $this->input('description');
     }
 
@@ -29,7 +25,7 @@ final class ChangePlanRequirementDescriptionRequest extends PlanCommandRequest
     {
         parent::prepareForValidation();
         $this->merge([
-            'requirementId' => $this->route('requirementId'),
+            'description' => $this->input('description'),
         ]);
     }
 }

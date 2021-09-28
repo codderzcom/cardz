@@ -3,8 +3,7 @@
 namespace App\Contexts\Collaboration\Application\Controllers\Consumers;
 
 use App\Contexts\Collaboration\Application\Contracts\AddedWorkspaceReadStorageInterface;
-use App\Contexts\Collaboration\Application\Services\RelationAppService;
-use App\Contexts\Collaboration\Domain\Model\Relation\RelationType;
+use App\Contexts\Collaboration\Application\Services\KeeperAppService;
 use App\Contexts\Shared\Contracts\Informable;
 use App\Contexts\Shared\Contracts\Reportable;
 use App\Contexts\Workspaces\Application\IntegrationEvents\WorkspaceAdded as WorkspacesWorkspaceAdded;
@@ -12,10 +11,9 @@ use App\Contexts\Workspaces\Application\IntegrationEvents\WorkspaceAdded as Work
 final class WorkspacesWorkspaceAddedConsumer implements Informable
 {
     public function __construct(
+        private KeeperAppService $keeperAppService,
         private AddedWorkspaceReadStorageInterface $addedWorkspaceReadStorage,
-        private RelationAppService $relationAppService,
-    )
-    {
+    ) {
     }
 
     public function accepts(Reportable $reportable): bool
@@ -32,6 +30,6 @@ final class WorkspacesWorkspaceAddedConsumer implements Informable
         if ($addedWorkspace === null) {
             return;
         }
-        $this->relationAppService->enter($addedWorkspace->collaboratorId, $addedWorkspace->workspaceId, RelationType::KEEPER());
+        $this->keeperAppService->bindWorkspace($addedWorkspace->collaboratorId, $addedWorkspace->workspaceId);
     }
 }

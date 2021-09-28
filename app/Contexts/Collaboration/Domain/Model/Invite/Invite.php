@@ -15,16 +15,18 @@ final class Invite extends AggregateRoot
 {
     private ?Carbon $proposed = null;
 
+    private ?Carbon $accepted = null;
+
     private function __construct(
         public InviteId $inviteId,
-        public CollaboratorId $collaboratorId,
+        public CollaboratorId $memberId,
         public WorkspaceId $workspaceId,
     ) {
     }
 
-    public static function make(InviteId $inviteId, CollaboratorId $collaboratorId, WorkspaceId $workspaceId): self
+    public static function make(InviteId $inviteId, CollaboratorId $memberId, WorkspaceId $workspaceId): self
     {
-        return new self($inviteId, $collaboratorId, $workspaceId);
+        return new self($inviteId, $memberId, $workspaceId);
     }
 
     public function propose(): InviteProposed
@@ -35,6 +37,7 @@ final class Invite extends AggregateRoot
 
     public function accept(): InviteAccepted
     {
+        $this->accepted = Carbon::now();
         return InviteAccepted::with($this->inviteId);
     }
 
@@ -53,16 +56,23 @@ final class Invite extends AggregateRoot
         return $this->proposed !== null;
     }
 
+    public function isAccepted(): bool
+    {
+        return $this->accepted !== null;
+    }
+
     private function from(
         string $inviteId,
-        string $collaboratorId,
+        string $memberId,
         string $workspaceId,
         ?Carbon $proposed,
+        ?Carbon $accepted,
     ): self {
         $this->inviteId = InviteId::of($inviteId);
-        $this->collaboratorId = CollaboratorId::of($collaboratorId);
+        $this->memberId = CollaboratorId::of($memberId);
         $this->workspaceId = WorkspaceId::of($workspaceId);
         $this->proposed = $proposed;
+        $this->accepted = $accepted;
         return $this;
     }
 }

@@ -3,9 +3,9 @@
 namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace;
 
 use App\Contexts\MobileAppBack\Application\Controllers\Web\BaseController;
-use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\AchievementCardRequest;
-use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\CardCommandRequest;
-use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\IssueCardRequest;
+use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\Card\AchievementCardRequest;
+use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\Card\CardCommandRequest;
+use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\Card\IssueCardRequest;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Queries\CardByCodeRequest;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Queries\CardByIdRequest;
 use App\Contexts\MobileAppBack\Application\Services\Workspace\CardService;
@@ -37,7 +37,7 @@ class CardController extends BaseController
     public function issue(IssueCardRequest $request): JsonResponse
     {
         return $this->response($this->cardService->issue(
-            $request->keeperId,
+            $request->collaboratorId,
             $request->workspaceId,
             $request->planId,
             $request->customerId,
@@ -48,7 +48,7 @@ class CardController extends BaseController
     public function complete(CardCommandRequest $request): JsonResponse
     {
         return $this->response($this->cardService->complete(
-            $request->keeperId,
+            $request->collaboratorId,
             $request->workspaceId,
             $request->cardId,
         ));
@@ -57,7 +57,7 @@ class CardController extends BaseController
     public function revoke(CardCommandRequest $request): JsonResponse
     {
         return $this->response($this->cardService->revoke(
-            $request->keeperId,
+            $request->collaboratorId,
             $request->workspaceId,
             $request->cardId,
         ));
@@ -66,7 +66,7 @@ class CardController extends BaseController
     public function block(CardCommandRequest $request): JsonResponse
     {
         return $this->response($this->cardService->block(
-            $request->keeperId,
+            $request->collaboratorId,
             $request->workspaceId,
             $request->cardId,
         ));
@@ -75,7 +75,7 @@ class CardController extends BaseController
     public function unblock(CardCommandRequest $request): JsonResponse
     {
         return $this->response($this->cardService->unblock(
-            $request->keeperId,
+            $request->collaboratorId,
             $request->workspaceId,
             $request->cardId,
         ));
@@ -84,7 +84,7 @@ class CardController extends BaseController
     public function noteAchievement(AchievementCardRequest $request): JsonResponse
     {
         return $this->response($this->cardService->noteAchievement(
-            $request->keeperId,
+            $request->collaboratorId,
             $request->workspaceId,
             $request->cardId,
             $request->achievementId,
@@ -95,7 +95,7 @@ class CardController extends BaseController
     public function dismissAchievement(AchievementCardRequest $request): JsonResponse
     {
         return $this->response($this->cardService->dismissAchievement(
-            $request->keeperId,
+            $request->collaboratorId,
             $request->workspaceId,
             $request->cardId,
             $request->achievementId,

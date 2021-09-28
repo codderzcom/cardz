@@ -3,6 +3,7 @@
 namespace App\Contexts\Collaboration\Application\Services;
 
 use App\Contexts\Collaboration\Application\Contracts\InviteRepositoryInterface;
+use App\Contexts\Collaboration\Application\Contracts\KeeperRepositoryInterface;
 use App\Contexts\Collaboration\Application\IntegrationEvents\InviteAccepted;
 use App\Contexts\Collaboration\Application\IntegrationEvents\InviteProposed;
 use App\Contexts\Collaboration\Domain\Model\Collaborator\CollaboratorId;
@@ -19,25 +20,11 @@ class InviteAppService
     use ReportingServiceTrait;
 
     public function __construct(
+        private KeeperRepositoryInterface $keeperRepository,
         private InviteRepositoryInterface $inviteRepository,
         private ReportingBusInterface $reportingBus,
         private ServiceResultFactoryInterface $serviceResultFactory,
     ) {
-    }
-
-    public function propose(string $collaboratorId, string $workspaceId): ServiceResultInterface
-    {
-        $invite = Invite::make(
-            InviteId::make(),
-            CollaboratorId::of($collaboratorId),
-            WorkspaceId::of($workspaceId),
-        );
-
-        $invite->propose();
-        $this->inviteRepository->persist($invite);
-
-        $result = $this->serviceResultFactory->ok($invite->inviteId, new InviteProposed($invite->inviteId));
-        return $this->reportResult($result, $this->reportingBus);
     }
 
     public function accept(string $inviteId): ServiceResultInterface
@@ -47,7 +34,7 @@ class InviteAppService
             return $this->serviceResultFactory->notFound("Invite $inviteId not found");
         }
         $invite->accept();
-        $this->inviteRepository->remove($invite);
+        $this->inviteRepository->persist($invite);
 
         $result = $this->serviceResultFactory->ok($invite->inviteId, new InviteAccepted($invite->inviteId));
         return $this->reportResult($result, $this->reportingBus);

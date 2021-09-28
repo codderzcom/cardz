@@ -24,14 +24,6 @@ final class AddWorkspaceRequest extends FormRequest
         ];
     }
 
-    public function passedValidation(): void
-    {
-        $this->keeperId = $this->input('keeperId');
-        $this->name = $this->input('name');
-        $this->description = $this->input('description');
-        $this->address = $this->input('address');
-    }
-
     public function messages(): array
     {
         return [
@@ -40,5 +32,20 @@ final class AddWorkspaceRequest extends FormRequest
             'description.required' => 'description required',
             'address.required' => 'address required',
         ];
+    }
+
+    public function passedValidation(): void
+    {
+        $this->keeperId = $this->input('keeperId');
+        $this->name = $this->input('name');
+        $this->description = $this->input('description');
+        $this->address = $this->input('address');
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'keeperId' => $this->user()->id,
+        ]);
     }
 }

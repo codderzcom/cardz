@@ -6,19 +6,22 @@ use App\Contexts\Collaboration\Application\Controllers\Web\BaseController;
 use App\Contexts\Collaboration\Application\Controllers\Web\Invite\Commands\InviteProposeRequest;
 use App\Contexts\Collaboration\Application\Controllers\Web\Invite\Commands\InviteRequest;
 use App\Contexts\Collaboration\Application\Services\InviteAppService;
+use App\Contexts\Collaboration\Application\Services\KeeperAppService;
 use Illuminate\Http\JsonResponse;
 
 class InviteController extends BaseController
 {
     public function __construct(
+        private KeeperAppService $keeperAppService,
         private InviteAppService $inviteAppService,
     ) {
     }
 
     public function propose(InviteProposeRequest $request): JsonResponse
     {
-        return $this->response($this->inviteAppService->propose(
-            $request->collaboratorId,
+        return $this->response($this->keeperAppService->invite(
+            $request->keeperId,
+            $request->memberId,
             $request->workspaceId,
         ));
     }

@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands;
+namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\Card;
+
+use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\BaseCommandRequest;
 
 final class AchievementCardRequest extends BaseCommandRequest
 {

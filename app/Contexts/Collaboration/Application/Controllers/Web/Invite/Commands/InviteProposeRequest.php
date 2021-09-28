@@ -6,13 +6,15 @@ use Illuminate\Foundation\Http\FormRequest;
 
 final class InviteProposeRequest extends FormRequest
 {
-    public string $collaboratorId;
+    public string $keeperId;
+    public string $memberId;
     public string $workspaceId;
 
     public function rules(): array
     {
         return [
-            'collaboratorId' => 'required',
+            'keeperId' => 'required',
+            'memberId' => 'required',
             'workspaceId' => 'required',
         ];
     }
@@ -20,14 +22,16 @@ final class InviteProposeRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'collaboratorId.required' => 'collaboratorId required',
+            'keeperId.required' => 'keeperId required',
+            'memberId.required' => 'memberId required',
             'workspaceId.required' => 'workspaceId required',
         ];
     }
 
     public function passedValidation(): void
     {
-        $this->collaboratorId = $this->input('collaboratorId');
+        $this->keeperId = $this->input('keeperId');
+        $this->memberId = $this->input('memberId');
         $this->workspaceId = $this->input('workspaceId');
     }
 

@@ -14,6 +14,7 @@ class Invite extends Model
 
     protected $casts = [
         'proposed_at' => 'datetime',
+        'accepted_at' => 'datetime',
     ];
 
 }

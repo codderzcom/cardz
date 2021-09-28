@@ -6,9 +6,11 @@ use App\Contexts\Shared\Contracts\ReportingBusInterface;
 use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
 use App\Contexts\Shared\Contracts\ServiceResultInterface;
 use App\Contexts\Shared\Infrastructure\Support\ReportingServiceTrait;
+use App\Contexts\Workspaces\Application\Contracts\KeeperRepositoryInterface;
 use App\Contexts\Workspaces\Application\Contracts\WorkspaceRepositoryInterface;
 use App\Contexts\Workspaces\Application\IntegrationEvents\WorkspaceAdded;
 use App\Contexts\Workspaces\Application\IntegrationEvents\WorkspaceProfileChanged;
+use App\Contexts\Workspaces\Application\IntegrationEvents\WorkspaceProfileFilled;
 use App\Contexts\Workspaces\Domain\Model\Workspace\KeeperId;
 use App\Contexts\Workspaces\Domain\Model\Workspace\Profile;
 use App\Contexts\Workspaces\Domain\Model\Workspace\Workspace;
@@ -19,6 +21,7 @@ class WorkspaceAppService
     use ReportingServiceTrait;
 
     public function __construct(
+        private KeeperRepositoryInterface $keeperRepository,
         private WorkspaceRepositoryInterface $workspaceRepository,
         private ReportingBusInterface $reportingBus,
         private ServiceResultFactoryInterface $serviceResultFactory,
@@ -27,16 +30,16 @@ class WorkspaceAppService
 
     public function add(string $keeperId, string $name, string $description, string $address): ServiceResultInterface
     {
-        $workspace = Workspace::make(
-            WorkspaceId::make(),
-            KeeperId::of($keeperId),
-            Profile::of($name, $description, $address),
-        );
+        $keeper = $this->keeperRepository->take(KeeperId::of($keeperId));
+        if ($keeper === null) {
+            return $this->serviceResultFactory->notFound("Keeper $keeperId not found");
+        }
 
-        $workspace->add();
+        $workspaceId = WorkspaceId::make();
+        $workspace = $keeper->keepWorkspace($workspaceId, $name, $description, $address);
         $this->workspaceRepository->persist($workspace);
 
-        $result = $this->serviceResultFactory->ok($workspace, new WorkspaceAdded($workspace->workspaceId));
+        $result = $this->serviceResultFactory->ok($workspace, new WorkspaceAdded($workspaceId)); //ToDo: added on domain profile filled.
         return $this->reportResult($result, $this->reportingBus);
     }
 

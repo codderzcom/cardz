@@ -2,6 +2,7 @@
 
 namespace App\Contexts\Collaboration\Application\Services;
 
+use App\Contexts\Collaboration\Application\Contracts\KeeperRepositoryInterface;
 use App\Contexts\Collaboration\Application\Contracts\RelationRepositoryInterface;
 use App\Contexts\Collaboration\Application\IntegrationEvents\RelationEntered;
 use App\Contexts\Collaboration\Application\IntegrationEvents\RelationLeft;
@@ -27,21 +28,6 @@ class RelationAppService
         private PolicyEngineInterface $policyEngine,
         private ServiceResultFactoryInterface $serviceResultFactory,
     ) {
-    }
-
-    public function enter(string $collaboratorId, string $workspaceId, string $relationType): ServiceResultInterface
-    {
-        $relation = Relation::make(
-            RelationId::make(),
-            CollaboratorId::of($collaboratorId),
-            WorkspaceId::of($workspaceId),
-        );
-        $relation->enter(RelationType::of($relationType));
-
-        $this->relationRepository->persist($relation);
-
-        $result = $this->serviceResultFactory->ok($relation->relationId, new RelationEntered($relation->relationId));
-        return $this->reportResult($result, $this->reportingBus);
     }
 
     public function leave(string $relationId): ServiceResultInterface

@@ -3,12 +3,12 @@
 namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace;
 
 use App\Contexts\MobileAppBack\Application\Controllers\Web\BaseController;
-use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\{AddPlanRequest,
-    AddPlanRequirementRequest,
-    ChangePlanDescriptionRequest,
-    ChangePlanRequirementDescriptionRequest,
-    PlanCommandRequest,
-    RemovePlanRequirementRequest};
+use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\{Plan\AddPlanRequest,
+    Plan\AddPlanRequirementRequest,
+    Plan\ChangePlanDescriptionRequest,
+    Plan\ChangePlanRequirementDescriptionRequest,
+    Plan\PlanCommandRequest,
+    Plan\RemovePlanRequirementRequest};
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Queries\GetPlanRequest;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Queries\GetWorkspaceRequest;
 use App\Contexts\MobileAppBack\Application\Services\Workspace\PlanService;
@@ -41,7 +41,7 @@ class PlanController extends BaseController
     public function add(AddPlanRequest $request): JsonResponse
     {
         return $this->response($this->planService->add(
-            $request->keeperId,
+            $request->collaboratorId,
             $request->workspaceId,
             $request->description,
         ));
@@ -50,7 +50,7 @@ class PlanController extends BaseController
     public function launch(PlanCommandRequest $request): JsonResponse
     {
         return $this->response($this->planService->launch(
-            $request->keeperId,
+            $request->collaboratorId,
             $request->workspaceId,
             $request->planId,
         ));
@@ -59,7 +59,7 @@ class PlanController extends BaseController
     public function stop(PlanCommandRequest $request): JsonResponse
     {
         $this->response($this->planService->stop(
-            $request->keeperId,
+            $request->collaboratorId,
             $request->workspaceId,
             $request->planId,
         ));
@@ -68,7 +68,7 @@ class PlanController extends BaseController
     public function archive(PlanCommandRequest $request): JsonResponse
     {
         return $this->response($this->planService->archive(
-            $request->keeperId,
+            $request->collaboratorId,
             $request->workspaceId,
             $request->planId,
         ));
@@ -77,7 +77,7 @@ class PlanController extends BaseController
     public function changeDescription(ChangePlanDescriptionRequest $request): JsonResponse
     {
         return $this->response($this->planService->changeDescription(
-            $request->keeperId,
+            $request->collaboratorId,
             $request->workspaceId,
             $request->planId,
             $request->description,
@@ -87,7 +87,7 @@ class PlanController extends BaseController
     public function addRequirement(AddPlanRequirementRequest $request): JsonResponse
     {
         return $this->response($this->planService->addRequirement(
-            $request->keeperId,
+            $request->collaboratorId,
             $request->workspaceId,
             $request->planId,
             $request->description,
@@ -97,7 +97,7 @@ class PlanController extends BaseController
     public function removeRequirement(RemovePlanRequirementRequest $request): JsonResponse
     {
         return $this->response($this->planService->removeRequirement(
-            $request->keeperId,
+            $request->collaboratorId,
             $request->workspaceId,
             $request->planId,
             $request->requirementId,
@@ -107,7 +107,7 @@ class PlanController extends BaseController
     public function changeRequirement(ChangePlanRequirementDescriptionRequest $request): JsonResponse
     {
         return $this->response($this->planService->changeRequirement(
-            $request->keeperId,
+            $request->collaboratorId,
             $request->workspaceId,
             $request->planId,
             $request->requirementId,

@@ -3,7 +3,7 @@
 namespace App\Contexts\MobileAppBack\Application\Services\Workspace\Policies;
 
 use App\Contexts\MobileAppBack\Domain\Model\Card\CardId;
-use App\Contexts\MobileAppBack\Domain\Model\Workspace\KeeperId;
+use App\Contexts\MobileAppBack\Domain\Model\Collaboration\KeeperId;
 use App\Contexts\Shared\Contracts\PolicyAssertionInterface;
 use App\Contexts\Shared\Contracts\PolicyViolationInterface;
 use App\Contexts\Shared\Infrastructure\Policy\PolicyViolation;

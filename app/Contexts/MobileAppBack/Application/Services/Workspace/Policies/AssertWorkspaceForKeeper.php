@@ -2,7 +2,7 @@
 
 namespace App\Contexts\MobileAppBack\Application\Services\Workspace\Policies;
 
-use App\Contexts\MobileAppBack\Domain\Model\Workspace\KeeperId;
+use App\Contexts\MobileAppBack\Domain\Model\Collaboration\KeeperId;
 use App\Contexts\MobileAppBack\Domain\Model\Workspace\WorkspaceId;
 use App\Contexts\Shared\Contracts\PolicyAssertionInterface;
 use App\Contexts\Shared\Contracts\PolicyViolationInterface;
