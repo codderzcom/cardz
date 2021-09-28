@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contexts\Shared\Contracts;
+namespace App\Shared\Contracts;
 
 interface ReportingBusInterface
 {

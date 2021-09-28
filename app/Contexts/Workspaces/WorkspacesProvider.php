@@ -2,12 +2,12 @@
 
 namespace App\Contexts\Workspaces;
 
-use App\Contexts\Shared\Contracts\ReportingBusInterface;
 use App\Contexts\Workspaces\Application\Contracts\KeeperRepositoryInterface;
 use App\Contexts\Workspaces\Application\Contracts\WorkspaceRepositoryInterface;
 use App\Contexts\Workspaces\Application\Controllers\Consumers\WorkspaceAddedConsumer;
 use App\Contexts\Workspaces\Infrastructure\Persistence\KeeperRepository;
 use App\Contexts\Workspaces\Infrastructure\Persistence\WorkspaceRepository;
+use App\Shared\Contracts\ReportingBusInterface;
 use Illuminate\Support\ServiceProvider;
 
 class WorkspacesProvider extends ServiceProvider

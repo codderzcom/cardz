@@ -4,9 +4,9 @@ namespace App\Contexts\Plans\Application\Controllers\Consumers;
 
 use App\Contexts\Plans\Application\IntegrationEvents\PlanAdded;
 use App\Contexts\Plans\Application\IntegrationEvents\PlanDescriptionFilled;
-use App\Contexts\Shared\Contracts\Informable;
-use App\Contexts\Shared\Contracts\Reportable;
-use App\Contexts\Shared\Contracts\ReportingBusInterface;
+use App\Shared\Contracts\Informable;
+use App\Shared\Contracts\Reportable;
+use App\Shared\Contracts\ReportingBusInterface;
 
 final class PlanAddedConsumer implements Informable
 {

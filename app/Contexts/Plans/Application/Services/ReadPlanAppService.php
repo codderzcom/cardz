@@ -3,8 +3,8 @@
 namespace App\Contexts\Plans\Application\Services;
 
 use App\Contexts\Plans\Application\Contracts\ReadPlanStorageInterface;
-use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
-use App\Contexts\Shared\Contracts\ServiceResultInterface;
+use App\Shared\Contracts\ServiceResultFactoryInterface;
+use App\Shared\Contracts\ServiceResultInterface;
 
 class ReadPlanAppService
 {

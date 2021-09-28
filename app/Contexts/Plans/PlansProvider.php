@@ -10,7 +10,7 @@ use App\Contexts\Plans\Application\Controllers\Consumers\RequirementsForPlanModi
 use App\Contexts\Plans\Infrastructure\Persistence\PlanRepository;
 use App\Contexts\Plans\Infrastructure\Persistence\RequirementRepository;
 use App\Contexts\Plans\Infrastructure\ReadStorage\ReadPlanStorage;
-use App\Contexts\Shared\Contracts\ReportingBusInterface;
+use App\Shared\Contracts\ReportingBusInterface;
 use Illuminate\Support\ServiceProvider;
 
 class PlansProvider extends ServiceProvider

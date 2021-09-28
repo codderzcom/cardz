@@ -4,10 +4,10 @@ namespace App\Contexts\Collaboration\Application\Services\Policies;
 
 use App\Contexts\Collaboration\Domain\Model\Relation\RelationId;
 use App\Contexts\Collaboration\Domain\Model\Relation\RelationType;
-use App\Contexts\Shared\Contracts\PolicyAssertionInterface;
-use App\Contexts\Shared\Contracts\PolicyViolationInterface;
-use App\Contexts\Shared\Infrastructure\Policy\PolicyViolation;
 use App\Models\Relation as EloquentRelation;
+use App\Shared\Contracts\PolicyAssertionInterface;
+use App\Shared\Contracts\PolicyViolationInterface;
+use App\Shared\Infrastructure\Policy\PolicyViolation;
 use JetBrains\PhpStorm\Pure;
 
 final class AssertLeavingMemberIsNotKeeper implements PolicyAssertionInterface

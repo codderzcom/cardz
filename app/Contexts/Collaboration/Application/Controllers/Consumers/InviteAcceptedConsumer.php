@@ -5,8 +5,8 @@ namespace App\Contexts\Collaboration\Application\Controllers\Consumers;
 use App\Contexts\Collaboration\Application\Contracts\AcceptedInviteReadStorageInterface;
 use App\Contexts\Collaboration\Application\IntegrationEvents\InviteAccepted;
 use App\Contexts\Collaboration\Application\Services\MemberAppService;
-use App\Contexts\Shared\Contracts\Informable;
-use App\Contexts\Shared\Contracts\Reportable;
+use App\Shared\Contracts\Informable;
+use App\Shared\Contracts\Reportable;
 
 final class InviteAcceptedConsumer implements Informable
 {

@@ -20,10 +20,10 @@ use App\Contexts\Cards\Domain\Model\Card\Description;
 use App\Contexts\Cards\Domain\Model\Shared\CustomerId;
 use App\Contexts\Cards\Domain\Model\Shared\PlanId;
 use App\Contexts\Cards\Infrastructure\ACL\Plans\PlansAdapter;
-use App\Contexts\Shared\Contracts\ReportingBusInterface;
-use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
-use App\Contexts\Shared\Contracts\ServiceResultInterface;
-use App\Contexts\Shared\Infrastructure\Support\ReportingServiceTrait;
+use App\Shared\Contracts\ReportingBusInterface;
+use App\Shared\Contracts\ServiceResultFactoryInterface;
+use App\Shared\Contracts\ServiceResultInterface;
+use App\Shared\Infrastructure\Support\ReportingServiceTrait;
 
 class CardAppService
 {

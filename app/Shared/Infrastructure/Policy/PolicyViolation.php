@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Contexts\Shared\Infrastructure\Policy;
+namespace App\Shared\Infrastructure\Policy;
 
-use App\Contexts\Shared\Contracts\PolicyViolationInterface;
+use App\Shared\Contracts\PolicyViolationInterface;
 use JetBrains\PhpStorm\Pure;
 
 class PolicyViolation implements PolicyViolationInterface

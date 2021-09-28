@@ -9,10 +9,8 @@ use App\Contexts\MobileAppBack\Domain\Model\Card\CardCode;
 use App\Contexts\MobileAppBack\Domain\Model\Card\CardId;
 use App\Contexts\MobileAppBack\Domain\Model\Customer\CustomerCode;
 use App\Contexts\MobileAppBack\Domain\Model\Customer\CustomerId;
-use App\Contexts\MobileAppBack\Infrastructure\ACL\Cards\CardsAdapter;
-use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
-use App\Contexts\Shared\Contracts\ServiceResultInterface;
-use App\Models\Card as EloquentCard;
+use App\Shared\Contracts\ServiceResultFactoryInterface;
+use App\Shared\Contracts\ServiceResultInterface;
 
 class CustomerService
 {

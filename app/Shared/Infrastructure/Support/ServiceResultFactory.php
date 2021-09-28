@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Contexts\Shared\Infrastructure\Support;
+namespace App\Shared\Infrastructure\Support;
 
-use App\Contexts\Shared\Contracts\Reportable;
-use App\Contexts\Shared\Contracts\ServiceResultCode;
-use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
-use App\Contexts\Shared\Contracts\ServiceResultInterface;
+use App\Shared\Contracts\Reportable;
+use App\Shared\Contracts\ServiceResultCode;
+use App\Shared\Contracts\ServiceResultFactoryInterface;
+use App\Shared\Contracts\ServiceResultInterface;
 
 class ServiceResultFactory implements ServiceResultFactoryInterface
 {

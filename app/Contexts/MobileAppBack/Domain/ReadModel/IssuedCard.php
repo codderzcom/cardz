@@ -2,7 +2,7 @@
 
 namespace App\Contexts\MobileAppBack\Domain\ReadModel;
 
-use App\Contexts\Shared\Infrastructure\Support\ArrayPresenterTrait;
+use App\Shared\Infrastructure\Support\ArrayPresenterTrait;
 use JetBrains\PhpStorm\Pure;
 
 final class IssuedCard

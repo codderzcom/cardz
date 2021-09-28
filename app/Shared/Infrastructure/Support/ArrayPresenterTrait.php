@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contexts\Shared\Infrastructure\Support;
+namespace App\Shared\Infrastructure\Support;
 
 use Carbon\Carbon;
 use ReflectionClass;

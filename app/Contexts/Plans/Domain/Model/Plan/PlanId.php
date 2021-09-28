@@ -2,7 +2,7 @@
 
 namespace App\Contexts\Plans\Domain\Model\Plan;
 
-use App\Contexts\Shared\Infrastructure\Support\GuidBasedImmutableId;
+use App\Shared\Infrastructure\Support\GuidBasedImmutableId;
 
 final class PlanId extends GuidBasedImmutableId
 {

@@ -2,21 +2,15 @@
 
 namespace App\Contexts\Collaboration\Application\Services;
 
-use App\Contexts\Collaboration\Application\Contracts\KeeperRepositoryInterface;
 use App\Contexts\Collaboration\Application\Contracts\RelationRepositoryInterface;
-use App\Contexts\Collaboration\Application\IntegrationEvents\RelationEntered;
 use App\Contexts\Collaboration\Application\IntegrationEvents\RelationLeft;
 use App\Contexts\Collaboration\Application\Services\Policies\AssertLeavingMemberIsNotKeeper;
-use App\Contexts\Collaboration\Domain\Model\Collaborator\CollaboratorId;
-use App\Contexts\Collaboration\Domain\Model\Relation\Relation;
 use App\Contexts\Collaboration\Domain\Model\Relation\RelationId;
-use App\Contexts\Collaboration\Domain\Model\Relation\RelationType;
-use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
-use App\Contexts\Shared\Contracts\PolicyEngineInterface;
-use App\Contexts\Shared\Contracts\ReportingBusInterface;
-use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
-use App\Contexts\Shared\Contracts\ServiceResultInterface;
-use App\Contexts\Shared\Infrastructure\Support\ReportingServiceTrait;
+use App\Shared\Contracts\PolicyEngineInterface;
+use App\Shared\Contracts\ReportingBusInterface;
+use App\Shared\Contracts\ServiceResultFactoryInterface;
+use App\Shared\Contracts\ServiceResultInterface;
+use App\Shared\Infrastructure\Support\ReportingServiceTrait;
 
 class RelationAppService
 {

@@ -2,19 +2,17 @@
 
 namespace App\Contexts\Workspaces\Application\Services;
 
-use App\Contexts\Shared\Contracts\ReportingBusInterface;
-use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
-use App\Contexts\Shared\Contracts\ServiceResultInterface;
-use App\Contexts\Shared\Infrastructure\Support\ReportingServiceTrait;
 use App\Contexts\Workspaces\Application\Contracts\KeeperRepositoryInterface;
 use App\Contexts\Workspaces\Application\Contracts\WorkspaceRepositoryInterface;
 use App\Contexts\Workspaces\Application\IntegrationEvents\WorkspaceAdded;
 use App\Contexts\Workspaces\Application\IntegrationEvents\WorkspaceProfileChanged;
-use App\Contexts\Workspaces\Application\IntegrationEvents\WorkspaceProfileFilled;
 use App\Contexts\Workspaces\Domain\Model\Workspace\KeeperId;
 use App\Contexts\Workspaces\Domain\Model\Workspace\Profile;
-use App\Contexts\Workspaces\Domain\Model\Workspace\Workspace;
 use App\Contexts\Workspaces\Domain\Model\Workspace\WorkspaceId;
+use App\Shared\Contracts\ReportingBusInterface;
+use App\Shared\Contracts\ServiceResultFactoryInterface;
+use App\Shared\Contracts\ServiceResultInterface;
+use App\Shared\Infrastructure\Support\ReportingServiceTrait;
 
 class WorkspaceAppService
 {

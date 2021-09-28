@@ -2,11 +2,11 @@
 
 namespace App\Contexts\Workspaces\Application\Controllers\Consumers;
 
-use App\Contexts\Shared\Contracts\Informable;
-use App\Contexts\Shared\Contracts\Reportable;
-use App\Contexts\Shared\Contracts\ReportingBusInterface;
 use App\Contexts\Workspaces\Application\IntegrationEvents\WorkspaceAdded;
 use App\Contexts\Workspaces\Application\IntegrationEvents\WorkspaceProfileFilled;
+use App\Shared\Contracts\Informable;
+use App\Shared\Contracts\Reportable;
+use App\Shared\Contracts\ReportingBusInterface;
 
 class WorkspaceAddedConsumer implements Informable
 {

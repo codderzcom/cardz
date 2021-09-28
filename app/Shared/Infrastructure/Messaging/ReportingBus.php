@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Contexts\Shared\Infrastructure\Messaging;
+namespace App\Shared\Infrastructure\Messaging;
 
-use App\Contexts\Shared\Contracts\Informable;
-use App\Contexts\Shared\Contracts\Reportable;
-use App\Contexts\Shared\Contracts\ReportingBusInterface;
-use App\Contexts\Shared\Infrastructure\Persistence\ReportableRepository;
+use App\Shared\Contracts\Informable;
+use App\Shared\Contracts\Reportable;
+use App\Shared\Contracts\ReportingBusInterface;
+use App\Shared\Infrastructure\Persistence\ReportableRepository;
 
 class ReportingBus implements ReportingBusInterface
 {

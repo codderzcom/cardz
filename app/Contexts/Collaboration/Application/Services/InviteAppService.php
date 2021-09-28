@@ -5,15 +5,11 @@ namespace App\Contexts\Collaboration\Application\Services;
 use App\Contexts\Collaboration\Application\Contracts\InviteRepositoryInterface;
 use App\Contexts\Collaboration\Application\Contracts\KeeperRepositoryInterface;
 use App\Contexts\Collaboration\Application\IntegrationEvents\InviteAccepted;
-use App\Contexts\Collaboration\Application\IntegrationEvents\InviteProposed;
-use App\Contexts\Collaboration\Domain\Model\Collaborator\CollaboratorId;
-use App\Contexts\Collaboration\Domain\Model\Invite\Invite;
 use App\Contexts\Collaboration\Domain\Model\Invite\InviteId;
-use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
-use App\Contexts\Shared\Contracts\ReportingBusInterface;
-use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
-use App\Contexts\Shared\Contracts\ServiceResultInterface;
-use App\Contexts\Shared\Infrastructure\Support\ReportingServiceTrait;
+use App\Shared\Contracts\ReportingBusInterface;
+use App\Shared\Contracts\ServiceResultFactoryInterface;
+use App\Shared\Contracts\ServiceResultInterface;
+use App\Shared\Infrastructure\Support\ReportingServiceTrait;
 
 class InviteAppService
 {

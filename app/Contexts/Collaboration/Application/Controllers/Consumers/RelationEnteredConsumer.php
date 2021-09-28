@@ -6,8 +6,8 @@ use App\Contexts\Collaboration\Application\Contracts\AcceptedInviteReadStorageIn
 use App\Contexts\Collaboration\Application\Contracts\EnteredRelationReadStorageInterface;
 use App\Contexts\Collaboration\Application\Contracts\InviteRepositoryInterface;
 use App\Contexts\Collaboration\Application\IntegrationEvents\RelationEntered;
-use App\Contexts\Shared\Contracts\Informable;
-use App\Contexts\Shared\Contracts\Reportable;
+use App\Shared\Contracts\Informable;
+use App\Shared\Contracts\Reportable;
 
 final class RelationEnteredConsumer implements Informable
 {

@@ -10,10 +10,10 @@ use App\Contexts\Collaboration\Application\IntegrationEvents\RelationEntered;
 use App\Contexts\Collaboration\Domain\Model\Collaborator\CollaboratorId;
 use App\Contexts\Collaboration\Domain\Model\Relation\RelationType;
 use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
-use App\Contexts\Shared\Contracts\ReportingBusInterface;
-use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
-use App\Contexts\Shared\Contracts\ServiceResultInterface;
-use App\Contexts\Shared\Infrastructure\Support\ReportingServiceTrait;
+use App\Shared\Contracts\ReportingBusInterface;
+use App\Shared\Contracts\ServiceResultFactoryInterface;
+use App\Shared\Contracts\ServiceResultInterface;
+use App\Shared\Infrastructure\Support\ReportingServiceTrait;
 
 class KeeperAppService
 {

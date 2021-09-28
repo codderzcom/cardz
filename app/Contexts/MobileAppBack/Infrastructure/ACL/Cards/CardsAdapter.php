@@ -4,9 +4,8 @@ namespace App\Contexts\MobileAppBack\Infrastructure\ACL\Cards;
 
 use App\Contexts\Cards\Application\Services\BlockedCardAppService;
 use App\Contexts\Cards\Application\Services\CardAppService;
-use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\IssuedCardReadStorage;
-use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
-use App\Contexts\Shared\Contracts\ServiceResultInterface;
+use App\Shared\Contracts\ServiceResultFactoryInterface;
+use App\Shared\Contracts\ServiceResultInterface;
 
 class CardsAdapter
 {

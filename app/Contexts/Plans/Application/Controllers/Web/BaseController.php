@@ -2,8 +2,8 @@
 
 namespace App\Contexts\Plans\Application\Controllers\Web;
 
-use App\Contexts\Shared\Contracts\ServiceResultCode;
-use App\Contexts\Shared\Contracts\ServiceResultInterface;
+use App\Shared\Contracts\ServiceResultCode;
+use App\Shared\Contracts\ServiceResultInterface;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;

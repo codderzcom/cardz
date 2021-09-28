@@ -11,12 +11,12 @@ use App\Contexts\Auth\Domain\Model\User\User;
 use App\Contexts\Auth\Domain\Model\User\UserId;
 use App\Contexts\Auth\Domain\Model\User\UserIdentity;
 use App\Contexts\Auth\Domain\ReadModel\Token;
-use App\Contexts\Shared\Contracts\ReportingBusInterface;
-use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
-use App\Contexts\Shared\Contracts\ServiceResultInterface;
-use App\Contexts\Shared\Exceptions\ParameterAssertionException;
-use App\Contexts\Shared\Infrastructure\Support\ReportingServiceTrait;
 use App\Models\User as EloquentUser;
+use App\Shared\Contracts\ReportingBusInterface;
+use App\Shared\Contracts\ServiceResultFactoryInterface;
+use App\Shared\Contracts\ServiceResultInterface;
+use App\Shared\Exceptions\ParameterAssertionException;
+use App\Shared\Infrastructure\Support\ReportingServiceTrait;
 use Illuminate\Support\Facades\Hash;
 
 class UserAppService

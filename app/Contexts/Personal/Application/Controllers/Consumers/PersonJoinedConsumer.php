@@ -4,9 +4,9 @@ namespace App\Contexts\Personal\Application\Controllers\Consumers;
 
 use App\Contexts\Personal\Application\IntegrationEvents\PersonJoined;
 use App\Contexts\Personal\Application\IntegrationEvents\PersonNameFilled;
-use App\Contexts\Shared\Contracts\Informable;
-use App\Contexts\Shared\Contracts\Reportable;
-use App\Contexts\Shared\Contracts\ReportingBusInterface;
+use App\Shared\Contracts\Informable;
+use App\Shared\Contracts\Reportable;
+use App\Shared\Contracts\ReportingBusInterface;
 
 final class PersonJoinedConsumer implements Informable
 {

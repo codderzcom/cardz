@@ -2,9 +2,7 @@
 
 namespace App\Contexts\Plans\Domain\ReadModel;
 
-use App\Contexts\Plans\Domain\Model\Plan\Plan;
-use App\Contexts\Shared\Infrastructure\Support\ArrayPresenterTrait;
-use JetBrains\PhpStorm\Pure;
+use App\Shared\Infrastructure\Support\ArrayPresenterTrait;
 
 final class ReadPlan
 {

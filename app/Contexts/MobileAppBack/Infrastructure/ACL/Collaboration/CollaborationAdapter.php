@@ -4,10 +4,9 @@ namespace App\Contexts\MobileAppBack\Infrastructure\ACL\Collaboration;
 
 use App\Contexts\Collaboration\Application\Services\InviteAppService;
 use App\Contexts\Collaboration\Application\Services\KeeperAppService;
-use App\Contexts\Collaboration\Application\Services\MemberAppService;
 use App\Contexts\Collaboration\Application\Services\RelationAppService;
-use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
-use App\Contexts\Shared\Contracts\ServiceResultInterface;
+use App\Shared\Contracts\ServiceResultFactoryInterface;
+use App\Shared\Contracts\ServiceResultInterface;
 
 class CollaborationAdapter
 {

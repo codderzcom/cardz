@@ -14,7 +14,7 @@ use App\Contexts\Cards\Application\Controllers\Consumers\SatisfactionCheckRequir
 use App\Contexts\Cards\Infrastructure\Persistence\BlockedCardRepository;
 use App\Contexts\Cards\Infrastructure\Persistence\CardRepository;
 use App\Contexts\Cards\Infrastructure\ReadStorage\IssuedCardReadStorage;
-use App\Contexts\Shared\Contracts\ReportingBusInterface;
+use App\Shared\Contracts\ReportingBusInterface;
 use Illuminate\Support\ServiceProvider;
 
 class CardsProvider extends ServiceProvider

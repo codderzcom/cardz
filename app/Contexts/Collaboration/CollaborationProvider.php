@@ -19,7 +19,7 @@ use App\Contexts\Collaboration\Infrastructure\Persistence\RelationRepository;
 use App\Contexts\Collaboration\Infrastructure\ReadStorage\AcceptedInviteReadStorage;
 use App\Contexts\Collaboration\Infrastructure\ReadStorage\AddedWorkspaceReadStorage;
 use App\Contexts\Collaboration\Infrastructure\ReadStorage\EnteredRelationReadStorage;
-use App\Contexts\Shared\Contracts\ReportingBusInterface;
+use App\Shared\Contracts\ReportingBusInterface;
 use Illuminate\Support\ServiceProvider;
 
 class CollaborationProvider extends ServiceProvider

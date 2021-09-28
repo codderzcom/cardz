@@ -2,9 +2,9 @@
 
 namespace App\Contexts\MobileAppBack\Infrastructure\ACL\Workspaces;
 
-use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
-use App\Contexts\Shared\Contracts\ServiceResultInterface;
 use App\Contexts\Workspaces\Application\Services\WorkspaceAppService;
+use App\Shared\Contracts\ServiceResultFactoryInterface;
+use App\Shared\Contracts\ServiceResultInterface;
 
 class WorkspacesAdapter
 {

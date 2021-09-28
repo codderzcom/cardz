@@ -8,10 +8,10 @@ use App\Contexts\Personal\Application\IntegrationEvents\PersonNameChanged;
 use App\Contexts\Personal\Domain\Model\Person\Name;
 use App\Contexts\Personal\Domain\Model\Person\Person;
 use App\Contexts\Personal\Domain\Model\Person\PersonId;
-use App\Contexts\Shared\Contracts\ReportingBusInterface;
-use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
-use App\Contexts\Shared\Contracts\ServiceResultInterface;
-use App\Contexts\Shared\Infrastructure\Support\ReportingServiceTrait;
+use App\Shared\Contracts\ReportingBusInterface;
+use App\Shared\Contracts\ServiceResultFactoryInterface;
+use App\Shared\Contracts\ServiceResultInterface;
+use App\Shared\Infrastructure\Support\ReportingServiceTrait;
 
 class PersonAppService
 {

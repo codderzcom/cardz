@@ -14,9 +14,9 @@ use App\Contexts\MobileAppBack\Domain\Model\Collaboration\KeeperId;
 use App\Contexts\MobileAppBack\Domain\Model\Workspace\PlanId;
 use App\Contexts\MobileAppBack\Domain\Model\Workspace\WorkspaceId;
 use App\Contexts\MobileAppBack\Infrastructure\ACL\Cards\CardsAdapter;
-use App\Contexts\Shared\Contracts\PolicyEngineInterface;
-use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
-use App\Contexts\Shared\Contracts\ServiceResultInterface;
+use App\Shared\Contracts\PolicyEngineInterface;
+use App\Shared\Contracts\ServiceResultFactoryInterface;
+use App\Shared\Contracts\ServiceResultInterface;
 
 class CardService
 {

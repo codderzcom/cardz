@@ -4,9 +4,9 @@ namespace App\Contexts\Collaboration\Application\Controllers\Consumers;
 
 use App\Contexts\Collaboration\Application\Contracts\AddedWorkspaceReadStorageInterface;
 use App\Contexts\Collaboration\Application\Services\KeeperAppService;
-use App\Contexts\Shared\Contracts\Informable;
-use App\Contexts\Shared\Contracts\Reportable;
 use App\Contexts\Workspaces\Application\IntegrationEvents\WorkspaceAdded as WorkspacesWorkspaceAdded;
+use App\Shared\Contracts\Informable;
+use App\Shared\Contracts\Reportable;
 
 final class WorkspacesWorkspaceAddedConsumer implements Informable
 {

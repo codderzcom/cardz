@@ -3,7 +3,7 @@
 namespace App\Contexts\Auth\Domain\Model\Shared;
 
 use App\Contexts\Auth\Domain\Persistable;
-use App\Contexts\Shared\Infrastructure\Support\ArrayPresenterTrait;
+use App\Shared\Infrastructure\Support\ArrayPresenterTrait;
 use JetBrains\PhpStorm\Immutable;
 use function json_try_encode;
 

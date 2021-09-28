@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contexts\Shared\Exceptions;
+namespace App\Shared\Exceptions;
 
 use RuntimeException;
 

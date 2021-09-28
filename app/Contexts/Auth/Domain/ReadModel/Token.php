@@ -2,7 +2,7 @@
 
 namespace App\Contexts\Auth\Domain\ReadModel;
 
-use App\Contexts\Shared\Infrastructure\Support\ArrayPresenterTrait;
+use App\Shared\Infrastructure\Support\ArrayPresenterTrait;
 
 class Token
 {

@@ -35,6 +35,7 @@ final class Card extends AggregateRoot
 
     private Achievements $requirements;
 
+    #[Pure]
     private function __construct(
         public CardId $cardId,
         public PlanId $planId,

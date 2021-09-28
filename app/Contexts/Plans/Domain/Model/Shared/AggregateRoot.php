@@ -3,7 +3,7 @@
 namespace App\Contexts\Plans\Domain\Model\Shared;
 
 use App\Contexts\Plans\Domain\Persistable;
-use App\Contexts\Shared\Infrastructure\Support\ArrayPresenterTrait;
+use App\Shared\Infrastructure\Support\ArrayPresenterTrait;
 
 abstract class AggregateRoot implements Persistable
 {

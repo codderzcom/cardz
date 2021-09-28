@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Contexts\Shared\Infrastructure\Policy;
+namespace App\Shared\Infrastructure\Policy;
 
-use App\Contexts\Shared\Contracts\PolicyAssertionInterface;
-use App\Contexts\Shared\Contracts\PolicyEngineInterface;
-use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
-use App\Contexts\Shared\Contracts\ServiceResultInterface;
+use App\Shared\Contracts\PolicyAssertionInterface;
+use App\Shared\Contracts\PolicyEngineInterface;
+use App\Shared\Contracts\ServiceResultFactoryInterface;
+use App\Shared\Contracts\ServiceResultInterface;
 use Closure;
 use Throwable;
 

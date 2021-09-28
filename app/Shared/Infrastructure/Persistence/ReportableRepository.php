@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Contexts\Shared\Infrastructure\Persistence;
+namespace App\Shared\Infrastructure\Persistence;
 
-use App\Contexts\Shared\Contracts\Reportable;
 use App\Models\Reportable as EloquentReportable;
+use App\Shared\Contracts\Reportable;
 
 class ReportableRepository
 {

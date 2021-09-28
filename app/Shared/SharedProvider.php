@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Contexts\Shared;
+namespace App\Shared;
 
-use App\Contexts\Shared\Contracts\PolicyEngineInterface;
-use App\Contexts\Shared\Contracts\ReportingBusInterface;
-use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
-use App\Contexts\Shared\Infrastructure\Messaging\ReportingBus;
-use App\Contexts\Shared\Infrastructure\Policy\PolicyEngine;
-use App\Contexts\Shared\Infrastructure\Support\ServiceResultFactory;
+use App\Shared\Contracts\PolicyEngineInterface;
+use App\Shared\Contracts\ReportingBusInterface;
+use App\Shared\Contracts\ServiceResultFactoryInterface;
+use App\Shared\Infrastructure\Messaging\ReportingBus;
+use App\Shared\Infrastructure\Policy\PolicyEngine;
+use App\Shared\Infrastructure\Support\ServiceResultFactory;
 use Illuminate\Support\ServiceProvider;
 
 class SharedProvider extends ServiceProvider

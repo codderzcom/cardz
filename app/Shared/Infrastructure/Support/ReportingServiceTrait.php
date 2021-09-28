@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Contexts\Shared\Infrastructure\Support;
+namespace App\Shared\Infrastructure\Support;
 
-use App\Contexts\Shared\Contracts\ReportingBusInterface;
-use App\Contexts\Shared\Contracts\ServiceResultInterface;
+use App\Shared\Contracts\ReportingBusInterface;
+use App\Shared\Contracts\ServiceResultInterface;
 
 trait ReportingServiceTrait
 {

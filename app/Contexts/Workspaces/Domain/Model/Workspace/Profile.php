@@ -2,8 +2,8 @@
 
 namespace App\Contexts\Workspaces\Domain\Model\Workspace;
 
-use App\Contexts\Shared\Infrastructure\Support\ArrayPresenterTrait;
 use App\Contexts\Workspaces\Domain\Model\Shared\ValueObject;
+use App\Shared\Infrastructure\Support\ArrayPresenterTrait;
 use JetBrains\PhpStorm\Immutable;
 use JetBrains\PhpStorm\Pure;
 

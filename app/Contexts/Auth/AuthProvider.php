@@ -6,7 +6,7 @@ use App\Contexts\Auth\Application\Contracts\UserRepositoryInterface;
 use App\Contexts\Auth\Application\Controllers\Consumers\TokenGeneratedConsumer;
 use App\Contexts\Auth\Application\Controllers\Consumers\UserNameProvidedConsumer;
 use App\Contexts\Auth\Infrastructure\Persistence\UserRepository;
-use App\Contexts\Shared\Contracts\ReportingBusInterface;
+use App\Shared\Contracts\ReportingBusInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AuthProvider extends ServiceProvider

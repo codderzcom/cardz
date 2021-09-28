@@ -3,8 +3,8 @@
 namespace App\Contexts\Cards\Application\Services;
 
 use App\Contexts\Cards\Application\Contracts\IssuedCardReadStorageInterface;
-use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
-use App\Contexts\Shared\Contracts\ServiceResultInterface;
+use App\Shared\Contracts\ServiceResultFactoryInterface;
+use App\Shared\Contracts\ServiceResultInterface;
 
 class ReadIssuedCardAppService
 {

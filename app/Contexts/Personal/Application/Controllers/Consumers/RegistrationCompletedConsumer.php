@@ -4,9 +4,9 @@ namespace App\Contexts\Personal\Application\Controllers\Consumers;
 
 use App\Contexts\Auth\Application\IntegrationEvents\RegistrationCompleted;
 use App\Contexts\Personal\Application\Services\PersonAppService;
-use App\Contexts\Shared\Contracts\Informable;
-use App\Contexts\Shared\Contracts\Reportable;
 use App\Models\User as EloquentUser;
+use App\Shared\Contracts\Informable;
+use App\Shared\Contracts\Reportable;
 
 final class RegistrationCompletedConsumer implements Informable
 {

@@ -4,10 +4,10 @@ namespace App\Contexts\MobileAppBack\Application\Services\Workspace\Policies;
 
 use App\Contexts\MobileAppBack\Domain\Model\Collaboration\KeeperId;
 use App\Contexts\MobileAppBack\Domain\Model\Workspace\WorkspaceId;
-use App\Contexts\Shared\Contracts\PolicyAssertionInterface;
-use App\Contexts\Shared\Contracts\PolicyViolationInterface;
-use App\Contexts\Shared\Infrastructure\Policy\PolicyViolation;
 use App\Models\Workspace as EloquentWorkspace;
+use App\Shared\Contracts\PolicyAssertionInterface;
+use App\Shared\Contracts\PolicyViolationInterface;
+use App\Shared\Infrastructure\Policy\PolicyViolation;
 use JetBrains\PhpStorm\Pure;
 
 final class AssertWorkspaceForKeeper implements PolicyAssertionInterface

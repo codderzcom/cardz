@@ -3,7 +3,7 @@
 namespace App\Contexts\Auth\Domain\Model\User;
 
 use App\Contexts\Auth\Domain\Model\Shared\ValueObject;
-use App\Contexts\Shared\Exceptions\ParameterAssertionException;
+use App\Shared\Exceptions\ParameterAssertionException;
 use JetBrains\PhpStorm\Immutable;
 
 #[Immutable]

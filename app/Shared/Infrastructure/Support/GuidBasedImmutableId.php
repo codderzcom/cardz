@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Contexts\Shared\Infrastructure\Support;
+namespace App\Shared\Infrastructure\Support;
 
-use App\Contexts\Shared\Exceptions\ParameterAssertionException;
+use App\Shared\Exceptions\ParameterAssertionException;
 use JetBrains\PhpStorm\Immutable;
 use Ramsey\Uuid\Guid\Guid;
 use Stringable;

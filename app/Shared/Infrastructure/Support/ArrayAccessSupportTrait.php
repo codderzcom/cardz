@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Contexts\Shared\Infrastructure\Support;
+namespace App\Shared\Infrastructure\Support;
 
-use App\Contexts\Shared\Exceptions\ParameterAssertionException;
+use App\Shared\Exceptions\ParameterAssertionException;
 use Carbon\Carbon;
 use JetBrains\PhpStorm\Pure;
 use Stringable;

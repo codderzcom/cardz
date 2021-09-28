@@ -4,9 +4,9 @@ namespace App\Contexts\Cards\Application\Controllers\Consumers;
 
 use App\Contexts\Cards\Application\IntegrationEvents\CardArchived;
 use App\Contexts\Cards\Application\IntegrationEvents\CardRevoked;
-use App\Contexts\Shared\Contracts\Informable;
-use App\Contexts\Shared\Contracts\Reportable;
-use App\Contexts\Shared\Contracts\ReportingBusInterface;
+use App\Shared\Contracts\Informable;
+use App\Shared\Contracts\Reportable;
+use App\Shared\Contracts\ReportingBusInterface;
 
 final class CardRevokedConsumer implements Informable
 {

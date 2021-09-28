@@ -2,8 +2,8 @@
 
 namespace App\Contexts\Workspaces\Domain\Model\Shared;
 
-use App\Contexts\Shared\Infrastructure\Support\ArrayPresenterTrait;
 use App\Contexts\Workspaces\Domain\Persistable;
+use App\Shared\Infrastructure\Support\ArrayPresenterTrait;
 
 abstract class AggregateRoot implements Persistable
 {

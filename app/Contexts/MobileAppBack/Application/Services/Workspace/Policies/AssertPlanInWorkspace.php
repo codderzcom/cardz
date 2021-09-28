@@ -4,10 +4,10 @@ namespace App\Contexts\MobileAppBack\Application\Services\Workspace\Policies;
 
 use App\Contexts\MobileAppBack\Domain\Model\Workspace\PlanId;
 use App\Contexts\MobileAppBack\Domain\Model\Workspace\WorkspaceId;
-use App\Contexts\Shared\Contracts\PolicyAssertionInterface;
-use App\Contexts\Shared\Contracts\PolicyViolationInterface;
-use App\Contexts\Shared\Infrastructure\Policy\PolicyViolation;
 use App\Models\Plan as EloquentPlan;
+use App\Shared\Contracts\PolicyAssertionInterface;
+use App\Shared\Contracts\PolicyViolationInterface;
+use App\Shared\Infrastructure\Policy\PolicyViolation;
 use JetBrains\PhpStorm\Pure;
 
 final class AssertPlanInWorkspace implements PolicyAssertionInterface

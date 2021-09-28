@@ -2,7 +2,7 @@
 
 namespace App\Contexts\Collaboration\Application\IntegrationEvents;
 
-use App\Contexts\Shared\Contracts\Reportable;
+use App\Shared\Contracts\Reportable;
 
 abstract class BaseIntegrationEvent implements Reportable
 {

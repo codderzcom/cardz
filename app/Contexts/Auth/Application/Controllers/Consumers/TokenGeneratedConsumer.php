@@ -3,8 +3,8 @@
 namespace App\Contexts\Auth\Application\Controllers\Consumers;
 
 use App\Contexts\Auth\Application\IntegrationEvents\TokenGenerated;
-use App\Contexts\Shared\Contracts\Informable;
-use App\Contexts\Shared\Contracts\Reportable;
+use App\Shared\Contracts\Informable;
+use App\Shared\Contracts\Reportable;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Sanctum\Sanctum;
 

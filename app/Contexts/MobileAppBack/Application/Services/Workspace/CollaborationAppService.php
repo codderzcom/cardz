@@ -3,8 +3,8 @@
 namespace App\Contexts\MobileAppBack\Application\Services\Workspace;
 
 use App\Contexts\MobileAppBack\Infrastructure\ACL\Collaboration\CollaborationAdapter;
-use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
-use App\Contexts\Shared\Contracts\ServiceResultInterface;
+use App\Shared\Contracts\ServiceResultFactoryInterface;
+use App\Shared\Contracts\ServiceResultInterface;
 
 class CollaborationAppService
 {
