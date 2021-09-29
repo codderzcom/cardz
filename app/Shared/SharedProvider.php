@@ -5,6 +5,7 @@ namespace App\Shared;
 use App\Shared\Contracts\PolicyEngineInterface;
 use App\Shared\Contracts\ReportingBusInterface;
 use App\Shared\Contracts\ServiceResultFactoryInterface;
+use App\Shared\Infrastructure\Messaging\LocalSyncMessageBroker;
 use App\Shared\Infrastructure\Messaging\ReportingBus;
 use App\Shared\Infrastructure\Policy\PolicyEngine;
 use App\Shared\Infrastructure\Support\ServiceResultFactory;
@@ -17,5 +18,6 @@ class SharedProvider extends ServiceProvider
         $this->app->singleton(ReportingBusInterface::class, ReportingBus::class);
         $this->app->singleton(ServiceResultFactoryInterface::class, ServiceResultFactory::class);
         $this->app->singleton(PolicyEngineInterface::class, PolicyEngine::class);
+        $this->app->singleton(LocalSyncMessageBroker::class, LocalSyncMessageBroker::class);
     }
 }

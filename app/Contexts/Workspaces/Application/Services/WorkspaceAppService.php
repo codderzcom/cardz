@@ -4,12 +4,11 @@ namespace App\Contexts\Workspaces\Application\Services;
 
 use App\Contexts\Workspaces\Domain\Model\Workspace\KeeperId;
 use App\Contexts\Workspaces\Domain\Model\Workspace\Profile;
+use App\Contexts\Workspaces\Domain\Model\Workspace\Workspace;
 use App\Contexts\Workspaces\Domain\Model\Workspace\WorkspaceId;
+use App\Contexts\Workspaces\Infrastructure\Messaging\DomainMessageBus;
 use App\Contexts\Workspaces\Infrastructure\Persistence\Contracts\KeeperRepositoryInterface;
 use App\Contexts\Workspaces\Infrastructure\Persistence\Contracts\WorkspaceRepositoryInterface;
-use App\Contexts\Workspaces\Integration\Events\WorkspaceAdded;
-use App\Contexts\Workspaces\Integration\Events\WorkspaceProfileChanged;
-use App\Shared\Contracts\ReportingBusInterface;
 use App\Shared\Contracts\ServiceResultFactoryInterface;
 use App\Shared\Contracts\ServiceResultInterface;
 use App\Shared\Infrastructure\Support\ReportingServiceTrait;
@@ -21,7 +20,7 @@ class WorkspaceAppService
     public function __construct(
         private KeeperRepositoryInterface $keeperRepository,
         private WorkspaceRepositoryInterface $workspaceRepository,
-        private ReportingBusInterface $reportingBus,
+        private DomainMessageBus $domainMessageBus,
         private ServiceResultFactoryInterface $serviceResultFactory,
     ) {
     }
@@ -35,10 +34,8 @@ class WorkspaceAppService
 
         $workspaceId = WorkspaceId::make();
         $workspace = $keeper->keepWorkspace($workspaceId, $name, $description, $address);
-        $this->workspaceRepository->persist($workspace);
 
-        $result = $this->serviceResultFactory->ok($workspace, new WorkspaceAdded($workspaceId)); //ToDo: added on domain profile filled.
-        return $this->reportResult($result, $this->reportingBus);
+        return $this->gotIt($workspace);
     }
 
     public function changeProfile(string $workspaceId, string $name, string $description, string $address): ServiceResultInterface
@@ -49,10 +46,14 @@ class WorkspaceAppService
         }
 
         $workspace->changeProfile(Profile::of($name, $description, $address));
-        $this->workspaceRepository->persist($workspace);
 
-        $result = $this->serviceResultFactory->ok($workspace, new WorkspaceProfileChanged($workspace->workspaceId));
-        return $this->reportResult($result, $this->reportingBus);
+        return $this->gotIt($workspace);
     }
 
+    private function gotIt(Workspace $workspace): ServiceResultInterface
+    {
+        $this->workspaceRepository->persist($workspace);
+        $this->domainMessageBus->publish(...$workspace->getEvents());
+        return $this->serviceResultFactory->ok($workspace);
+    }
 }

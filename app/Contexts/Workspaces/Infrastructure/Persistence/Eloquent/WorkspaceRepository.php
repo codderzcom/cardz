@@ -10,12 +10,8 @@ use ReflectionClass;
 
 class WorkspaceRepository implements WorkspaceRepositoryInterface
 {
-    public function persist(?Workspace $workspace): void
+    public function persist(Workspace $workspace): void
     {
-        if ($workspace === null) {
-            return;
-        }
-
         EloquentWorkspace::query()->updateOrCreate(
             ['id' => $workspace->workspaceId],
             $this->workspaceAsData($workspace)
@@ -25,13 +21,8 @@ class WorkspaceRepository implements WorkspaceRepositoryInterface
     public function take(WorkspaceId $workspaceId): ?Workspace
     {
         /** @var EloquentWorkspace $eloquentWorkspace */
-        $eloquentWorkspace = EloquentWorkspace::query()->where([
-            'id' => (string) $workspaceId,
-        ])?->first();
-        if ($eloquentWorkspace === null) {
-            return null;
-        }
-        return $this->workspaceFromData($eloquentWorkspace);
+        $eloquentWorkspace = EloquentWorkspace::query()->find((string) $workspaceId);
+        return $eloquentWorkspace ? $this->workspaceFromData($eloquentWorkspace) : null;
     }
 
     private function workspaceAsData(Workspace $workspace): array
@@ -57,20 +48,12 @@ class WorkspaceRepository implements WorkspaceRepositoryInterface
 
     private function workspaceFromData(EloquentWorkspace $eloquentWorkspace): Workspace
     {
-        $reflection = new ReflectionClass(Workspace::class);
-        $creator = $reflection->getMethod('from');
-        $creator?->setAccessible(true);
-        /** @var Workspace $workspace */
-        $workspace = $reflection->newInstanceWithoutConstructor();
-
         $profile = is_string($eloquentWorkspace->profile) ? json_try_decode($eloquentWorkspace->profile) : $eloquentWorkspace->profile;
-
-        $creator?->invoke($workspace,
+        return Workspace::restore(
             $eloquentWorkspace->id,
             $eloquentWorkspace->keeper_id,
             $eloquentWorkspace->added_at,
             $profile,
         );
-        return $workspace;
     }
 }

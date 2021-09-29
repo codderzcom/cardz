@@ -11,7 +11,7 @@ class KeeperRepository implements KeeperRepositoryInterface
 {
     public function take(KeeperId $keeperId): ?Keeper
     {
-        $keeper = EloquentKeeper::query()->find($keeperId);
-        return $keeper ? new Keeper($keeperId) : null;
+        $keeper = EloquentKeeper::query()->find((string) $keeperId);
+        return $keeper ? Keeper::restore($keeperId) : null;
     }
 }

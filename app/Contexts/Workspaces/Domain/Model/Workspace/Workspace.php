@@ -4,12 +4,14 @@ namespace App\Contexts\Workspaces\Domain\Model\Workspace;
 
 use App\Contexts\Workspaces\Domain\Events\Workspace\WorkspaceAdded;
 use App\Contexts\Workspaces\Domain\Events\Workspace\WorkspaceProfileChanged;
-use App\Contexts\Workspaces\Domain\Model\Shared\AggregateRoot;
+use App\Shared\Contracts\Domain\AggregateRootInterface;
+use App\Shared\Infrastructure\Support\Domain\AggregateRootTrait;
 use Carbon\Carbon;
-use JetBrains\PhpStorm\Pure;
 
-final class Workspace extends AggregateRoot
+final class Workspace implements AggregateRootInterface
 {
+    use AggregateRootTrait;
+
     private ?Carbon $added = null;
 
     private function __construct(
@@ -19,36 +21,29 @@ final class Workspace extends AggregateRoot
     ) {
     }
 
-    #[Pure]
     public static function add(WorkspaceId $workspaceId, KeeperId $keeperId, Profile $profile): self
     {
         $workspace = new self($workspaceId, $keeperId, $profile);
         $workspace->added = Carbon::now();
-        //ToDo: emit
-        WorkspaceAdded::with($workspace->workspaceId);
+
+        return $workspace->withEvents(WorkspaceAdded::occurredIn($workspace));
+    }
+
+    public static function restore(string $workspaceId, string $keeperId, ?Carbon $added, array $profile): self
+    {
+        $workspace = new self(WorkspaceId::of($workspaceId), KeeperId::of($keeperId), Profile::ofData($profile));
+        $workspace->added = $added;
         return $workspace;
     }
 
-    public function changeProfile(Profile $profile): WorkspaceProfileChanged
+    public function changeProfile(Profile $profile): self
     {
         $this->profile = $profile;
-        return WorkspaceProfileChanged::with($this->workspaceId);
+        return $this->withEvents(WorkspaceProfileChanged::occurredIn($this));
     }
 
     public function isAdded(): bool
     {
         return $this->added !== null;
-    }
-
-    private function from(
-        string $workspaceId,
-        string $keeperId,
-        ?Carbon $added,
-        array $profile,
-    ): void {
-        $this->workspaceId = WorkspaceId::of($workspaceId);
-        $this->keeperId = KeeperId::of($keeperId);
-        $this->added = $added;
-        $this->profile = Profile::ofData($profile);
     }
 }

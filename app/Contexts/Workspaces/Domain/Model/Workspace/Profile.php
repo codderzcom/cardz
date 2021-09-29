@@ -2,16 +2,17 @@
 
 namespace App\Contexts\Workspaces\Domain\Model\Workspace;
 
-use App\Contexts\Workspaces\Domain\Model\Shared\ValueObject;
+use App\Shared\Contracts\Domain\ValueObjectInterface;
 use App\Shared\Infrastructure\Support\ArrayPresenterTrait;
 use JetBrains\PhpStorm\Immutable;
 use JetBrains\PhpStorm\Pure;
 
 #[Immutable]
-final class Profile extends ValueObject
+final class Profile implements ValueObjectInterface
 {
     use ArrayPresenterTrait;
 
+    #[Pure]
     private function __construct(
         private string $name,
         private string $description,
