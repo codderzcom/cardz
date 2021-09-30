@@ -2,58 +2,70 @@
 
 namespace App\Contexts\Workspaces\Application\Services;
 
-use App\Contexts\Workspaces\Domain\Model\Workspace\KeeperId;
-use App\Contexts\Workspaces\Domain\Model\Workspace\Profile;
+use App\Contexts\Workspaces\Application\Commands\AddWorkspaceCommandInterface;
+use App\Contexts\Workspaces\Application\Commands\ChangeWorkspaceProfileCommandInterface;
+use App\Contexts\Workspaces\Application\Exceptions\KeeperNotFoundException;
+use App\Contexts\Workspaces\Application\Exceptions\WorkspaceNotFoundException;
 use App\Contexts\Workspaces\Domain\Model\Workspace\Workspace;
 use App\Contexts\Workspaces\Domain\Model\Workspace\WorkspaceId;
-use App\Contexts\Workspaces\Infrastructure\Messaging\DomainMessageBus;
+use App\Contexts\Workspaces\Infrastructure\Messaging\DomainEventBusInterface;
 use App\Contexts\Workspaces\Infrastructure\Persistence\Contracts\KeeperRepositoryInterface;
 use App\Contexts\Workspaces\Infrastructure\Persistence\Contracts\WorkspaceRepositoryInterface;
-use App\Shared\Contracts\ServiceResultFactoryInterface;
-use App\Shared\Contracts\ServiceResultInterface;
-use App\Shared\Infrastructure\Support\ReportingServiceTrait;
+use App\Shared\Contracts\Commands\CommandBusInterface;
+use App\Shared\Infrastructure\CommandHandling\CommandHandlerFactoryTrait;
 
 class WorkspaceAppService
 {
-    use ReportingServiceTrait;
+    use CommandHandlerFactoryTrait;
 
     public function __construct(
         private KeeperRepositoryInterface $keeperRepository,
         private WorkspaceRepositoryInterface $workspaceRepository,
-        private DomainMessageBus $domainMessageBus,
-        private ServiceResultFactoryInterface $serviceResultFactory,
+        private DomainEventBusInterface $domainEventBus,
+        private CommandBusInterface $commandBus,
     ) {
     }
 
-    public function add(string $keeperId, string $name, string $description, string $address): ServiceResultInterface
+    public function registerHandlers(): void
     {
-        $keeper = $this->keeperRepository->take(KeeperId::of($keeperId));
+        $this->commandBus->registerHandlers(
+            $this->makeHandlerFor(AddWorkspaceCommandInterface::class, 'add'),
+            $this->makeHandlerFor(ChangeWorkspaceProfileCommandInterface::class, 'changeProfile'),
+        );
+    }
+
+    /**
+     * @throws KeeperNotFoundException
+     */
+    public function add(AddWorkspaceCommandInterface $command): WorkspaceId
+    {
+        $keeper = $this->keeperRepository->take($command->getKeeperId());
         if ($keeper === null) {
-            return $this->serviceResultFactory->notFound("Keeper $keeperId not found");
+            throw new KeeperNotFoundException("Keeper id {$command->getKeeperId()}");
         }
 
-        $workspaceId = WorkspaceId::make();
-        $workspace = $keeper->keepWorkspace($workspaceId, $name, $description, $address);
+        $workspace = $keeper->keepWorkspace($command->getWorkspaceId(), $command->getProfile());
+        $this->releaseWorkspace($workspace);
 
-        return $this->gotIt($workspace);
+        return $workspace->workspaceId;
     }
 
-    public function changeProfile(string $workspaceId, string $name, string $description, string $address): ServiceResultInterface
+    public function changeProfile(ChangeWorkspaceProfileCommandInterface $command): WorkspaceId
     {
-        $workspace = $this->workspaceRepository->take(WorkspaceId::of($workspaceId));
+        $workspace = $this->workspaceRepository->take($command->getWorkspaceId());
         if ($workspace === null) {
-            return $this->serviceResultFactory->notFound("Workspace $workspaceId not found");
+            throw new WorkspaceNotFoundException("Workspace id {$command->getWorkspaceId()}");
         }
 
-        $workspace->changeProfile(Profile::of($name, $description, $address));
+        $workspace->changeProfile($command->getProfile());
+        $this->releaseWorkspace($workspace);
 
-        return $this->gotIt($workspace);
+        return $workspace->workspaceId;
     }
 
-    private function gotIt(Workspace $workspace): ServiceResultInterface
+    private function releaseWorkspace(Workspace $workspace): void
     {
         $this->workspaceRepository->persist($workspace);
-        $this->domainMessageBus->publish(...$workspace->getEvents());
-        return $this->serviceResultFactory->ok($workspace);
+        $this->domainEventBus->publish(...$workspace->releaseEvents());
     }
 }

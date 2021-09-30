@@ -2,9 +2,14 @@
 
 namespace App\Shared\Contracts\Domain;
 
-use App\Shared\Contracts\Messaging\MessageInterface;
+use Carbon\Carbon;
 
-interface DomainEventInterface extends MessageInterface
+interface DomainEventInterface
 {
+    public static function of(AggregateRootInterface $aggregateRoot): static;
+
+    public function when(): Carbon;
+
+    public function with(): AggregateRootInterface;
 
 }

@@ -2,7 +2,9 @@
 
 namespace App\Shared\Contracts\Messaging;
 
-interface MessageInterface
+use JsonSerializable;
+use Stringable;
+
+interface MessageInterface extends Stringable, JsonSerializable
 {
-    public function __toString(): string;
 }

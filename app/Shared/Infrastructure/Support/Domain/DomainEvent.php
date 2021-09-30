@@ -4,10 +4,11 @@ namespace App\Shared\Infrastructure\Support\Domain;
 
 use App\Shared\Contracts\Domain\AggregateRootInterface;
 use App\Shared\Contracts\Domain\DomainEventInterface;
+use App\Shared\Contracts\Messaging\EventInterface;
 use App\Shared\Infrastructure\Support\ShortClassNameTrait;
 use Carbon\Carbon;
 
-abstract class DomainEvent implements DomainEventInterface
+abstract class DomainEvent implements EventInterface, DomainEventInterface
 {
     use ShortClassNameTrait;
 
@@ -19,12 +20,12 @@ abstract class DomainEvent implements DomainEventInterface
         $this->on = Carbon::now();
     }
 
-    public static function occurredIn(AggregateRootInterface $aggregateRoot): static
+    public static function of(AggregateRootInterface $aggregateRoot): static
     {
         return new static($aggregateRoot);
     }
 
-    public function on(): Carbon
+    public function when(): Carbon
     {
         return $this->on;
     }
@@ -34,5 +35,14 @@ abstract class DomainEvent implements DomainEventInterface
     public function __toString(): string
     {
         return $this::shortName();
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'domainEvent' => $this::shortName(),
+            'on' => $this->on,
+            'with' => $this->aggregateRoot->jsonSerialize(),
+        ];
     }
 }

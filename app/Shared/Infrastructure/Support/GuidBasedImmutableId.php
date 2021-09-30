@@ -4,12 +4,15 @@ namespace App\Shared\Infrastructure\Support;
 
 use App\Shared\Exceptions\ParameterAssertionException;
 use JetBrains\PhpStorm\Immutable;
+use JsonSerializable;
 use Ramsey\Uuid\Guid\Guid;
 use Stringable;
 
 #[Immutable]
-class GuidBasedImmutableId implements Stringable
+class GuidBasedImmutableId implements Stringable, JsonSerializable
 {
+    use ShortClassNameTrait;
+
     protected function __construct(private string $id)
     {
     }
@@ -35,5 +38,10 @@ class GuidBasedImmutableId implements Stringable
     final public function equals(self $immutableId): bool
     {
         return $this->id === $immutableId->id;
+    }
+
+    public function jsonSerialize()
+    {
+        return [$this::shortName() => (string) $this];
     }
 }

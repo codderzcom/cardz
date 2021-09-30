@@ -26,7 +26,7 @@ final class Workspace implements AggregateRootInterface
         $workspace = new self($workspaceId, $keeperId, $profile);
         $workspace->added = Carbon::now();
 
-        return $workspace->withEvents(WorkspaceAdded::occurredIn($workspace));
+        return $workspace->withEvents(WorkspaceAdded::of($workspace));
     }
 
     public static function restore(string $workspaceId, string $keeperId, ?Carbon $added, array $profile): self
@@ -39,7 +39,7 @@ final class Workspace implements AggregateRootInterface
     public function changeProfile(Profile $profile): self
     {
         $this->profile = $profile;
-        return $this->withEvents(WorkspaceProfileChanged::occurredIn($this));
+        return $this->withEvents(WorkspaceProfileChanged::of($this));
     }
 
     public function isAdded(): bool

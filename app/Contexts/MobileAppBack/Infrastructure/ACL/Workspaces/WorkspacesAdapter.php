@@ -17,22 +17,24 @@ class WorkspacesAdapter
 
     public function addWorkspace(string $keeperId, string $name, string $description, string $address): ServiceResultInterface
     {
-        $result = $this->workspaceAppService->add($keeperId, $name, $description, $address);
-        if ($result->isNotOk()){
-            return $result;
-        }
-        $workspaceId = (string) $result->getPayload()->workspaceId;
-        return $this->serviceResultFactory->ok($workspaceId);
+        //$result = $this->workspaceAppService->add($keeperId, $name, $description, $address);
+        //if ($result->isNotOk()){
+        //    return $result;
+        //}
+        //$workspaceId = (string) $result->getPayload()->workspaceId;
+        //return $this->serviceResultFactory->ok($workspaceId);
+        return $this->serviceResultFactory->ok('');
     }
 
     public function changeProfile(string $workspaceId, string $name, string $description, string $address): ServiceResultInterface
     {
-        $result = $this->workspaceAppService->changeProfile($workspaceId, $name, $description, $address);
-        if ($result->isNotOk()){
-            return $result;
-        }
-        $workspaceId = (string) $result->getPayload()->workspaceId;
-        return $this->serviceResultFactory->ok($workspaceId);
+        //$result = $this->workspaceAppService->changeProfile($workspaceId, $name, $description, $address);
+        //if ($result->isNotOk()){
+        //    return $result;
+        //}
+        //$workspaceId = (string) $result->getPayload()->workspaceId;
+        //return $this->serviceResultFactory->ok($workspaceId);
+        return $this->serviceResultFactory->ok('');
     }
 
 

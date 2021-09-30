@@ -2,10 +2,13 @@
 
 namespace App\Shared\Contracts\Domain;
 
-interface AggregateRootInterface
+use App\Shared\Contracts\Messaging\EventInterface;
+use JsonSerializable;
+
+interface AggregateRootInterface extends JsonSerializable
 {
     /**
-     * @return DomainEventInterface[]
+     * @return EventInterface[]
      */
-    public function getEvents(): array;
+    public function releaseEvents(): array;
 }

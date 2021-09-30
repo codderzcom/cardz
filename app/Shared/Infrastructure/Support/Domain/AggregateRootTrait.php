@@ -2,27 +2,37 @@
 
 namespace App\Shared\Infrastructure\Support\Domain;
 
-use App\Shared\Contracts\Domain\DomainEventInterface;
+use App\Shared\Contracts\Messaging\EventInterface;
+use App\Shared\Infrastructure\Support\ArrayPresenterTrait;
 
 trait AggregateRootTrait
 {
+    use ArrayPresenterTrait;
+
     /**
-     * @var DomainEventInterface[]
+     * @var EventInterface[]
      */
     protected array $events = [];
 
 
-    protected function withEvents(DomainEventInterface ...$domainEvents): static
+    protected function withEvents(EventInterface ...$domainEvents): static
     {
-        $this->events[] = array_merge($this->events, $domainEvents);
+        $this->events = array_merge($this->events, $domainEvents);
         return $this;
     }
 
     /**
-     * @return DomainEventInterface[]
+     * @return EventInterface[]
      */
-    public function getEvents(): array
+    public function releaseEvents(): array
     {
-        return $this->events;
+        $events = $this->events;
+        $this->events = [];
+        return $events;
+    }
+
+    public function jsonSerialize()
+    {
+        return $this->toArray();
     }
 }

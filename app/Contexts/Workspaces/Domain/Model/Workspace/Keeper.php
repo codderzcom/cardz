@@ -22,12 +22,12 @@ final class Keeper implements AggregateRootInterface
         return new self($keeperId);
     }
 
-    public function keepWorkspace(WorkspaceId $workspaceId, string $name, string $description, string $address): Workspace
+    public function keepWorkspace(WorkspaceId $workspaceId, Profile $profile): Workspace
     {
         return Workspace::add(
             $workspaceId,
             $this->keeperId,
-            Profile::of($name, $description, $address),
+            $profile,
         );
     }
 }
