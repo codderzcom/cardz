@@ -2,13 +2,12 @@
 
 namespace App\Contexts\Workspaces\Presentation\Controllers\Http\Workspace\Commands;
 
+use App\Contexts\Workspaces\Application\Commands\AddWorkspace;
 use App\Contexts\Workspaces\Application\Commands\AddWorkspaceCommandInterface;
-use App\Contexts\Workspaces\Domain\Model\Workspace\KeeperId;
-use App\Contexts\Workspaces\Domain\Model\Workspace\Profile;
 use App\Contexts\Workspaces\Domain\Model\Workspace\WorkspaceId;
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddWorkspaceRequest extends FormRequest implements AddWorkspaceCommandInterface
+class AddWorkspaceRequest extends FormRequest
 {
     private string $keeperId;
 
@@ -34,7 +33,6 @@ class AddWorkspaceRequest extends FormRequest implements AddWorkspaceCommandInte
         $this->name = $this->input('name');
         $this->description = $this->input('description');
         $this->address = $this->input('address');
-        $this->workspaceId = (string) WorkspaceId::make();
     }
 
     public function messages(): array
@@ -47,19 +45,8 @@ class AddWorkspaceRequest extends FormRequest implements AddWorkspaceCommandInte
         ];
     }
 
-    public function getKeeperId(): KeeperId
+    public function toCommand(): AddWorkspaceCommandInterface
     {
-        return KeeperId::of($this->keeperId);
+        return AddWorkspace::of($this->keeperId, $this->name, $this->description, $this->address);
     }
-
-    public function getWorkspaceId(): WorkspaceId
-    {
-        return WorkspaceId::of($this->workspaceId);
-    }
-
-    public function getProfile(): Profile
-    {
-        return Profile::of($this->name, $this->description, $this->address);
-    }
-
 }

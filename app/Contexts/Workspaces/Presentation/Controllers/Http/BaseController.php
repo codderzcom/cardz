@@ -3,7 +3,6 @@
 namespace App\Contexts\Workspaces\Presentation\Controllers\Http;
 
 use App\Shared\Contracts\ServiceResultCode;
-use App\Shared\Contracts\ServiceResultInterface;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;

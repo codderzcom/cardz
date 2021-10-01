@@ -9,6 +9,7 @@ use App\Contexts\Workspaces\Infrastructure\Persistence\Contracts\KeeperRepositor
 use App\Contexts\Workspaces\Infrastructure\Persistence\Contracts\WorkspaceRepositoryInterface;
 use App\Contexts\Workspaces\Infrastructure\Persistence\Eloquent\KeeperRepository;
 use App\Contexts\Workspaces\Infrastructure\Persistence\Eloquent\WorkspaceRepository;
+use App\Contexts\Workspaces\Integration\Consumers\WorkspaceAddedConsumer;
 use Illuminate\Support\ServiceProvider;
 
 class WorkspacesProvider extends ServiceProvider
@@ -22,7 +23,9 @@ class WorkspacesProvider extends ServiceProvider
 
     public function boot(
         WorkspaceAppService $workspaceAppService,
+        DomainEventBusInterface $domainEventBus,
     ) {
         $workspaceAppService->registerHandlers();
+        $domainEventBus->subscribe($this->app->make(WorkspaceAddedConsumer::class));
     }
 }

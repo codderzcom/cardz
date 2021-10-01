@@ -22,6 +22,11 @@ class GuidBasedImmutableId implements Stringable, JsonSerializable
         return new static((string) Guid::uuid4());
     }
 
+    public static function makeValue(): string
+    {
+        return (string) Guid::uuid4();
+    }
+
     public static function of(string $id): static
     {
         if (!Guid::isValid($id)) {

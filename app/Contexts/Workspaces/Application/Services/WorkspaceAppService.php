@@ -50,6 +50,9 @@ class WorkspaceAppService
         return $workspace->workspaceId;
     }
 
+    /**
+     * @throws WorkspaceNotFoundException
+     */
     public function changeProfile(ChangeWorkspaceProfileCommandInterface $command): WorkspaceId
     {
         $workspace = $this->workspaceRepository->take($command->getWorkspaceId());

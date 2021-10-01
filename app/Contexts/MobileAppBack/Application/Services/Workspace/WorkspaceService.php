@@ -6,7 +6,7 @@ use App\Contexts\MobileAppBack\Application\Contracts\BusinessWorkspaceReadStorag
 use App\Contexts\MobileAppBack\Application\Services\Workspace\Policies\AssertWorkspaceForKeeper;
 use App\Contexts\MobileAppBack\Domain\Model\Collaboration\KeeperId;
 use App\Contexts\MobileAppBack\Domain\Model\Workspace\WorkspaceId;
-use App\Contexts\MobileAppBack\Infrastructure\ACL\Workspaces\WorkspacesAdapter;
+use App\Contexts\Workspaces\Presentation\Controllers\Rpc\RpcAdapter as WorkspacesAdapter;
 use App\Shared\Contracts\PolicyEngineInterface;
 use App\Shared\Contracts\ServiceResultFactoryInterface;
 use App\Shared\Contracts\ServiceResultInterface;
@@ -39,23 +39,15 @@ class WorkspaceService
 
     public function addWorkspace(string $keeperId, string $name, string $description, string $address): ServiceResultInterface
     {
-        $result = $this->workspacesAdapter->addWorkspace($keeperId, $name, $description, $address);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-
-        $workspaceId = $result->getPayload();
-        return $this->getBusinessWorkspaceResult($workspaceId);
+        $this->workspacesAdapter->addWorkspace($keeperId, $name, $description, $address);
+        return $this->getBusinessWorkspaces($keeperId);
     }
 
     public function changeProfile(string $keeperId, string $workspaceId, string $name, string $description, string $address): ServiceResultInterface
     {
         return $this->policyEngine->passTrough(
             function () use ($workspaceId, $name, $description, $address) {
-                $result = $this->workspacesAdapter->changeProfile($workspaceId, $name, $description, $address);
-                if ($result->isNotOk()) {
-                    return $result;
-                }
+                $this->workspacesAdapter->changeProfile($workspaceId, $name, $description, $address);
                 return $this->getBusinessWorkspaceResult($workspaceId);
             },
             AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId)),

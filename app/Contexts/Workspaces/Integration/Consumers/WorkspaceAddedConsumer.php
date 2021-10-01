@@ -2,28 +2,33 @@
 
 namespace App\Contexts\Workspaces\Integration\Consumers;
 
-use App\Contexts\Workspaces\Integration\Events\WorkspaceAdded;
-use App\Contexts\Workspaces\Integration\Events\WorkspaceProfileFilled;
-use App\Shared\Contracts\Informable;
-use App\Shared\Contracts\Reportable;
-use App\Shared\Contracts\ReportingBusInterface;
+use App\Contexts\Workspaces\Domain\Events\Workspace\WorkspaceAdded;
+use App\Contexts\Workspaces\Integration\Events\NewWorkspaceRegistered;
+use App\Shared\Contracts\Messaging\EventConsumerInterface;
+use App\Shared\Contracts\Messaging\EventInterface;
+use App\Shared\Contracts\Messaging\IntegrationEventBusInterface;
 
-class WorkspaceAddedConsumer implements Informable
+class WorkspaceAddedConsumer implements EventConsumerInterface
 {
-    public function __construct(private ReportingBusInterface $reportingBus)
-    {
+    public function __construct(
+        private IntegrationEventBusInterface $integrationEventBus,
+    ) {
     }
 
-    public function accepts(Reportable $reportable): bool
+    public function consumes(): array
     {
-        return $reportable instanceof WorkspaceAdded;
+        return [
+            WorkspaceAdded::class,
+        ];
     }
 
-    public function inform(Reportable $reportable): void
+    public function handle(EventInterface $event): void
     {
-        /** @var WorkspaceAdded $event */
-        $event = $reportable;
-        $this->reportingBus->report(new WorkspaceProfileFilled($event->id()));
+        if (!($event instanceof WorkspaceAdded)) {
+            return;
+        }
+
+        $this->integrationEventBus->publish(NewWorkspaceRegistered::of($event->with()));
     }
 
 }

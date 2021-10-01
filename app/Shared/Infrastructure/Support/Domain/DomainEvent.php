@@ -12,12 +12,12 @@ abstract class DomainEvent implements EventInterface, DomainEventInterface
 {
     use ShortClassNameTrait;
 
-    private Carbon $on;
+    private Carbon $at;
 
     protected function __construct(
         protected AggregateRootInterface $aggregateRoot
     ) {
-        $this->on = Carbon::now();
+        $this->at = Carbon::now();
     }
 
     public static function of(AggregateRootInterface $aggregateRoot): static
@@ -25,9 +25,9 @@ abstract class DomainEvent implements EventInterface, DomainEventInterface
         return new static($aggregateRoot);
     }
 
-    public function when(): Carbon
+    public function at(): Carbon
     {
-        return $this->on;
+        return $this->at;
     }
 
     abstract public function with(): AggregateRootInterface;
@@ -41,7 +41,7 @@ abstract class DomainEvent implements EventInterface, DomainEventInterface
     {
         return [
             'domainEvent' => $this::shortName(),
-            'on' => $this->on,
+            'at' => $this->at,
             'with' => $this->aggregateRoot->jsonSerialize(),
         ];
     }

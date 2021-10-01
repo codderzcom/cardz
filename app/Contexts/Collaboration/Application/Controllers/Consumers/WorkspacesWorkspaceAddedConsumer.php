@@ -4,7 +4,7 @@ namespace App\Contexts\Collaboration\Application\Controllers\Consumers;
 
 use App\Contexts\Collaboration\Application\Contracts\AddedWorkspaceReadStorageInterface;
 use App\Contexts\Collaboration\Application\Services\KeeperAppService;
-use App\Contexts\Workspaces\Integration\Events\WorkspaceAdded as WorkspacesWorkspaceAdded;
+use App\Contexts\Workspaces\Integration\Events\NewWorkspaceRegistered as WorkspacesWorkspaceAdded;
 use App\Shared\Contracts\Informable;
 use App\Shared\Contracts\Reportable;
 

@@ -8,7 +8,7 @@ interface DomainEventInterface
 {
     public static function of(AggregateRootInterface $aggregateRoot): static;
 
-    public function when(): Carbon;
+    public function at(): Carbon;
 
     public function with(): AggregateRootInterface;
 
