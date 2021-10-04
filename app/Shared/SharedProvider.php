@@ -10,6 +10,7 @@ use App\Shared\Contracts\ReportingBusInterface;
 use App\Shared\Contracts\ServiceResultFactoryInterface;
 use App\Shared\Infrastructure\CommandHandling\CommandBus;
 use App\Shared\Infrastructure\Messaging\EventBus;
+use App\Shared\Infrastructure\Messaging\IntegrationEventBus;
 use App\Shared\Infrastructure\Messaging\LocalSyncMessageBroker;
 use App\Shared\Infrastructure\Messaging\RabbitMQMessageBroker;
 use App\Shared\Infrastructure\Messaging\ReportingBus;
@@ -24,10 +25,9 @@ class SharedProvider extends ServiceProvider
         $this->app->singleton(ReportingBusInterface::class, ReportingBus::class);
         $this->app->singleton(ServiceResultFactoryInterface::class, ServiceResultFactory::class);
         $this->app->singleton(PolicyEngineInterface::class, PolicyEngine::class);
-        $this->app->singleton(LocalSyncMessageBroker::class, LocalSyncMessageBroker::class);
         $this->app->singleton(CommandBusInterface::class, CommandBus::class);
 
-        $this->app->singleton(EventBusInterface::class, fn() => new EventBus($this->app->get(LocalSyncMessageBroker::class)));
-        $this->app->singleton(IntegrationEventBusInterface::class, fn() => new EventBus($this->app->get(RabbitMQMessageBroker::class)));
+        $this->app->singleton(EventBusInterface::class, fn() => new EventBus($this->app->make(LocalSyncMessageBroker::class)));
+        $this->app->singleton(IntegrationEventBusInterface::class, fn() => new IntegrationEventBus($this->app->make(RabbitMQMessageBroker::class)));
     }
 }

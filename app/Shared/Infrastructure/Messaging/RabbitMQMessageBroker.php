@@ -8,6 +8,7 @@ use App\Shared\Contracts\Messaging\MessageInterface;
 use Closure;
 use Throwable;
 
+//ToDo: fake: replace
 class RabbitMQMessageBroker implements MessageBrokerInterface
 {
     /**
@@ -26,7 +27,9 @@ class RabbitMQMessageBroker implements MessageBrokerInterface
             $this->errors = [];
             $this->subscribers[(string) $channel] ??= [];
             foreach ($this->subscribers[(string) $channel] as $subscriber) {
-                $subscriber(...$messages);
+                foreach ($messages as $message) {
+                    $subscriber(json_encode($message->jsonSerialize()));
+                }
             }
         } catch (Throwable $exception) {
             $this->errors[] = $exception;

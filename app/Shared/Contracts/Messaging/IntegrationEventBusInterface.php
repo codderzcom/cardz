@@ -2,6 +2,9 @@
 
 namespace App\Shared\Contracts\Messaging;
 
-interface IntegrationEventBusInterface extends EventBusInterface
+interface IntegrationEventBusInterface
 {
+    public function publish(EventInterface ...$events): void;
+
+    public function subscribe(IntegrationEventConsumerInterface ...$integrationIntegrationEventConsumers): void;
 }

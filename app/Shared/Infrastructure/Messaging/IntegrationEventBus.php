@@ -2,15 +2,15 @@
 
 namespace App\Shared\Infrastructure\Messaging;
 
-use App\Shared\Contracts\Messaging\EventBusInterface;
-use App\Shared\Contracts\Messaging\EventConsumerInterface;
 use App\Shared\Contracts\Messaging\EventInterface;
+use App\Shared\Contracts\Messaging\IntegrationEventBusInterface;
+use App\Shared\Contracts\Messaging\IntegrationEventConsumerInterface;
 use App\Shared\Contracts\Messaging\MessageBrokerInterface;
 use App\Shared\Infrastructure\Logging\SimpleLoggerTrait;
 use Closure;
 use Throwable;
 
-class EventBus implements EventBusInterface
+class IntegrationEventBus implements IntegrationEventBusInterface
 {
     use SimpleLoggerTrait;
 
@@ -21,7 +21,7 @@ class EventBus implements EventBusInterface
 
     public function publish(EventInterface ...$events): void
     {
-        $this->info("Publishing: ", $events);
+        $this->info("Integration event(s): ", $events);
         foreach ($events as $event) {
             $name = $event::class;
             $this->messageBroker->publish(SimpleMessageChannel::of($name), $event);
@@ -36,15 +36,15 @@ class EventBus implements EventBusInterface
     {
         /** @var Throwable $error */
         $error = end($throwables);
-        $this->error("Error occurred when publishing in {$event::class}", [
+        $this->error("Error occurred when publishing an integration event {$event::class}", [
             'event' => $event,
             'error' => $error->getMessage(),
         ]);
     }
 
-    public function subscribe(EventConsumerInterface ...$eventConsumers): void
+    public function subscribe(IntegrationEventConsumerInterface ...$integrationEventConsumers): void
     {
-        foreach ($eventConsumers as $eventConsumer) {
+        foreach ($integrationEventConsumers as $eventConsumer) {
             foreach ($eventConsumer->consumes() as $channelName) {
                 $this->messageBroker->subscribe(SimpleMessageChannel::of($channelName), Closure::fromCallable([$eventConsumer, 'handle']));
             }
