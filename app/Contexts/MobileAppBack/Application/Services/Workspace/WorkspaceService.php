@@ -39,8 +39,8 @@ class WorkspaceService
 
     public function addWorkspace(string $keeperId, string $name, string $description, string $address): ServiceResultInterface
     {
-        $this->workspacesAdapter->addWorkspace($keeperId, $name, $description, $address);
-        return $this->getBusinessWorkspaces($keeperId);
+        $result = $this->workspacesAdapter->addWorkspace($keeperId, $name, $description, $address);
+        return $this->getBusinessWorkspaceResult($result->getPayload());
     }
 
     public function changeProfile(string $keeperId, string $workspaceId, string $name, string $description, string $address): ServiceResultInterface
