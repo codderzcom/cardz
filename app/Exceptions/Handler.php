@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Shared\Exceptions\NotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,7 +45,7 @@ class Handler extends ExceptionHandler
         });
     }
 
-    public function render($request, Throwable $e): JsonResponse | Response
+    public function render($request, Throwable $e): JsonResponse|Response
     {
         if ($e instanceof MethodNotAllowedHttpException) {
             return response()->json('Invalid method', 405);
@@ -52,6 +53,10 @@ class Handler extends ExceptionHandler
 
         if ($e instanceof NotFoundHttpException) {
             return response()->json('Not Found', 404);
+        }
+
+        if ($e instanceof NotFoundException) {
+            return response()->json($e->getMessage() ?: 'Not found', 404);
         }
 
         if ($e instanceof HttpException) {

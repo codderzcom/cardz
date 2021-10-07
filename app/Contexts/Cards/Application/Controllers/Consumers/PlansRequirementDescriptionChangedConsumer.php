@@ -4,7 +4,7 @@ namespace App\Contexts\Cards\Application\Controllers\Consumers;
 
 use App\Contexts\Cards\Application\Contracts\IssuedCardReadStorageInterface;
 use App\Contexts\Cards\Application\Services\CardAppService;
-use App\Contexts\Plans\Application\IntegrationEvents\RequirementChanged as PlansRequirementChanged;
+use App\Contexts\Plans\Integration\Events\RequirementChanged as PlansRequirementChanged;
 use App\Models\Requirement as EloquentRequirement;
 use App\Shared\Contracts\Informable;
 use App\Shared\Contracts\Reportable;

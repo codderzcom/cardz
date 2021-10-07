@@ -45,9 +45,7 @@ class WorkspaceAppService
         }
 
         $workspace = $keeper->keepWorkspace($command->getWorkspaceId(), $command->getProfile());
-        $this->releaseWorkspace($workspace);
-
-        return $workspace->workspaceId;
+        return $this->releaseWorkspace($workspace);
     }
 
     /**
@@ -61,14 +59,13 @@ class WorkspaceAppService
         }
 
         $workspace->changeProfile($command->getProfile());
-        $this->releaseWorkspace($workspace);
-
-        return $workspace->workspaceId;
+        return $this->releaseWorkspace($workspace);
     }
 
-    private function releaseWorkspace(Workspace $workspace): void
+    private function releaseWorkspace(Workspace $workspace): WorkspaceId
     {
         $this->workspaceRepository->persist($workspace);
         $this->domainEventBus->publish(...$workspace->releaseEvents());
+        return $workspace->workspaceId;
     }
 }

@@ -5,7 +5,7 @@ namespace App\Contexts\Cards\Application\Controllers\Consumers;
 use App\Contexts\Cards\Application\Contracts\IssuedCardReadStorageInterface;
 use App\Contexts\Cards\Application\Services\CardAppService;
 use App\Contexts\Cards\Infrastructure\ACL\Plans\PlansAdapter;
-use App\Contexts\Plans\Application\IntegrationEvents\PlanRequirementsChanged as PlansPlanRequirementsChanged;
+use App\Contexts\Plans\Integration\Events\PlanRequirementsChanged as PlansPlanRequirementsChanged;
 use App\Shared\Contracts\Informable;
 use App\Shared\Contracts\Reportable;
 
@@ -27,13 +27,13 @@ final class PlansRequirementsChangedConsumer implements Informable
     //ToDo: для Eventual Consistency что-то другое придётся изобретать
     public function inform(Reportable $reportable): void
     {
-        /** @var PlansPlanRequirementsChanged $event */
-        $event = $reportable;
-        $planId = $event->id();
-        $issuedCards = $this->issuedCardReadStorage->allForPlanId($planId);
-        $requirements = $this->plansAdapter->getRequirements($planId);
-        foreach ($issuedCards as $issuedCard) {
-            $this->cardAppService->acceptRequirements($issuedCard->cardId, ...$requirements->getPayload());
-        }
+        ///** @var PlansPlanRequirementsChanged $event */
+        //$event = $reportable;
+        //$planId = $event->id();
+        //$issuedCards = $this->issuedCardReadStorage->allForPlanId($planId);
+        //$requirements = $this->plansAdapter->getRequirements($planId);
+        //foreach ($issuedCards as $issuedCard) {
+        //    $this->cardAppService->acceptRequirements($issuedCard->cardId, ...$requirements->getPayload());
+        //}
     }
 }

@@ -12,8 +12,8 @@ use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\CardControl
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\PlanController as MABPlanController;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\WorkspaceController as MABWorkspaceController;
 use App\Contexts\Personal\Application\Controllers\Web\Person\PersonController;
-use App\Contexts\Plans\Application\Controllers\Web\Plan\PlanController;
-use App\Contexts\Plans\Application\Controllers\Web\Requirement\RequirementController;
+use App\Contexts\Plans\Presentation\Controllers\Http\Plan\PlanController;
+use App\Contexts\Plans\Presentation\Controllers\Http\Requirement\RequirementController;
 use App\Contexts\Workspaces\Presentation\Controllers\Http\Workspace\WorkspaceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -67,8 +67,8 @@ Route::group(['prefix' => '/plans/v1'], function () {
         Route::put('/description', [PlanController::class, 'changeDescription'])->name('ChangePlanDescription');
 
         Route::post('/requirement', [RequirementController::class, 'add'])->name('AddPlanRequirement');
-        Route::delete('/requirement', [RequirementController::class, 'remove'])->name('RemovePlanRequirement');
-        Route::put('/requirement', [RequirementController::class, 'change'])->name('ChangePlanRequirement');
+        Route::delete('/requirement/{requirementId}', [RequirementController::class, 'remove'])->name('RemovePlanRequirement');
+        Route::put('/requirement/{requirementId}', [RequirementController::class, 'change'])->name('ChangePlanRequirement');
     });
 });
 

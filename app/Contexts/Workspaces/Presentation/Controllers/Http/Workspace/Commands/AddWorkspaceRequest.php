@@ -4,7 +4,6 @@ namespace App\Contexts\Workspaces\Presentation\Controllers\Http\Workspace\Comman
 
 use App\Contexts\Workspaces\Application\Commands\AddWorkspace;
 use App\Contexts\Workspaces\Application\Commands\AddWorkspaceCommandInterface;
-use App\Contexts\Workspaces\Domain\Model\Workspace\WorkspaceId;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AddWorkspaceRequest extends FormRequest

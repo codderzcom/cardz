@@ -2,6 +2,7 @@
 
 namespace App\Contexts\Workspaces;
 
+use App\Contexts\Workspaces\Application\Consumers\WorkspaceAddedDomainConsumer;
 use App\Contexts\Workspaces\Application\Services\WorkspaceAppService;
 use App\Contexts\Workspaces\Infrastructure\Messaging\DomainEventBus;
 use App\Contexts\Workspaces\Infrastructure\Messaging\DomainEventBusInterface;
@@ -9,7 +10,6 @@ use App\Contexts\Workspaces\Infrastructure\Persistence\Contracts\KeeperRepositor
 use App\Contexts\Workspaces\Infrastructure\Persistence\Contracts\WorkspaceRepositoryInterface;
 use App\Contexts\Workspaces\Infrastructure\Persistence\Eloquent\KeeperRepository;
 use App\Contexts\Workspaces\Infrastructure\Persistence\Eloquent\WorkspaceRepository;
-use App\Contexts\Workspaces\Integration\Consumers\WorkspaceAddedConsumer;
 use Illuminate\Support\ServiceProvider;
 
 class WorkspacesProvider extends ServiceProvider
@@ -26,6 +26,6 @@ class WorkspacesProvider extends ServiceProvider
         DomainEventBusInterface $domainEventBus,
     ) {
         $workspaceAppService->registerHandlers();
-        $domainEventBus->subscribe($this->app->make(WorkspaceAddedConsumer::class));
+        $domainEventBus->subscribe($this->app->make(WorkspaceAddedDomainConsumer::class));
     }
 }

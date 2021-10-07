@@ -2,88 +2,86 @@
 
 namespace App\Contexts\Plans\Application\Services;
 
-use App\Contexts\Plans\Application\Contracts\PlanRepositoryInterface;
-use App\Contexts\Plans\Application\Contracts\RequirementRepositoryInterface;
-use App\Contexts\Plans\Application\IntegrationEvents\RequirementAdded;
-use App\Contexts\Plans\Application\IntegrationEvents\RequirementChanged;
-use App\Contexts\Plans\Application\IntegrationEvents\RequirementRemoved;
-use App\Contexts\Plans\Domain\Model\Plan\PlanId;
+use App\Contexts\Plans\Application\Commands\Requirement\AddRequirementCommandInterface;
+use App\Contexts\Plans\Application\Commands\Requirement\ChangeRequirementCommandInterface;
+use App\Contexts\Plans\Application\Commands\Requirement\RemoveRequirementCommandInterface;
+use App\Contexts\Plans\Application\Exceptions\PlanNotFoundException;
+use App\Contexts\Plans\Application\Exceptions\RequirementNotFoundException;
 use App\Contexts\Plans\Domain\Model\Requirement\Requirement;
 use App\Contexts\Plans\Domain\Model\Requirement\RequirementId;
-use App\Shared\Contracts\ReportingBusInterface;
-use App\Shared\Contracts\ServiceResultFactoryInterface;
-use App\Shared\Contracts\ServiceResultInterface;
-use App\Shared\Infrastructure\Support\ReportingServiceTrait;
+use App\Contexts\Plans\Infrastructure\Messaging\DomainEventBusInterface;
+use App\Contexts\Plans\Infrastructure\Persistence\Contracts\PlanRepositoryInterface;
+use App\Contexts\Plans\Infrastructure\Persistence\Contracts\RequirementRepositoryInterface;
+use App\Shared\Contracts\Commands\CommandBusInterface;
+use App\Shared\Infrastructure\CommandHandling\CommandHandlerFactoryTrait;
 
 class RequirementAppService
 {
-    use ReportingServiceTrait;
+    use CommandHandlerFactoryTrait;
 
     public function __construct(
         private PlanRepositoryInterface $planRepository,
         private RequirementRepositoryInterface $requirementRepository,
-        private ReportingBusInterface $reportingBus,
-        private ServiceResultFactoryInterface $resultFactory,
+        private DomainEventBusInterface $domainEventBus,
+        private CommandBusInterface $commandBus,
     ) {
     }
 
-    public function add(string $planId, string $description): ServiceResultInterface
+    public function registerHandlers(): void
     {
-        $plan = $this->planRepository->take(PlanId::of($planId));
-        if ($plan === null) {
-            return $this->resultFactory->notFound("Plan $planId not found");
-        }
-
-        $requirement = Requirement::make(RequirementId::make(), $plan->planId, $description);
-        $requirement->add();
-        $this->requirementRepository->persist($requirement);
-
-        $result = $this->resultFactory->ok($plan, new RequirementAdded($requirement->requirementId, $requirement->planId));
-        return $this->reportResult($result, $this->reportingBus);
+        $this->commandBus->registerHandlers(
+            $this->makeHandlerFor(AddRequirementCommandInterface::class, 'add'),
+            $this->makeHandlerFor(RemoveRequirementCommandInterface::class, 'remove'),
+            $this->makeHandlerFor(ChangeRequirementCommandInterface::class, 'change'),
+        );
     }
 
-    public function remove(string $planId, string $requirementId): ServiceResultInterface
+    /**
+     * @throws PlanNotFoundException
+     */
+    public function add(AddRequirementCommandInterface $command): RequirementId
     {
-        $plan = $this->planRepository->take(PlanId::of($planId));
+        $plan = $this->planRepository->take($command->getPlanId());
         if ($plan === null) {
-            return $this->resultFactory->notFound("Plan $planId not found");
-        }
-        $requirement = $this->requirementRepository->take(RequirementId::of($requirementId));
-        if ($requirement === null) {
-            return $this->resultFactory->notFound("Requirement $requirementId not found");
+            throw new PlanNotFoundException("Plan id {$command->getPlanId()}");
         }
 
-        if (!$requirement->planId->equals($plan->planId)) {
-            return $this->resultFactory->notFound("Invalid requirement affiliation");
+        $requirement = $plan->addRequirement($command->getRequirementId(), $command->getDescription());
+        return $this->releaseRequirement($requirement);
+    }
+
+    /**
+     * @throws RequirementNotFoundException
+     */
+    public function remove(RemoveRequirementCommandInterface $command): RequirementId
+    {
+        $requirement = $this->requirementRepository->take($command->getRequirementId());
+        if ($requirement === null) {
+            throw new RequirementNotFoundException();
         }
 
         $requirement->remove();
-        $this->requirementRepository->remove($requirement);
-
-        $result = $this->resultFactory->ok($plan, new RequirementRemoved($requirement->requirementId, $requirement->planId));
-        return $this->reportResult($result, $this->reportingBus);
+        return $this->releaseRequirement($requirement);
     }
 
-    public function change(string $planId, string $requirementId, string $description): ServiceResultInterface
+    /**
+     * @throws RequirementNotFoundException
+     */
+    public function change(ChangeRequirementCommandInterface $command): RequirementId
     {
-        $plan = $this->planRepository->take(PlanId::of($planId));
-        if ($plan === null) {
-            return $this->resultFactory->notFound("Plan $planId not found");
-        }
-        $requirement = $this->requirementRepository->take(RequirementId::of($requirementId));
+        $requirement = $this->requirementRepository->take($command->getRequirementId());
         if ($requirement === null) {
-            return $this->resultFactory->notFound("Requirement $requirementId not found");
+            throw new RequirementNotFoundException();
         }
 
-        if (!$requirement->planId->equals($plan->planId)) {
-            return $this->resultFactory->notFound("Invalid requirement affiliation");
-        }
-
-        $requirement->change($description);
-        $this->requirementRepository->persist($requirement);
-
-        $result = $this->resultFactory->ok($plan, new RequirementChanged($requirement->requirementId, $plan->planId));
-        return $this->reportResult($result, $this->reportingBus);
+        $requirement->change($command->getDescription());
+        return $this->releaseRequirement($requirement);
     }
 
+    private function releaseRequirement(Requirement $requirement): RequirementId
+    {
+        $this->requirementRepository->persist($requirement);
+        $this->domainEventBus->publish(...$requirement->releaseEvents());
+        return $requirement->requirementId;
+    }
 }

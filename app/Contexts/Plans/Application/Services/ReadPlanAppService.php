@@ -2,7 +2,7 @@
 
 namespace App\Contexts\Plans\Application\Services;
 
-use App\Contexts\Plans\Application\Contracts\ReadPlanStorageInterface;
+use App\Contexts\Plans\Infrastructure\ReadStorage\Contracts\ReadPlanStorageInterface;
 use App\Shared\Contracts\ServiceResultFactoryInterface;
 use App\Shared\Contracts\ServiceResultInterface;
 

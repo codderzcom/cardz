@@ -2,10 +2,9 @@
 
 namespace App\Contexts\Workspaces\Application\Exceptions;
 
-use App\Shared\Contracts\ApplicationExceptionInterface;
-use Exception;
+use App\Shared\Exceptions\NotFoundException;
 
-class KeeperNotFoundException extends Exception implements ApplicationExceptionInterface
+class KeeperNotFoundException extends NotFoundException
 {
 
 }

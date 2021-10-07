@@ -8,8 +8,4 @@ use JetBrains\PhpStorm\Immutable;
 #[Immutable]
 final class RequirementRemoved extends BaseRequirementDomainEvent
 {
-    public static function with(RequirementId $requirementId): self
-    {
-        return new self($requirementId);
-    }
 }

@@ -18,15 +18,4 @@ abstract class BaseController extends Controller
     {
         return response()->json($result);
     }
-
-    #[Pure]
-    private function resultCodeToResponseCode(ServiceResultCode $resultCode): int
-    {
-        return match ((string) $resultCode) {
-            ServiceResultCode::OK => 200,
-            ServiceResultCode::POLICY_VIOLATION => 400,
-            ServiceResultCode::SUBJECT_NOT_FOUND => 404,
-            default => 500
-        };
-    }
 }

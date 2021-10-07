@@ -18,12 +18,12 @@ class PlansAdapter
 
     public function getRequirements(string $planId): ServiceResultInterface
     {
-        $result = $this->readPlanAppService->getReadPlan($planId);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-        /** @var ReadPlan $payload */
-        $payload = $result->getPayload();
-        return $this->serviceResultFactory->ok($payload->requirements);
+        //$result = $this->readPlanAppService->getReadPlan($planId);
+        //if ($result->isNotOk()) {
+        //    return $result;
+        //}
+        ///** @var ReadPlan $payload */
+        //$payload = $result->getPayload();
+        //return $this->serviceResultFactory->ok($payload->requirements);
     }
 }

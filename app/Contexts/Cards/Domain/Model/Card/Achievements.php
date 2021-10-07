@@ -2,7 +2,7 @@
 
 namespace App\Contexts\Cards\Domain\Model\Card;
 
-use App\Contexts\Plans\Domain\Model\Shared\ValueObject;
+use App\Contexts\Cards\Domain\Model\Shared\ValueObject;
 use JetBrains\PhpStorm\Immutable;
 use JetBrains\PhpStorm\Pure;
 

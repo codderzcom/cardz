@@ -2,101 +2,118 @@
 
 namespace App\Contexts\Plans\Application\Services;
 
-use App\Contexts\Plans\Application\Contracts\PlanRepositoryInterface;
-use App\Contexts\Plans\Application\IntegrationEvents\PlanAdded;
-use App\Contexts\Plans\Application\IntegrationEvents\PlanArchived;
-use App\Contexts\Plans\Application\IntegrationEvents\PlanDescriptionChanged;
-use App\Contexts\Plans\Application\IntegrationEvents\PlanLaunched;
-use App\Contexts\Plans\Application\IntegrationEvents\PlanStopped;
+use App\Contexts\Plans\Application\Commands\Plan\AddPlanCommandInterface;
+use App\Contexts\Plans\Application\Commands\Plan\ChangePlanDescriptionCommandInterface;
+use App\Contexts\Plans\Application\Commands\Plan\LaunchPlanCommandInterface;
+use App\Contexts\Plans\Application\Commands\Plan\StopPlanCommandInterface;
+use App\Contexts\Plans\Application\Exceptions\PlanNotFoundException;
+use App\Contexts\Plans\Application\Exceptions\WorkspaceNotFoundException;
 use App\Contexts\Plans\Domain\Model\Plan\Plan;
 use App\Contexts\Plans\Domain\Model\Plan\PlanId;
-use App\Contexts\Plans\Domain\Model\Shared\Description;
-use App\Contexts\Plans\Domain\Model\Shared\WorkspaceId;
-use App\Shared\Contracts\ReportingBusInterface;
-use App\Shared\Contracts\ServiceResultFactoryInterface;
-use App\Shared\Contracts\ServiceResultInterface;
-use App\Shared\Infrastructure\Support\ReportingServiceTrait;
+use App\Contexts\Plans\Infrastructure\Messaging\DomainEventBusInterface;
+use App\Contexts\Plans\Infrastructure\Persistence\Contracts\PlanRepositoryInterface;
+use App\Contexts\Plans\Infrastructure\Persistence\Contracts\WorkspaceRepositoryInterface;
+use App\Shared\Contracts\Commands\CommandBusInterface;
+use App\Shared\Infrastructure\CommandHandling\CommandHandlerFactoryTrait;
 
 class PlanAppService
 {
-    use ReportingServiceTrait;
+    use CommandHandlerFactoryTrait;
 
     public function __construct(
         private PlanRepositoryInterface $planRepository,
-        private ReportingBusInterface $reportingBus,
-        private ServiceResultFactoryInterface $resultFactory,
+        private WorkspaceRepositoryInterface $workspaceRepository,
+        private DomainEventBusInterface $domainEventBus,
+        private CommandBusInterface $commandBus,
     ) {
     }
 
-    public function add(string $workspaceId, string $description): ServiceResultInterface
+    public function registerHandlers(): void
     {
-        $plan = Plan::make(
-            PlanId::make(),
-            WorkspaceId::of($workspaceId),
-            Description::of($description)
+        $this->commandBus->registerHandlers(
+            $this->makeHandlerFor(AddPlanCommandInterface::class, 'add'),
+            $this->makeHandlerFor(LaunchPlanCommandInterface::class, 'launch'),
+            $this->makeHandlerFor(StopPlanCommandInterface::class, 'stop'),
+            $this->makeHandlerFor(AddPlanCommandInterface::class, 'archive'),
+            $this->makeHandlerFor(ChangePlanDescriptionCommandInterface::class, 'changeDescription'),
         );
-
-        $plan->add();
-        $this->planRepository->persist($plan);
-
-        $result = $this->resultFactory->ok($plan, new PlanAdded($plan->planId));
-        return $this->reportResult($result, $this->reportingBus);
     }
 
-    public function launch(string $planId): ServiceResultInterface
+    /**
+     * @throws WorkspaceNotFoundException
+     */
+    public function add(AddPlanCommandInterface $command): PlanId
     {
-        $plan = $this->planRepository->take(PlanId::of($planId));
+        $workspace = $this->workspaceRepository->take($command->getWorkspaceId());
+        if ($workspace === null) {
+            throw new WorkspaceNotFoundException("Workspace id {$command->getWorkspaceId()}");
+        }
+
+        $plan = $workspace->addPlan($command->getPlanId(), $command->getDescription());
+        return $this->releasePlan($plan);
+    }
+
+    /**
+     * @throws PlanNotFoundException
+     */
+    public function launch(LaunchPlanCommandInterface $command): PlanId
+    {
+        $plan = $this->planRepository->take($command->getPlanId());
         if ($plan === null) {
-            return $this->resultFactory->notFound("$planId not found");
+            throw new PlanNotFoundException("Plan id {$command->getPlanId()}");
         }
 
         $plan->launch();
-        $this->planRepository->persist($plan);
-
-        $result = $this->resultFactory->ok($plan, new PlanLaunched($plan->planId));
-        return $this->reportResult($result, $this->reportingBus);
+        return $this->releasePlan($plan);
     }
 
-    public function stop(string $planId): ServiceResultInterface
+    /**
+     * @throws PlanNotFoundException
+     */
+    public function stop(StopPlanCommandInterface $command): PlanId
     {
-        $plan = $this->planRepository->take(PlanId::of($planId));
+        $plan = $this->planRepository->take($command->getPlanId());
         if ($plan === null) {
-            return $this->resultFactory->notFound("$planId not found");
+            throw new PlanNotFoundException("Plan id {$command->getPlanId()}");
         }
 
         $plan->stop();
-        $this->planRepository->persist($plan);
-
-        $result = $this->resultFactory->ok($plan, new PlanStopped($plan->planId));
-        return $this->reportResult($result, $this->reportingBus);
+        return $this->releasePlan($plan);
     }
 
-    public function archive(string $planId): ServiceResultInterface
+    /**
+     * @throws PlanNotFoundException
+     */
+    public function archive(AddPlanCommandInterface $command): PlanId
     {
-        $plan = $this->planRepository->take(PlanId::of($planId));
+        $plan = $this->planRepository->take($command->getPlanId());
         if ($plan === null) {
-            return $this->resultFactory->notFound("$planId not found");
+            throw new PlanNotFoundException("Plan id {$command->getPlanId()}");
         }
 
         $plan->archive();
-        $this->planRepository->persist($plan);
-
-        $result = $this->resultFactory->ok($plan, new PlanArchived($plan->planId));
-        return $this->reportResult($result, $this->reportingBus);
+        return $this->releasePlan($plan);
     }
 
-    public function changeDescription(string $planId, string $description): ServiceResultInterface
+    /**
+     * @throws PlanNotFoundException
+     */
+    public function changeDescription(ChangePlanDescriptionCommandInterface $command): PlanId
     {
-        $plan = $this->planRepository->take(PlanId::of($planId));
+        $plan = $this->planRepository->take($command->getPlanId());
         if ($plan === null) {
-            return $this->resultFactory->notFound("$planId not found");
+            throw new PlanNotFoundException("Plan id {$command->getPlanId()}");
         }
 
-        $plan->changeDescription(Description::of($description));
-        $this->planRepository->persist($plan);
+        $plan->changeDescription($command->getDescription());
+        return $this->releasePlan($plan);
+    }
 
-        $result = $this->resultFactory->ok($plan, new PlanDescriptionChanged($plan->planId));
-        return $this->reportResult($result, $this->reportingBus);
+    private function releasePlan(Plan $plan): PlanId
+    {
+        $this->planRepository->persist($plan);
+        $this->domainEventBus->publish(...$plan->releaseEvents());
+        return $plan->planId;
     }
 
 }
