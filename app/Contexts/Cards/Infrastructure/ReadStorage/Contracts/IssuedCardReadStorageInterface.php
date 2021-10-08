@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contexts\Cards\Application\Contracts;
+namespace App\Contexts\Cards\Infrastructure\ReadStorage\Contracts;
 
 use App\Contexts\Cards\Domain\ReadModel\IssuedCard;
 

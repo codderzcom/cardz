@@ -2,7 +2,7 @@
 
 namespace App\Contexts\Cards\Application\Services;
 
-use App\Contexts\Cards\Application\Contracts\IssuedCardReadStorageInterface;
+use App\Contexts\Cards\Infrastructure\ReadStorage\Contracts\IssuedCardReadStorageInterface;
 use App\Shared\Contracts\ServiceResultFactoryInterface;
 use App\Shared\Contracts\ServiceResultInterface;
 

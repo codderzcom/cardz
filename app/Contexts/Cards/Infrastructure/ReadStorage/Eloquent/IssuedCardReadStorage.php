@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Contexts\Cards\Infrastructure\ReadStorage;
+namespace App\Contexts\Cards\Infrastructure\ReadStorage\Eloquent;
 
-use App\Contexts\Cards\Application\Contracts\IssuedCardReadStorageInterface;
 use App\Contexts\Cards\Domain\ReadModel\IssuedCard;
+use App\Contexts\Cards\Infrastructure\ReadStorage\Contracts\IssuedCardReadStorageInterface;
 use App\Models\Card as EloquentCard;
+use function json_try_decode;
 
 class IssuedCardReadStorage implements IssuedCardReadStorageInterface
 {

@@ -2,10 +2,10 @@
 
 namespace App\Contexts\Cards\Application\Controllers\Consumers;
 
-use App\Contexts\Cards\Application\Contracts\IssuedCardReadStorageInterface;
 use App\Contexts\Cards\Application\IntegrationEvents\CardIssued;
 use App\Contexts\Cards\Application\Services\CardAppService;
-use App\Contexts\Cards\Infrastructure\ACL\Plans\PlansAdapter;
+use App\Contexts\Cards\Infrastructure\ReadStorage\Contracts\IssuedCardReadStorageInterface;
+use App\Contexts\Cards\Infrastructure\ReadStorage\Contracts\ReadPlanStorageInterface;
 use App\Shared\Contracts\Informable;
 use App\Shared\Contracts\Reportable;
 
@@ -13,8 +13,8 @@ final class CardIssuedConsumer implements Informable
 {
     public function __construct(
         private IssuedCardReadStorageInterface $issuedCardReadStorage,
+        private ReadPlanStorageInterface $readPlanStorage,
         private CardAppService $cardAppService,
-        private PlansAdapter $plansAdapter,
     ) {
     }
 
@@ -23,7 +23,6 @@ final class CardIssuedConsumer implements Informable
         return $reportable instanceof CardIssued;
     }
 
-    //ToDo: для Eventual Consistency что-то другое придётся изобретать
     public function inform(Reportable $reportable): void
     {
         /** @var CardIssued $event */
@@ -33,12 +32,12 @@ final class CardIssuedConsumer implements Informable
             return;
         }
 
-        $requirements = $this->plansAdapter->getRequirements($issuedCard->planId);
-
-        if ($requirements->isNotOk()) {
+        $plan = $this->readPlanStorage->take($issuedCard->planId);
+        if ($plan === null) {
             return;
         }
-        $this->cardAppService->acceptRequirements($issuedCard->cardId, ...$requirements->getPayload());
+
+        $this->cardAppService->acceptRequirements($issuedCard->cardId, ...$plan->requirements);
     }
 
 }

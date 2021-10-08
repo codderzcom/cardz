@@ -11,7 +11,8 @@ use App\Contexts\Cards\Application\IntegrationEvents\{AchievementDismissed,
     CardRevoked,
     CardSatisfactionWithdrawn,
     CardSatisfied,
-    RequirementsAccepted};
+    RequirementsAccepted
+};
 use App\Contexts\Cards\Domain\Model\Card\Achievement;
 use App\Contexts\Cards\Domain\Model\Card\Achievements;
 use App\Contexts\Cards\Domain\Model\Card\Card;
@@ -19,7 +20,7 @@ use App\Contexts\Cards\Domain\Model\Card\CardId;
 use App\Contexts\Cards\Domain\Model\Card\Description;
 use App\Contexts\Cards\Domain\Model\Shared\CustomerId;
 use App\Contexts\Cards\Domain\Model\Shared\PlanId;
-use App\Contexts\Cards\Infrastructure\ACL\Plans\PlansAdapter;
+use App\Contexts\Cards\Domain\ReadModel\ReadRequirement;
 use App\Shared\Contracts\ReportingBusInterface;
 use App\Shared\Contracts\ServiceResultFactoryInterface;
 use App\Shared\Contracts\ServiceResultInterface;
@@ -33,7 +34,6 @@ class CardAppService
         private CardRepositoryInterface $cardRepository,
         private ReportingBusInterface $reportingBus,
         private ServiceResultFactoryInterface $resultFactory,
-        private PlansAdapter $plansAdapter,
     ) {
     }
 
@@ -147,14 +147,14 @@ class CardAppService
         return $this->resultFactory->ok();
     }
 
-    public function acceptRequirements(string $cardId, array ...$requirements): ServiceResultInterface
+    public function acceptRequirements(string $cardId, ReadRequirement ...$requirements): ServiceResultInterface
     {
         $card = $this->cardRepository->take(CardId::of($cardId));
         if ($card === null) {
             return $this->resultFactory->notFound("Card $cardId not found");
         }
 
-        $card->acceptRequirements(Achievements::of(...$requirements));
+        $card->acceptRequirements(Achievements::from(...$requirements));
         $this->cardRepository->persist($card);
 
         $result = $this->resultFactory->ok($card, new RequirementsAccepted($card->cardId));

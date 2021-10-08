@@ -3,6 +3,7 @@
 namespace App\Contexts\Cards\Domain\Model\Card;
 
 use App\Contexts\Cards\Domain\Model\Shared\ValueObject;
+use App\Contexts\Cards\Domain\ReadModel\ReadRequirement;
 use JetBrains\PhpStorm\Immutable;
 use JetBrains\PhpStorm\Pure;
 
@@ -22,6 +23,16 @@ final class Achievements extends ValueObject
         $achievements = [];
         foreach ($achievementsData as $achievementData) {
             $achievements[] = Achievement::of($achievementData[0], $achievementData[1]);
+        }
+        return new self(...$achievements);
+    }
+
+    #[Pure]
+    public static function from(ReadRequirement ...$requirements): self
+    {
+        $achievements = [];
+        foreach ($requirements as $requirement) {
+            $achievements[] = Achievement::of($requirement->requirementId, $requirement->description);
         }
         return new self(...$achievements);
     }
