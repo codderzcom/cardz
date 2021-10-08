@@ -4,6 +4,7 @@ namespace App\Contexts\Plans\Application\Consumers;
 
 use App\Contexts\Plans\Domain\Events\Requirement\RequirementChanged as DomainRequirementChanged;
 use App\Contexts\Plans\Infrastructure\Persistence\Contracts\RequirementRepositoryInterface;
+use App\Contexts\Plans\Infrastructure\ReadStorage\Contracts\ReadRequirementStorageInterface;
 use App\Contexts\Plans\Integration\Events\RequirementChanged;
 use App\Shared\Contracts\Messaging\EventConsumerInterface;
 use App\Shared\Contracts\Messaging\EventInterface;
@@ -14,7 +15,7 @@ final class RequirementChangedDomainEventsConsumer implements EventConsumerInter
 
     public function __construct(
         private IntegrationEventBusInterface $integrationEventBus,
-        private RequirementRepositoryInterface $requirementRepository,
+        private ReadRequirementStorageInterface $readRequirementStorage,
     ) {
     }
 
@@ -31,7 +32,7 @@ final class RequirementChangedDomainEventsConsumer implements EventConsumerInter
             return;
         }
 
-        $requirement = $this->requirementRepository->take($event->with()->requirementId);
+        $requirement = $this->readRequirementStorage->take($event->with()?->requirementId);
         if ($requirement !== null) {
             $this->integrationEventBus->publish(RequirementChanged::of($requirement));
         }

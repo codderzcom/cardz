@@ -5,11 +5,10 @@ namespace App\Contexts\Cards\Application\Controllers\Consumers;
 use App\Contexts\Cards\Application\Services\CardAppService;
 use App\Contexts\Cards\Infrastructure\ReadStorage\Contracts\IssuedCardReadStorageInterface;
 use App\Contexts\Plans\Integration\Events\RequirementChanged as PlansRequirementChanged;
-use App\Models\Requirement as EloquentRequirement;
-use App\Shared\Contracts\Informable;
-use App\Shared\Contracts\Reportable;
+use App\Shared\Contracts\Messaging\IntegrationEventConsumerInterface;
+use phpDocumentor\Reflection\Types\Object_;
 
-final class PlansRequirementDescriptionChangedConsumer implements Informable
+final class PlansRequirementDescriptionChangedConsumer implements IntegrationEventConsumerInterface
 {
     public function __construct(
         private IssuedCardReadStorageInterface $issuedCardReadStorage,
@@ -17,28 +16,25 @@ final class PlansRequirementDescriptionChangedConsumer implements Informable
     ) {
     }
 
-    public function accepts(Reportable $reportable): bool
+    public function consumes(): array
     {
-        //ToDo: InterContext dependency.
-        return $reportable instanceof PlansRequirementChanged;
+        return [
+            PlansRequirementChanged::class,
+        ];
     }
 
-    //ToDo: Идёт как системный фикс в обход агрегата. ХЗ, правильно ли.
-    public function inform(Reportable $reportable): void
+    public function handle(string $event): void
     {
-        /** @var PlansRequirementChanged $event */
-        $event = $reportable;
-        $requirementId = $event->id();
-        $eloquentRequirement = EloquentRequirement::query()->find($requirementId);
-        if ($eloquentRequirement === null) {
+        $payload = json_decode($event)?->payload;
+        if (!is_object($payload)) {
             return;
         }
-        $issuedCards = $this->issuedCardReadStorage->allForPlanId($eloquentRequirement->plan_id);
+        $issuedCards = $this->issuedCardReadStorage->allForPlanId($payload->planId);
         foreach ($issuedCards as $issuedCard) {
             $this->cardAppService->fixAchievementDescription(
                 $issuedCard->cardId,
-                $eloquentRequirement->id,
-                $eloquentRequirement->description
+                $payload->requirementId,
+                $payload->description,
             );
         }
     }

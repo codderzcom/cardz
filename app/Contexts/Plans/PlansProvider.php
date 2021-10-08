@@ -15,7 +15,9 @@ use App\Contexts\Plans\Infrastructure\Persistence\Eloquent\PlanRepository;
 use App\Contexts\Plans\Infrastructure\Persistence\Eloquent\RequirementRepository;
 use App\Contexts\Plans\Infrastructure\Persistence\Eloquent\WorkspaceRepository;
 use App\Contexts\Plans\Infrastructure\ReadStorage\Contracts\ReadPlanStorageInterface;
+use App\Contexts\Plans\Infrastructure\ReadStorage\Contracts\ReadRequirementStorageInterface;
 use App\Contexts\Plans\Infrastructure\ReadStorage\Eloquent\ReadPlanStorage;
+use App\Contexts\Plans\Infrastructure\ReadStorage\Eloquent\ReadRequirementStorage;
 use Illuminate\Support\ServiceProvider;
 
 class PlansProvider extends ServiceProvider
@@ -26,6 +28,7 @@ class PlansProvider extends ServiceProvider
         $this->app->singleton(RequirementRepositoryInterface::class, RequirementRepository::class);
         $this->app->singleton(WorkspaceRepositoryInterface::class, WorkspaceRepository::class);
         $this->app->singleton(ReadPlanStorageInterface::class, ReadPlanStorage::class);
+        $this->app->singleton(ReadRequirementStorageInterface::class, ReadRequirementStorage::class);
         $this->app->singleton(DomainEventBusInterface::class, DomainEventBus::class);
     }
 

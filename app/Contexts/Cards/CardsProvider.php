@@ -16,6 +16,7 @@ use App\Contexts\Cards\Infrastructure\ReadStorage\Contracts\IssuedCardReadStorag
 use App\Contexts\Cards\Infrastructure\ReadStorage\Contracts\ReadPlanStorageInterface;
 use App\Contexts\Cards\Infrastructure\ReadStorage\Eloquent\IssuedCardReadStorage;
 use App\Contexts\Cards\Infrastructure\ReadStorage\Eloquent\ReadPlanStorage;
+use App\Shared\Contracts\Messaging\IntegrationEventBusInterface;
 use App\Shared\Contracts\ReportingBusInterface;
 use Illuminate\Support\ServiceProvider;
 
@@ -29,13 +30,16 @@ class CardsProvider extends ServiceProvider
         $this->app->singleton(ReadPlanStorageInterface::class, ReadPlanStorage::class);
     }
 
-    public function boot(ReportingBusInterface $reportingBus)
-    {
+    public function boot(
+        ReportingBusInterface $reportingBus,
+        IntegrationEventBusInterface $integrationEventBus,
+    ) {
         $reportingBus->subscribe($this->app->make(CardCompletedConsumer::class));
         $reportingBus->subscribe($this->app->make(CardIssuedConsumer::class));
         $reportingBus->subscribe($this->app->make(CardRevokedConsumer::class));
         $reportingBus->subscribe($this->app->make(PlansRequirementsChangedConsumer::class));
-        $reportingBus->subscribe($this->app->make(PlansRequirementDescriptionChangedConsumer::class));
         $reportingBus->subscribe($this->app->make(SatisfactionCheckRequiredConsumer::class));
+
+        $integrationEventBus->subscribe($this->app->make(PlansRequirementDescriptionChangedConsumer::class));
     }
 }

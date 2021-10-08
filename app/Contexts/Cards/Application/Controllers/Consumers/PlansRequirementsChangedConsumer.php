@@ -3,7 +3,6 @@
 namespace App\Contexts\Cards\Application\Controllers\Consumers;
 
 use App\Contexts\Cards\Application\Services\CardAppService;
-use App\Contexts\Cards\Infrastructure\ACL\Plans\PlansAdapter;
 use App\Contexts\Cards\Infrastructure\ReadStorage\Contracts\IssuedCardReadStorageInterface;
 use App\Contexts\Plans\Integration\Events\PlanRequirementsChanged as PlansPlanRequirementsChanged;
 use App\Shared\Contracts\Informable;
