@@ -2,10 +2,10 @@
 
 namespace App\Contexts\Cards\Application\Controllers\Consumers;
 
-use App\Contexts\Cards\Application\IntegrationEvents\CardIssued;
 use App\Contexts\Cards\Application\Services\CardAppService;
 use App\Contexts\Cards\Infrastructure\ReadStorage\Contracts\IssuedCardReadStorageInterface;
 use App\Contexts\Cards\Infrastructure\ReadStorage\Contracts\ReadPlanStorageInterface;
+use App\Contexts\Cards\Integration\Events\CardIssued;
 use App\Shared\Contracts\Informable;
 use App\Shared\Contracts\Reportable;
 

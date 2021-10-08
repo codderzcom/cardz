@@ -2,17 +2,6 @@
 
 namespace App\Contexts\Cards\Application\Services;
 
-use App\Contexts\Cards\Application\Contracts\CardRepositoryInterface;
-use App\Contexts\Cards\Application\IntegrationEvents\{AchievementDismissed,
-    AchievementNoted,
-    CardBlocked,
-    CardCompleted,
-    CardIssued,
-    CardRevoked,
-    CardSatisfactionWithdrawn,
-    CardSatisfied,
-    RequirementsAccepted
-};
 use App\Contexts\Cards\Domain\Model\Card\Achievement;
 use App\Contexts\Cards\Domain\Model\Card\Achievements;
 use App\Contexts\Cards\Domain\Model\Card\Card;
@@ -21,6 +10,16 @@ use App\Contexts\Cards\Domain\Model\Card\Description;
 use App\Contexts\Cards\Domain\Model\Shared\CustomerId;
 use App\Contexts\Cards\Domain\Model\Shared\PlanId;
 use App\Contexts\Cards\Domain\ReadModel\ReadRequirement;
+use App\Contexts\Cards\Infrastructure\Persistence\Contracts\CardRepositoryInterface;
+use App\Contexts\Cards\Integration\Events\{AchievementDismissed,
+    AchievementNoted,
+    CardBlocked,
+    CardCompleted,
+    CardIssued,
+    CardRevoked,
+    CardSatisfactionWithdrawn,
+    CardSatisfied,
+    RequirementsAccepted};
 use App\Shared\Contracts\ReportingBusInterface;
 use App\Shared\Contracts\ServiceResultFactoryInterface;
 use App\Shared\Contracts\ServiceResultInterface;

@@ -2,8 +2,8 @@
 
 namespace App\Contexts\Cards\Application\Controllers\Consumers;
 
-use App\Contexts\Cards\Application\IntegrationEvents\CardArchived;
-use App\Contexts\Cards\Application\IntegrationEvents\CardRevoked;
+use App\Contexts\Cards\Integration\Events\CardArchived;
+use App\Contexts\Cards\Integration\Events\CardRevoked;
 use App\Shared\Contracts\Informable;
 use App\Shared\Contracts\Reportable;
 use App\Shared\Contracts\ReportingBusInterface;

@@ -2,10 +2,10 @@
 
 namespace App\Contexts\Cards\Application\Controllers\Consumers;
 
-use App\Contexts\Cards\Application\IntegrationEvents\AchievementNoted;
-use App\Contexts\Cards\Application\IntegrationEvents\CardIssued;
-use App\Contexts\Cards\Application\IntegrationEvents\RequirementsAccepted;
 use App\Contexts\Cards\Application\Services\CardAppService;
+use App\Contexts\Cards\Integration\Events\AchievementNoted;
+use App\Contexts\Cards\Integration\Events\CardIssued;
+use App\Contexts\Cards\Integration\Events\RequirementsAccepted;
 use App\Shared\Contracts\Informable;
 use App\Shared\Contracts\Reportable;
 

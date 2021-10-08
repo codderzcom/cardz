@@ -2,9 +2,9 @@
 
 namespace App\Contexts\Cards\Infrastructure\Persistence;
 
-use App\Contexts\Cards\Application\Contracts\CardRepositoryInterface;
 use App\Contexts\Cards\Domain\Model\Card\Card;
 use App\Contexts\Cards\Domain\Model\Card\CardId;
+use App\Contexts\Cards\Infrastructure\Persistence\Contracts\CardRepositoryInterface;
 use App\Models\Card as EloquentCard;
 use ReflectionClass;
 use function json_try_decode;

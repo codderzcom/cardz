@@ -1,8 +1,8 @@
 <?php
 
 use App\Contexts\Auth\Application\Controllers\Web\User\UserController;
-use App\Contexts\Cards\Application\Controllers\Web\BlockedCard\BlockedCardController;
-use App\Contexts\Cards\Application\Controllers\Web\Card\CardController;
+use App\Contexts\Cards\Presentation\Controllers\Http\BlockedCard\BlockedCardController;
+use App\Contexts\Cards\Presentation\Controllers\Http\Card\CardController;
 use App\Contexts\Collaboration\Application\Controllers\Web\Invite\InviteController;
 use App\Contexts\Collaboration\Application\Controllers\Web\Relation\RelationController;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Customer\CardController as MABCustomerCardController;

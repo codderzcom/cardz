@@ -2,9 +2,9 @@
 
 namespace App\Contexts\Cards\Application\Services;
 
-use App\Contexts\Cards\Application\Contracts\BlockedCardRepositoryInterface;
-use App\Contexts\Cards\Application\IntegrationEvents\{CardUnblocked};
 use App\Contexts\Cards\Domain\Model\BlockedCard\BlockedCardId;
+use App\Contexts\Cards\Infrastructure\Persistence\Contracts\BlockedCardRepositoryInterface;
+use App\Contexts\Cards\Integration\Events\{CardUnblocked};
 use App\Shared\Contracts\ReportingBusInterface;
 use App\Shared\Contracts\ServiceResultFactoryInterface;
 use App\Shared\Contracts\ServiceResultInterface;
