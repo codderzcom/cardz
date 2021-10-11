@@ -2,6 +2,8 @@
 
 namespace App\Contexts\Cards\Domain\ReadModel;
 
+use App\Contexts\Cards\Domain\Model\Card\Achievements;
+use App\Contexts\Cards\Domain\Model\Card\Card;
 use App\Shared\Infrastructure\Support\ArrayPresenterTrait;
 use JetBrains\PhpStorm\Pure;
 
@@ -17,17 +19,13 @@ final class IssuedCard
         public bool $completed,
         public bool $revoked,
         public bool $blocked,
-        public array $achievements,
-        public array $requirements,
+        public Achievements $achievements,
+        public Achievements $requirements,
     ) {
     }
 
-    /**
-     * @param string[] $achievements
-     * @param string[] $requirements
-     */
     #[Pure]
-    public static function make(
+    public static function of(
         string $cardId,
         string $planId,
         string $customerId,
@@ -35,8 +33,8 @@ final class IssuedCard
         bool $completed,
         bool $revoked,
         bool $blocked,
-        array $achievements,
-        array $requirements,
+        Achievements $achievements,
+        Achievements $requirements,
     ): self {
         return new self(
             $cardId,
@@ -48,6 +46,22 @@ final class IssuedCard
             $blocked,
             $achievements,
             $requirements,
+        );
+    }
+
+    #[Pure]
+    public static function from(Card $card): self
+    {
+        return new self(
+            (string) $card->cardId,
+            (string) $card->planId,
+            (string) $card->customerId,
+            $card->isSatisfied(),
+            $card->isCompleted(),
+            $card->isRevoked(),
+            $card->isBlocked(),
+            $card->getAchievements(),
+            $card->getRequirements(),
         );
     }
 }

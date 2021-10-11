@@ -2,13 +2,14 @@
 
 namespace App\Contexts\Cards\Domain\Model\Card;
 
-use App\Contexts\Cards\Domain\Model\Shared\ValueObject;
-use App\Contexts\Cards\Domain\ReadModel\ReadRequirement;
+use App\Contexts\Cards\Domain\Model\Plan\Requirement;
+use App\Shared\Contracts\Domain\ValueObjectInterface;
+use App\Shared\Exceptions\ParameterAssertionException;
 use JetBrains\PhpStorm\Immutable;
 use JetBrains\PhpStorm\Pure;
 
 #[Immutable]
-final class Achievements extends ValueObject
+final class Achievements implements ValueObjectInterface
 {
     private array $achievements;
 
@@ -17,18 +18,20 @@ final class Achievements extends ValueObject
         $this->achievements = $achievements;
     }
 
-    #[Pure]
     public static function of(array ...$achievementsData): self
     {
         $achievements = [];
         foreach ($achievementsData as $achievementData) {
+            if (!array_key_exists(0, $achievementData) || !array_key_exists(1, $achievementData)) {
+                throw new ParameterAssertionException("Expected proper achievement data");
+            }
             $achievements[] = Achievement::of($achievementData[0], $achievementData[1]);
         }
         return new self(...$achievements);
     }
 
     #[Pure]
-    public static function from(ReadRequirement ...$requirements): self
+    public static function from(Requirement ...$requirements): self
     {
         $achievements = [];
         foreach ($requirements as $requirement) {
@@ -61,13 +64,13 @@ final class Achievements extends ValueObject
         return new self(...$achievements);
     }
 
+    #[Pure]
     public function remove(Achievement $achievement): self
     {
-        $achievements = $this->achievements;
-        foreach ($achievements as $index => $presentAchievement) {
-            if ($presentAchievement->equals($achievement)) {
-                unset($achievements[$index]);
-                break;
+        $achievements = [];
+        foreach ($this->achievements as $presentAchievement) {
+            if (!$presentAchievement->equals($achievement)) {
+                $achievements[] = $presentAchievement;
             }
         }
         return new self(...$achievements);
@@ -85,13 +88,13 @@ final class Achievements extends ValueObject
         return new self(...$achievements);
     }
 
+    #[Pure]
     public function removeById(string $achievementId): self
     {
-        $achievements = $this->achievements;
-        foreach ($achievements as $index => $presentAchievement) {
-            if ($presentAchievement->getId() === $achievementId) {
-                unset($achievements[$index]);
-                break;
+        $achievements = [];
+        foreach ($this->achievements as $presentAchievement) {
+            if ($presentAchievement->getId() !== $achievementId) {
+                $achievements[] = $presentAchievement;
             }
         }
         return new self(...$achievements);

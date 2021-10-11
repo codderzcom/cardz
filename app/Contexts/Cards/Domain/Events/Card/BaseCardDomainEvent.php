@@ -2,14 +2,13 @@
 
 namespace App\Contexts\Cards\Domain\Events\Card;
 
-use App\Contexts\Cards\Domain\Events\BaseDomainEvent;
-use App\Contexts\Cards\Domain\Model\Card\CardId;
+use App\Contexts\Cards\Domain\Model\Card\Card;
+use App\Shared\Infrastructure\Support\Domain\DomainEvent;
 
-abstract class BaseCardDomainEvent extends BaseDomainEvent
+abstract class BaseCardDomainEvent extends DomainEvent
 {
-    protected function __construct(
-        public CardId $cardId
-    ) {
-        parent::__construct();
+    public function with(): Card
+    {
+        return $this->aggregateRoot;
     }
 }

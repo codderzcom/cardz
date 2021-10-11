@@ -2,6 +2,7 @@
 
 namespace App\Contexts\Cards\Infrastructure\ReadStorage\Eloquent;
 
+use App\Contexts\Cards\Domain\Model\Card\Achievements;
 use App\Contexts\Cards\Domain\ReadModel\IssuedCard;
 use App\Contexts\Cards\Infrastructure\ReadStorage\Contracts\IssuedCardReadStorageInterface;
 use App\Models\Card as EloquentCard;
@@ -34,10 +35,10 @@ class IssuedCardReadStorage implements IssuedCardReadStorageInterface
 
     private function issuedCardFromEloquent(EloquentCard $card): IssuedCard
     {
-        $achievements = is_string($card->achievements) ? json_try_decode($card->achievements) : $card->achievements;
-        $requirements = is_string($card->requirements) ? json_try_decode($card->requirements) : $card->requirements;
+        $achievements = is_string($card->achievements) ? json_try_decode($card->achievements, true) : $card->achievements;
+        $requirements = is_string($card->requirements) ? json_try_decode($card->requirements, true) : $card->requirements;
 
-        return IssuedCard::make(
+        return IssuedCard::of(
             $card->id,
             $card->plan_id,
             $card->customer_id,
@@ -45,8 +46,8 @@ class IssuedCardReadStorage implements IssuedCardReadStorageInterface
             $card->completed !== null,
             $card->revoked !== null,
             $card->blocked !== null,
-            $achievements,
-            $requirements
+            Achievements::of($achievements),
+            Achievements::of($requirements),
         );
     }
 }

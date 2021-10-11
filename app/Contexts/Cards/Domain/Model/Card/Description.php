@@ -2,13 +2,16 @@
 
 namespace App\Contexts\Cards\Domain\Model\Card;
 
-use App\Contexts\Cards\Domain\Model\Shared\ValueObject;
+use App\Shared\Contracts\Domain\ValueObjectInterface;
+use App\Shared\Infrastructure\Support\ArrayPresenterTrait;
 use JetBrains\PhpStorm\Immutable;
 use JetBrains\PhpStorm\Pure;
 
 #[Immutable]
-final class Description extends ValueObject
+final class Description implements ValueObjectInterface
 {
+    use ArrayPresenterTrait;
+
     private function __construct(private string $description)
     {
     }
@@ -17,11 +20,6 @@ final class Description extends ValueObject
     public static function of(string $description): self
     {
         return new self($description);
-    }
-
-    public function getDescription(): string
-    {
-        return $this->description;
     }
 
     public function __toString(): string

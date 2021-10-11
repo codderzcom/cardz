@@ -5,9 +5,6 @@ namespace App\Contexts\Cards\Integration\Events;
 use JetBrains\PhpStorm\Immutable;
 
 #[Immutable]
-final class CardBlocked extends BaseIntegrationEvent
+final class CardBlocked extends BaseCardIntegrationEvent
 {
-    protected string $in = 'Cards';
-
-    protected string $of = 'Card';
 }

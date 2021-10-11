@@ -2,6 +2,8 @@
 
 namespace App\Contexts\Cards\Presentation\Controllers\Http\Card\Commands;
 
+use App\Contexts\Cards\Application\Commands\IssueCard;
+use App\Contexts\Cards\Application\Commands\IssueCardCommandInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class IssueCardRequest extends FormRequest
@@ -22,7 +24,6 @@ final class IssueCardRequest extends FormRequest
         return [
             'planId' => 'required',
             'customerId' => 'required',
-            'description' => 'required',
         ];
     }
 
@@ -30,7 +31,6 @@ final class IssueCardRequest extends FormRequest
     {
         $this->planId = $this->input('planId');
         $this->customerId = $this->input('customerId');
-        $this->description = $this->input('description');
     }
 
     public function messages(): array
@@ -38,7 +38,11 @@ final class IssueCardRequest extends FormRequest
         return [
             'planId.required' => 'planId required',
             'customerId.required' => 'customerId required',
-            'description.required' => 'description required',
         ];
+    }
+
+    public function toCommand(): IssueCardCommandInterface
+    {
+        return IssueCard::of($this->planId, $this->customerId);
     }
 }

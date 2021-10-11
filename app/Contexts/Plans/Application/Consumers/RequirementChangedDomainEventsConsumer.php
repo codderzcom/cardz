@@ -3,7 +3,6 @@
 namespace App\Contexts\Plans\Application\Consumers;
 
 use App\Contexts\Plans\Domain\Events\Requirement\RequirementChanged as DomainRequirementChanged;
-use App\Contexts\Plans\Infrastructure\Persistence\Contracts\RequirementRepositoryInterface;
 use App\Contexts\Plans\Infrastructure\ReadStorage\Contracts\ReadRequirementStorageInterface;
 use App\Contexts\Plans\Integration\Events\RequirementChanged;
 use App\Shared\Contracts\Messaging\EventConsumerInterface;

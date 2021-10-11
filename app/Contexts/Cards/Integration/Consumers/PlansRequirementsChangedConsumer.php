@@ -2,18 +2,18 @@
 
 namespace App\Contexts\Cards\Integration\Consumers;
 
-use App\Contexts\Cards\Application\Services\CardAppService;
-use App\Contexts\Cards\Domain\ReadModel\ReadRequirement;
+use App\Contexts\Cards\Application\Commands\AcceptRequirements;
+use App\Contexts\Cards\Domain\Model\Plan\Requirement;
 use App\Contexts\Cards\Infrastructure\ReadStorage\Contracts\IssuedCardReadStorageInterface;
 use App\Contexts\Plans\Integration\Events\PlanRequirementsChanged as PlansPlanRequirementsChanged;
+use App\Shared\Contracts\Commands\CommandBusInterface;
 use App\Shared\Contracts\Messaging\IntegrationEventConsumerInterface;
-use Generator;
 
 final class PlansRequirementsChangedConsumer implements IntegrationEventConsumerInterface
 {
     public function __construct(
         private IssuedCardReadStorageInterface $issuedCardReadStorage,
-        private CardAppService $cardAppService,
+        private CommandBusInterface $commandBus,
     ) {
     }
 
@@ -32,24 +32,26 @@ final class PlansRequirementsChangedConsumer implements IntegrationEventConsumer
         }
 
         $issuedCards = $this->issuedCardReadStorage->allForPlanId($payload->planId);
-
-        /** @var ReadRequirement[] $requirements */
         $requirements = $this->mapRequirements($payload->requirements);
 
         foreach ($issuedCards as $issuedCard) {
-            $this->cardAppService->acceptRequirements($issuedCard->cardId, ...$requirements);
+            $command = AcceptRequirements::of($issuedCard->cardId, ...$requirements);
+            $this->commandBus->dispatch($command);
         }
     }
 
-    private function mapRequirements(array $eventRequirements): Generator
+    /**
+     * @return Requirement[]
+     */
+    private function mapRequirements(array $eventRequirements): array
     {
+        $requirements = [];
         foreach ($eventRequirements as $eventRequirement) {
-            yield new ReadRequirement(
+            $requirements[] = Requirement::of(
                 $eventRequirement->requirementId,
-                $eventRequirement->planId,
                 $eventRequirement->description,
             );
         }
+        return $requirements;
     }
-
 }

@@ -12,7 +12,7 @@ abstract class BasePlanIntegrationEvent implements IntegrationEventInterface
 {
     use IntegrationEventTrait;
 
-    private function __construct(
+    protected function __construct(
         protected ReadPlan $plan,
     ) {
     }

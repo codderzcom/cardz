@@ -2,185 +2,159 @@
 
 namespace App\Contexts\Cards\Application\Services;
 
-use App\Contexts\Cards\Domain\Model\Card\Achievement;
-use App\Contexts\Cards\Domain\Model\Card\Achievements;
+use App\Contexts\Cards\Application\Commands\AcceptRequirementsCommandInterface;
+use App\Contexts\Cards\Application\Commands\BlockCardCommandInterface;
+use App\Contexts\Cards\Application\Commands\CompleteCardCommandInterface;
+use App\Contexts\Cards\Application\Commands\DismissAchievementCommandInterface;
+use App\Contexts\Cards\Application\Commands\FixAchievementDescriptionCommandInterface;
+use App\Contexts\Cards\Application\Commands\IssueCardCommandInterface;
+use App\Contexts\Cards\Application\Commands\NoteAchievementCommandInterface;
+use App\Contexts\Cards\Application\Commands\RevokeCardCommandInterface;
+use App\Contexts\Cards\Application\Commands\UnblockCardCommandInterface;
+use App\Contexts\Cards\Application\Exceptions\CardNotFoundException;
+use App\Contexts\Cards\Application\Exceptions\PlanNotFoundException;
 use App\Contexts\Cards\Domain\Model\Card\Card;
 use App\Contexts\Cards\Domain\Model\Card\CardId;
-use App\Contexts\Cards\Domain\Model\Card\Description;
-use App\Contexts\Cards\Domain\Model\Shared\CustomerId;
-use App\Contexts\Cards\Domain\Model\Shared\PlanId;
-use App\Contexts\Cards\Domain\ReadModel\ReadRequirement;
+use App\Contexts\Cards\Infrastructure\Messaging\DomainEventBusInterface;
 use App\Contexts\Cards\Infrastructure\Persistence\Contracts\CardRepositoryInterface;
-use App\Contexts\Cards\Integration\Events\{AchievementDismissed,
-    AchievementNoted,
-    CardBlocked,
-    CardCompleted,
-    CardIssued,
-    CardRevoked,
-    CardSatisfactionWithdrawn,
-    CardSatisfied,
-    RequirementsAccepted};
-use App\Shared\Contracts\ReportingBusInterface;
-use App\Shared\Contracts\ServiceResultFactoryInterface;
-use App\Shared\Contracts\ServiceResultInterface;
-use App\Shared\Infrastructure\Support\ReportingServiceTrait;
+use App\Contexts\Cards\Infrastructure\Persistence\Contracts\PlanRepositoryInterface;
+use App\Shared\Contracts\Commands\CommandBusInterface;
+use App\Shared\Infrastructure\CommandHandling\CommandHandlerFactoryTrait;
 
 class CardAppService
 {
-    use ReportingServiceTrait;
+    use CommandHandlerFactoryTrait;
 
     public function __construct(
         private CardRepositoryInterface $cardRepository,
-        private ReportingBusInterface $reportingBus,
-        private ServiceResultFactoryInterface $resultFactory,
+        private PlanRepositoryInterface $planRepository,
+        private DomainEventBusInterface $domainEventBus,
+        private CommandBusInterface $commandBus,
     ) {
     }
 
-    public function issueCard(string $planId, string $customerId, string $description): ServiceResultInterface
+    public function registerHandlers(): void
     {
-        $card = Card::make(
-            CardId::make(),
-            PlanId::of($planId),
-            CustomerId::of($customerId),
-            Description::of($description),
+        $this->commandBus->registerHandlers(
+            $this->makeHandlerFor(AcceptRequirementsCommandInterface::class, 'acceptRequirements'),
+            $this->makeHandlerFor(BlockCardCommandInterface::class, 'block'),
+            $this->makeHandlerFor(CompleteCardCommandInterface::class, 'complete'),
+            $this->makeHandlerFor(DismissAchievementCommandInterface::class, 'dismissAchievement'),
+            $this->makeHandlerFor(FixAchievementDescriptionCommandInterface::class, 'fixAchievementDescription'),
+            $this->makeHandlerFor(IssueCardCommandInterface::class, 'issue'),
+            $this->makeHandlerFor(NoteAchievementCommandInterface::class, 'noteAchievement'),
+            $this->makeHandlerFor(RevokeCardCommandInterface::class, 'revoke'),
+            $this->makeHandlerFor(UnblockCardCommandInterface::class, 'unblock'),
         );
-
-        $card->issue();
-        $this->cardRepository->persist($card);
-
-        $result = $this->resultFactory->ok($card, new CardIssued($card->cardId));
-        return $this->reportResult($result, $this->reportingBus);
     }
 
-    public function completeCard(string $cardId): ServiceResultInterface
+    public function issue(IssueCardCommandInterface $command): CardId
     {
-        $card = $this->cardRepository->take(CardId::of($cardId));
+        $plan = $this->planRepository->take($command->getPlanId());
+
+        if ($plan === null) {
+            throw new PlanNotFoundException();
+        }
+
+        $card = $plan->issueCard($command->getCardId(), $command->getCustomerId());
+        return $this->releaseCard($card);
+    }
+
+    public function complete(CompleteCardCommandInterface $command): CardId
+    {
+        $card = $this->cardRepository->take($command->getCardId());
         if ($card === null) {
-            return $this->resultFactory->notFound("Card $cardId not found");
+            throw new CardNotFoundException();
         }
 
         $card->complete();
-        $this->cardRepository->persist($card);
-
-        $result = $this->resultFactory->ok($card, new CardCompleted($card->cardId));
-        return $this->reportResult($result, $this->reportingBus);
+        return $this->releaseCard($card);
     }
 
-    public function revokeCard(string $cardId): ServiceResultInterface
+    public function revoke(RevokeCardCommandInterface $command): CardId
     {
-        $card = $this->cardRepository->take(CardId::of($cardId));
+        $card = $this->cardRepository->take($command->getCardId());
         if ($card === null) {
-            return $this->resultFactory->notFound("Card $cardId not found");
+            throw new CardNotFoundException();
         }
 
         $card->revoke();
-        $this->cardRepository->persist($card);
-
-        $result = $this->resultFactory->ok($card, new CardRevoked($card->cardId));
-        return $this->reportResult($result, $this->reportingBus);
+        return $this->releaseCard($card);
     }
 
-    public function blockCard(string $cardId): ServiceResultInterface
+    public function block(BlockCardCommandInterface $command): CardId
     {
-        $card = $this->cardRepository->take(CardId::of($cardId));
+        $card = $this->cardRepository->take($command->getCardId());
         if ($card === null) {
-            return $this->resultFactory->notFound("Card $cardId not found");
+            throw new CardNotFoundException();
         }
 
         $card->block();
-        $this->cardRepository->persist($card);
-
-        $result = $this->resultFactory->ok($card, new CardBlocked($card->cardId));
-        return $this->reportResult($result, $this->reportingBus);
+        return $this->releaseCard($card);
     }
 
-    public function noteAchievement(string $cardId, string $achievementId, string $achievementDescription): ServiceResultInterface
+    public function unblock(UnblockCardCommandInterface $command): CardId
     {
-        $card = $this->cardRepository->take(CardId::of($cardId));
+        $card = $this->cardRepository->take($command->getCardId());
         if ($card === null) {
-            return $this->resultFactory->notFound("Card $cardId not found");
+            throw new CardNotFoundException();
         }
 
-        $card->noteAchievement(Achievement::of($achievementId, $achievementDescription));
-        $this->cardRepository->persist($card);
-
-        $result = $this->resultFactory->ok($card, new AchievementNoted($card->cardId));
-        return $this->reportResult($result, $this->reportingBus);
+        $card->unblock();
+        return $this->releaseCard($card);
     }
 
-    public function dismissAchievement(string $cardId, string $achievementId): ServiceResultInterface
+    public function noteAchievement(NoteAchievementCommandInterface $command): CardId
     {
-        $card = $this->cardRepository->take(CardId::of($cardId));
+        $card = $this->cardRepository->take($command->getCardId());
         if ($card === null) {
-            return $this->resultFactory->notFound("Card $cardId not found");
+            throw new CardNotFoundException();
         }
 
-        $events = [];
-
-        $card->dismissAchievement($achievementId);
-        $events[] = new AchievementDismissed($card->cardId);
-
-        if (!$card->isCompleted()
-            && $card->isSatisfied()
-            && !$card->getRequirements()->filterRemaining($card->getAchievements())->isEmpty()
-        ) {
-            $card->withdrawSatisfaction();
-            $events[] = new CardSatisfactionWithdrawn($card->cardId);
-        }
-        $this->cardRepository->persist($card);
-
-        $result = $this->resultFactory->ok($card, ...$events);
-        return $this->reportResult($result, $this->reportingBus);
+        $card->noteAchievement($command->getAchievement());
+        return $this->releaseCard($card);
     }
 
-    public function fixAchievementDescription(string $cardId, string $achievementId, string $achievementDescription): ServiceResultInterface
+    public function dismissAchievement(DismissAchievementCommandInterface $command): CardId
     {
-        $card = $this->cardRepository->take(CardId::of($cardId));
+        $card = $this->cardRepository->take($command->getCardId());
         if ($card === null) {
-            return $this->resultFactory->notFound("Card $cardId not found");
+            throw new CardNotFoundException();
         }
 
-        $card->fixAchievementDescription(Achievement::of($achievementId, $achievementDescription));
-        $this->cardRepository->persist($card);
-
-        return $this->resultFactory->ok();
+        $card->dismissAchievement($command->getAchievementId());
+        return $this->releaseCard($card);
     }
 
-    public function acceptRequirements(string $cardId, ReadRequirement ...$requirements): ServiceResultInterface
+    /**
+     * @throws CardNotFoundException
+     */
+    public function fixAchievementDescription(FixAchievementDescriptionCommandInterface $command): CardId
     {
-        $card = $this->cardRepository->take(CardId::of($cardId));
+        $card = $this->cardRepository->take($command->getCardId());
         if ($card === null) {
-            return $this->resultFactory->notFound("Card $cardId not found");
+            throw new CardNotFoundException();
         }
 
-        $card->acceptRequirements(Achievements::from(...$requirements));
-        $this->cardRepository->persist($card);
-
-        $result = $this->resultFactory->ok($card, new RequirementsAccepted($card->cardId));
-        return $this->reportResult($result, $this->reportingBus);
+        $card->fixAchievementDescription($command->getAchievement());
+        return $this->releaseCard($card);
     }
 
-    public function checkSatisfaction(string $cardId): ServiceResultInterface
+    public function acceptRequirements(AcceptRequirementsCommandInterface $command): CardId
     {
-        $card = $this->cardRepository->take(CardId::of($cardId));
+        $card = $this->cardRepository->take($command->getCardId());
         if ($card === null) {
-            return $this->resultFactory->notFound("Card $cardId not found");
+            throw new CardNotFoundException();
         }
 
-        if ($card->isSatisfied() || $card->isCompleted()) {
-            return $this->resultFactory->ok($card);
-        }
-
-        $requirementsLeft = !$card->getRequirements()->filterRemaining($card->getAchievements())->isEmpty();
-
-        if ($requirementsLeft) {
-            return $this->resultFactory->ok($card);
-        }
-
-        $card->satisfy();
-        $this->cardRepository->persist($card);
-        $result = $this->resultFactory->ok($card, new CardSatisfied($card->cardId));
-        return $this->reportResult($result, $this->reportingBus);
+        $card->acceptRequirements($command->getRequirements());
+        return $this->releaseCard($card);
     }
 
+    private function releaseCard(Card $card): CardId
+    {
+        $this->cardRepository->persist($card);
+        $this->domainEventBus->publish(...$card->releaseEvents());
+        return $card->cardId;
+    }
 }

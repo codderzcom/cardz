@@ -7,7 +7,7 @@ use App\Contexts\Cards\Domain\Model\Card\CardId;
 
 interface CardRepositoryInterface
 {
-    public function persist(?Card $card = null): void;
+    public function persist(Card $card): void;
 
-    public function take(?CardId $cardId = null): ?Card;
+    public function take(CardId $cardId): ?Card;
 }
