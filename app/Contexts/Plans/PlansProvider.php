@@ -18,6 +18,8 @@ use App\Contexts\Plans\Infrastructure\ReadStorage\Contracts\ReadPlanStorageInter
 use App\Contexts\Plans\Infrastructure\ReadStorage\Contracts\ReadRequirementStorageInterface;
 use App\Contexts\Plans\Infrastructure\ReadStorage\Eloquent\ReadPlanStorage;
 use App\Contexts\Plans\Infrastructure\ReadStorage\Eloquent\ReadRequirementStorage;
+use App\Shared\Contracts\Commands\CommandBusInterface;
+use App\Shared\Infrastructure\CommandHandling\SimpleAutoCommandHandlerProvider;
 use Illuminate\Support\ServiceProvider;
 
 class PlansProvider extends ServiceProvider
@@ -35,10 +37,12 @@ class PlansProvider extends ServiceProvider
     public function boot(
         PlanAppService $planAppService,
         RequirementAppService $requirementAppService,
+        CommandBusInterface $commandBus,
         DomainEventBusInterface $domainEventBus,
     ) {
-        $planAppService->registerHandlers();
-        $requirementAppService->registerHandlers();
+        $commandBus->registerProvider(SimpleAutoCommandHandlerProvider::parse($planAppService));
+        $commandBus->registerProvider(SimpleAutoCommandHandlerProvider::parse($requirementAppService));
+
         $domainEventBus->subscribe($this->app->make(PlanDomainEventsConsumer::class));
         $domainEventBus->subscribe($this->app->make(RequirementChangedDomainEventsConsumer::class));
     }

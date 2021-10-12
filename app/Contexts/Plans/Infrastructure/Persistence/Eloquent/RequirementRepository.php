@@ -2,6 +2,7 @@
 
 namespace App\Contexts\Plans\Infrastructure\Persistence\Eloquent;
 
+use App\Contexts\Plans\Application\Exceptions\RequirementNotFoundException;
 use App\Contexts\Plans\Domain\Model\Requirement\Requirement;
 use App\Contexts\Plans\Domain\Model\Requirement\RequirementId;
 use App\Contexts\Plans\Infrastructure\Persistence\Contracts\RequirementRepositoryInterface;
@@ -18,12 +19,12 @@ class RequirementRepository implements RequirementRepositoryInterface
         );
     }
 
-    public function take(RequirementId $requirementId): ?Requirement
+    public function take(RequirementId $requirementId): Requirement
     {
         /** @var EloquentRequirement $eloquentRequirement */
         $eloquentRequirement = EloquentRequirement::query()->find((string) $requirementId);
         if ($eloquentRequirement === null) {
-            return null;
+            throw new RequirementNotFoundException((string) $requirementId);
         }
         return $this->requirementFromData($eloquentRequirement);
     }

@@ -2,10 +2,6 @@
 
 namespace App\Contexts\Plans\Application\Commands\Requirement;
 
-use App\Contexts\Plans\Domain\Model\Requirement\RequirementId;
-use App\Shared\Contracts\Commands\CommandInterface;
-
-interface RemoveRequirementCommandInterface extends CommandInterface
+interface RemoveRequirementCommandInterface extends RequirementCommandInterface
 {
-    public function getRequirementId(): RequirementId;
 }

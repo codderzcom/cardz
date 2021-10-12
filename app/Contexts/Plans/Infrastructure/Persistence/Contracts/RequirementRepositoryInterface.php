@@ -9,6 +9,6 @@ interface RequirementRepositoryInterface
 {
     public function persist(Requirement $requirement): void;
 
-    public function take(RequirementId $requirementId): ?Requirement;
+    public function take(RequirementId $requirementId): Requirement;
 
 }

@@ -31,9 +31,9 @@ class CardsProvider extends ServiceProvider
 
     public function boot(
         CardAppService $cardAppService,
+        CommandBusInterface $commandBus,
         DomainEventBusInterface $domainEventBus,
         IntegrationEventBusInterface $integrationEventBus,
-        CommandBusInterface $commandBus,
     ) {
         $commandBus->registerProvider(SimpleAutoCommandHandlerProvider::parse($cardAppService));
 

@@ -3,9 +3,7 @@
 namespace App\Contexts\Plans\Application\Commands\Plan;
 
 use App\Contexts\Plans\Domain\Model\Plan\PlanId;
-use App\Shared\Contracts\Commands\CommandInterface;
 
-interface ArchivePlanCommandInterface extends CommandInterface
+interface ArchivePlanCommandInterface extends PlanCommandInterface
 {
-    public function getPlanId(): PlanId;
 }

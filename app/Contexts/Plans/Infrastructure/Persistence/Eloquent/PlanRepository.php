@@ -2,6 +2,7 @@
 
 namespace App\Contexts\Plans\Infrastructure\Persistence\Eloquent;
 
+use App\Contexts\Plans\Application\Exceptions\PlanNotFoundException;
 use App\Contexts\Plans\Domain\Model\Plan\Plan;
 use App\Contexts\Plans\Domain\Model\Plan\PlanId;
 use App\Contexts\Plans\Infrastructure\Persistence\Contracts\PlanRepositoryInterface;
@@ -18,7 +19,7 @@ class PlanRepository implements PlanRepositoryInterface
         );
     }
 
-    public function take(PlanId $planId): ?Plan
+    public function take(PlanId $planId): Plan
     {
         /** @var EloquentPlan $eloquentPlan */
         $eloquentPlan = EloquentPlan::query()->where([
@@ -26,7 +27,11 @@ class PlanRepository implements PlanRepositoryInterface
             'archived_at' => null,
         ])?->first();
 
-        return $eloquentPlan !== null ? $this->planFromData($eloquentPlan) : null;
+        if ($eloquentPlan === null) {
+            throw  new PlanNotFoundException();
+        }
+
+        return $this->planFromData($eloquentPlan);
     }
 
     private function planAsData(Plan $plan): array

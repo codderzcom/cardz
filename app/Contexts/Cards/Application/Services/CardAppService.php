@@ -32,66 +32,50 @@ class CardAppService
 
     public function issue(IssueCardCommandInterface $command): CardId
     {
-        return $this->release($this
-            ->plan($command)
-            ->issueCard($command->getCardId(), $command->getCustomerId())
-        );
+        $plan = $this->plan($command);
+        return $this->release($plan->issueCard($command->getCardId(), $command->getCustomerId()));
     }
 
     public function complete(CompleteCardCommandInterface $command): CardId
     {
-        return $this->release($this
-            ->card($command)
-            ->complete()
-        );
+        $card = $this->card($command);
+        return $this->release($card->complete());
     }
 
     public function revoke(RevokeCardCommandInterface $command): CardId
     {
-        return $this->release($this
-            ->card($command)
-            ->revoke()
-        );
+        $card = $this->card($command);
+        return $this->release($card->revoke());
     }
 
     public function block(BlockCardCommandInterface $command): CardId
     {
-        return $this->release($this
-            ->card($command)
-            ->block()
-        );
+        $card = $this->card($command);
+        return $this->release($card->block());
     }
 
     public function unblock(UnblockCardCommandInterface $command): CardId
     {
-        return $this->release($this
-            ->card($command)
-            ->unblock()
-        );
+        $card = $this->card($command);
+        return $this->release($card->unblock());
     }
 
     public function noteAchievement(NoteAchievementCommandInterface $command): CardId
     {
-        return $this->release($this
-            ->card($command)
-            ->noteAchievement($command->getAchievement())
-        );
+        $card = $this->card($command);
+        return $this->release($card->noteAchievement($command->getAchievement()));
     }
 
     public function dismissAchievement(DismissAchievementCommandInterface $command): CardId
     {
-        return $this->release($this
-            ->card($command)
-            ->dismissAchievement($command->getAchievementId())
-        );
+        $card = $this->card($command);
+        return $this->release($card->dismissAchievement($command->getAchievementId()));
     }
 
     public function fixAchievementDescription(FixAchievementDescriptionCommandInterface $command): CardId
     {
-        return $this->release($this
-            ->card($command)
-            ->fixAchievementDescription($command->getAchievement())
-        );
+        $card = $this->card($command);
+        return $this->release($card->fixAchievementDescription($command->getAchievement()));
     }
 
     private function release(Card $card): CardId

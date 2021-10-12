@@ -7,5 +7,5 @@ use App\Contexts\Plans\Domain\Model\Plan\WorkspaceId;
 
 interface WorkspaceRepositoryInterface
 {
-    public function take(WorkspaceId $workspaceId): ?Workspace;
+    public function take(WorkspaceId $workspaceId): Workspace;
 }

@@ -9,5 +9,5 @@ interface PlanRepositoryInterface
 {
     public function persist(Plan $plan): void;
 
-    public function take(PlanId $planId): ?Plan;
+    public function take(PlanId $planId): Plan;
 }
