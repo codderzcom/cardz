@@ -9,5 +9,5 @@ interface CardRepositoryInterface
 {
     public function persist(Card $card): void;
 
-    public function take(CardId $cardId): ?Card;
+    public function take(CardId $cardId): Card;
 }

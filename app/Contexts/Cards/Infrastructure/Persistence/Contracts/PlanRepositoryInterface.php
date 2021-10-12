@@ -7,5 +7,5 @@ use App\Contexts\Cards\Domain\Model\Plan\PlanId;
 
 interface PlanRepositoryInterface
 {
-    public function take(PlanId $planId): ?Plan;
+    public function take(PlanId $planId): Plan;
 }

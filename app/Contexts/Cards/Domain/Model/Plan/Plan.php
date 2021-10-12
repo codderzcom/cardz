@@ -16,7 +16,7 @@ final class Plan implements AggregateRootInterface
     use AggregateRootTrait;
 
     /**
-     * @var Requirement[];
+     * @var Requirement[]
      */
     private array $requirements;
 

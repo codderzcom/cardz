@@ -2,6 +2,7 @@
 
 namespace App\Contexts\Cards\Infrastructure\Persistence\Eloquent;
 
+use App\Contexts\Cards\Application\Exceptions\PlanNotFoundException;
 use App\Contexts\Cards\Domain\Model\Plan\Plan;
 use App\Contexts\Cards\Domain\Model\Plan\PlanId;
 use App\Contexts\Cards\Domain\Model\Plan\Requirement;
@@ -11,7 +12,7 @@ use App\Models\Requirement as EloquentRequirement;
 
 class PlanRepository implements PlanRepositoryInterface
 {
-    public function take(PlanId $planId): ?Plan
+    public function take(PlanId $planId): Plan
     {
         /** @var EloquentPlan $eloquentPlan */
         $eloquentPlan = EloquentPlan::query()
@@ -20,7 +21,7 @@ class PlanRepository implements PlanRepositoryInterface
             ->whereNotNull('added_at')
             ->first();
         if ($eloquentPlan === null) {
-            return null;
+            throw new PlanNotFoundException((string) $planId);
         }
 
         $eloquentRequirements = EloquentRequirement::query()

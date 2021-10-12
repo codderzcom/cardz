@@ -7,10 +7,11 @@ use App\Shared\Contracts\Commands\CommandInterface;
 
 trait CommandHandlerFactoryTrait
 {
-    public function makeHandlerFor(string $for, string $handlingMethod): CommandHandlerInterface
+    public function makeHandlerFor(string $for, string $handlingMethod, ?object $origin = null): CommandHandlerInterface
     {
+        $origin ??= $this;
         return
-            new class($handlingMethod, $for, $this) implements CommandHandlerInterface {
+            new class($handlingMethod, $for, $origin) implements CommandHandlerInterface {
 
                 public function __construct(
                     private string $method,

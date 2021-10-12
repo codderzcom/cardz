@@ -4,6 +4,7 @@ namespace App\Shared\Infrastructure\CommandHandling;
 
 use App\Shared\Contracts\Commands\CommandBusInterface;
 use App\Shared\Contracts\Commands\CommandHandlerInterface;
+use App\Shared\Contracts\Commands\CommandHandlerProviderInterface;
 use App\Shared\Contracts\Commands\CommandInterface;
 
 class CommandBus implements CommandBusInterface
@@ -24,6 +25,11 @@ class CommandBus implements CommandBusInterface
     public function registerHandlers(CommandHandlerInterface ...$handlers): void
     {
         $this->registeredHandlers = array_merge($this->registeredHandlers, $handlers);
+    }
+
+    public function registerProvider(CommandHandlerProviderInterface $provider): void
+    {
+        $this->registerHandlers(...$provider->getHandlers());
     }
 
 }

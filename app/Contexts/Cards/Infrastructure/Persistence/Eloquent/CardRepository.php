@@ -2,6 +2,7 @@
 
 namespace App\Contexts\Cards\Infrastructure\Persistence\Eloquent;
 
+use App\Contexts\Cards\Application\Exceptions\CardNotFoundException;
 use App\Contexts\Cards\Domain\Model\Card\Card;
 use App\Contexts\Cards\Domain\Model\Card\CardId;
 use App\Contexts\Cards\Infrastructure\Persistence\Contracts\CardRepositoryInterface;
@@ -19,12 +20,12 @@ class CardRepository implements CardRepositoryInterface
         );
     }
 
-    public function take(CardId $cardId): ?Card
+    public function take(CardId $cardId): Card
     {
         /** @var EloquentCard $eloquentCard */
         $eloquentCard = EloquentCard::query()->find((string) $cardId);
         if ($eloquentCard === null) {
-            return null;
+            throw new CardNotFoundException((string) $cardId);
         }
         return $this->cardFromData($eloquentCard);
     }

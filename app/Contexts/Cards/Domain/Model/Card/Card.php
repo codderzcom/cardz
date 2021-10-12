@@ -13,6 +13,7 @@ use App\Contexts\Cards\Domain\Events\Card\CardSatisfactionWthdrawn;
 use App\Contexts\Cards\Domain\Events\Card\CardSatisfied;
 use App\Contexts\Cards\Domain\Events\Card\CardUnblocked;
 use App\Contexts\Cards\Domain\Events\Card\RequirementsAccepted;
+use App\Contexts\Cards\Domain\Exceptions\InvalidCardStateException;
 use App\Contexts\Cards\Domain\Model\Plan\PlanId;
 use App\Shared\Contracts\Domain\AggregateRootInterface;
 use App\Shared\Infrastructure\Support\Domain\AggregateRootTrait;
@@ -86,7 +87,7 @@ final class Card implements AggregateRootInterface
     public function complete(): self
     {
         if ($this->isCompleted() || $this->isRevoked() || $this->isBlocked()) {
-            return $this;
+            throw new InvalidCardStateException();
         }
 
         $this->completed = Carbon::now();
@@ -96,7 +97,7 @@ final class Card implements AggregateRootInterface
     public function revoke(): self
     {
         if ($this->isRevoked() || $this->isCompleted()) {
-            return $this;
+            throw new InvalidCardStateException();
         }
 
         $this->revoked = Carbon::now();
@@ -106,7 +107,7 @@ final class Card implements AggregateRootInterface
     public function block(): self
     {
         if ($this->isBlocked() || $this->isCompleted() || $this->isRevoked()) {
-            return $this;
+            throw new InvalidCardStateException();
         }
 
         $this->blocked = Carbon::now();
@@ -116,7 +117,7 @@ final class Card implements AggregateRootInterface
     public function unblock(): self
     {
         if (!$this->isBlocked() || $this->isRevoked()) {
-            return $this;
+            throw new InvalidCardStateException();
         }
 
         $this->blocked = Carbon::now();
@@ -126,7 +127,7 @@ final class Card implements AggregateRootInterface
     public function noteAchievement(Achievement $achievement): self
     {
         if ($this->isSatisfied() || $this->isCompleted() || $this->isBlocked() || $this->isRevoked()) {
-            return $this;
+            throw new InvalidCardStateException();
         }
 
         $this->achievements = $this->achievements->add($achievement);
@@ -136,7 +137,7 @@ final class Card implements AggregateRootInterface
     public function dismissAchievement(string $achievementId): self
     {
         if ($this->isCompleted() || $this->isBlocked() || $this->isRevoked()) {
-            return $this;
+            throw new InvalidCardStateException();
         }
 
         $this->achievements = $this->achievements->removeById($achievementId);
@@ -146,11 +147,11 @@ final class Card implements AggregateRootInterface
     public function acceptRequirements(Achievements $requirements): self
     {
         if ($this->isSatisfied() || $this->isCompleted() || $this->isRevoked()) {
-            return $this;
+            throw new InvalidCardStateException();
         }
 
         $this->requirements = $requirements;
-        return $this->withEvents(RequirementsAccepted::of($this));
+        return $this->withEvents(RequirementsAccepted::of($this))->tryToSatisfy();
     }
 
     public function fixAchievementDescription(Achievement $achievement): self
