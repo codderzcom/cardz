@@ -7,5 +7,5 @@ use App\Contexts\Workspaces\Domain\Model\Workspace\KeeperId;
 
 interface KeeperRepositoryInterface
 {
-    public function take(KeeperId $keeperId): ?Keeper;
+    public function take(KeeperId $keeperId): Keeper;
 }

@@ -27,34 +27,34 @@ class PlanAppService
     public function add(AddPlanCommandInterface $command): PlanId
     {
         $workspace = $this->workspace($command);
-        return $this->releasePlan($workspace->addPlan($command->getPlanId(), $command->getDescription()));
+        return $this->release($workspace->addPlan($command->getPlanId(), $command->getDescription()));
     }
 
     public function launch(LaunchPlanCommandInterface $command): PlanId
     {
         $plan = $this->plan($command);
-        return $this->releasePlan($plan->launch());
+        return $this->release($plan->launch());
     }
 
     public function stop(StopPlanCommandInterface $command): PlanId
     {
         $plan = $this->plan($command);
-        return $this->releasePlan($plan->stop());
+        return $this->release($plan->stop());
     }
 
     public function archive(AddPlanCommandInterface $command): PlanId
     {
         $plan = $this->plan($command);
-        return $this->releasePlan($plan->archive());
+        return $this->release($plan->archive());
     }
 
     public function changeDescription(ChangePlanDescriptionCommandInterface $command): PlanId
     {
         $plan = $this->plan($command);
-        return $this->releasePlan($plan->changeDescription($command->getDescription()));
+        return $this->release($plan->changeDescription($command->getDescription()));
     }
 
-    private function releasePlan(Plan $plan): PlanId
+    private function release(Plan $plan): PlanId
     {
         $this->planRepository->persist($plan);
         $this->domainEventBus->publish(...$plan->releaseEvents());

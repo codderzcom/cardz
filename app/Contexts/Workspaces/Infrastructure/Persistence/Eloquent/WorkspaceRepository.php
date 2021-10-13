@@ -2,6 +2,7 @@
 
 namespace App\Contexts\Workspaces\Infrastructure\Persistence\Eloquent;
 
+use App\Contexts\Workspaces\Application\Exceptions\WorkspaceNotFoundException;
 use App\Contexts\Workspaces\Domain\Model\Workspace\Workspace;
 use App\Contexts\Workspaces\Domain\Model\Workspace\WorkspaceId;
 use App\Contexts\Workspaces\Infrastructure\Persistence\Contracts\WorkspaceRepositoryInterface;
@@ -18,11 +19,14 @@ class WorkspaceRepository implements WorkspaceRepositoryInterface
         );
     }
 
-    public function take(WorkspaceId $workspaceId): ?Workspace
+    public function take(WorkspaceId $workspaceId): Workspace
     {
         /** @var EloquentWorkspace $eloquentWorkspace */
         $eloquentWorkspace = EloquentWorkspace::query()->find((string) $workspaceId);
-        return $eloquentWorkspace ? $this->workspaceFromData($eloquentWorkspace) : null;
+        if ($eloquentWorkspace === null) {
+            throw new WorkspaceNotFoundException((string) $workspaceId);
+        }
+        return $this->workspaceFromData($eloquentWorkspace);
     }
 
     private function workspaceAsData(Workspace $workspace): array

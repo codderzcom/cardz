@@ -10,6 +10,8 @@ use App\Contexts\Workspaces\Infrastructure\Persistence\Contracts\KeeperRepositor
 use App\Contexts\Workspaces\Infrastructure\Persistence\Contracts\WorkspaceRepositoryInterface;
 use App\Contexts\Workspaces\Infrastructure\Persistence\Eloquent\KeeperRepository;
 use App\Contexts\Workspaces\Infrastructure\Persistence\Eloquent\WorkspaceRepository;
+use App\Shared\Contracts\Commands\CommandBusInterface;
+use App\Shared\Infrastructure\CommandHandling\SimpleAutoCommandHandlerProvider;
 use Illuminate\Support\ServiceProvider;
 
 class WorkspacesProvider extends ServiceProvider
@@ -23,9 +25,11 @@ class WorkspacesProvider extends ServiceProvider
 
     public function boot(
         WorkspaceAppService $workspaceAppService,
+        CommandBusInterface $commandBus,
         DomainEventBusInterface $domainEventBus,
     ) {
-        $workspaceAppService->registerHandlers();
+        $commandBus->registerProvider(SimpleAutoCommandHandlerProvider::parse($workspaceAppService));
+
         $domainEventBus->subscribe($this->app->make(WorkspaceAddedDomainConsumer::class));
     }
 }
