@@ -2,9 +2,9 @@
 
 namespace App\Contexts\Auth\Domain\Model\User;
 
-use App\Contexts\Auth\Domain\Model\Shared\ValueObject;
+use App\Shared\Contracts\Domain\ValueObjectInterface;
 
-final class Profile extends ValueObject
+final class Profile implements ValueObjectInterface
 {
     private function __construct(
         private string $name,
@@ -16,9 +16,14 @@ final class Profile extends ValueObject
         return new self($name);
     }
 
-    public function getName(): string
+    public function __toString(): string
     {
         return $this->name;
+    }
+
+    public function toArray(): array
+    {
+        return ['name' => $this->name];
     }
 
 }

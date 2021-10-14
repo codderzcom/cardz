@@ -2,8 +2,8 @@
 
 namespace App\Contexts\Auth\Application\Controllers\Consumers;
 
-use App\Contexts\Auth\Application\IntegrationEvents\RegistrationCompleted;
-use App\Contexts\Auth\Application\IntegrationEvents\UserNameProvided;
+use App\Contexts\Auth\Integration\Events\RegistrationCompleted;
+use App\Contexts\Auth\Integration\Events\UserNameProvided;
 use App\Shared\Contracts\Informable;
 use App\Shared\Contracts\Reportable;
 use App\Shared\Contracts\ReportingBusInterface;

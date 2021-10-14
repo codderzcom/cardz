@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contexts\Auth\Application\IntegrationEvents;
+namespace App\Contexts\Auth\Integration\Events;
 
 use App\Shared\Contracts\Reportable;
 

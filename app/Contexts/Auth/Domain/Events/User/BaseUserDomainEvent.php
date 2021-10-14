@@ -2,13 +2,13 @@
 
 namespace App\Contexts\Auth\Domain\Events\User;
 
-use App\Contexts\Auth\Domain\Events\BaseDomainEvent;
-use App\Contexts\Auth\Domain\Model\User\UserId;
+use App\Contexts\Auth\Domain\Model\User\User;
+use App\Shared\Infrastructure\Support\Domain\DomainEvent;
 
-abstract class BaseUserDomainEvent extends BaseDomainEvent
+abstract class BaseUserDomainEvent extends DomainEvent
 {
-    protected function __construct(public UserId $userId)
+    public function with(): User
     {
-        parent::__construct();
+        return $this->aggregateRoot;
     }
 }

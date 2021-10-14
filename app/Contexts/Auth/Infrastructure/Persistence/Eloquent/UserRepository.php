@@ -1,51 +1,58 @@
 <?php
 
-namespace App\Contexts\Auth\Infrastructure\Persistence;
+namespace App\Contexts\Auth\Infrastructure\Persistence\Eloquent;
 
-use App\Contexts\Auth\Application\Contracts\UserRepositoryInterface;
+use App\Contexts\Auth\Application\Exceptions\UserNotFoundException;
 use App\Contexts\Auth\Domain\Model\User\User;
 use App\Contexts\Auth\Domain\Model\User\UserId;
 use App\Contexts\Auth\Domain\Model\User\UserIdentity;
+use App\Contexts\Auth\Infrastructure\Persistence\Contracts\UserRepositoryInterface;
 use App\Models\User as EloquentUser;
 use ReflectionClass;
 
 class UserRepository implements UserRepositoryInterface
 {
-    public function persist(?User $user = null): void
+    public function persist(User $user): void
     {
-        if ($user === null) {
-            return;
-        }
-
         EloquentUser::query()->updateOrCreate(
             ['id' => (string) $user->userId],
             $this->userAsData($user)
         );
     }
 
-    public function take(UserId $userId = null): ?User
+    public function take(UserId $userId = null): User
     {
         /** @var EloquentUser $eloquentUser */
         $eloquentUser = EloquentUser::query()->find((string) $userId);
         if ($eloquentUser === null) {
-            return null;
+            throw new UserNotFoundException((string) $userId);
         }
         return $this->userFromData($eloquentUser);
     }
 
-    public function takeWithIdentity(UserIdentity $userIdentity): ?User
+    public function isExistingIdentity(UserIdentity $userIdentity): bool
     {
         $query = EloquentUser::query();
         if ($userIdentity->getEmail() !== null) {
-            $query->where('email', '=' ,$userIdentity->getEmail());
+            $query->where('email', '=', $userIdentity->getEmail());
         }
         if ($userIdentity->getPhone() !== null) {
-            $query->where('phone', '=' ,$userIdentity->getPhone());
+            $query->where('phone', '=', $userIdentity->getPhone());
         }
-        /** @var EloquentUser $eloquentUser */
+
         $eloquentUser = $query->first();
-        if ($eloquentUser === null) {
-            return null;
+        return $eloquentUser !== null;
+    }
+
+    public function takeWithAmbiguousIdentity(string $identity): User
+    {
+        /** @var EloquentUser $eloquentUser */
+        $eloquentUser = EloquentUser::query()
+            ->where('email', '=', $identity)
+            ->orWhere('phone', '=', $identity)
+            ->first();
+        if (!$eloquentUser) {
+            throw new UserNotFoundException("User $identity not found");
         }
         return $this->userFromData($eloquentUser);
     }
@@ -72,7 +79,7 @@ class UserRepository implements UserRepositoryInterface
             'email' => $properties['email'],
             'phone' => $properties['phone'],
             'name' => $properties['name'],
-            'password' => $properties['password'],
+            'password' => (string) $properties['password'],
             'remember_token' => $properties['rememberToken'],
             'registration_initiated_at' => $properties['registrationInitiated'],
             'email_verified_at' => $properties['emailVerified'],
@@ -83,13 +90,7 @@ class UserRepository implements UserRepositoryInterface
 
     private function userFromData(EloquentUser $eloquentUser): User
     {
-        $reflection = new ReflectionClass(User::class);
-        $creator = $reflection->getMethod('from');
-        $creator?->setAccessible(true);
-        /** @var User $user */
-        $user = $reflection->newInstanceWithoutConstructor();
-
-        $creator?->invoke($user,
+        $user = User::restore(
             $eloquentUser->id,
             $eloquentUser->email,
             $eloquentUser->phone,

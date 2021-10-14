@@ -2,7 +2,7 @@
 
 namespace App\Contexts\Personal\Application\Controllers\Consumers;
 
-use App\Contexts\Auth\Application\IntegrationEvents\RegistrationCompleted;
+use App\Contexts\Auth\Integration\Events\RegistrationCompleted;
 use App\Contexts\Personal\Application\Services\PersonAppService;
 use App\Models\User as EloquentUser;
 use App\Shared\Contracts\Informable;

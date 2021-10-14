@@ -4,15 +4,19 @@ namespace App\Contexts\Auth\Domain\Model\User;
 
 use App\Contexts\Auth\Domain\Events\User\ProfileProvided;
 use App\Contexts\Auth\Domain\Events\User\RegistrationInitiated;
-use App\Contexts\Auth\Domain\Model\Shared\AggregateRoot;
+use App\Contexts\Auth\Domain\Model\Token\Token;
+use App\Shared\Contracts\Domain\AggregateRootInterface;
+use App\Shared\Infrastructure\Support\Domain\AggregateRootTrait;
 use Carbon\Carbon;
 use JetBrains\PhpStorm\Pure;
 
-final class User extends AggregateRoot
+final class User implements AggregateRootInterface
 {
+    use AggregateRootTrait;
+
     private ?Profile $profile = null;
 
-    private ?string $password = null;
+    private ?Password $password = null;
 
     private ?string $rememberToken = null;
 
@@ -26,48 +30,42 @@ final class User extends AggregateRoot
     ) {
     }
 
-    #[Pure]
-    public static function make(UserId $userId, UserIdentity $identity): self
-    {
-        return new self($userId, $identity);
+    public static function restore(
+        string $userId,
+        ?string $email,
+        ?string $phone,
+        string $name,
+        string $passwordHash,
+        ?string $rememberToken,
+        ?Carbon $registrationInitiated,
+        ?Carbon $emailVerified,
+    ): self {
+        $user = new self(UserId::of($userId), UserIdentity::of($email, $phone));
+        $user->profile = Profile::of($name);
+        $user->password = Password::ofHash($passwordHash);
+        $user->rememberToken = $rememberToken;
+        $user->registrationInitiated = $registrationInitiated;
+        $user->emailVerified = $emailVerified;
+        return $user;
     }
 
-    public function initiateRegistration(string $password): RegistrationInitiated
+    public static function register(UserId $userId, UserIdentity $identity, Password $password, Profile $profile): self
     {
-        $this->registrationInitiated = Carbon::now();
-        $this->password = $password;
-        return RegistrationInitiated::with($this->userId);
+        $user = new self($userId, $identity);
+        $user->password = $password;
+        $user->registrationInitiated = Carbon::now();
+        $user->profile = $profile;
+        return $user->withEvents(RegistrationInitiated::of($user), ProfileProvided::of($user));
     }
 
-    public function provideProfile(Profile $profile): ProfileProvided
+    public function getToken(string $plainTextToken): Token
     {
-        $this->profile = $profile;
-        return ProfileProvided::with($this->userId);
+        return Token::assign((string) $this->userId, $plainTextToken);
     }
 
-    public function getProfile(): ?Profile
+    public function getPasswordHash(): string
     {
-        return $this->profile;
-    }
-
-    public function isRegistrationInitiated(): bool
-    {
-        return $this->registrationInitiated !== null;
-    }
-
-    public function isEmailVerified(): bool
-    {
-        return $this->emailVerified !== null;
-    }
-
-    public function getRememberToken(): ?string
-    {
-        return $this->rememberToken;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
+        return (string) $this->password;
     }
 
     #[Pure]
@@ -78,26 +76,7 @@ final class User extends AggregateRoot
             'identity' => (string) $this->identity,
             'email' => $this->identity->getEmail(),
             'phone' => $this->identity->getPhone(),
-            'name' => $this->profile->getName(),
+            'name' => (string) $this->profile,
         ];
-    }
-
-    private function from(
-        string $userId,
-        ?string $email,
-        ?string $phone,
-        ?string $name,
-        ?string $password,
-        ?string $rememberToken,
-        ?Carbon $registrationInitiated,
-        ?Carbon $emailVerified,
-    ): void {
-        $this->userId = UserId::of($userId);
-        $this->identity = UserIdentity::of($email, $phone);
-        $this->profile = Profile::of($name);
-        $this->password = $password;
-        $this->rememberToken = $rememberToken;
-        $this->registrationInitiated = $registrationInitiated;
-        $this->emailVerified = $emailVerified;
     }
 }

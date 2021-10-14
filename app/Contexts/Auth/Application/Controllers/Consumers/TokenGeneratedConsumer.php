@@ -2,7 +2,7 @@
 
 namespace App\Contexts\Auth\Application\Controllers\Consumers;
 
-use App\Contexts\Auth\Application\IntegrationEvents\TokenGenerated;
+use App\Contexts\Auth\Integration\Events\TokenGenerated;
 use App\Shared\Contracts\Informable;
 use App\Shared\Contracts\Reportable;
 use Illuminate\Database\Eloquent\Model;

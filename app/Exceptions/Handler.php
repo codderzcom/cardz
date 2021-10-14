@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Contexts\Auth\Application\Exceptions\UserNotFoundException;
 use App\Shared\Exceptions\NotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
@@ -47,6 +48,10 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $e): JsonResponse|Response
     {
+        if ($e instanceof UserNotFoundException) {
+            return response()->json('Cannot authenticate user with given credentials', 401);
+        }
+
         if ($e instanceof MethodNotAllowedHttpException) {
             return response()->json('Invalid method', 405);
         }

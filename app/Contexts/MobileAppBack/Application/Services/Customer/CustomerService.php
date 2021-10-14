@@ -62,12 +62,12 @@ class CustomerService
     public function getToken(string $identity, string $password, string $deviceName): ServiceResultInterface
     {
         //ToDo: тут обращение к соседнему контексту.
-        $result = $this->userAppService->getToken($identity, $password, $deviceName);
-        if ($result->isNotOk()) {
-            return $this->serviceResultFactory->error("Unacceptable credentials");
-        }
-
-        return $this->serviceResultFactory->ok($result->getPayload());
+        //$result = $this->userAppService->getToken($identity, $password, $deviceName);
+        //if ($result->isNotOk()) {
+        //    return $this->serviceResultFactory->error("Unacceptable credentials");
+        //}
+        //
+        //return $this->serviceResultFactory->ok($result->getPayload());
     }
 
     public function register(
@@ -79,18 +79,18 @@ class CustomerService
     ): ServiceResultInterface
     {
         //ToDo: тут обращение к соседнему контексту.
-        $result = $this->userAppService->register($name, $password, $email, $phone);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-
-        $identity = $email ?? $phone;
-        $result = $this->userAppService->getToken($identity, $password, $deviceName);
-        if ($result->isNotOk()) {
-            return $this->serviceResultFactory->error("Cannot login registered user");
-        }
-
-        return $this->serviceResultFactory->ok($result->getPayload());
+        //$result = $this->userAppService->register($name, $password, $email, $phone);
+        //if ($result->isNotOk()) {
+        //    return $result;
+        //}
+        //
+        //$identity = $email ?? $phone;
+        //$result = $this->userAppService->getToken($identity, $password, $deviceName);
+        //if ($result->isNotOk()) {
+        //    return $this->serviceResultFactory->error("Cannot login registered user");
+        //}
+        //
+        //return $this->serviceResultFactory->ok($result->getPayload());
     }
 }
 

@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Contexts\Auth\Application\Controllers\Web\User\Commands;
+namespace App\Contexts\Auth\Presentation\Controllers\Http\User\Commands;
 
+use App\Contexts\Auth\Application\Commands\RegisterUser;
+use App\Contexts\Auth\Application\Commands\RegisterUserCommandInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class RegisterUserRequest extends FormRequest
@@ -35,6 +37,11 @@ final class RegisterUserRequest extends FormRequest
         $this->password = $this->input('password');
         $this->email = $this->input('email');
         $this->phone = $this->input('phone');
+    }
+
+    public function toCommand(): RegisterUserCommandInterface
+    {
+        return RegisterUser::of($this->name, $this->password, $this->email, $this->phone);
     }
 
 }
