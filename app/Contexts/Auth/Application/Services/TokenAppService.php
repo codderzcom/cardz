@@ -2,9 +2,8 @@
 
 namespace App\Contexts\Auth\Application\Services;
 
-use App\Contexts\Auth\Application\Commands\GetTokenCommandInterface;
+use App\Contexts\Auth\Application\Commands\IssueTokenCommandInterface;
 use App\Contexts\Auth\Application\Exceptions\UserNotFoundException;
-use App\Contexts\Auth\Domain\Model\Token\Token;
 use App\Contexts\Auth\Infrastructure\Messaging\DomainEventBusInterface;
 use App\Contexts\Auth\Infrastructure\Persistence\Contracts\UserRepositoryInterface;
 use App\Models\User as EloquentUser;
@@ -18,7 +17,7 @@ class TokenAppService
     ) {
     }
 
-    public function getToken(GetTokenCommandInterface $command): Token
+    public function issueToken(IssueTokenCommandInterface $command): string
     {
         $user = $this->userRepository->takeWithAmbiguousIdentity($command->getIdentity());
 
@@ -30,8 +29,8 @@ class TokenAppService
         /** @var EloquentUser $eloquentUser */
         $eloquentUser = EloquentUser::query()->find($user->userId);
         $plainTextToken = $eloquentUser->createToken($command->getDeviceName())->plainTextToken;
-        $token = $user->getToken($plainTextToken);
+        $token = $user->assignToken($plainTextToken);
         $this->domainEventBus->publish(...$token->releaseEvents());
-        return $token;
+        return $token->token;
     }
 }

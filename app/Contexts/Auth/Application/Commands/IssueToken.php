@@ -2,13 +2,18 @@
 
 namespace App\Contexts\Auth\Application\Commands;
 
-final class GetToken implements GetTokenCommandInterface
+final class IssueToken implements IssueTokenCommandInterface
 {
     private function __construct(
         private string $identity,
         private string $password,
         private string $deviceName,
     ) {
+    }
+
+    public static function of(string $identity, string $password, string $deviceName): self
+    {
+        return new self($identity, $password, $deviceName);
     }
 
     public function getIdentity(): string

@@ -58,7 +58,7 @@ final class User implements AggregateRootInterface
         return $user->withEvents(RegistrationInitiated::of($user), ProfileProvided::of($user));
     }
 
-    public function getToken(string $plainTextToken): Token
+    public function assignToken(string $plainTextToken): Token
     {
         return Token::assign((string) $this->userId, $plainTextToken);
     }

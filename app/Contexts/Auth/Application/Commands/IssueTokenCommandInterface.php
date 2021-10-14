@@ -2,7 +2,9 @@
 
 namespace App\Contexts\Auth\Application\Commands;
 
-interface GetTokenCommandInterface
+use App\Shared\Contracts\Commands\CommandInterface;
+
+interface IssueTokenCommandInterface extends CommandInterface
 {
     public function getIdentity(): string;
 

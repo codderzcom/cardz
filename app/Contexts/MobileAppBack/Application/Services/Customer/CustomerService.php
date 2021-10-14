@@ -2,13 +2,19 @@
 
 namespace App\Contexts\MobileAppBack\Application\Services\Customer;
 
+use App\Contexts\Auth\Application\Commands\IssueToken;
 use App\Contexts\Auth\Application\Services\UserAppService;
+use App\Contexts\Auth\Domain\Events\Token\TokenAssigned;
+use App\Contexts\Auth\Integration\Events\TokenIssued;
 use App\Contexts\MobileAppBack\Application\Contracts\CustomerWorkspaceReadStorageInterface;
 use App\Contexts\MobileAppBack\Application\Contracts\IssuedCardReadStorageInterface;
 use App\Contexts\MobileAppBack\Domain\Model\Card\CardCode;
 use App\Contexts\MobileAppBack\Domain\Model\Card\CardId;
 use App\Contexts\MobileAppBack\Domain\Model\Customer\CustomerCode;
 use App\Contexts\MobileAppBack\Domain\Model\Customer\CustomerId;
+use App\Shared\Contracts\Commands\CommandBusInterface;
+use App\Shared\Contracts\Messaging\IntegrationEventBusInterface;
+use App\Shared\Contracts\Messaging\IntegrationEventConsumerInterface;
 use App\Shared\Contracts\ServiceResultFactoryInterface;
 use App\Shared\Contracts\ServiceResultInterface;
 
@@ -19,6 +25,8 @@ class CustomerService
         private CustomerWorkspaceReadStorageInterface $customerWorkspaceReadStorage,
         private UserAppService $userAppService,
         private ServiceResultFactoryInterface $serviceResultFactory,
+        private CommandBusInterface $commandBus,
+        private IntegrationEventBusInterface $integrationEventBus,
     ) {
     }
 
@@ -62,12 +70,26 @@ class CustomerService
     public function getToken(string $identity, string $password, string $deviceName): ServiceResultInterface
     {
         //ToDo: тут обращение к соседнему контексту.
-        //$result = $this->userAppService->getToken($identity, $password, $deviceName);
-        //if ($result->isNotOk()) {
-        //    return $this->serviceResultFactory->error("Unacceptable credentials");
-        //}
-        //
-        //return $this->serviceResultFactory->ok($result->getPayload());
+        $this->commandBus->dispatch(IssueToken::of($identity, $password, $deviceName));
+        $this->integrationEventBus->subscribe(new class() implements IntegrationEventConsumerInterface {
+            public function __construct()
+            {
+
+            }
+
+            public function consumes(): array
+            {
+                return [
+                    TokenIssued::class,
+                ];
+            }
+
+            public function handle(string $event): void
+            {
+                // TODO: Implement handle() method.
+            }
+
+        });
     }
 
     public function register(

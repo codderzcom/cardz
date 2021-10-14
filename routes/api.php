@@ -1,7 +1,6 @@
 <?php
 
 use App\Contexts\Auth\Presentation\Controllers\Http\User\UserController;
-use App\Contexts\Cards\Presentation\Controllers\Http\BlockedCard\BlockedCardController;
 use App\Contexts\Cards\Presentation\Controllers\Http\Card\CardController;
 use App\Contexts\Collaboration\Application\Controllers\Web\Invite\InviteController;
 use App\Contexts\Collaboration\Application\Controllers\Web\Relation\RelationController;

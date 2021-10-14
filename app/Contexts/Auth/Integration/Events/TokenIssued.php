@@ -2,7 +2,7 @@
 
 namespace App\Contexts\Auth\Integration\Events;
 
-use App\Contexts\Auth\Domain\Model\User\User;
+use App\Contexts\Auth\Domain\Model\Token\Token;
 use App\Shared\Contracts\Messaging\IntegrationEventInterface;
 use App\Shared\Infrastructure\Messaging\IntegrationEventTrait;
 use JetBrains\PhpStorm\ArrayShape;
@@ -10,19 +10,19 @@ use JetBrains\PhpStorm\Immutable;
 use JetBrains\PhpStorm\Pure;
 
 #[Immutable]
-final class RegistrationCompleted implements IntegrationEventInterface
+final class TokenIssued implements IntegrationEventInterface
 {
     use IntegrationEventTrait;
 
     private function __construct(
-        protected User $user,
+        protected Token $token,
     ) {
     }
 
     #[Pure]
-    public static function of(User $user): self
+    public static function of(Token $token): self
     {
-        return new self($user);
+        return new self($token);
     }
 
     #[Pure]
@@ -31,7 +31,7 @@ final class RegistrationCompleted implements IntegrationEventInterface
     {
         return [
             'name' => $this->getName(),
-            'payload' => $this->user->toArray(),
+            'payload' => $this->token->toArray(),
         ];
     }
 }
