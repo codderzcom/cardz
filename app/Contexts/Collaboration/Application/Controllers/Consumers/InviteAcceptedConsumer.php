@@ -2,9 +2,9 @@
 
 namespace App\Contexts\Collaboration\Application\Controllers\Consumers;
 
-use App\Contexts\Collaboration\Application\Contracts\AcceptedInviteReadStorageInterface;
-use App\Contexts\Collaboration\Application\IntegrationEvents\InviteAccepted;
 use App\Contexts\Collaboration\Application\Services\MemberAppService;
+use App\Contexts\Collaboration\Infrastructure\ReadStorage\Contracts\AcceptedInviteReadStorageInterface;
+use App\Contexts\Collaboration\Integration\Events\InviteAccepted;
 use App\Shared\Contracts\Informable;
 use App\Shared\Contracts\Reportable;
 

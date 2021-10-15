@@ -2,10 +2,10 @@
 
 namespace App\Contexts\Collaboration\Application\Services;
 
-use App\Contexts\Collaboration\Application\Contracts\RelationRepositoryInterface;
-use App\Contexts\Collaboration\Application\IntegrationEvents\RelationLeft;
 use App\Contexts\Collaboration\Application\Services\Policies\AssertLeavingMemberIsNotKeeper;
 use App\Contexts\Collaboration\Domain\Model\Relation\RelationId;
+use App\Contexts\Collaboration\Infrastructure\Persistence\Contracts\RelationRepositoryInterface;
+use App\Contexts\Collaboration\Integration\Events\RelationLeft;
 use App\Shared\Contracts\PolicyEngineInterface;
 use App\Shared\Contracts\ReportingBusInterface;
 use App\Shared\Contracts\ServiceResultFactoryInterface;

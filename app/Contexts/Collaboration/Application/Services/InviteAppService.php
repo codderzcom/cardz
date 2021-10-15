@@ -2,10 +2,10 @@
 
 namespace App\Contexts\Collaboration\Application\Services;
 
-use App\Contexts\Collaboration\Application\Contracts\InviteRepositoryInterface;
-use App\Contexts\Collaboration\Application\Contracts\KeeperRepositoryInterface;
-use App\Contexts\Collaboration\Application\IntegrationEvents\InviteAccepted;
 use App\Contexts\Collaboration\Domain\Model\Invite\InviteId;
+use App\Contexts\Collaboration\Infrastructure\Persistence\Contracts\InviteRepositoryInterface;
+use App\Contexts\Collaboration\Infrastructure\Persistence\Contracts\KeeperRepositoryInterface;
+use App\Contexts\Collaboration\Integration\Events\InviteAccepted;
 use App\Shared\Contracts\ReportingBusInterface;
 use App\Shared\Contracts\ServiceResultFactoryInterface;
 use App\Shared\Contracts\ServiceResultInterface;

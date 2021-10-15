@@ -2,14 +2,14 @@
 
 namespace App\Contexts\Collaboration\Application\Services;
 
-use App\Contexts\Collaboration\Application\Contracts\InviteRepositoryInterface;
-use App\Contexts\Collaboration\Application\Contracts\KeeperRepositoryInterface;
-use App\Contexts\Collaboration\Application\Contracts\RelationRepositoryInterface;
-use App\Contexts\Collaboration\Application\IntegrationEvents\InviteProposed;
-use App\Contexts\Collaboration\Application\IntegrationEvents\RelationEntered;
 use App\Contexts\Collaboration\Domain\Model\Collaborator\CollaboratorId;
 use App\Contexts\Collaboration\Domain\Model\Relation\RelationType;
 use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
+use App\Contexts\Collaboration\Infrastructure\Persistence\Contracts\InviteRepositoryInterface;
+use App\Contexts\Collaboration\Infrastructure\Persistence\Contracts\KeeperRepositoryInterface;
+use App\Contexts\Collaboration\Infrastructure\Persistence\Contracts\RelationRepositoryInterface;
+use App\Contexts\Collaboration\Integration\Events\InviteProposed;
+use App\Contexts\Collaboration\Integration\Events\RelationEntered;
 use App\Shared\Contracts\ReportingBusInterface;
 use App\Shared\Contracts\ServiceResultFactoryInterface;
 use App\Shared\Contracts\ServiceResultInterface;

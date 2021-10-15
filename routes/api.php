@@ -2,8 +2,8 @@
 
 use App\Contexts\Auth\Presentation\Controllers\Http\User\UserController;
 use App\Contexts\Cards\Presentation\Controllers\Http\Card\CardController;
-use App\Contexts\Collaboration\Application\Controllers\Web\Invite\InviteController;
-use App\Contexts\Collaboration\Application\Controllers\Web\Relation\RelationController;
+use App\Contexts\Collaboration\Presentation\Controllers\Http\Invite\InviteController;
+use App\Contexts\Collaboration\Presentation\Controllers\Http\Relation\RelationController;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Customer\CardController as MABCustomerCardController;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Customer\CustomerController as MABCustomerController;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Customer\WorkspaceController as MABCustomerWorkspaceController;

@@ -2,10 +2,9 @@
 
 namespace App\Contexts\Auth\Application\Exceptions;
 
-use App\Shared\Contracts\ApplicationExceptionInterface;
-use Exception;
+use App\Shared\Exceptions\NotFoundException;
 
-class UserNotFoundException extends Exception implements ApplicationExceptionInterface
+class UserNotFoundException extends NotFoundException
 {
 
 }

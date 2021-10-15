@@ -2,8 +2,8 @@
 
 namespace App\Contexts\Collaboration\Application\Controllers\Consumers;
 
-use App\Contexts\Collaboration\Application\Contracts\AddedWorkspaceReadStorageInterface;
 use App\Contexts\Collaboration\Application\Services\KeeperAppService;
+use App\Contexts\Collaboration\Infrastructure\ReadStorage\Contracts\AddedWorkspaceReadStorageInterface;
 use App\Contexts\Workspaces\Integration\Events\NewWorkspaceRegistered;
 use App\Shared\Contracts\Messaging\IntegrationEventConsumerInterface;
 

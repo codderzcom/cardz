@@ -2,11 +2,11 @@
 
 namespace App\Contexts\Collaboration\Application\Services;
 
-use App\Contexts\Collaboration\Application\Contracts\MemberRepositoryInterface;
-use App\Contexts\Collaboration\Application\Contracts\RelationRepositoryInterface;
 use App\Contexts\Collaboration\Domain\Model\Collaborator\CollaboratorId;
 use App\Contexts\Collaboration\Domain\Model\Relation\RelationType;
 use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
+use App\Contexts\Collaboration\Infrastructure\Persistence\Contracts\MemberRepositoryInterface;
+use App\Contexts\Collaboration\Infrastructure\Persistence\Contracts\RelationRepositoryInterface;
 use App\Shared\Contracts\ServiceResultFactoryInterface;
 use App\Shared\Contracts\ServiceResultInterface;
 

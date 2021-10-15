@@ -7,12 +7,15 @@ use App\Contexts\Collaboration\Domain\Events\Invite\InviteDiscarded;
 use App\Contexts\Collaboration\Domain\Events\Invite\InviteProposed;
 use App\Contexts\Collaboration\Domain\Events\Invite\InviteRejected;
 use App\Contexts\Collaboration\Domain\Model\Collaborator\CollaboratorId;
-use App\Contexts\Collaboration\Domain\Model\Shared\AggregateRoot;
 use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
+use App\Shared\Contracts\Domain\AggregateRootInterface;
+use App\Shared\Infrastructure\Support\Domain\AggregateRootTrait;
 use Carbon\Carbon;
 
-final class Invite extends AggregateRoot
+final class Invite implements AggregateRootInterface
 {
+    use AggregateRootTrait;
+
     private ?Carbon $proposed = null;
 
     private ?Carbon $accepted = null;

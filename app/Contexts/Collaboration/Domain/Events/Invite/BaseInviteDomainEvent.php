@@ -2,14 +2,13 @@
 
 namespace App\Contexts\Collaboration\Domain\Events\Invite;
 
-use App\Contexts\Collaboration\Domain\Events\BaseDomainEvent;
-use App\Contexts\Collaboration\Domain\Model\Invite\InviteId;
+use App\Contexts\Collaboration\Domain\Model\Invite\Invite;
+use App\Shared\Infrastructure\Support\Domain\DomainEvent;
 
-abstract class BaseInviteDomainEvent extends BaseDomainEvent
+abstract class BaseInviteDomainEvent extends DomainEvent
 {
-    protected function __construct(
-        public InviteId $inviteId
-    ) {
-        parent::__construct();
+    public function with(): Invite
+    {
+        return $this->aggregateRoot;
     }
 }
