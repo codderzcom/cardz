@@ -2,12 +2,12 @@
 
 namespace App\Contexts\Collaboration\Domain\Model\Invite;
 
-use App\Contexts\Auth\Domain\Model\Shared\AggregateRoot;
 use App\Contexts\Collaboration\Domain\Events\Invite\InviteAccepted;
 use App\Contexts\Collaboration\Domain\Events\Invite\InviteDiscarded;
 use App\Contexts\Collaboration\Domain\Events\Invite\InviteProposed;
 use App\Contexts\Collaboration\Domain\Events\Invite\InviteRejected;
 use App\Contexts\Collaboration\Domain\Model\Collaborator\CollaboratorId;
+use App\Contexts\Collaboration\Domain\Model\Shared\AggregateRoot;
 use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
 use Carbon\Carbon;
 

@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Contexts\Auth\Domain\Model\Shared;
+namespace App\Contexts\Collaboration\Domain\Model\Shared;
 
-use App\Contexts\Auth\Domain\Persistable;
+use App\Contexts\Collaboration\Domain\Persistable;
 use App\Shared\Infrastructure\Support\ArrayPresenterTrait;
+use function json_try_encode;
 
 abstract class AggregateRoot implements Persistable
 {

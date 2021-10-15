@@ -73,7 +73,6 @@ final class User implements AggregateRootInterface
     {
         return [
             'userId' => (string) $this->userId,
-            'identity' => (string) $this->identity,
             'email' => $this->identity->getEmail(),
             'phone' => $this->identity->getPhone(),
             'name' => (string) $this->profile,

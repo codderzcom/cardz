@@ -2,10 +2,10 @@
 
 namespace App\Contexts\Collaboration\Domain\Model\Relation;
 
-use App\Contexts\Auth\Domain\Model\Shared\AggregateRoot;
 use App\Contexts\Collaboration\Domain\Events\Relation\RelationEntered;
 use App\Contexts\Collaboration\Domain\Events\Relation\RelationLeft;
 use App\Contexts\Collaboration\Domain\Model\Collaborator\CollaboratorId;
+use App\Contexts\Collaboration\Domain\Model\Shared\AggregateRoot;
 use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
 use Carbon\Carbon;
 
