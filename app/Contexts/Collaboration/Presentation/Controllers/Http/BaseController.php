@@ -15,19 +15,8 @@ abstract class BaseController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function response(ServiceResultInterface $result): JsonResponse
+    public function response($result): JsonResponse
     {
-        return response()->json($result->toArray(), $this->resultCodeToResponseCode($result->getCode()));
-    }
-
-    #[Pure]
-    private function resultCodeToResponseCode(ServiceResultCode $resultCode): int
-    {
-        return match ((string) $resultCode) {
-            ServiceResultCode::OK => 200,
-            ServiceResultCode::POLICY_VIOLATION => 400,
-            ServiceResultCode::SUBJECT_NOT_FOUND => 404,
-            default => 500
-        };
+        return response()->json($result);
     }
 }

@@ -4,7 +4,7 @@ namespace App\Contexts\Collaboration\Presentation\Controllers\Http\Invite\Comman
 
 use Illuminate\Foundation\Http\FormRequest;
 
-final class InviteRequest extends FormRequest
+class InviteRequest extends FormRequest
 {
     public string $inviteId;
 

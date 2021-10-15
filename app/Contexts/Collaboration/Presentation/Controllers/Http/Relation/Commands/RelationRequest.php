@@ -2,6 +2,8 @@
 
 namespace App\Contexts\Collaboration\Presentation\Controllers\Http\Relation\Commands;
 
+use App\Contexts\Collaboration\Application\Commands\Relation\LeaveRelation;
+use App\Contexts\Collaboration\Application\Commands\Relation\LeaveRelationCommandInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class RelationRequest extends FormRequest
@@ -34,4 +36,8 @@ final class RelationRequest extends FormRequest
         ]);
     }
 
+    public function toCommand(): LeaveRelationCommandInterface
+    {
+        return LeaveRelation::of($this->relationId);
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Contexts\Collaboration\Infrastructure\Persistence\Eloquent;
 
+use App\Contexts\Collaboration\Application\Exceptions\InviteNotFoundException;
 use App\Contexts\Collaboration\Domain\Model\Invite\Invite;
 use App\Contexts\Collaboration\Domain\Model\Invite\InviteId;
 use App\Contexts\Collaboration\Infrastructure\Persistence\Contracts\InviteRepositoryInterface;
@@ -18,12 +19,12 @@ class InviteRepository implements InviteRepositoryInterface
         );
     }
 
-    public function take(InviteId $inviteId = null): ?Invite
+    public function take(InviteId $inviteId = null): Invite
     {
         /** @var EloquentInvite $eloquentInvite */
         $eloquentInvite = EloquentInvite::query()->find((string) $inviteId);
         if ($eloquentInvite === null) {
-            return null;
+            throw  new InviteNotFoundException((string) $inviteId);
         }
         return $this->inviteFromData($eloquentInvite);
     }

@@ -2,48 +2,46 @@
 
 namespace App\Contexts\Collaboration\Presentation\Controllers\Http\Invite;
 
-use App\Contexts\Collaboration\Application\Services\InviteAppService;
-use App\Contexts\Collaboration\Application\Services\KeeperAppService;
 use App\Contexts\Collaboration\Presentation\Controllers\Http\BaseController;
-use App\Contexts\Collaboration\Presentation\Controllers\Http\Invite\Commands\InviteProposeRequest;
-use App\Contexts\Collaboration\Presentation\Controllers\Http\Invite\Commands\InviteRequest;
+use App\Contexts\Collaboration\Presentation\Controllers\Http\Invite\Commands\AcceptInviteRequest;
+use App\Contexts\Collaboration\Presentation\Controllers\Http\Invite\Commands\DiscardInviteRequest;
+use App\Contexts\Collaboration\Presentation\Controllers\Http\Invite\Commands\ProposeInviteRequest;
+use App\Contexts\Collaboration\Presentation\Controllers\Http\Invite\Commands\RejectInviteRequest;
+use App\Shared\Contracts\Commands\CommandBusInterface;
 use Illuminate\Http\JsonResponse;
 
 class InviteController extends BaseController
 {
     public function __construct(
-        private KeeperAppService $keeperAppService,
-        private InviteAppService $inviteAppService,
+        private CommandBusInterface $commandBus,
     ) {
     }
 
-    public function propose(InviteProposeRequest $request): JsonResponse
+    public function propose(ProposeInviteRequest $request): JsonResponse
     {
-        return $this->response($this->keeperAppService->invite(
-            $request->keeperId,
-            $request->memberId,
-            $request->workspaceId,
-        ));
+        $command = $request->toCommand();
+        $this->commandBus->dispatch($command);
+        $this->response($command->getInviteId());
     }
 
-    public function accept(InviteRequest $request): JsonResponse
+    public function accept(AcceptInviteRequest $request): JsonResponse
     {
-        return $this->response($this->inviteAppService->accept(
-            $request->inviteId,
-        ));
+        $command = $request->toCommand();
+        $this->commandBus->dispatch($command);
+        return $this->response($command->getInviteId());
     }
 
-    public function reject(InviteRequest $request): JsonResponse
+    public function reject(RejectInviteRequest $request): JsonResponse
     {
-        return $this->response($this->inviteAppService->reject(
-            $request->inviteId,
-        ));
+        $command = $request->toCommand();
+        $this->commandBus->dispatch($command);
+        return $this->response($command->getInviteId());
     }
 
-    public function discard(InviteRequest $request): JsonResponse
+    public function discard(DiscardInviteRequest $request): JsonResponse
     {
-        return $this->response($this->inviteAppService->discard(
-            $request->inviteId,
-        ));
+        $command = $request->toCommand();
+        $this->commandBus->dispatch($command);
+        return $this->response($command->getInviteId());
     }
 }

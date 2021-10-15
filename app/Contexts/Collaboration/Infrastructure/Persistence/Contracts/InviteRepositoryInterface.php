@@ -9,7 +9,7 @@ interface InviteRepositoryInterface
 {
     public function persist(Invite $invite): void;
 
-    public function take(InviteId $inviteId): ?Invite;
+    public function take(InviteId $inviteId): Invite;
 
     public function remove(InviteId $inviteId): void;
 }
