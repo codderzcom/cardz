@@ -4,10 +4,10 @@ namespace App\Contexts\Cards;
 
 use App\Contexts\Cards\Application\Consumers\CardChangedDomainEventConsumer;
 use App\Contexts\Cards\Application\Services\CardAppService;
+use App\Contexts\Cards\Domain\Persistence\Contracts\CardRepositoryInterface;
+use App\Contexts\Cards\Domain\Persistence\Contracts\PlanRepositoryInterface;
 use App\Contexts\Cards\Infrastructure\Messaging\DomainEventBus;
 use App\Contexts\Cards\Infrastructure\Messaging\DomainEventBusInterface;
-use App\Contexts\Cards\Infrastructure\Persistence\Contracts\CardRepositoryInterface;
-use App\Contexts\Cards\Infrastructure\Persistence\Contracts\PlanRepositoryInterface;
 use App\Contexts\Cards\Infrastructure\Persistence\Eloquent\CardRepository;
 use App\Contexts\Cards\Infrastructure\Persistence\Eloquent\PlanRepository;
 use App\Contexts\Cards\Infrastructure\ReadStorage\Contracts\IssuedCardReadStorageInterface;

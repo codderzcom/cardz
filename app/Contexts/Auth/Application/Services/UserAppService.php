@@ -6,8 +6,8 @@ use App\Contexts\Auth\Application\Commands\RegisterUserCommandInterface;
 use App\Contexts\Auth\Application\Exceptions\UserExistsException;
 use App\Contexts\Auth\Domain\Model\User\User;
 use App\Contexts\Auth\Domain\Model\User\UserId;
+use App\Contexts\Auth\Domain\Persistence\Contracts\UserRepositoryInterface;
 use App\Contexts\Auth\Infrastructure\Messaging\DomainEventBusInterface;
-use App\Contexts\Auth\Infrastructure\Persistence\Contracts\UserRepositoryInterface;
 
 class UserAppService
 {

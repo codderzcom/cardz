@@ -2,10 +2,10 @@
 
 namespace App\Contexts\Plans\Infrastructure\Persistence\Eloquent;
 
-use App\Contexts\Plans\Application\Exceptions\PlanNotFoundException;
 use App\Contexts\Plans\Domain\Model\Plan\Plan;
 use App\Contexts\Plans\Domain\Model\Plan\PlanId;
-use App\Contexts\Plans\Infrastructure\Persistence\Contracts\PlanRepositoryInterface;
+use App\Contexts\Plans\Domain\Persistence\Contracts\PlanRepositoryInterface;
+use App\Contexts\Plans\Infrastructure\Exceptions\PlanNotFoundException;
 use App\Models\Plan as EloquentPlan;
 use ReflectionClass;
 

@@ -2,10 +2,10 @@
 
 namespace App\Contexts\Collaboration\Infrastructure\Persistence\Eloquent;
 
-use App\Contexts\Collaboration\Application\Exceptions\InviteNotFoundException;
 use App\Contexts\Collaboration\Domain\Model\Invite\Invite;
 use App\Contexts\Collaboration\Domain\Model\Invite\InviteId;
-use App\Contexts\Collaboration\Infrastructure\Persistence\Contracts\InviteRepositoryInterface;
+use App\Contexts\Collaboration\Domain\Persistence\Contracts\InviteRepositoryInterface;
+use App\Contexts\Collaboration\Infrastructure\Exceptions\InviteNotFoundException;
 use App\Models\Invite as EloquentInvite;
 use ReflectionClass;
 

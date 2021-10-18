@@ -5,7 +5,7 @@ namespace App\Contexts\Collaboration\Infrastructure\Persistence\Eloquent;
 use App\Contexts\Collaboration\Domain\Model\Collaborator\CollaboratorId;
 use App\Contexts\Collaboration\Domain\Model\Collaborator\Member;
 use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
-use App\Contexts\Collaboration\Infrastructure\Persistence\Contracts\MemberRepositoryInterface;
+use App\Contexts\Collaboration\Domain\Persistence\Contracts\MemberRepositoryInterface;
 use App\Models\Invite as EloquentMember;
 
 class MemberRepository implements MemberRepositoryInterface

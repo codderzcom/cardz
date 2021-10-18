@@ -6,9 +6,9 @@ use App\Contexts\Workspaces\Application\Commands\AddWorkspaceCommandInterface;
 use App\Contexts\Workspaces\Application\Commands\ChangeWorkspaceProfileCommandInterface;
 use App\Contexts\Workspaces\Domain\Model\Workspace\Workspace;
 use App\Contexts\Workspaces\Domain\Model\Workspace\WorkspaceId;
+use App\Contexts\Workspaces\Domain\Persistence\Contracts\KeeperRepositoryInterface;
+use App\Contexts\Workspaces\Domain\Persistence\Contracts\WorkspaceRepositoryInterface;
 use App\Contexts\Workspaces\Infrastructure\Messaging\DomainEventBusInterface;
-use App\Contexts\Workspaces\Infrastructure\Persistence\Contracts\KeeperRepositoryInterface;
-use App\Contexts\Workspaces\Infrastructure\Persistence\Contracts\WorkspaceRepositoryInterface;
 use App\Shared\Infrastructure\CommandHandling\CommandHandlerFactoryTrait;
 
 class WorkspaceAppService

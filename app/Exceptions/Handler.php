@@ -2,7 +2,7 @@
 
 namespace App\Exceptions;
 
-use App\Contexts\Auth\Application\Exceptions\UserNotFoundException;
+use App\Contexts\Auth\Infrastructure\Exceptions\UserNotFoundException;
 use App\Shared\Exceptions\NotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;

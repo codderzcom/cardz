@@ -2,10 +2,10 @@
 
 namespace App\Contexts\Cards\Infrastructure\Persistence\Eloquent;
 
-use App\Contexts\Cards\Application\Exceptions\CardNotFoundException;
 use App\Contexts\Cards\Domain\Model\Card\Card;
 use App\Contexts\Cards\Domain\Model\Card\CardId;
-use App\Contexts\Cards\Infrastructure\Persistence\Contracts\CardRepositoryInterface;
+use App\Contexts\Cards\Domain\Persistence\Contracts\CardRepositoryInterface;
+use App\Contexts\Cards\Infrastructure\Exceptions\CardNotFoundException;
 use App\Models\Card as EloquentCard;
 use ReflectionClass;
 use function json_try_decode;

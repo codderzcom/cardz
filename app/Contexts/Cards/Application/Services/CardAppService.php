@@ -14,9 +14,9 @@ use App\Contexts\Cards\Application\Commands\UnblockCardCommandInterface;
 use App\Contexts\Cards\Domain\Model\Card\Card;
 use App\Contexts\Cards\Domain\Model\Card\CardId;
 use App\Contexts\Cards\Domain\Model\Plan\Plan;
+use App\Contexts\Cards\Domain\Persistence\Contracts\CardRepositoryInterface;
+use App\Contexts\Cards\Domain\Persistence\Contracts\PlanRepositoryInterface;
 use App\Contexts\Cards\Infrastructure\Messaging\DomainEventBusInterface;
-use App\Contexts\Cards\Infrastructure\Persistence\Contracts\CardRepositoryInterface;
-use App\Contexts\Cards\Infrastructure\Persistence\Contracts\PlanRepositoryInterface;
 use App\Shared\Infrastructure\CommandHandling\CommandHandlerFactoryTrait;
 
 class CardAppService

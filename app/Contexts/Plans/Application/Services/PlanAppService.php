@@ -10,9 +10,9 @@ use App\Contexts\Plans\Application\Commands\Plan\StopPlanCommandInterface;
 use App\Contexts\Plans\Domain\Model\Plan\Plan;
 use App\Contexts\Plans\Domain\Model\Plan\PlanId;
 use App\Contexts\Plans\Domain\Model\Plan\Workspace;
+use App\Contexts\Plans\Domain\Persistence\Contracts\PlanRepositoryInterface;
+use App\Contexts\Plans\Domain\Persistence\Contracts\WorkspaceRepositoryInterface;
 use App\Contexts\Plans\Infrastructure\Messaging\DomainEventBusInterface;
-use App\Contexts\Plans\Infrastructure\Persistence\Contracts\PlanRepositoryInterface;
-use App\Contexts\Plans\Infrastructure\Persistence\Contracts\WorkspaceRepositoryInterface;
 
 class PlanAppService
 {

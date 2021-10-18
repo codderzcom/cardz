@@ -2,10 +2,10 @@
 
 namespace App\Contexts\Plans\Infrastructure\Persistence\Eloquent;
 
-use App\Contexts\Plans\Application\Exceptions\RequirementNotFoundException;
 use App\Contexts\Plans\Domain\Model\Requirement\Requirement;
 use App\Contexts\Plans\Domain\Model\Requirement\RequirementId;
-use App\Contexts\Plans\Infrastructure\Persistence\Contracts\RequirementRepositoryInterface;
+use App\Contexts\Plans\Domain\Persistence\Contracts\RequirementRepositoryInterface;
+use App\Contexts\Plans\Infrastructure\Exceptions\RequirementNotFoundException;
 use App\Models\Requirement as EloquentRequirement;
 use ReflectionClass;
 

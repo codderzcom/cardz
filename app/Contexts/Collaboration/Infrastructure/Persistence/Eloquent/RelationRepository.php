@@ -4,7 +4,7 @@ namespace App\Contexts\Collaboration\Infrastructure\Persistence\Eloquent;
 
 use App\Contexts\Collaboration\Domain\Model\Relation\Relation;
 use App\Contexts\Collaboration\Domain\Model\Relation\RelationId;
-use App\Contexts\Collaboration\Infrastructure\Persistence\Contracts\RelationRepositoryInterface;
+use App\Contexts\Collaboration\Domain\Persistence\Contracts\RelationRepositoryInterface;
 use App\Models\Relation as EloquentRelation;
 use ReflectionClass;
 

@@ -3,10 +3,10 @@
 namespace App\Contexts\Auth\Application\Services;
 
 use App\Contexts\Auth\Application\Commands\IssueTokenCommandInterface;
-use App\Contexts\Auth\Application\Exceptions\UserNotFoundException;
 use App\Contexts\Auth\Domain\Model\Token\Token;
+use App\Contexts\Auth\Domain\Persistence\Contracts\UserRepositoryInterface;
+use App\Contexts\Auth\Infrastructure\Exceptions\UserNotFoundException;
 use App\Contexts\Auth\Infrastructure\Messaging\DomainEventBusInterface;
-use App\Contexts\Auth\Infrastructure\Persistence\Contracts\UserRepositoryInterface;
 use App\Models\User as EloquentUser;
 use Illuminate\Support\Facades\Hash;
 

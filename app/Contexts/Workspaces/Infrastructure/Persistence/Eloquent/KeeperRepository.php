@@ -2,10 +2,10 @@
 
 namespace App\Contexts\Workspaces\Infrastructure\Persistence\Eloquent;
 
-use App\Contexts\Workspaces\Application\Exceptions\KeeperNotFoundException;
 use App\Contexts\Workspaces\Domain\Model\Workspace\Keeper;
 use App\Contexts\Workspaces\Domain\Model\Workspace\KeeperId;
-use App\Contexts\Workspaces\Infrastructure\Persistence\Contracts\KeeperRepositoryInterface;
+use App\Contexts\Workspaces\Domain\Persistence\Contracts\KeeperRepositoryInterface;
+use App\Contexts\Workspaces\Infrastructure\Exceptions\KeeperNotFoundException;
 use App\Models\User as EloquentKeeper;
 
 class KeeperRepository implements KeeperRepositoryInterface

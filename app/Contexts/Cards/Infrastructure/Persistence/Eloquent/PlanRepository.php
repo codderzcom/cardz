@@ -2,11 +2,11 @@
 
 namespace App\Contexts\Cards\Infrastructure\Persistence\Eloquent;
 
-use App\Contexts\Cards\Application\Exceptions\PlanNotFoundException;
 use App\Contexts\Cards\Domain\Model\Plan\Plan;
 use App\Contexts\Cards\Domain\Model\Plan\PlanId;
 use App\Contexts\Cards\Domain\Model\Plan\Requirement;
-use App\Contexts\Cards\Infrastructure\Persistence\Contracts\PlanRepositoryInterface;
+use App\Contexts\Cards\Domain\Persistence\Contracts\PlanRepositoryInterface;
+use App\Contexts\Cards\Infrastructure\Exceptions\PlanNotFoundException;
 use App\Models\Plan as EloquentPlan;
 use App\Models\Requirement as EloquentRequirement;
 

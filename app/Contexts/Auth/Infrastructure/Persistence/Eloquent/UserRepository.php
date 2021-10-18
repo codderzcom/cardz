@@ -2,11 +2,11 @@
 
 namespace App\Contexts\Auth\Infrastructure\Persistence\Eloquent;
 
-use App\Contexts\Auth\Application\Exceptions\UserNotFoundException;
 use App\Contexts\Auth\Domain\Model\User\User;
 use App\Contexts\Auth\Domain\Model\User\UserId;
 use App\Contexts\Auth\Domain\Model\User\UserIdentity;
-use App\Contexts\Auth\Infrastructure\Persistence\Contracts\UserRepositoryInterface;
+use App\Contexts\Auth\Domain\Persistence\Contracts\UserRepositoryInterface;
+use App\Contexts\Auth\Infrastructure\Exceptions\UserNotFoundException;
 use App\Models\User as EloquentUser;
 use ReflectionClass;
 
@@ -18,16 +18,6 @@ class UserRepository implements UserRepositoryInterface
             ['id' => (string) $user->userId],
             $this->userAsData($user)
         );
-    }
-
-    public function take(UserId $userId = null): User
-    {
-        /** @var EloquentUser $eloquentUser */
-        $eloquentUser = EloquentUser::query()->find((string) $userId);
-        if ($eloquentUser === null) {
-            throw new UserNotFoundException((string) $userId);
-        }
-        return $this->userFromData($eloquentUser);
     }
 
     public function isExistingIdentity(UserIdentity $userIdentity): bool
@@ -42,6 +32,16 @@ class UserRepository implements UserRepositoryInterface
 
         $eloquentUser = $query->first();
         return $eloquentUser !== null;
+    }
+
+    public function take(UserId $userId = null): User
+    {
+        /** @var EloquentUser $eloquentUser */
+        $eloquentUser = EloquentUser::query()->find((string) $userId);
+        if ($eloquentUser === null) {
+            throw new UserNotFoundException((string) $userId);
+        }
+        return $this->userFromData($eloquentUser);
     }
 
     public function takeWithAmbiguousIdentity(string $identity): User

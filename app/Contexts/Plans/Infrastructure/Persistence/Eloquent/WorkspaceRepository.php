@@ -2,10 +2,10 @@
 
 namespace App\Contexts\Plans\Infrastructure\Persistence\Eloquent;
 
-use App\Contexts\Plans\Application\Exceptions\WorkspaceNotFoundException;
 use App\Contexts\Plans\Domain\Model\Plan\Workspace;
 use App\Contexts\Plans\Domain\Model\Plan\WorkspaceId;
-use App\Contexts\Plans\Infrastructure\Persistence\Contracts\WorkspaceRepositoryInterface;
+use App\Contexts\Plans\Domain\Persistence\Contracts\WorkspaceRepositoryInterface;
+use App\Contexts\Plans\Infrastructure\Exceptions\WorkspaceNotFoundException;
 use App\Models\Workspace as EloquentWorkspace;
 
 class WorkspaceRepository implements WorkspaceRepositoryInterface

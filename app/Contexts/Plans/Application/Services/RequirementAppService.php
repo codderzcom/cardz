@@ -9,9 +9,9 @@ use App\Contexts\Plans\Application\Commands\Requirement\RequirementCommandInterf
 use App\Contexts\Plans\Domain\Model\Plan\Plan;
 use App\Contexts\Plans\Domain\Model\Requirement\Requirement;
 use App\Contexts\Plans\Domain\Model\Requirement\RequirementId;
+use App\Contexts\Plans\Domain\Persistence\Contracts\PlanRepositoryInterface;
+use App\Contexts\Plans\Domain\Persistence\Contracts\RequirementRepositoryInterface;
 use App\Contexts\Plans\Infrastructure\Messaging\DomainEventBusInterface;
-use App\Contexts\Plans\Infrastructure\Persistence\Contracts\PlanRepositoryInterface;
-use App\Contexts\Plans\Infrastructure\Persistence\Contracts\RequirementRepositoryInterface;
 
 class RequirementAppService
 {
