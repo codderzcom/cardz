@@ -4,6 +4,7 @@ namespace App\Contexts\Collaboration\Domain\Model\Relation;
 
 use App\Contexts\Collaboration\Domain\Events\Relation\RelationEntered;
 use App\Contexts\Collaboration\Domain\Events\Relation\RelationLeft;
+use App\Contexts\Collaboration\Domain\Exceptions\InvalidOperationException;
 use App\Contexts\Collaboration\Domain\Model\Collaborator\CollaboratorId;
 use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
 use App\Shared\Contracts\Domain\AggregateRootInterface;
@@ -14,8 +15,6 @@ final class Relation implements AggregateRootInterface
 {
     use AggregateRootTrait;
 
-    private RelationType $relationType;
-
     private ?Carbon $entered = null;
 
     private ?Carbon $left = null;
@@ -24,44 +23,18 @@ final class Relation implements AggregateRootInterface
         public RelationId $relationId,
         public CollaboratorId $collaboratorId,
         public WorkspaceId $workspaceId,
+        public RelationType $relationType,
     ) {
-        $this->relationType = RelationType::PENDING();
     }
 
-    public static function make(RelationId $relationId, CollaboratorId $collaboratorId, WorkspaceId $workspaceId): self
+    public static function enter(RelationId $relationId, CollaboratorId $collaboratorId, WorkspaceId $workspaceId, RelationType $relationType): self
     {
-        return new self($relationId, $collaboratorId, $workspaceId);
+        $relation = new self($relationId, $collaboratorId, $workspaceId, $relationType);
+        $relation->entered = Carbon::now();
+        return $relation->withEvents(RelationEntered::of($relation));
     }
 
-    public function enter(RelationType $relationType): RelationEntered
-    {
-        $this->relationType = $relationType;
-        $this->entered = Carbon::now();
-        return RelationEntered::with($this->relationId);
-    }
-
-    public function leave(): RelationLeft
-    {
-        $this->left = Carbon::now();
-        return RelationLeft::with($this->relationId);
-    }
-
-    public function getRelationType(): RelationType
-    {
-        return $this->relationType;
-    }
-
-    public function isEntered(): bool
-    {
-        return $this->entered !== null && $this->left === null;
-    }
-
-    public function isLeft(): bool
-    {
-        return $this->left !== null && $this->entered !== null;
-    }
-
-    private function from(
+    public static function restore(
         string $relationId,
         string $collaboratorId,
         string $workspaceId,
@@ -69,12 +42,18 @@ final class Relation implements AggregateRootInterface
         ?Carbon $entered,
         ?Carbon $left,
     ): self {
-        $this->relationId = RelationId::of($relationId);
-        $this->collaboratorId = CollaboratorId::of($collaboratorId);
-        $this->workspaceId = WorkspaceId::of($workspaceId);
-        $this->relationType = RelationType::of($relationType);
-        $this->entered = $entered;
-        $this->left = $left;
-        return $this;
+        $relation = new self(RelationId::of($relationId), CollaboratorId::of($collaboratorId), WorkspaceId::of($workspaceId), RelationType::of($relationType));
+        $relation->entered = $entered;
+        $relation->left = $left;
+        return $relation;
+    }
+
+    public function leave(): self
+    {
+        if ($this->relationType->equals(RelationType::KEEPER())) {
+            throw new InvalidOperationException("Keeper is not allowed to leave");
+        }
+        $this->left = Carbon::now();
+        return $this->withEvents(RelationLeft::of($this));
     }
 }

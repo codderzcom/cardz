@@ -23,10 +23,7 @@ class InviteRepository implements InviteRepositoryInterface
     {
         /** @var EloquentInvite $eloquentInvite */
         $eloquentInvite = EloquentInvite::query()->find((string) $inviteId);
-        if ($eloquentInvite === null) {
-            throw  new InviteNotFoundException((string) $inviteId);
-        }
-        return $this->inviteFromData($eloquentInvite);
+        return $eloquentInvite ? $this->inviteFromData($eloquentInvite) : throw new InviteNotFoundException((string) $inviteId);
     }
 
     public function remove(InviteId $inviteId): void
@@ -61,13 +58,7 @@ class InviteRepository implements InviteRepositoryInterface
 
     private function inviteFromData(EloquentInvite $eloquentInvite): Invite
     {
-        $reflection = new ReflectionClass(Invite::class);
-        $creator = $reflection->getMethod('from');
-        $creator?->setAccessible(true);
-        /** @var Invite $invite */
-        $invite = $reflection->newInstanceWithoutConstructor();
-
-        $creator?->invoke($invite,
+        $invite = Invite::restore(
             $eloquentInvite->id,
             $eloquentInvite->member_id,
             $eloquentInvite->workspace_id,

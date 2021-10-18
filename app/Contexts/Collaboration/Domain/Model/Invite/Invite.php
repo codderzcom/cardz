@@ -27,55 +27,34 @@ final class Invite implements AggregateRootInterface
     ) {
     }
 
-    public static function make(InviteId $inviteId, CollaboratorId $memberId, WorkspaceId $workspaceId): self
+    public static function propose(InviteId $inviteId, CollaboratorId $memberId, WorkspaceId $workspaceId): self
     {
-        return new self($inviteId, $memberId, $workspaceId);
+        $invite = new self($inviteId, $memberId, $workspaceId);
+        $invite->proposed = Carbon::now();
+        return $invite->withEvents(InviteProposed::of($invite));
     }
 
-    public function propose(): InviteProposed
+    public static function restore(string $inviteId, string $memberId, string $workspaceId, ?Carbon $proposed, ?Carbon $accepted): self
     {
-        $this->proposed = Carbon::now();
-        return InviteProposed::with($this->inviteId);
+        $invite = new self(InviteId::of($inviteId), CollaboratorId::of($memberId), WorkspaceId::of($workspaceId));
+        $invite->proposed = $proposed;
+        $invite->accepted = $accepted;
+        return $invite;
     }
 
-    public function accept(): InviteAccepted
+    public function accept(): self
     {
         $this->accepted = Carbon::now();
-        return InviteAccepted::with($this->inviteId);
+        return $this->withEvents(InviteAccepted::of($this));
     }
 
-    public function discard(): InviteDiscarded
+    public function discard(): self
     {
-        return InviteDiscarded::with($this->inviteId);
+        return $this->withEvents(InviteDiscarded::of($this));
     }
 
-    public function reject(): InviteRejected
+    public function reject(): self
     {
-        return InviteRejected::with($this->inviteId);
-    }
-
-    public function isProposed(): bool
-    {
-        return $this->proposed !== null;
-    }
-
-    public function isAccepted(): bool
-    {
-        return $this->accepted !== null;
-    }
-
-    private function from(
-        string $inviteId,
-        string $memberId,
-        string $workspaceId,
-        ?Carbon $proposed,
-        ?Carbon $accepted,
-    ): self {
-        $this->inviteId = InviteId::of($inviteId);
-        $this->memberId = CollaboratorId::of($memberId);
-        $this->workspaceId = WorkspaceId::of($workspaceId);
-        $this->proposed = $proposed;
-        $this->accepted = $accepted;
-        return $this;
+        return $this->withEvents(InviteRejected::of($this));
     }
 }

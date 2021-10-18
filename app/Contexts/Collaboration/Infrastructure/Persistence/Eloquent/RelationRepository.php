@@ -5,6 +5,7 @@ namespace App\Contexts\Collaboration\Infrastructure\Persistence\Eloquent;
 use App\Contexts\Collaboration\Domain\Model\Relation\Relation;
 use App\Contexts\Collaboration\Domain\Model\Relation\RelationId;
 use App\Contexts\Collaboration\Domain\Persistence\Contracts\RelationRepositoryInterface;
+use App\Contexts\Collaboration\Infrastructure\Exceptions\RelationNotFoundException;
 use App\Models\Relation as EloquentRelation;
 use ReflectionClass;
 
@@ -18,14 +19,11 @@ class RelationRepository implements RelationRepositoryInterface
         );
     }
 
-    public function take(RelationId $relationId = null): ?Relation
+    public function take(RelationId $relationId = null): Relation
     {
         /** @var EloquentRelation $eloquentRelation */
         $eloquentRelation = EloquentRelation::query()->find((string) $relationId);
-        if ($eloquentRelation === null) {
-            return null;
-        }
-        return $this->relationFromData($eloquentRelation);
+        return $eloquentRelation ? $this->relationFromData($eloquentRelation) : throw new RelationNotFoundException((string) $relationId);
     }
 
     private function relationAsData(Relation $relation): array
@@ -57,13 +55,7 @@ class RelationRepository implements RelationRepositoryInterface
 
     private function relationFromData(EloquentRelation $eloquentRelation): Relation
     {
-        $reflection = new ReflectionClass(Relation::class);
-        $creator = $reflection->getMethod('from');
-        $creator?->setAccessible(true);
-        /** @var Relation $relation */
-        $relation = $reflection->newInstanceWithoutConstructor();
-
-        $creator?->invoke($relation,
+        $relation = Relation::restore(
             $eloquentRelation->id,
             $eloquentRelation->collaborator_id,
             $eloquentRelation->workspace_id,
