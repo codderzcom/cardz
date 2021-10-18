@@ -5,6 +5,10 @@ namespace App\Contexts\Collaboration;
 use App\Contexts\Collaboration\Application\Controllers\Consumers\InviteAcceptedConsumer;
 use App\Contexts\Collaboration\Application\Controllers\Consumers\RelationEnteredConsumer;
 use App\Contexts\Collaboration\Application\Controllers\Consumers\WorkspacesWorkspaceAddedConsumer;
+use App\Contexts\Collaboration\Application\Services\InviteAppService;
+use App\Contexts\Collaboration\Application\Services\KeeperAppService;
+use App\Contexts\Collaboration\Application\Services\MemberAppService;
+use App\Contexts\Collaboration\Application\Services\RelationAppService;
 use App\Contexts\Collaboration\Domain\Persistence\Contracts\InviteRepositoryInterface;
 use App\Contexts\Collaboration\Domain\Persistence\Contracts\KeeperRepositoryInterface;
 use App\Contexts\Collaboration\Domain\Persistence\Contracts\MemberRepositoryInterface;
@@ -22,8 +26,10 @@ use App\Contexts\Collaboration\Infrastructure\ReadStorage\Eloquent\AcceptedInvit
 use App\Contexts\Collaboration\Infrastructure\ReadStorage\Eloquent\AddedWorkspaceReadStorage;
 use App\Contexts\Collaboration\Infrastructure\ReadStorage\Eloquent\EnteredRelationReadStorage;
 use App\Contexts\Collaboration\Integration\Consumers\WorkspacesNewWorkspaceRegisteredConsumer;
+use App\Shared\Contracts\Commands\CommandBusInterface;
 use App\Shared\Contracts\Messaging\IntegrationEventBusInterface;
 use App\Shared\Contracts\ReportingBusInterface;
+use App\Shared\Infrastructure\CommandHandling\SimpleAutoCommandHandlerProvider;
 use Illuminate\Support\ServiceProvider;
 
 class CollaborationProvider extends ServiceProvider
@@ -45,8 +51,16 @@ class CollaborationProvider extends ServiceProvider
     public function boot(
         ReportingBusInterface $reportingBus,
         IntegrationEventBusInterface $integrationEventBus,
-    )
-    {
+        InviteAppService $inviteAppService,
+        KeeperAppService $keeperAppService,
+        MemberAppService $memberAppService,
+        RelationAppService $relationAppService,
+        CommandBusInterface $commandBus,
+    ) {
+        $commandBus->registerProvider(SimpleAutoCommandHandlerProvider::parse(
+            $inviteAppService, $keeperAppService, $memberAppService, $relationAppService,
+        ));
+
         $reportingBus->subscribe($this->app->make(InviteAcceptedConsumer::class));
         $reportingBus->subscribe($this->app->make(RelationEnteredConsumer::class));
         $reportingBus->subscribe($this->app->make(WorkspacesWorkspaceAddedConsumer::class));

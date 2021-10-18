@@ -40,8 +40,7 @@ class PlansProvider extends ServiceProvider
         CommandBusInterface $commandBus,
         DomainEventBusInterface $domainEventBus,
     ) {
-        $commandBus->registerProvider(SimpleAutoCommandHandlerProvider::parse($planAppService));
-        $commandBus->registerProvider(SimpleAutoCommandHandlerProvider::parse($requirementAppService));
+        $commandBus->registerProvider(SimpleAutoCommandHandlerProvider::parse($planAppService, $requirementAppService));
 
         $domainEventBus->subscribe($this->app->make(PlanDomainEventsConsumer::class));
         $domainEventBus->subscribe($this->app->make(RequirementChangedDomainEventsConsumer::class));

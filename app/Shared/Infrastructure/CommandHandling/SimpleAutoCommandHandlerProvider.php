@@ -21,13 +21,11 @@ class SimpleAutoCommandHandlerProvider implements CommandHandlerProviderInterfac
     {
     }
 
-    public static function parse(object $handlerCollection): static
+    public static function parse(object ...$handlerCollections): static
     {
         $provider = new static();
-        $reflection = new ReflectionClass($handlerCollection);
-        $methods = $reflection->getMethods(ReflectionMethod::IS_PUBLIC);
-        foreach ($methods as $method) {
-            $provider->registerMethod($handlerCollection, $method);
+        foreach ($handlerCollections as $handlerCollection) {
+            $provider->registerHandlerCollection($handlerCollection);
         }
         return $provider;
     }
@@ -35,6 +33,15 @@ class SimpleAutoCommandHandlerProvider implements CommandHandlerProviderInterfac
     public function getHandlers(): array
     {
         return $this->handlers;
+    }
+
+    protected function registerHandlerCollection(object $handlerCollection): void
+    {
+        $reflection = new ReflectionClass($handlerCollection);
+        $methods = $reflection->getMethods(ReflectionMethod::IS_PUBLIC);
+        foreach ($methods as $method) {
+            $this->registerMethod($handlerCollection, $method);
+        }
     }
 
     protected function registerMethod(object $handlerCollection, ReflectionMethod $method): void

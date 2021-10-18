@@ -9,8 +9,6 @@ use App\Contexts\Collaboration\Domain\Model\Invite\InviteId;
 use App\Contexts\Collaboration\Domain\Persistence\Contracts\InviteRepositoryInterface;
 use App\Contexts\Collaboration\Domain\Persistence\Contracts\KeeperRepositoryInterface;
 use App\Contexts\Collaboration\Infrastructure\Messaging\DomainEventBusInterface;
-use App\Shared\Contracts\ReportingBusInterface;
-use App\Shared\Contracts\ServiceResultFactoryInterface;
 use App\Shared\Infrastructure\Support\ReportingServiceTrait;
 
 class InviteAppService
@@ -20,9 +18,7 @@ class InviteAppService
     public function __construct(
         private KeeperRepositoryInterface $keeperRepository,
         private InviteRepositoryInterface $inviteRepository,
-        private ReportingBusInterface $reportingBus,
         private DomainEventBusInterface $domainEventBus,
-        private ServiceResultFactoryInterface $serviceResultFactory,
     ) {
     }
 

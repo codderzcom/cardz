@@ -29,8 +29,7 @@ class AuthProvider extends ServiceProvider
         DomainEventBusInterface $domainEventBus,
         CommandBusInterface $commandBus,
     ) {
-        $commandBus->registerProvider(SimpleAutoCommandHandlerProvider::parse($userAppService));
-        $commandBus->registerProvider(SimpleAutoCommandHandlerProvider::parse($tokenAppService));
+        $commandBus->registerProvider(SimpleAutoCommandHandlerProvider::parse($userAppService, $tokenAppService));
 
         $domainEventBus->subscribe($this->app->make(TokenAssignedConsumer::class));
         $domainEventBus->subscribe($this->app->make(UserProfileProvidedConsumer::class));

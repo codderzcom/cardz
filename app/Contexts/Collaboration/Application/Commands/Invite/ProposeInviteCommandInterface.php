@@ -2,15 +2,14 @@
 
 namespace App\Contexts\Collaboration\Application\Commands\Invite;
 
+use App\Contexts\Collaboration\Domain\Model\Collaborator\CollaboratorId;
 use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
-use App\Contexts\MobileAppBack\Domain\Model\Collaboration\MemberId;
-use App\Contexts\Workspaces\Domain\Model\Workspace\KeeperId;
 
 interface ProposeInviteCommandInterface extends InviteCommandInterface
 {
-    public function getKeeperId(): KeeperId;
+    public function getKeeperId(): CollaboratorId;
 
-    public function getMemberId(): MemberId;
+    public function getMemberId(): CollaboratorId;
 
     public function getWorkspaceId(): WorkspaceId;
 }

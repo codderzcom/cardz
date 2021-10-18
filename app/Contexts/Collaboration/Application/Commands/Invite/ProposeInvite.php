@@ -2,10 +2,9 @@
 
 namespace App\Contexts\Collaboration\Application\Commands\Invite;
 
+use App\Contexts\Collaboration\Domain\Model\Collaborator\CollaboratorId;
 use App\Contexts\Collaboration\Domain\Model\Invite\InviteId;
 use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
-use App\Contexts\MobileAppBack\Domain\Model\Collaboration\MemberId;
-use App\Contexts\Workspaces\Domain\Model\Workspace\KeeperId;
 
 final class ProposeInvite implements ProposeInviteCommandInterface
 {
@@ -27,14 +26,14 @@ final class ProposeInvite implements ProposeInviteCommandInterface
         return InviteId::of($this->inviteId);
     }
 
-    public function getKeeperId(): KeeperId
+    public function getKeeperId(): CollaboratorId
     {
-        return KeeperId::of($this->keeperId);
+        return CollaboratorId::of($this->keeperId);
     }
 
-    public function getMemberId(): MemberId
+    public function getMemberId(): CollaboratorId
     {
-        return MemberId::of($this->memberId);
+        return CollaboratorId::of($this->memberId);
     }
 
     public function getWorkspaceId(): WorkspaceId
