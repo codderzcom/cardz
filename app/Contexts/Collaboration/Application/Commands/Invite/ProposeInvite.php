@@ -4,7 +4,7 @@ namespace App\Contexts\Collaboration\Application\Commands\Invite;
 
 use App\Contexts\Collaboration\Domain\Model\Collaborator\CollaboratorId;
 use App\Contexts\Collaboration\Domain\Model\Invite\InviteId;
-use App\Contexts\Collaboration\Domain\Model\Keeper\KeeperId;
+use App\Contexts\Collaboration\Domain\Model\Workspace\KeeperId;
 use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
 
 final class ProposeInvite implements ProposeInviteCommandInterface

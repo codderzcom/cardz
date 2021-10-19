@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contexts\Collaboration\Domain\Model\Keeper;
+namespace App\Contexts\Collaboration\Domain\Model\Workspace;
 
 use App\Contexts\Collaboration\Domain\Model\Collaborator\CollaboratorId;
 use App\Contexts\Collaboration\Domain\Model\Invite\Invite;
@@ -9,7 +9,6 @@ use App\Contexts\Collaboration\Domain\Model\Invite\InviterId;
 use App\Contexts\Collaboration\Domain\Model\Relation\Relation;
 use App\Contexts\Collaboration\Domain\Model\Relation\RelationId;
 use App\Contexts\Collaboration\Domain\Model\Relation\RelationType;
-use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
 
 final class Keeper
 {
@@ -31,7 +30,7 @@ final class Keeper
 
     public function keep(): Relation
     {
-        return Relation::enter(RelationId::make(), $this->getCollaboratorId(), $this->workspaceId, RelationType::KEEPER());
+        return Relation::register(RelationId::make(), $this->getCollaboratorId(), $this->workspaceId, RelationType::KEEPER());
     }
 
     private function getInviterId(): InviterId

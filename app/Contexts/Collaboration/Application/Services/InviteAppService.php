@@ -25,7 +25,7 @@ class InviteAppService
     public function accept(AcceptInviteCommandInterface $command): InviteId
     {
         $invite = $this->inviteRepository->take($command->getInviteId());
-        $invite->accept();
+        $invite->accept($command->getCollaboratorId());
         $this->inviteRepository->persist($invite);
         $this->domainEventBus->publish(...$invite->releaseEvents());
         return $invite->inviteId;

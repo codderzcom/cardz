@@ -10,14 +10,14 @@ final class AcceptInvite implements AcceptInviteCommandInterface
 {
     private function __construct(
         private string $inviteId,
-        private string $memberId,
+        private string $collaboratorId,
         private string $workspaceId,
     ) {
     }
 
-    public static function of(string $inviteId, string $memberId, string $workspaceId): self
+    public static function of(string $inviteId, string $collaboratorId, string $workspaceId): self
     {
-        return new self($inviteId, $memberId, $workspaceId);
+        return new self($inviteId, $collaboratorId, $workspaceId);
     }
 
     public function getInviteId(): InviteId
@@ -25,9 +25,9 @@ final class AcceptInvite implements AcceptInviteCommandInterface
         return InviteId::of($this->inviteId);
     }
 
-    public function getMemberId(): CollaboratorId
+    public function getCollaboratorId(): CollaboratorId
     {
-        return CollaboratorId::of($this->memberId);
+        return CollaboratorId::of($this->collaboratorId);
     }
 
     public function getWorkspaceId(): WorkspaceId

@@ -7,7 +7,7 @@ use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
 
 interface AcceptInviteCommandInterface extends InviteCommandInterface
 {
-    public function getMemberId(): CollaboratorId;
+    public function getCollaboratorId(): CollaboratorId;
 
     public function getWorkspaceId(): WorkspaceId;
 }

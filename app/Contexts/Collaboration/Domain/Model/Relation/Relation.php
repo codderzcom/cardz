@@ -27,7 +27,7 @@ final class Relation implements AggregateRootInterface
     ) {
     }
 
-    public static function enter(RelationId $relationId, CollaboratorId $collaboratorId, WorkspaceId $workspaceId, RelationType $relationType): self
+    public static function register(RelationId $relationId, CollaboratorId $collaboratorId, WorkspaceId $workspaceId, RelationType $relationType): self
     {
         $relation = new self($relationId, $collaboratorId, $workspaceId, $relationType);
         $relation->entered = Carbon::now();

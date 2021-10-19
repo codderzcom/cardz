@@ -4,8 +4,8 @@ namespace App\Contexts\Collaboration\Application\Services;
 
 use App\Contexts\Collaboration\Application\Commands\Invite\ProposeInviteCommandInterface;
 use App\Contexts\Collaboration\Domain\Model\Invite\InviteId;
-use App\Contexts\Collaboration\Domain\Model\Keeper\KeeperId;
 use App\Contexts\Collaboration\Domain\Model\Relation\RelationId;
+use App\Contexts\Collaboration\Domain\Model\Workspace\KeeperId;
 use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
 use App\Contexts\Collaboration\Domain\Persistence\Contracts\InviteRepositoryInterface;
 use App\Contexts\Collaboration\Domain\Persistence\Contracts\KeeperRepositoryInterface;

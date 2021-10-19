@@ -19,7 +19,7 @@ final class Invite implements AggregateRootInterface
 
     private ?Carbon $proposed = null;
 
-    private ?CollaboratorId $memberId = null;
+    private ?CollaboratorId $collaboratorId = null;
 
     private ?Carbon $accepted = null;
 
@@ -37,21 +37,27 @@ final class Invite implements AggregateRootInterface
         return $invite->withEvents(InviteProposed::of($invite));
     }
 
-    public static function restore(string $inviteId, string $inviterId, string $workspaceId, ?string $memberId, ?Carbon $proposed, ?Carbon $accepted): self
-    {
+    public static function restore(
+        string $inviteId,
+        string $inviterId,
+        string $workspaceId,
+        ?string $collaboratorId,
+        ?Carbon $proposed,
+        ?Carbon $accepted
+    ): self {
         $invite = new self(InviteId::of($inviteId), InviterId::of($inviterId), WorkspaceId::of($workspaceId));
-        $invite->memberId = $memberId !== null ? CollaboratorId::of($memberId) : null;
+        $invite->collaboratorId = $collaboratorId !== null ? CollaboratorId::of($collaboratorId) : null;
         $invite->proposed = $proposed;
         $invite->accepted = $accepted;
         return $invite;
     }
 
-    public function accept(CollaboratorId $memberId): self
+    public function accept(CollaboratorId $collaboratorId): self
     {
-        if ($this->inviterId->equals($memberId)) {
+        if ($this->inviterId->equals($collaboratorId)) {
             throw new CannotAcceptOwnInviteException();
         }
-        $this->memberId = $memberId;
+        $this->collaboratorId = $collaboratorId;
         $this->accepted = Carbon::now();
         return $this->withEvents(InviteAccepted::of($this));
     }

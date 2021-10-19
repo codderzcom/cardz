@@ -2,7 +2,7 @@
 
 namespace App\Contexts\Collaboration\Domain\ReadModel;
 
-use App\Contexts\Collaboration\Domain\Model\Keeper\KeeperId;
+use App\Contexts\Collaboration\Domain\Model\Workspace\KeeperId;
 use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
 
 final class AddedWorkspace
