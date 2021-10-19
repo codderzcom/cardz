@@ -79,7 +79,6 @@ Route::group(['prefix' => '/collaboration/v1'], function () {
     Route::post('/invite', [InviteController::class, 'propose'])->name('ProposeInvite');
     Route::group(['prefix' => '/invite/{inviteId}'], function () {
         Route::post('/accept', [InviteController::class, 'accept'])->name('AcceptInvite');
-        Route::post('/reject', [InviteController::class, 'reject'])->name('RejectInvite');
         Route::post('/discard', [InviteController::class, 'discard'])->name('DiscardInvite');
     });
 });

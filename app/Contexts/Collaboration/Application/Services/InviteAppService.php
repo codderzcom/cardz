@@ -22,24 +22,6 @@ class InviteAppService
     ) {
     }
 
-    public function accept(AcceptInviteCommandInterface $command): InviteId
-    {
-        $invite = $this->inviteRepository->take($command->getInviteId());
-        $invite->accept($command->getCollaboratorId());
-        $this->inviteRepository->persist($invite);
-        $this->domainEventBus->publish(...$invite->releaseEvents());
-        return $invite->inviteId;
-    }
-
-    public function reject(RejectInviteCommandInterface $command): InviteId
-    {
-        $invite = $this->inviteRepository->take($command->getInviteId());
-        $invite->reject();
-        $this->inviteRepository->remove($invite->inviteId);
-        $this->domainEventBus->publish(...$invite->releaseEvents());
-        return $invite->inviteId;
-    }
-
     public function discard(DiscardInviteCommandInterface $command): InviteId
     {
         $invite = $this->inviteRepository->take($command->getInviteId());

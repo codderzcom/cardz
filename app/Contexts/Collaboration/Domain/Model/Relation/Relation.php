@@ -5,7 +5,6 @@ namespace App\Contexts\Collaboration\Domain\Model\Relation;
 use App\Contexts\Collaboration\Domain\Events\Relation\RelationEntered;
 use App\Contexts\Collaboration\Domain\Events\Relation\RelationLeft;
 use App\Contexts\Collaboration\Domain\Exceptions\InvalidOperationException;
-use App\Contexts\Collaboration\Domain\Model\Collaborator\CollaboratorId;
 use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
 use App\Shared\Contracts\Domain\AggregateRootInterface;
 use App\Shared\Infrastructure\Support\Domain\AggregateRootTrait;

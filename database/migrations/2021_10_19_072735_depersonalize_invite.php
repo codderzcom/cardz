@@ -14,6 +14,7 @@ class DepersonalizeInvite extends Migration
     public function up()
     {
         Schema::table('invites', function(Blueprint $table) {
+            $table->dropColumn('accepted_at');
             $table->uuid('member_id')->nullable()->change();
             $table->uuid('inviter_id')->index();
         });
@@ -41,6 +42,7 @@ class DepersonalizeInvite extends Migration
         });
 
         Schema::table('invites', function(Blueprint $table) {
+            $table->dateTime('accepted_at')->nullable()->index();
             $table->uuid('member_id')->nullable(false)->change();
             $table->dropColumn('inviter_id');
         });

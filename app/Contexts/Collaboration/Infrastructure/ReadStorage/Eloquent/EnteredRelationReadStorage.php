@@ -2,7 +2,7 @@
 
 namespace App\Contexts\Collaboration\Infrastructure\ReadStorage\Eloquent;
 
-use App\Contexts\Collaboration\Domain\Model\Collaborator\CollaboratorId;
+use App\Contexts\Collaboration\Domain\Model\Relation\CollaboratorId;
 use App\Contexts\Collaboration\Domain\Model\Relation\RelationId;
 use App\Contexts\Collaboration\Domain\Model\Relation\RelationType;
 use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;

@@ -2,10 +2,10 @@
 
 namespace App\Contexts\Collaboration\Domain\Model\Workspace;
 
-use App\Contexts\Collaboration\Domain\Model\Collaborator\CollaboratorId;
 use App\Contexts\Collaboration\Domain\Model\Invite\Invite;
 use App\Contexts\Collaboration\Domain\Model\Invite\InviteId;
 use App\Contexts\Collaboration\Domain\Model\Invite\InviterId;
+use App\Contexts\Collaboration\Domain\Model\Relation\CollaboratorId;
 use App\Contexts\Collaboration\Domain\Model\Relation\Relation;
 use App\Contexts\Collaboration\Domain\Model\Relation\RelationId;
 use App\Contexts\Collaboration\Domain\Model\Relation\RelationType;
