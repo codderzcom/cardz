@@ -2,14 +2,19 @@
 
 namespace App\Contexts\Collaboration\Domain\ReadModel;
 
-use App\Contexts\Collaboration\Domain\Model\Collaborator\CollaboratorId;
+use App\Contexts\Collaboration\Domain\Model\Keeper\KeeperId;
 use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
 
 final class AddedWorkspace
 {
-    public function __construct(
+    private function __construct(
         public WorkspaceId $workspaceId,
-        public CollaboratorId $collaboratorId,
+        public KeeperId $keeperId,
     ) {
+    }
+
+    public static function restore(string $workspaceId, string $keeperId): self
+    {
+        return new self(WorkspaceId::of($workspaceId), KeeperId::of($keeperId));
     }
 }

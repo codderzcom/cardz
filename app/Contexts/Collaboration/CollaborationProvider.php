@@ -4,7 +4,6 @@ namespace App\Contexts\Collaboration;
 
 use App\Contexts\Collaboration\Application\Controllers\Consumers\InviteAcceptedConsumer;
 use App\Contexts\Collaboration\Application\Controllers\Consumers\RelationEnteredConsumer;
-use App\Contexts\Collaboration\Application\Controllers\Consumers\WorkspacesWorkspaceAddedConsumer;
 use App\Contexts\Collaboration\Application\Services\InviteAppService;
 use App\Contexts\Collaboration\Application\Services\KeeperAppService;
 use App\Contexts\Collaboration\Application\Services\MemberAppService;
@@ -63,7 +62,6 @@ class CollaborationProvider extends ServiceProvider
 
         $reportingBus->subscribe($this->app->make(InviteAcceptedConsumer::class));
         $reportingBus->subscribe($this->app->make(RelationEnteredConsumer::class));
-        $reportingBus->subscribe($this->app->make(WorkspacesWorkspaceAddedConsumer::class));
 
         $integrationEventBus->subscribe($this->app->make(WorkspacesNewWorkspaceRegisteredConsumer::class));
     }

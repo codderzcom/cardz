@@ -8,7 +8,7 @@ use App\Contexts\Workspaces\Integration\Events\NewWorkspaceRegistered;
 use App\Shared\Contracts\Messaging\IntegrationEventConsumerInterface;
 use function json_try_decode;
 
-class WorkspacesNewWorkspaceRegisteredConsumer implements IntegrationEventConsumerInterface
+final class WorkspacesNewWorkspaceRegisteredConsumer implements IntegrationEventConsumerInterface
 {
     public function __construct(
         private KeeperAppService $keeperAppService,
@@ -28,11 +28,12 @@ class WorkspacesNewWorkspaceRegisteredConsumer implements IntegrationEventConsum
     {
         $data = json_try_decode($event, true);
         $workspaceId = $data['workspaceId'] ?? null;
+        //ToDo: переделать на query?
         $addedWorkspace = $this->addedWorkspaceReadStorage->find($workspaceId);
         if ($addedWorkspace === null) {
             return;
         }
-        $this->keeperAppService->bindWorkspace($addedWorkspace->collaboratorId, $addedWorkspace->workspaceId);
+        $this->keeperAppService->keepWorkspace($addedWorkspace->keeperId, $addedWorkspace->workspaceId);
     }
 
 }

@@ -6,6 +6,7 @@ use App\Contexts\Collaboration\Domain\Events\Invite\InviteAccepted;
 use App\Contexts\Collaboration\Domain\Events\Invite\InviteDiscarded;
 use App\Contexts\Collaboration\Domain\Events\Invite\InviteProposed;
 use App\Contexts\Collaboration\Domain\Events\Invite\InviteRejected;
+use App\Contexts\Collaboration\Domain\Exceptions\CannotAcceptOwnInviteException;
 use App\Contexts\Collaboration\Domain\Model\Collaborator\CollaboratorId;
 use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
 use App\Shared\Contracts\Domain\AggregateRootInterface;
@@ -18,32 +19,39 @@ final class Invite implements AggregateRootInterface
 
     private ?Carbon $proposed = null;
 
+    private ?CollaboratorId $memberId = null;
+
     private ?Carbon $accepted = null;
 
     private function __construct(
         public InviteId $inviteId,
-        public CollaboratorId $memberId,
+        public InviterId $inviterId,
         public WorkspaceId $workspaceId,
     ) {
     }
 
-    public static function propose(InviteId $inviteId, CollaboratorId $memberId, WorkspaceId $workspaceId): self
+    public static function propose(InviteId $inviteId, InviterId $inviterId, WorkspaceId $workspaceId): self
     {
-        $invite = new self($inviteId, $memberId, $workspaceId);
+        $invite = new self($inviteId, $inviterId, $workspaceId);
         $invite->proposed = Carbon::now();
         return $invite->withEvents(InviteProposed::of($invite));
     }
 
-    public static function restore(string $inviteId, string $memberId, string $workspaceId, ?Carbon $proposed, ?Carbon $accepted): self
+    public static function restore(string $inviteId, string $inviterId, string $workspaceId, ?string $memberId, ?Carbon $proposed, ?Carbon $accepted): self
     {
-        $invite = new self(InviteId::of($inviteId), CollaboratorId::of($memberId), WorkspaceId::of($workspaceId));
+        $invite = new self(InviteId::of($inviteId), InviterId::of($inviterId), WorkspaceId::of($workspaceId));
+        $invite->memberId = $memberId !== null ? CollaboratorId::of($memberId) : null;
         $invite->proposed = $proposed;
         $invite->accepted = $accepted;
         return $invite;
     }
 
-    public function accept(): self
+    public function accept(CollaboratorId $memberId): self
     {
+        if ($this->inviterId->equals($memberId)) {
+            throw new CannotAcceptOwnInviteException();
+        }
+        $this->memberId = $memberId;
         $this->accepted = Carbon::now();
         return $this->withEvents(InviteAccepted::of($this));
     }

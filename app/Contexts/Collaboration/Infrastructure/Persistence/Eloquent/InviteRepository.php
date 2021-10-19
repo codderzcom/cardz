@@ -35,6 +35,7 @@ class InviteRepository implements InviteRepositoryInterface
     {
         $reflection = new ReflectionClass($invite);
         $properties = [
+            'memberId' => null,
             'proposed' => null,
             'accepted' => null,
         ];
@@ -47,8 +48,9 @@ class InviteRepository implements InviteRepositoryInterface
 
         $data = [
             'id' => (string) $invite->inviteId,
-            'member_id' => (string) $invite->memberId,
+            'inviter_id' => (string) $invite->inviterId,
             'workspace_id' => (string) $invite->workspaceId,
+            'member_id' => $properties['memberId'] !== null ? (string) $properties['memberId'] : null,
             'proposed_at' => $properties['proposed'],
             'accepted_at' => $properties['accepted'],
         ];
@@ -60,8 +62,9 @@ class InviteRepository implements InviteRepositoryInterface
     {
         $invite = Invite::restore(
             $eloquentInvite->id,
-            $eloquentInvite->member_id,
+            $eloquentInvite->inviter_id,
             $eloquentInvite->workspace_id,
+            $eloquentInvite->member_id,
             $eloquentInvite->proposed_at,
             $eloquentInvite->accepted_at,
         );
