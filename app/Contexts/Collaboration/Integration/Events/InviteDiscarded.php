@@ -5,9 +5,6 @@ namespace App\Contexts\Collaboration\Integration\Events;
 use JetBrains\PhpStorm\Immutable;
 
 #[Immutable]
-final class InviteDiscarded extends BaseIntegrationEvent
+final class InviteDiscarded extends BaseInviteIntegrationEvent
 {
-    protected string $in = 'Collaboration';
-
-    protected string $of = 'Invite';
 }

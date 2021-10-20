@@ -23,14 +23,14 @@ final class Keeper
         return new self(KeeperId::of($keeperId), WorkspaceId::of($workspaceId));
     }
 
-    public function invite(): Invite
+    public function invite(InviteId $inviteId): Invite
     {
-        return Invite::propose(InviteId::make(), $this->getInviterId(), $this->workspaceId);
+        return Invite::propose($inviteId, $this->getInviterId(), $this->workspaceId);
     }
 
-    public function keep(): Relation
+    public function keep(RelationId $relationId): Relation
     {
-        return Relation::register(RelationId::make(), $this->getCollaboratorId(), $this->workspaceId, RelationType::KEEPER());
+        return Relation::establish($relationId, $this->getCollaboratorId(), $this->workspaceId, RelationType::KEEPER());
     }
 
     private function getInviterId(): InviterId

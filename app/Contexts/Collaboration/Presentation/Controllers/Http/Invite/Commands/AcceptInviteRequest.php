@@ -10,16 +10,13 @@ class AcceptInviteRequest extends FormRequest
 {
     public string $inviteId;
 
-    public string $memberId;
-
-    public string $workspaceId;
+    public string $collaboratorId;
 
     public function rules(): array
     {
         return [
             'inviteId' => 'required',
-            'memberId' => 'required',
-            'workspaceId' => 'required',
+            'collaboratorId' => 'required',
         ];
     }
 
@@ -27,16 +24,14 @@ class AcceptInviteRequest extends FormRequest
     {
         return [
             'inviteId.required' => 'inviteId required',
-            'memberId.required' => 'memberId required',
-            'workspaceId.required' => 'workspaceId required',
+            'collaboratorId.required' => 'collaboratorId required',
         ];
     }
 
     public function passedValidation(): void
     {
         $this->inviteId = $this->input('inviteId');
-        $this->memberId = $this->input('memberId');
-        $this->workspaceId = $this->input('workspaceId');
+        $this->collaboratorId = $this->input('collaboratorId');
     }
 
     protected function prepareForValidation(): void
@@ -48,7 +43,7 @@ class AcceptInviteRequest extends FormRequest
 
     public function toCommand(): AcceptInviteCommandInterface
     {
-        return AcceptInvite::of($this->inviteId, $this->memberId, $this->workspaceId);
+        return AcceptInvite::of($this->inviteId, $this->collaboratorId);
     }
 
 }

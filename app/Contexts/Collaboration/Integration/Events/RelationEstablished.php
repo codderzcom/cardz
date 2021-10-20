@@ -5,6 +5,6 @@ namespace App\Contexts\Collaboration\Integration\Events;
 use JetBrains\PhpStorm\Immutable;
 
 #[Immutable]
-final class RelationLeft extends BaseRelationIntegrationEvent
+final class RelationEstablished extends BaseRelationIntegrationEvent
 {
 }

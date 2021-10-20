@@ -8,36 +8,34 @@ use Illuminate\Foundation\Http\FormRequest;
 
 final class RelationRequest extends FormRequest
 {
-    public string $relationId;
+    public string $collaboratorId;
+
+    public string $workspaceId;
 
     public function rules(): array
     {
         return [
-            'relationId' => 'required',
+            'collaboratorId' => 'required',
+            'workspaceId' => 'required',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'relationId.required' => 'relationId required',
+            'collaboratorId.required' => 'collaboratorId required',
+            'workspaceId.required' => 'workspaceId required',
         ];
     }
 
     public function passedValidation(): void
     {
-        $this->relationId = $this->input('relationId');
-    }
-
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'relationId' => $this->route('relationId'),
-        ]);
+        $this->collaboratorId = $this->input('collaboratorId');
+        $this->workspaceId = $this->input('workspaceId');
     }
 
     public function toCommand(): LeaveRelationCommandInterface
     {
-        return LeaveRelation::of($this->relationId);
+        return LeaveRelation::of($this->collaboratorId, $this->workspaceId);
     }
 }

@@ -2,9 +2,7 @@
 
 namespace App\Contexts\Collaboration\Application\Services;
 
-use App\Contexts\Collaboration\Application\Commands\Invite\AcceptInviteCommandInterface;
 use App\Contexts\Collaboration\Application\Commands\Invite\DiscardInviteCommandInterface;
-use App\Contexts\Collaboration\Application\Commands\Invite\RejectInviteCommandInterface;
 use App\Contexts\Collaboration\Domain\Model\Invite\InviteId;
 use App\Contexts\Collaboration\Domain\Persistence\Contracts\InviteRepositoryInterface;
 use App\Contexts\Collaboration\Domain\Persistence\Contracts\KeeperRepositoryInterface;

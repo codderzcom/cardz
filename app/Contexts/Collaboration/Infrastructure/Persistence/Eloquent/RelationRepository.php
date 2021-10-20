@@ -2,8 +2,9 @@
 
 namespace App\Contexts\Collaboration\Infrastructure\Persistence\Eloquent;
 
+use App\Contexts\Collaboration\Domain\Model\Relation\CollaboratorId;
 use App\Contexts\Collaboration\Domain\Model\Relation\Relation;
-use App\Contexts\Collaboration\Domain\Model\Relation\RelationId;
+use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
 use App\Contexts\Collaboration\Domain\Persistence\Contracts\RelationRepositoryInterface;
 use App\Contexts\Collaboration\Infrastructure\Exceptions\RelationNotFoundException;
 use App\Models\Relation as EloquentRelation;
@@ -19,11 +20,14 @@ class RelationRepository implements RelationRepositoryInterface
         );
     }
 
-    public function take(RelationId $relationId = null): Relation
+    public function find(CollaboratorId $collaboratorId, WorkspaceId $workspaceId): Relation
     {
         /** @var EloquentRelation $eloquentRelation */
-        $eloquentRelation = EloquentRelation::query()->find((string) $relationId);
-        return $eloquentRelation ? $this->relationFromData($eloquentRelation) : throw new RelationNotFoundException((string) $relationId);
+        $eloquentRelation = EloquentRelation::query()
+            ->where('collaborator_id', '=', (string) $collaboratorId)
+            ->where('workspace_id', '=', (string) $workspaceId)
+            ->first();
+        return $eloquentRelation ? $this->relationFromData($eloquentRelation) : throw new RelationNotFoundException();
     }
 
     private function relationAsData(Relation $relation): array
@@ -31,8 +35,7 @@ class RelationRepository implements RelationRepositoryInterface
         $reflection = new ReflectionClass($relation);
         $properties = [
             'relationType' => null,
-            'entered' => null,
-            'left' => null,
+            'established' => null,
         ];
 
         foreach ($properties as $key => $property) {
@@ -46,8 +49,7 @@ class RelationRepository implements RelationRepositoryInterface
             'collaborator_id' => (string) $relation->collaboratorId,
             'workspace_id' => (string) $relation->workspaceId,
             'relation_type' => (string) $properties['relationType'],
-            'entered_at' => $properties['entered'],
-            'left_at' => $properties['left'],
+            'established_at' => $properties['established'],
         ];
 
         return $data;
@@ -60,8 +62,7 @@ class RelationRepository implements RelationRepositoryInterface
             $eloquentRelation->collaborator_id,
             $eloquentRelation->workspace_id,
             $eloquentRelation->relation_type,
-            $eloquentRelation->entered_at,
-            $eloquentRelation->left_at,
+            $eloquentRelation->established_at,
         );
         return $relation;
     }

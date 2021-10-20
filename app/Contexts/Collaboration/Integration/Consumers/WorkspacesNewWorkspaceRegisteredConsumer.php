@@ -2,16 +2,17 @@
 
 namespace App\Contexts\Collaboration\Integration\Consumers;
 
-use App\Contexts\Collaboration\Application\Services\KeeperAppService;
+use App\Contexts\Collaboration\Application\Commands\Keeper\KeepWorkspace;
 use App\Contexts\Collaboration\Infrastructure\ReadStorage\Contracts\AddedWorkspaceReadStorageInterface;
 use App\Contexts\Workspaces\Integration\Events\NewWorkspaceRegistered;
+use App\Shared\Contracts\Commands\CommandBusInterface;
 use App\Shared\Contracts\Messaging\IntegrationEventConsumerInterface;
 use function json_try_decode;
 
 final class WorkspacesNewWorkspaceRegisteredConsumer implements IntegrationEventConsumerInterface
 {
     public function __construct(
-        private KeeperAppService $keeperAppService,
+        private CommandBusInterface $commandBus,
         private AddedWorkspaceReadStorageInterface $addedWorkspaceReadStorage,
     ) {
     }
@@ -33,7 +34,7 @@ final class WorkspacesNewWorkspaceRegisteredConsumer implements IntegrationEvent
         if ($addedWorkspace === null) {
             return;
         }
-        $this->keeperAppService->keepWorkspace($addedWorkspace->keeperId, $addedWorkspace->workspaceId);
+        $this->commandBus->dispatch(KeepWorkspace::of($addedWorkspace->keeperId, $addedWorkspace->workspaceId));
     }
 
 }

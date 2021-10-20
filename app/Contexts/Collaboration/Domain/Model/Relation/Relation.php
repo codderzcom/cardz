@@ -2,7 +2,7 @@
 
 namespace App\Contexts\Collaboration\Domain\Model\Relation;
 
-use App\Contexts\Collaboration\Domain\Events\Relation\RelationEntered;
+use App\Contexts\Collaboration\Domain\Events\Relation\RelationEstablished;
 use App\Contexts\Collaboration\Domain\Events\Relation\RelationLeft;
 use App\Contexts\Collaboration\Domain\Exceptions\InvalidOperationException;
 use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
@@ -14,9 +14,7 @@ final class Relation implements AggregateRootInterface
 {
     use AggregateRootTrait;
 
-    private ?Carbon $entered = null;
-
-    private ?Carbon $left = null;
+    private ?Carbon $established = null;
 
     private function __construct(
         public RelationId $relationId,
@@ -26,11 +24,11 @@ final class Relation implements AggregateRootInterface
     ) {
     }
 
-    public static function register(RelationId $relationId, CollaboratorId $collaboratorId, WorkspaceId $workspaceId, RelationType $relationType): self
+    public static function establish(RelationId $relationId, CollaboratorId $collaboratorId, WorkspaceId $workspaceId, RelationType $relationType): self
     {
         $relation = new self($relationId, $collaboratorId, $workspaceId, $relationType);
-        $relation->entered = Carbon::now();
-        return $relation->withEvents(RelationEntered::of($relation));
+        $relation->established = Carbon::now();
+        return $relation->withEvents(RelationEstablished::of($relation));
     }
 
     public static function restore(
@@ -38,12 +36,10 @@ final class Relation implements AggregateRootInterface
         string $collaboratorId,
         string $workspaceId,
         string $relationType,
-        ?Carbon $entered,
-        ?Carbon $left,
+        ?Carbon $established,
     ): self {
         $relation = new self(RelationId::of($relationId), CollaboratorId::of($collaboratorId), WorkspaceId::of($workspaceId), RelationType::of($relationType));
-        $relation->entered = $entered;
-        $relation->left = $left;
+        $relation->established = $established;
         return $relation;
     }
 
@@ -52,7 +48,6 @@ final class Relation implements AggregateRootInterface
         if ($this->relationType->equals(RelationType::KEEPER())) {
             throw new InvalidOperationException("Keeper is not allowed to leave");
         }
-        $this->left = Carbon::now();
         return $this->withEvents(RelationLeft::of($this));
     }
 }

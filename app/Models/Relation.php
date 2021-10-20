@@ -13,8 +13,7 @@ class Relation extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'entered_at' => 'datetime',
-        'left_at' => 'datetime',
+        'established_at' => 'datetime',
     ];
 
 }

@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Contexts\Collaboration\Application\Commands\Invite;
+namespace App\Contexts\Collaboration\Application\Commands\Keeper;
 
-use App\Contexts\Collaboration\Domain\Model\Invite\InviteId;
+use App\Contexts\Collaboration\Domain\Model\Relation\RelationId;
 use App\Contexts\Collaboration\Domain\Model\Workspace\KeeperId;
 use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
 
-final class ProposeInvite implements ProposeInviteCommandInterface
+final class KeepWorkspace implements KeepWorkspaceCommandInterface
 {
     private function __construct(
-        private string $inviteId,
+        private string $relationId,
         private string $keeperId,
         private string $workspaceId,
     ) {
@@ -17,12 +17,12 @@ final class ProposeInvite implements ProposeInviteCommandInterface
 
     public static function of(string $keeperId, string $workspaceId): self
     {
-        return new self(InviteId::makeValue(), $keeperId, $workspaceId);
+        return new self(RelationId::makeValue(), $keeperId, $workspaceId);
     }
 
-    public function getInviteId(): InviteId
+    public function getRelationId(): RelationId
     {
-        return InviteId::of($this->inviteId);
+        return RelationId::of($this->relationId);
     }
 
     public function getKeeperId(): KeeperId

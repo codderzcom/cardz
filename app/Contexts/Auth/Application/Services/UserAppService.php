@@ -24,7 +24,7 @@ class UserAppService
             throw new UserExistsException("User already registered");
         }
 
-        $user = User::register(UserId::make(), $command->getUserIdentity(), $command->getPassword(), $command->getProfile());
+        $user = User::register($command->getUserId(), $command->getUserIdentity(), $command->getPassword(), $command->getProfile());
         $this->userRepository->persist($user);
         $this->domainEventBus->publish(...$user->releaseEvents());
         return $user->userId;

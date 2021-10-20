@@ -74,13 +74,11 @@ Route::group(['prefix' => '/workspaces/v1'], function () {
 });
 
 Route::group(['prefix' => '/collaboration/v1'], function () {
-    Route::post('/relation/{relationId}/leave', [RelationController::class, 'leave'])->name('LeaveRelation');
+    Route::post('/relation/leave', [RelationController::class, 'leave'])->name('LeaveRelation');
 
     Route::post('/invite', [InviteController::class, 'propose'])->name('ProposeInvite');
-    Route::group(['prefix' => '/invite/{inviteId}'], function () {
-        Route::post('/accept', [InviteController::class, 'accept'])->name('AcceptInvite');
-        Route::post('/discard', [InviteController::class, 'discard'])->name('DiscardInvite');
-    });
+    Route::post('/invite/{inviteId}/accept', [InviteController::class, 'accept'])->name('AcceptInvite');
+    Route::post('/invite/{inviteId}/discard', [InviteController::class, 'discard'])->name('DiscardInvite');
 });
 
 Route::group(['prefix' => '/personal/v1/person/{personId}'], function () {

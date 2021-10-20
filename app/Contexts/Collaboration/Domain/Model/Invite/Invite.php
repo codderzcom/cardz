@@ -2,6 +2,7 @@
 
 namespace App\Contexts\Collaboration\Domain\Model\Invite;
 
+use App\Contexts\Collaboration\Domain\Events\Invite\InviteAccepted;
 use App\Contexts\Collaboration\Domain\Events\Invite\InviteDiscarded;
 use App\Contexts\Collaboration\Domain\Events\Invite\InviteProposed;
 use App\Contexts\Collaboration\Domain\Exceptions\CannotAcceptOwnInviteException;
@@ -45,16 +46,21 @@ final class Invite implements AggregateRootInterface
         return $invite;
     }
 
-    public function accept(CollaboratorId $collaboratorId): Relation
+    public function accept(CollaboratorId $collaboratorId): self
     {
         if ($this->inviterId->equals($collaboratorId)) {
             throw new CannotAcceptOwnInviteException();
         }
-        return Relation::register(RelationId::make(), $collaboratorId, $this->workspaceId, RelationType::MEMBER());
+        return $this->withEvents(InviteAccepted::of($this));
     }
 
     public function discard(): self
     {
         return $this->withEvents(InviteDiscarded::of($this));
+    }
+
+    public function establishRelation(RelationId $relationId, CollaboratorId $collaboratorId): Relation
+    {
+        return Relation::establish($relationId, $collaboratorId, $this->workspaceId, RelationType::MEMBER());
     }
 }

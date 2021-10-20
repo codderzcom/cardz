@@ -21,18 +21,23 @@ class RelationAppService
     ) {
     }
 
-    public function collaborate(AcceptInviteCommandInterface $command): RelationId
+    public function acceptInvite(AcceptInviteCommandInterface $command): RelationId
     {
+        //ToDo: нарушение рекомендации 1 агрегат на 1 команду.
+
         $invite = $this->inviteRepository->take($command->getInviteId());
-        $relation = $invite->accept($command->getCollaboratorId());
+        $invite->accept($command->getCollaboratorId());
+
+        $relation = $invite->establishRelation($command->getRelationId(), $command->getCollaboratorId());
         $this->relationRepository->persist($relation);
-        $this->domainEventBus->publish(...$relation->releaseEvents());
+
+        $this->domainEventBus->publish(...$invite->releaseEvents(), ...$relation->releaseEvents());
         return $relation->relationId;
     }
 
     public function leave(LeaveRelationCommandInterface $command): RelationId
     {
-        $relation = $this->relationRepository->take($command->getRelationId());
+        $relation = $this->relationRepository->find($command->getCollaboratorId(), $command->getWorkspaceId());
         $relation->leave();
         $this->relationRepository->persist($relation);
         $this->domainEventBus->publish(...$relation->releaseEvents());

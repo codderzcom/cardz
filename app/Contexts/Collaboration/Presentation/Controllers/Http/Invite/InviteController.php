@@ -20,7 +20,7 @@ class InviteController extends BaseController
     {
         $command = $request->toCommand();
         $this->commandBus->dispatch($command);
-        $this->response($command->getInviteId());
+        return $this->response($command->getInviteId());
     }
 
     public function accept(AcceptInviteRequest $request): JsonResponse

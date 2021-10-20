@@ -18,6 +18,6 @@ class RelationController extends BaseController
     {
         $command = $request->toCommand();
         $this->commandBus->dispatch($command);
-        return $this->response($command->getRelationId());
+        return $this->response('Ok');
     }
 }

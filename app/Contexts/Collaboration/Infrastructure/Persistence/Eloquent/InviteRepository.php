@@ -35,9 +35,7 @@ class InviteRepository implements InviteRepositoryInterface
     {
         $reflection = new ReflectionClass($invite);
         $properties = [
-            'collaboratorId' => null,
             'proposed' => null,
-            'accepted' => null,
         ];
 
         foreach ($properties as $key => $property) {
@@ -50,9 +48,7 @@ class InviteRepository implements InviteRepositoryInterface
             'id' => (string) $invite->inviteId,
             'inviter_id' => (string) $invite->inviterId,
             'workspace_id' => (string) $invite->workspaceId,
-            'member_id' => $properties['collaboratorId'] !== null ? (string) $properties['collaboratorId'] : null,
             'proposed_at' => $properties['proposed'],
-            'accepted_at' => $properties['accepted'],
         ];
 
         return $data;
@@ -64,8 +60,6 @@ class InviteRepository implements InviteRepositoryInterface
             $eloquentInvite->id,
             $eloquentInvite->inviter_id,
             $eloquentInvite->workspace_id,
-            $eloquentInvite->collaborator_id,
-            $eloquentInvite->proposed_at,
             $eloquentInvite->accepted_at,
         );
         return $invite;
