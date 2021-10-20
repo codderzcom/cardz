@@ -10,7 +10,7 @@ use App\Contexts\MobileAppBack\Application\Controllers\Web\Customer\WorkspaceCon
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\CardController as MABCardController;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\PlanController as MABPlanController;
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\WorkspaceController as MABWorkspaceController;
-use App\Contexts\Personal\Application\Controllers\Web\Person\PersonController;
+use App\Contexts\Personal\Presentation\Controllers\Http\Person\PersonController;
 use App\Contexts\Plans\Presentation\Controllers\Http\Plan\PlanController;
 use App\Contexts\Plans\Presentation\Controllers\Http\Requirement\RequirementController;
 use App\Contexts\Workspaces\Presentation\Controllers\Http\Workspace\WorkspaceController;

@@ -14,6 +14,4 @@ interface InviteRepositoryInterface
      * @throws InviteNotFoundExceptionInterface
      */
     public function take(InviteId $inviteId): Invite;
-
-    public function remove(InviteId $inviteId): void;
 }

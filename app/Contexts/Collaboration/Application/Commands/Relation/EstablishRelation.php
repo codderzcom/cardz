@@ -4,6 +4,7 @@ namespace App\Contexts\Collaboration\Application\Commands\Relation;
 
 use App\Contexts\Collaboration\Domain\Model\Relation\CollaboratorId;
 use App\Contexts\Collaboration\Domain\Model\Relation\RelationId;
+use App\Contexts\Collaboration\Domain\Model\Relation\RelationType;
 use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
 
 final class EstablishRelation implements EstablishRelationCommandInterface
@@ -12,12 +13,13 @@ final class EstablishRelation implements EstablishRelationCommandInterface
         private string $relationId,
         private string $collaboratorId,
         private string $workspaceId,
+        private string $relationType,
     ) {
     }
 
-    public static function of(string $collaboratorId, string $workspaceId): self
+    public static function of(string $collaboratorId, string $workspaceId, string $relationType): self
     {
-        return new self(RelationId::makeValue(), $collaboratorId, $workspaceId);
+        return new self(RelationId::makeValue(), $collaboratorId, $workspaceId, $relationType);
     }
 
     public function getRelationId(): RelationId
@@ -33,5 +35,10 @@ final class EstablishRelation implements EstablishRelationCommandInterface
     public function getWorkspaceId(): WorkspaceId
     {
         return WorkspaceId::of($this->workspaceId);
+    }
+
+    public function getRelationType(): RelationType
+    {
+        return RelationType::of($this->relationType);
     }
 }

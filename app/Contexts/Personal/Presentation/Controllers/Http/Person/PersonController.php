@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Contexts\Personal\Application\Controllers\Web\Person;
+namespace App\Contexts\Personal\Presentation\Controllers\Http\Person;
 
-use App\Contexts\Personal\Application\Controllers\Web\BaseController;
-use App\Contexts\Personal\Application\Controllers\Web\Person\Commands\ChangePersonNameRequest;
-use App\Contexts\Personal\Application\Controllers\Web\Person\Commands\JoinPersonRequest;
 use App\Contexts\Personal\Application\Services\PersonAppService;
+use App\Contexts\Personal\Presentation\Controllers\Http\BaseController;
+use App\Contexts\Personal\Presentation\Controllers\Http\Person\Commands\ChangePersonNameRequest;
+use App\Contexts\Personal\Presentation\Controllers\Http\Person\Commands\JoinPersonRequest;
 use Illuminate\Http\JsonResponse;
 
 class PersonController extends BaseController

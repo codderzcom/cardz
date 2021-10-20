@@ -2,8 +2,9 @@
 
 namespace App\Contexts\Collaboration\Application\Services;
 
-use App\Contexts\Collaboration\Application\Commands\Invite\AcceptInviteCommandInterface;
+use App\Contexts\Collaboration\Application\Commands\Relation\EstablishRelationCommandInterface;
 use App\Contexts\Collaboration\Application\Commands\Relation\LeaveRelationCommandInterface;
+use App\Contexts\Collaboration\Domain\Model\Relation\Relation;
 use App\Contexts\Collaboration\Domain\Model\Relation\RelationId;
 use App\Contexts\Collaboration\Domain\Persistence\Contracts\InviteRepositoryInterface;
 use App\Contexts\Collaboration\Domain\Persistence\Contracts\RelationRepositoryInterface;
@@ -21,18 +22,17 @@ class RelationAppService
     ) {
     }
 
-    public function acceptInvite(AcceptInviteCommandInterface $command): RelationId
+    public function establish(EstablishRelationCommandInterface $command): RelationId
     {
-        //ToDo: нарушение рекомендации 1 агрегат на 1 команду.
-
-        $invite = $this->inviteRepository->take($command->getInviteId());
-        $invite->accept($command->getCollaboratorId());
-
-        $relation = $invite->establishRelation($command->getRelationId(), $command->getCollaboratorId());
+        $relation = Relation::establish(
+            $command->getRelationId(),
+            $command->getCollaboratorId(),
+            $command->getWorkspaceId(),
+            $command->getRelationType()
+        );
         $this->relationRepository->persist($relation);
-
-        $this->domainEventBus->publish(...$invite->releaseEvents(), ...$relation->releaseEvents());
-        return $relation->relationId;
+        $this->domainEventBus->publish(...$relation->releaseEvents());
+        return $command->getRelationId();
     }
 
     public function leave(LeaveRelationCommandInterface $command): RelationId

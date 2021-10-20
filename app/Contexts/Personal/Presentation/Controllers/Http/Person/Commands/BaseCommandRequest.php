@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contexts\Personal\Application\Controllers\Web\Person\Commands;
+namespace App\Contexts\Personal\Presentation\Controllers\Http\Person\Commands;
 
 use Illuminate\Foundation\Http\FormRequest;
 

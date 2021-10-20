@@ -6,10 +6,8 @@ use App\Contexts\Collaboration\Domain\Events\Invite\InviteAccepted;
 use App\Contexts\Collaboration\Domain\Events\Invite\InviteDiscarded;
 use App\Contexts\Collaboration\Domain\Events\Invite\InviteProposed;
 use App\Contexts\Collaboration\Domain\Exceptions\CannotAcceptOwnInviteException;
+use App\Contexts\Collaboration\Domain\Exceptions\InvalidOperationException;
 use App\Contexts\Collaboration\Domain\Model\Relation\CollaboratorId;
-use App\Contexts\Collaboration\Domain\Model\Relation\Relation;
-use App\Contexts\Collaboration\Domain\Model\Relation\RelationId;
-use App\Contexts\Collaboration\Domain\Model\Relation\RelationType;
 use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
 use App\Shared\Contracts\Domain\AggregateRootInterface;
 use App\Shared\Infrastructure\Support\Domain\AggregateRootTrait;
@@ -20,6 +18,12 @@ final class Invite implements AggregateRootInterface
     use AggregateRootTrait;
 
     private ?Carbon $proposed = null;
+
+    private ?Carbon $acceptedAt = null;
+
+    private ?Carbon $discardedAt = null;
+
+    private ?CollaboratorId $collaboratorId = null;
 
     private function __construct(
         public InviteId $inviteId,
@@ -51,16 +55,33 @@ final class Invite implements AggregateRootInterface
         if ($this->inviterId->equals($collaboratorId)) {
             throw new CannotAcceptOwnInviteException();
         }
+        $this->acceptedAt = Carbon::now();
+        $this->collaboratorId = $collaboratorId;
         return $this->withEvents(InviteAccepted::of($this));
     }
 
     public function discard(): self
     {
+        $this->discardedAt = Carbon::now();
         return $this->withEvents(InviteDiscarded::of($this));
     }
 
-    public function establishRelation(RelationId $relationId, CollaboratorId $collaboratorId): Relation
+    public function isAccepted(): bool
     {
-        return Relation::establish($relationId, $collaboratorId, $this->workspaceId, RelationType::MEMBER());
+        return $this->acceptedAt !== null;
+    }
+
+    public function isDiscarded(): bool
+    {
+        return $this->discardedAt !== null;
+    }
+
+    public function getCollaboratorId(): CollaboratorId
+    {
+        if ($this->collaboratorId === null) {
+            throw new InvalidOperationException();
+        }
+
+        return $this->collaboratorId;
     }
 }

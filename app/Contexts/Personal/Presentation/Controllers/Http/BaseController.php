@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contexts\Personal\Application\Controllers\Web;
+namespace App\Contexts\Personal\Presentation\Controllers\Http;
 
 use App\Shared\Contracts\ServiceResultCode;
 use App\Shared\Contracts\ServiceResultInterface;

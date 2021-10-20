@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Contexts\Personal\Application\Controllers\Web\Person\Commands;
+namespace App\Contexts\Personal\Presentation\Controllers\Http\Person\Commands;
 
-final class ChangePersonNameRequest extends BaseCommandRequest
+final class JoinPersonRequest extends BaseCommandRequest
 {
     protected const RULES = [
         'name' => 'required',

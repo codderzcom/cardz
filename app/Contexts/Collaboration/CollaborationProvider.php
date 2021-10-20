@@ -2,7 +2,7 @@
 
 namespace App\Contexts\Collaboration;
 
-use App\Contexts\Collaboration\Application\Consumers\InviteCleanUpConsumer;
+use App\Contexts\Collaboration\Application\Consumers\InviteAcceptedConsumer;
 use App\Contexts\Collaboration\Application\Services\InviteAppService;
 use App\Contexts\Collaboration\Application\Services\KeeperAppService;
 use App\Contexts\Collaboration\Application\Services\RelationAppService;
@@ -49,7 +49,7 @@ class CollaborationProvider extends ServiceProvider
         ));
 
         $domainEventBus->subscribe($this->app->make(DomainEventConsumer::class));
-        $domainEventBus->subscribe($this->app->make(InviteCleanUpConsumer::class));
+        $domainEventBus->subscribe($this->app->make(InviteAcceptedConsumer::class));
 
         $integrationEventBus->subscribe($this->app->make(WorkspacesNewWorkspaceRegisteredConsumer::class));
     }
