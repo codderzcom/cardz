@@ -82,7 +82,6 @@ Route::group(['prefix' => '/collaboration/v1'], function () {
 });
 
 Route::group(['prefix' => '/personal/v1/person/{personId}'], function () {
-    Route::post('/', [PersonController::class, 'join'])->name('JoinPerson');
     Route::put('/name', [PersonController::class, 'changeName'])->name('ChangePersonName');
 });
 

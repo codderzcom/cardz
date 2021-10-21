@@ -4,12 +4,14 @@ namespace App\Contexts\Personal\Domain\Model\Person;
 
 use App\Contexts\Personal\Domain\Events\Person\PersonJoined;
 use App\Contexts\Personal\Domain\Events\Person\PersonNameChanged;
-use App\Contexts\Personal\Domain\Model\Shared\AggregateRoot;
+use App\Shared\Contracts\Domain\AggregateRootInterface;
+use App\Shared\Infrastructure\Support\Domain\AggregateRootTrait;
 use Carbon\Carbon;
-use JetBrains\PhpStorm\Pure;
 
-final class Person extends AggregateRoot
+final class Person implements AggregateRootInterface
 {
+    use AggregateRootTrait;
+
     private ?Carbon $joined = null;
 
     private function __construct(
@@ -18,36 +20,28 @@ final class Person extends AggregateRoot
     ) {
     }
 
-    #[Pure]
-    public static function make(PersonId $personId, Name $name): self
+    public static function join(PersonId $personId, Name $name): self
     {
-        return new self($personId, $name);
+        $person = new self($personId, $name);
+        $person->joined = Carbon::now();
+        return $person->withEvents(PersonJoined::of($person));
     }
 
-    public function join(): PersonJoined
+    public static function restore(string $personId, string $name, ?Carbon $joined,): self
     {
-        $this->joined = Carbon::now();
-        return PersonJoined::with($this->personId);
+        $person = new self(PersonId::of($personId), Name::of($name));
+        $person->joined = $joined;
+        return $person;
     }
 
-    public function changeName(Name $name): PersonNameChanged
+    public function changeName(Name $name): self
     {
         $this->name = $name;
-        return PersonNameChanged::with($this->personId);
+        return $this->withEvents(PersonNameChanged::of($this));
     }
 
     public function isJoined(): bool
     {
         return $this->joined !== null;
-    }
-
-    private function from(
-        string $personId,
-        string $name,
-        ?Carbon $joined,
-    ): void {
-        $this->personId = PersonId::of($personId);
-        $this->name = Name::of($name);
-        $this->joined = $joined;
     }
 }

@@ -6,17 +6,12 @@ use App\Contexts\Collaboration\Application\Commands\Relation\EstablishRelationCo
 use App\Contexts\Collaboration\Application\Commands\Relation\LeaveRelationCommandInterface;
 use App\Contexts\Collaboration\Domain\Model\Relation\Relation;
 use App\Contexts\Collaboration\Domain\Model\Relation\RelationId;
-use App\Contexts\Collaboration\Domain\Persistence\Contracts\InviteRepositoryInterface;
 use App\Contexts\Collaboration\Domain\Persistence\Contracts\RelationRepositoryInterface;
 use App\Contexts\Collaboration\Infrastructure\Messaging\DomainEventBusInterface;
-use App\Shared\Infrastructure\Support\ReportingServiceTrait;
 
 class RelationAppService
 {
-    use ReportingServiceTrait;
-
     public function __construct(
-        private InviteRepositoryInterface $inviteRepository,
         private RelationRepositoryInterface $relationRepository,
         private DomainEventBusInterface $domainEventBus,
     ) {

@@ -2,14 +2,13 @@
 
 namespace App\Contexts\Personal\Domain\Events\Person;
 
+use App\Contexts\Personal\Domain\Model\Person\Person;
+use App\Shared\Infrastructure\Support\Domain\DomainEvent;
 
-use App\Contexts\Personal\Domain\Events\BaseDomainEvent;
-use App\Contexts\Personal\Domain\Model\Person\PersonId;
-
-abstract class BasePersonDomainEvent extends BaseDomainEvent
+abstract class BasePersonDomainEvent extends DomainEvent
 {
-    protected function __construct(
-        public PersonId $personId
-    ) {
-        parent::__construct();
-    }}
+    public function with(): Person
+    {
+        return $this->aggregateRoot;
+    }
+}

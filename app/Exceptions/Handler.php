@@ -62,7 +62,7 @@ class Handler extends ExceptionHandler
         }
 
         if ($e instanceof NotFoundException) {
-            return response()->json($e->getMessage() ?: 'Not found', 404);
+            return response()->json('Not found exception: ' . ($e->getMessage() ?: 'N/A'), 404);
         }
 
         if ($e instanceof HttpException) {

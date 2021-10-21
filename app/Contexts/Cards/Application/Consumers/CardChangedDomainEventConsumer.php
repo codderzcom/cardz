@@ -8,13 +8,12 @@ use App\Contexts\Cards\Domain\Events\Card\CardBlocked as DomainCardBlocked;
 use App\Contexts\Cards\Domain\Events\Card\CardCompleted as DomainCardCompleted;
 use App\Contexts\Cards\Domain\Events\Card\CardIssued as DomainCardIssued;
 use App\Contexts\Cards\Domain\Events\Card\CardRevoked as DomainCardRevoked;
-use App\Contexts\Cards\Domain\Events\Card\CardSatisfactionWthdrawn as DomainCardSatisfactionWthdrawn;
+use App\Contexts\Cards\Domain\Events\Card\CardSatisfactionWithdrawn as DomainCardSatisfactionWithdrawn;
 use App\Contexts\Cards\Domain\Events\Card\CardSatisfied as DomainCardSatisfied;
 use App\Contexts\Cards\Domain\Events\Card\CardUnblocked as DomainCardUnblocked;
 use App\Contexts\Cards\Domain\Events\Card\RequirementsAccepted as DomainRequirementsAccepted;
 use App\Contexts\Cards\Domain\Model\Card\Card;
 use App\Contexts\Cards\Domain\ReadModel\IssuedCard;
-use App\Contexts\Cards\Infrastructure\ReadStorage\Contracts\IssuedCardReadStorageInterface;
 use App\Contexts\Cards\Integration\Events\AchievementDismissed;
 use App\Contexts\Cards\Integration\Events\AchievementNoted;
 use App\Contexts\Cards\Integration\Events\CardBlocked;
@@ -45,7 +44,7 @@ class CardChangedDomainEventConsumer implements EventConsumerInterface
             DomainCardCompleted::class,
             DomainCardIssued::class,
             DomainCardRevoked::class,
-            DomainCardSatisfactionWthdrawn::class,
+            DomainCardSatisfactionWithdrawn::class,
             DomainCardSatisfied::class,
             DomainCardUnblocked::class,
             DomainRequirementsAccepted::class,
@@ -64,7 +63,7 @@ class CardChangedDomainEventConsumer implements EventConsumerInterface
             $event instanceof DomainCardCompleted => CardCompleted::of(IssuedCard::from($card)),
             $event instanceof DomainCardIssued => CardIssued::of(IssuedCard::from($card)),
             $event instanceof DomainCardRevoked => CardRevoked::of(IssuedCard::from($card)),
-            $event instanceof DomainCardSatisfactionWthdrawn => CardSatisfactionWithdrawn::of(IssuedCard::from($card)),
+            $event instanceof DomainCardSatisfactionWithdrawn => CardSatisfactionWithdrawn::of(IssuedCard::from($card)),
             $event instanceof DomainCardSatisfied => CardSatisfied::of(IssuedCard::from($card)),
             $event instanceof DomainCardUnblocked => CardUnblocked::of(IssuedCard::from($card)),
             $event instanceof DomainRequirementsAccepted => RequirementsAccepted::of(IssuedCard::from($card)),

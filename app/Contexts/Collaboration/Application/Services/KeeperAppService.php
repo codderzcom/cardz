@@ -10,12 +10,9 @@ use App\Contexts\Collaboration\Domain\Persistence\Contracts\InviteRepositoryInte
 use App\Contexts\Collaboration\Domain\Persistence\Contracts\KeeperRepositoryInterface;
 use App\Contexts\Collaboration\Domain\Persistence\Contracts\RelationRepositoryInterface;
 use App\Contexts\Collaboration\Infrastructure\Messaging\DomainEventBusInterface;
-use App\Shared\Infrastructure\Support\ReportingServiceTrait;
 
 class KeeperAppService
 {
-    use ReportingServiceTrait;
-
     public function __construct(
         private KeeperRepositoryInterface $keeperRepository,
         private RelationRepositoryInterface $relationRepository,

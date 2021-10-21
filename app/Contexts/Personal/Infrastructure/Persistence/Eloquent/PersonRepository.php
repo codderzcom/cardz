@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Contexts\Personal\Infrastructure\Persistence;
+namespace App\Contexts\Personal\Infrastructure\Persistence\Eloquent;
 
-use App\Contexts\Personal\Application\Contracts\PersonRepositoryInterface;
 use App\Contexts\Personal\Domain\Model\Person\Person;
 use App\Contexts\Personal\Domain\Model\Person\PersonId;
+use App\Contexts\Personal\Domain\Persistence\Contracts\PersonRepositoryInterface;
+use App\Contexts\Personal\Infrastructure\Exceptions\PersonNotFoundException;
 use App\Models\Person as EloquentPerson;
 use ReflectionClass;
 
@@ -18,12 +19,12 @@ class PersonRepository implements PersonRepositoryInterface
         );
     }
 
-    public function take(PersonId $personId = null): ?Person
+    public function take(PersonId $personId = null): Person
     {
         /** @var EloquentPerson $eloquentPerson */
         $eloquentPerson = EloquentPerson::query()->find((string) $personId);
         if ($eloquentPerson === null) {
-            return null;
+            throw new PersonNotFoundException((string) $personId);
         }
         return $this->personFromData($eloquentPerson);
     }
@@ -51,13 +52,7 @@ class PersonRepository implements PersonRepositoryInterface
 
     private function personFromData(EloquentPerson $eloquentPerson): Person
     {
-        $reflection = new ReflectionClass(Person::class);
-        $creator = $reflection->getMethod('from');
-        $creator?->setAccessible(true);
-        /** @var Person $person */
-        $person = $reflection->newInstanceWithoutConstructor();
-
-        $creator?->invoke($person,
+        $person = Person::restore(
             $eloquentPerson->id,
             $eloquentPerson->name,
             $eloquentPerson->joined_at,

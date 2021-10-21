@@ -9,7 +9,7 @@ use App\Contexts\Cards\Domain\Events\Card\CardBlocked;
 use App\Contexts\Cards\Domain\Events\Card\CardCompleted;
 use App\Contexts\Cards\Domain\Events\Card\CardIssued;
 use App\Contexts\Cards\Domain\Events\Card\CardRevoked;
-use App\Contexts\Cards\Domain\Events\Card\CardSatisfactionWthdrawn;
+use App\Contexts\Cards\Domain\Events\Card\CardSatisfactionWithdrawn;
 use App\Contexts\Cards\Domain\Events\Card\CardSatisfied;
 use App\Contexts\Cards\Domain\Events\Card\CardUnblocked;
 use App\Contexts\Cards\Domain\Events\Card\RequirementsAccepted;
@@ -220,7 +220,7 @@ final class Card implements AggregateRootInterface
         $requirements = $this->requirements->filterRemaining($this->achievements);
         if (!$requirements->isEmpty()) {
             $this->satisfied = null;
-            return $this->withEvents(CardSatisfactionWthdrawn::of($this));
+            return $this->withEvents(CardSatisfactionWithdrawn::of($this));
         }
 
         return $this;
