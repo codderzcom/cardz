@@ -7,10 +7,12 @@ use App\Contexts\Plans\Domain\Model\Plan\PlanId;
 use App\Contexts\Plans\Domain\Persistence\Contracts\PlanRepositoryInterface;
 use App\Contexts\Plans\Infrastructure\Exceptions\PlanNotFoundException;
 use App\Models\Plan as EloquentPlan;
-use ReflectionClass;
+use App\Shared\Infrastructure\Support\PropertiesExtractorTrait;
 
 class PlanRepository implements PlanRepositoryInterface
 {
+    use PropertiesExtractorTrait;
+
     public function persist(Plan $plan): void
     {
         EloquentPlan::query()->updateOrCreate(
@@ -36,20 +38,7 @@ class PlanRepository implements PlanRepositoryInterface
 
     private function planAsData(Plan $plan): array
     {
-        $reflection = new ReflectionClass($plan);
-        $properties = [
-            'added' => null,
-            'launched' => null,
-            'stopped' => null,
-            'archived' => null,
-        ];
-
-        foreach ($properties as $key => $property) {
-            $property = $reflection->getProperty($key);
-            $property->setAccessible(true);
-            $properties[$key] = $property->getValue($plan);
-        }
-
+        $properties = $this->extractProperties($plan, 'added', 'launched', 'stopped', 'archived');
         $data = [
             'id' => (string) $plan->planId,
             'workspace_id' => (string) $plan->workspaceId,

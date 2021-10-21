@@ -7,10 +7,13 @@ use App\Contexts\Workspaces\Domain\Model\Workspace\WorkspaceId;
 use App\Contexts\Workspaces\Domain\Persistence\Contracts\WorkspaceRepositoryInterface;
 use App\Contexts\Workspaces\Infrastructure\Exceptions\WorkspaceNotFoundException;
 use App\Models\Workspace as EloquentWorkspace;
+use App\Shared\Infrastructure\Support\PropertiesExtractorTrait;
 use ReflectionClass;
 
 class WorkspaceRepository implements WorkspaceRepositoryInterface
 {
+    use PropertiesExtractorTrait;
+
     public function persist(Workspace $workspace): void
     {
         EloquentWorkspace::query()->updateOrCreate(
@@ -31,21 +34,10 @@ class WorkspaceRepository implements WorkspaceRepositoryInterface
 
     private function workspaceAsData(Workspace $workspace): array
     {
-        $reflection = new ReflectionClass($workspace);
-        $properties = [
-            'added' => null,
-        ];
-
-        foreach ($properties as $key => $property) {
-            $property = $reflection->getProperty($key);
-            $property->setAccessible(true);
-            $properties[$key] = $property->getValue($workspace);
-        }
-
         return [
             'id' => (string) $workspace->workspaceId,
             'keeper_id' => (string) $workspace->keeperId,
-            'added_at' => $properties['added'],
+            'added_at' => $this->extractProperty($workspace, 'added'),
             'profile' => $workspace->profile->toArray(),
         ];
     }
