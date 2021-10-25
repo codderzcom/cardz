@@ -27,12 +27,6 @@ final class Profile implements ValueObjectInterface
     }
 
     #[Pure]
-    public static function of(string $name, string $description, string $address): self
-    {
-        return new self($name, $description, $address);
-    }
-
-    #[Pure]
     public static function ofData(array $profile): self
     {
         return self::of(
@@ -40,6 +34,12 @@ final class Profile implements ValueObjectInterface
             $profile['description'] ?? '',
             $profile['address'] ?? '',
         );
+    }
+
+    #[Pure]
+    public static function of(string $name, string $description, string $address): self
+    {
+        return new self($name, $description, $address);
     }
 
 }

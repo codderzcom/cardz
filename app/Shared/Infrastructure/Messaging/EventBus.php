@@ -36,7 +36,7 @@ class EventBus implements EventBusInterface
     {
         /** @var Throwable $error */
         $error = end($throwables);
-        $this->error('Error occurred when publishing in ' .  $event::class, [
+        $this->error('Error occurred when publishing in ' . $event::class, [
             'event' => $event,
             'error' => $error->getMessage(),
         ]);

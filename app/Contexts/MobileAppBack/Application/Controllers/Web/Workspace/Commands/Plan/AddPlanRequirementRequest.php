@@ -14,7 +14,6 @@ final class AddPlanRequirementRequest extends PlanCommandRequest
 
     public string $description;
 
-
     public function passedValidation(): void
     {
         parent::passedValidation();

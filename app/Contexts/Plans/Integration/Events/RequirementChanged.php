@@ -2,7 +2,6 @@
 
 namespace App\Contexts\Plans\Integration\Events;
 
-use App\Contexts\Plans\Domain\Model\Requirement\Requirement;
 use App\Contexts\Plans\Domain\ReadModel\ReadRequirement;
 use App\Shared\Contracts\Messaging\IntegrationEventInterface;
 use App\Shared\Infrastructure\Messaging\IntegrationEventTrait;

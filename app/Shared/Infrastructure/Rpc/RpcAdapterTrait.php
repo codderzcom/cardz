@@ -32,9 +32,9 @@ trait RpcAdapterTrait
         return $this->ok($result);
     }
 
-    protected function ok($payload = null): RpcResponseInterface
+    protected function notFound(): RpcResponseInterface
     {
-        return RpcResponse::make(RpcRequestId::make(), Response::HTTP_OK, $payload);
+        return RpcResponse::make(RpcRequestId::make(), Response::HTTP_NOT_FOUND);
     }
 
     protected function exception(Throwable $exception): RpcResponseInterface
@@ -42,8 +42,8 @@ trait RpcAdapterTrait
         return RpcResponse::make(RpcRequestId::make(), Response::HTTP_INTERNAL_SERVER_ERROR, $exception);
     }
 
-    protected function notFound(): RpcResponseInterface
+    protected function ok($payload = null): RpcResponseInterface
     {
-        return RpcResponse::make(RpcRequestId::make(), Response::HTTP_NOT_FOUND);
+        return RpcResponse::make(RpcRequestId::make(), Response::HTTP_OK, $payload);
     }
 }

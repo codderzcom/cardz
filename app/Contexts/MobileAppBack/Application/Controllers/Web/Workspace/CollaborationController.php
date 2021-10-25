@@ -13,8 +13,7 @@ class CollaborationController extends BaseController
 {
     public function __construct(
         private CollaborationAppService $collaborationAppService,
-    )
-    {
+    ) {
     }
 
     public function propose(ProposeInviteRequest $request): JsonResponse

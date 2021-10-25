@@ -19,6 +19,19 @@ class BusinessWorkspaceReadStorage implements BusinessWorkspaceReadStorageInterf
         return $this->workspaceFromEloquent($workspace);
     }
 
+    private function workspaceFromEloquent(EloquentWorkspace $workspace): BusinessWorkspace
+    {
+        $profile = is_string($workspace->profile) ? json_try_decode($workspace->profile) : $workspace->profile;
+
+        return BusinessWorkspace::make(
+            $workspace->id,
+            $workspace->keeper_id,
+            $profile['name'] ?? '',
+            $profile['description'] ?? '',
+            $profile['address'] ?? '',
+        );
+    }
+
     /**
      * @return BusinessWorkspace[]
      */
@@ -33,18 +46,5 @@ class BusinessWorkspaceReadStorage implements BusinessWorkspaceReadStorageInterf
         }
 
         return $customerWorkspaces;
-    }
-
-    private function workspaceFromEloquent(EloquentWorkspace $workspace): BusinessWorkspace
-    {
-        $profile = is_string($workspace->profile) ? json_try_decode($workspace->profile) : $workspace->profile;
-
-        return BusinessWorkspace::make(
-            $workspace->id,
-            $workspace->keeper_id,
-            $profile['name'] ?? '',
-            $profile['description'] ?? '',
-            $profile['address'] ?? '',
-        );
     }
 }

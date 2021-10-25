@@ -7,10 +7,13 @@ use App\Contexts\Plans\Domain\Model\Requirement\RequirementId;
 use App\Contexts\Plans\Domain\Persistence\Contracts\RequirementRepositoryInterface;
 use App\Contexts\Plans\Infrastructure\Exceptions\RequirementNotFoundException;
 use App\Models\Requirement as EloquentRequirement;
-use ReflectionClass;
+use App\Shared\Infrastructure\Support\PropertiesExtractorTrait;
 
 class RequirementRepository implements RequirementRepositoryInterface
 {
+
+    use PropertiesExtractorTrait;
+
     public function persist(Requirement $requirement): void
     {
         EloquentRequirement::query()->updateOrCreate(
@@ -31,18 +34,7 @@ class RequirementRepository implements RequirementRepositoryInterface
 
     private function requirementAsData(Requirement $requirement): array
     {
-        $reflection = new ReflectionClass($requirement);
-        $properties = [
-            'added' => null,
-            'removed' => null,
-        ];
-
-        foreach ($properties as $key => $property) {
-            $property = $reflection->getProperty($key);
-            $property->setAccessible(true);
-            $properties[$key] = $property->getValue($requirement);
-        }
-
+        $properties = $this->extractProperties($requirement, 'added', 'removed');
         $data = [
             'id' => (string) $requirement->requirementId,
             'plan_id' => (string) $requirement->planId,

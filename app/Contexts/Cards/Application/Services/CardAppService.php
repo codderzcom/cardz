@@ -17,12 +17,9 @@ use App\Contexts\Cards\Domain\Model\Plan\Plan;
 use App\Contexts\Cards\Domain\Persistence\Contracts\CardRepositoryInterface;
 use App\Contexts\Cards\Domain\Persistence\Contracts\PlanRepositoryInterface;
 use App\Contexts\Cards\Infrastructure\Messaging\DomainEventBusInterface;
-use App\Shared\Infrastructure\CommandHandling\CommandHandlerFactoryTrait;
 
 class CardAppService
 {
-    use CommandHandlerFactoryTrait;
-
     public function __construct(
         private CardRepositoryInterface $cardRepository,
         private PlanRepositoryInterface $planRepository,
@@ -78,6 +75,11 @@ class CardAppService
         return $this->release($card->fixAchievementDescription($command->getAchievement()));
     }
 
+    private function plan(IssueCardCommandInterface $command): Plan
+    {
+        return $this->planRepository->take($command->getPlanId());
+    }
+
     private function release(Card $card): CardId
     {
         $this->cardRepository->persist($card);
@@ -88,10 +90,5 @@ class CardAppService
     private function card(CardCommandInterface $command): Card
     {
         return $this->cardRepository->take($command->getCardId());
-    }
-
-    private function plan(IssueCardCommandInterface $command): Plan
-    {
-        return $this->planRepository->take($command->getPlanId());
     }
 }

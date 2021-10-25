@@ -3,15 +3,16 @@
 namespace App\Contexts\Auth\Infrastructure\Persistence\Eloquent;
 
 use App\Contexts\Auth\Domain\Model\User\User;
-use App\Contexts\Auth\Domain\Model\User\UserId;
 use App\Contexts\Auth\Domain\Model\User\UserIdentity;
 use App\Contexts\Auth\Domain\Persistence\Contracts\UserRepositoryInterface;
 use App\Contexts\Auth\Infrastructure\Exceptions\UserNotFoundException;
 use App\Models\User as EloquentUser;
-use ReflectionClass;
+use App\Shared\Infrastructure\Support\PropertiesExtractorTrait;
 
 class UserRepository implements UserRepositoryInterface
 {
+    use PropertiesExtractorTrait;
+
     public function persist(User $user): void
     {
         EloquentUser::query()->updateOrCreate(
@@ -34,17 +35,7 @@ class UserRepository implements UserRepositoryInterface
         return $eloquentUser !== null;
     }
 
-    public function take(UserId $userId = null): User
-    {
-        /** @var EloquentUser $eloquentUser */
-        $eloquentUser = EloquentUser::query()->find((string) $userId);
-        if ($eloquentUser === null) {
-            throw new UserNotFoundException((string) $userId);
-        }
-        return $this->userFromData($eloquentUser);
-    }
-
-    public function takeWithAmbiguousIdentity(string $identity): User
+    public function takeByIdentity(string $identity): User
     {
         /** @var EloquentUser $eloquentUser */
         $eloquentUser = EloquentUser::query()
@@ -59,21 +50,7 @@ class UserRepository implements UserRepositoryInterface
 
     private function userAsData(User $user): array
     {
-        $reflection = new ReflectionClass($user);
-        $properties = [
-            'registrationInitiated' => null,
-            'emailVerified' => null,
-            'password' => null,
-            'rememberToken' => null,
-        ];
-
-        foreach ($properties as $key => $property) {
-            $property = $reflection->getProperty($key);
-            $property->setAccessible(true);
-            $properties[$key] = $property->getValue($user);
-        }
-        $properties = array_merge($properties, $user->toArray());
-
+        $properties = $this->extractProperties($user, 'registrationInitiated', 'emailVerified', 'password', 'rememberToken');
         $data = [
             'id' => $properties['userId'],
             'email' => $properties['email'],

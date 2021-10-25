@@ -34,16 +34,16 @@ class AcceptInviteRequest extends FormRequest
         $this->collaboratorId = $this->input('collaboratorId');
     }
 
+    public function toCommand(): AcceptInviteCommandInterface
+    {
+        return AcceptInvite::of($this->inviteId, $this->collaboratorId);
+    }
+
     protected function prepareForValidation(): void
     {
         $this->merge([
             'inviteId' => $this->route('inviteId'),
         ]);
-    }
-
-    public function toCommand(): AcceptInviteCommandInterface
-    {
-        return AcceptInvite::of($this->inviteId, $this->collaboratorId);
     }
 
 }

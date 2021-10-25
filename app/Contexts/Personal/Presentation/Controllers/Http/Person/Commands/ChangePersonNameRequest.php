@@ -34,15 +34,15 @@ final class ChangePersonNameRequest extends FormRequest
         $this->name = $this->input('name');
     }
 
+    public function toCommand(): ChangePersonNameCommandInterface
+    {
+        return ChangePersonName::of($this->personId, $this->name);
+    }
+
     protected function prepareForValidation(): void
     {
         $this->merge([
             'personId' => $this->route('personId'),
         ]);
-    }
-
-    public function toCommand(): ChangePersonNameCommandInterface
-    {
-        return ChangePersonName::of($this->personId, $this->name);
     }
 }

@@ -34,16 +34,16 @@ final class AddRequirementRequest extends FormRequest
         $this->description = $this->input('description');
     }
 
+    public function toCommand(): AddRequirementCommandInterface
+    {
+        return AddRequirement::of($this->planId, $this->description);
+    }
+
     protected function prepareForValidation(): void
     {
         $this->merge([
             'planId' => $this->route('planId'),
         ]);
-    }
-
-    public function toCommand(): AddRequirementCommandInterface
-    {
-        return AddRequirement::of($this->planId, $this->description);
     }
 
 }

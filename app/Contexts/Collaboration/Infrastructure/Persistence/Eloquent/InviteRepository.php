@@ -7,10 +7,12 @@ use App\Contexts\Collaboration\Domain\Model\Invite\InviteId;
 use App\Contexts\Collaboration\Domain\Persistence\Contracts\InviteRepositoryInterface;
 use App\Contexts\Collaboration\Infrastructure\Exceptions\InviteNotFoundException;
 use App\Models\Invite as EloquentInvite;
-use ReflectionClass;
+use App\Shared\Infrastructure\Support\PropertiesExtractorTrait;
 
 class InviteRepository implements InviteRepositoryInterface
 {
+    use PropertiesExtractorTrait;
+
     public function persist(Invite $invite): void
     {
         if ($invite->isAccepted() || $invite->isDiscarded()) {
@@ -38,22 +40,11 @@ class InviteRepository implements InviteRepositoryInterface
 
     private function inviteAsData(Invite $invite): array
     {
-        $reflection = new ReflectionClass($invite);
-        $properties = [
-            'proposed' => null,
-        ];
-
-        foreach ($properties as $key => $property) {
-            $property = $reflection->getProperty($key);
-            $property->setAccessible(true);
-            $properties[$key] = $property->getValue($invite);
-        }
-
         $data = [
             'id' => (string) $invite->inviteId,
             'inviter_id' => (string) $invite->inviterId,
             'workspace_id' => (string) $invite->workspaceId,
-            'proposed_at' => $properties['proposed'],
+            'proposed_at' => $this->extractProperty($invite, 'proposed'),
         ];
 
         return $data;

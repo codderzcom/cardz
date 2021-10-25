@@ -25,17 +25,12 @@ final class Keeper
 
     public function invite(InviteId $inviteId): Invite
     {
-        return Invite::propose($inviteId, $this->getInviterId(), $this->workspaceId);
+        return Invite::propose($inviteId, InviterId::of((string) $this->keeperId), $this->workspaceId);
     }
 
     public function keep(RelationId $relationId): Relation
     {
         return Relation::establish($relationId, $this->getCollaboratorId(), $this->workspaceId, RelationType::KEEPER());
-    }
-
-    private function getInviterId(): InviterId
-    {
-        return InviterId::of((string) $this->keeperId);
     }
 
     private function getCollaboratorId(): CollaboratorId

@@ -38,6 +38,16 @@ class PlanService
         );
     }
 
+    private function getWorkspacePlanResult(string $planId): ServiceResultInterface
+    {
+        $plan = $this->workspacePlanReadStorage->find($planId);
+        if ($plan === null) {
+            return $this->serviceResultFactory->notFound("Plan $planId not found");
+        }
+
+        return $this->serviceResultFactory->ok($plan);
+    }
+
     public function getWorkspacePlans(
         string $keeperId,
         string $workspaceId
@@ -207,15 +217,5 @@ class PlanService
             AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId)),
             AssertPlanInWorkspace::of(PlanId::of($planId), WorkspaceId::of($workspaceId)),
         );
-    }
-
-    private function getWorkspacePlanResult(string $planId): ServiceResultInterface
-    {
-        $plan = $this->workspacePlanReadStorage->find($planId);
-        if ($plan === null) {
-            return $this->serviceResultFactory->notFound("Plan $planId not found");
-        }
-
-        return $this->serviceResultFactory->ok($plan);
     }
 }

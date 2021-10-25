@@ -11,8 +11,7 @@ class CollaborationAppService
     public function __construct(
         private CollaborationAdapter $collaborationAdapter,
         private ServiceResultFactoryInterface $serviceResultFactory,
-    )
-    {
+    ) {
     }
 
     public function propose(string $keeperId, string $memberId, string $workspaceId): ServiceResultInterface

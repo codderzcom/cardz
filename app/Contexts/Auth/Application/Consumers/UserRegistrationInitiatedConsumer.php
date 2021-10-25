@@ -4,9 +4,9 @@ namespace App\Contexts\Auth\Application\Consumers;
 
 use App\Contexts\Auth\Domain\Events\User\RegistrationInitiated;
 use App\Contexts\Auth\Domain\Model\User\User;
+use App\Models\User as EloquentUser;
 use App\Shared\Contracts\Messaging\EventConsumerInterface;
 use App\Shared\Contracts\Messaging\EventInterface;
-use App\Models\User as EloquentUser;
 use Illuminate\Support\Facades\Auth;
 
 class UserRegistrationInitiatedConsumer implements EventConsumerInterface

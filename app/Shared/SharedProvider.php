@@ -7,7 +7,7 @@ use App\Shared\Contracts\Messaging\EventBusInterface;
 use App\Shared\Contracts\Messaging\IntegrationEventBusInterface;
 use App\Shared\Contracts\PolicyEngineInterface;
 use App\Shared\Contracts\ServiceResultFactoryInterface;
-use App\Shared\Infrastructure\CommandHandling\CommandBus;
+use App\Shared\Infrastructure\CommandHandling\QueuedSyncCommandBus;
 use App\Shared\Infrastructure\Messaging\EventBus;
 use App\Shared\Infrastructure\Messaging\IntegrationEventBus;
 use App\Shared\Infrastructure\Messaging\LocalSyncMessageBroker;
@@ -22,7 +22,7 @@ class SharedProvider extends ServiceProvider
     {
         $this->app->singleton(ServiceResultFactoryInterface::class, ServiceResultFactory::class);
         $this->app->singleton(PolicyEngineInterface::class, PolicyEngine::class);
-        $this->app->singleton(CommandBusInterface::class, CommandBus::class);
+        $this->app->singleton(CommandBusInterface::class, QueuedSyncCommandBus::class);
 
         $this->app->singleton(EventBusInterface::class, fn() => new EventBus($this->app->make(LocalSyncMessageBroker::class)));
         $this->app->singleton(IntegrationEventBusInterface::class, fn() => new IntegrationEventBus($this->app->make(RabbitMQMessageBroker::class)));

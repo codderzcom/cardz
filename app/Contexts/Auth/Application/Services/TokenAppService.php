@@ -20,7 +20,7 @@ class TokenAppService
 
     public function issueToken(IssueTokenCommandInterface $command): Token
     {
-        $user = $this->userRepository->takeWithAmbiguousIdentity($command->getIdentity());
+        $user = $this->userRepository->takeByIdentity($command->getIdentity());
 
         if (!Hash::check($command->getPassword(), $user->getPasswordHash())) {
             throw new UserNotFoundException("Invalid credentials");

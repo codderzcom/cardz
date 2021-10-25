@@ -9,7 +9,6 @@ use App\Contexts\Plans\Application\Commands\Plan\PlanCommandInterface;
 use App\Contexts\Plans\Application\Commands\Plan\StopPlanCommandInterface;
 use App\Contexts\Plans\Domain\Model\Plan\Plan;
 use App\Contexts\Plans\Domain\Model\Plan\PlanId;
-use App\Contexts\Plans\Domain\Model\Plan\Workspace;
 use App\Contexts\Plans\Domain\Persistence\Contracts\PlanRepositoryInterface;
 use App\Contexts\Plans\Domain\Persistence\Contracts\WorkspaceRepositoryInterface;
 use App\Contexts\Plans\Infrastructure\Messaging\DomainEventBusInterface;
@@ -26,31 +25,31 @@ class PlanAppService
 
     public function add(AddPlanCommandInterface $command): PlanId
     {
-        $workspace = $this->workspace($command);
+        $workspace = $this->workspaceRepository->take($command->getWorkspaceId());
         return $this->release($workspace->addPlan($command->getPlanId(), $command->getDescription()));
     }
 
     public function launch(LaunchPlanCommandInterface $command): PlanId
     {
-        $plan = $this->plan($command);
+        $plan = $this->getPlan($command);
         return $this->release($plan->launch());
     }
 
     public function stop(StopPlanCommandInterface $command): PlanId
     {
-        $plan = $this->plan($command);
+        $plan = $this->getPlan($command);
         return $this->release($plan->stop());
     }
 
     public function archive(AddPlanCommandInterface $command): PlanId
     {
-        $plan = $this->plan($command);
+        $plan = $this->getPlan($command);
         return $this->release($plan->archive());
     }
 
     public function changeDescription(ChangePlanDescriptionCommandInterface $command): PlanId
     {
-        $plan = $this->plan($command);
+        $plan = $this->getPlan($command);
         return $this->release($plan->changeDescription($command->getDescription()));
     }
 
@@ -61,14 +60,8 @@ class PlanAppService
         return $plan->planId;
     }
 
-    private function plan(PlanCommandInterface $command): Plan
+    private function getPlan(PlanCommandInterface $command): Plan
     {
         return $this->planRepository->take($command->getPlanId());
     }
-
-    private function workspace(AddPlanCommandInterface $command): Workspace
-    {
-        return $this->workspaceRepository->take($command->getWorkspaceId());
-    }
-
 }

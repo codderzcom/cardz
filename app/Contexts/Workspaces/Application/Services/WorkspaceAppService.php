@@ -9,12 +9,9 @@ use App\Contexts\Workspaces\Domain\Model\Workspace\WorkspaceId;
 use App\Contexts\Workspaces\Domain\Persistence\Contracts\KeeperRepositoryInterface;
 use App\Contexts\Workspaces\Domain\Persistence\Contracts\WorkspaceRepositoryInterface;
 use App\Contexts\Workspaces\Infrastructure\Messaging\DomainEventBusInterface;
-use App\Shared\Infrastructure\CommandHandling\CommandHandlerFactoryTrait;
 
 class WorkspaceAppService
 {
-    use CommandHandlerFactoryTrait;
-
     public function __construct(
         private KeeperRepositoryInterface $keeperRepository,
         private WorkspaceRepositoryInterface $workspaceRepository,

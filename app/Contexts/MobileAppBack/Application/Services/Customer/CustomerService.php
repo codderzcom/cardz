@@ -11,6 +11,7 @@ use App\Contexts\MobileAppBack\Domain\Model\Customer\CustomerCode;
 use App\Contexts\MobileAppBack\Domain\Model\Customer\CustomerId;
 use App\Shared\Contracts\ServiceResultFactoryInterface;
 use App\Shared\Contracts\ServiceResultInterface;
+use Exception;
 
 class CustomerService
 {
@@ -65,7 +66,7 @@ class CustomerService
         $result = $this->authRpcAdapter->getToken($identity, $password, $deviceName);
         if (!$result->isOk()) {
             //ToDo: поменять Exception
-            throw new \Exception();
+            throw new Exception();
         }
         return $this->serviceResultFactory->ok(json_decode($result->getPayload()));
     }
@@ -76,7 +77,7 @@ class CustomerService
         $result = $this->authRpcAdapter->registerUser($email, $phone, $name, $password, $deviceName);
         if (!$result->isOk()) {
             //ToDo: поменять Exception
-            throw new \Exception();
+            throw new Exception();
         }
         return $this->serviceResultFactory->ok(json_decode($result->getPayload()));
     }

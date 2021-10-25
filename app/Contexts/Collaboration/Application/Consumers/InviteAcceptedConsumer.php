@@ -14,8 +14,7 @@ final class InviteAcceptedConsumer implements EventConsumerInterface
 {
     public function __construct(
         private CommandBusInterface $commandBus,
-    )
-    {
+    ) {
     }
 
     public function consumes(): array

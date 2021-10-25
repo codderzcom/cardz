@@ -16,10 +16,5 @@ interface UserRepositoryInterface
     /**
      * @throws UserNotFoundExceptionInterface
      */
-    public function take(UserId $userId): User;
-
-    /**
-     * @throws UserNotFoundExceptionInterface
-     */
-    public function takeWithAmbiguousIdentity(string $identity): User;
+    public function takeByIdentity(string $identity): User;
 }

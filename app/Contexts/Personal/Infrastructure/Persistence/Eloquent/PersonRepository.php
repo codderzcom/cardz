@@ -7,10 +7,12 @@ use App\Contexts\Personal\Domain\Model\Person\PersonId;
 use App\Contexts\Personal\Domain\Persistence\Contracts\PersonRepositoryInterface;
 use App\Contexts\Personal\Infrastructure\Exceptions\PersonNotFoundException;
 use App\Models\Person as EloquentPerson;
-use ReflectionClass;
+use App\Shared\Infrastructure\Support\PropertiesExtractorTrait;
 
 class PersonRepository implements PersonRepositoryInterface
 {
+    use PropertiesExtractorTrait;
+
     public function persist(Person $person): void
     {
         EloquentPerson::query()->updateOrCreate(
@@ -31,20 +33,10 @@ class PersonRepository implements PersonRepositoryInterface
 
     private function personAsData(Person $person): array
     {
-        $reflection = new ReflectionClass($person);
-        $properties = [
-            'joined' => null,
-        ];
-
-        foreach ($properties as $key => $property) {
-            $property = $reflection->getProperty($key);
-            $property->setAccessible(true);
-            $properties[$key] = $property->getValue($person);
-        }
-
         $data = [
             'id' => (string) $person->personId,
             'name' => (string) $person->name,
+            'joined' => $this->extractProperty($person, 'joined'),
         ];
 
         return $data;

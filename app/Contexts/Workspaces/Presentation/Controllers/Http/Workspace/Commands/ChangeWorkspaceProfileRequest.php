@@ -45,13 +45,6 @@ class ChangeWorkspaceProfileRequest extends FormRequest implements ChangeWorkspa
         $this->address = $this->input('address');
     }
 
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'workspaceId' => $this->route('workspaceId'),
-        ]);
-    }
-
     public function getWorkspaceId(): WorkspaceId
     {
         return WorkspaceId::of($this->workspaceId);
@@ -60,5 +53,12 @@ class ChangeWorkspaceProfileRequest extends FormRequest implements ChangeWorkspa
     public function getProfile(): Profile
     {
         return Profile::of($this->name, $this->description, $this->address);
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'workspaceId' => $this->route('workspaceId'),
+        ]);
     }
 }

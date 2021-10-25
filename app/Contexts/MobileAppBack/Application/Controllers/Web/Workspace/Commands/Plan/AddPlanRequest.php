@@ -2,7 +2,6 @@
 
 namespace App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\Plan;
 
-
 use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\Commands\BaseCommandRequest;
 
 final class AddPlanRequest extends BaseCommandRequest

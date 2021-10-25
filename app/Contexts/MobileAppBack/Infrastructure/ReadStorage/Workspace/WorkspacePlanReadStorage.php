@@ -22,6 +22,20 @@ class WorkspacePlanReadStorage implements WorkspacePlanReadStorageInterface
         return $this->planFromEloquent($plan, ...$eloquentRequirements);
     }
 
+    private function planFromEloquent(EloquentPlan $plan, EloquentRequirement ...$eloquentRequirements): WorkspacePlan
+    {
+        $requirements = [];
+        foreach ($eloquentRequirements as $eloquentRequirement) {
+            $requirements[] = [$eloquentRequirement->id, $eloquentRequirement->description];
+        }
+        return WorkspacePlan::make(
+            $plan->id,
+            $plan->workspace_id,
+            $plan->description,
+            $requirements
+        );
+    }
+
     /**
      * @return BusinessWorkspace[]
      */
@@ -36,19 +50,5 @@ class WorkspacePlanReadStorage implements WorkspacePlanReadStorageInterface
         }
 
         return $workspacePlans;
-    }
-
-    private function planFromEloquent(EloquentPlan $plan, EloquentRequirement ...$eloquentRequirements): WorkspacePlan
-    {
-        $requirements = [];
-        foreach ($eloquentRequirements as $eloquentRequirement) {
-            $requirements[] = [$eloquentRequirement->id, $eloquentRequirement->description];
-        }
-        return WorkspacePlan::make(
-            $plan->id,
-            $plan->workspace_id,
-            $plan->description,
-            $requirements
-        );
     }
 }

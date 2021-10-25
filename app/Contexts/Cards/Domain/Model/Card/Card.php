@@ -94,6 +94,21 @@ final class Card implements AggregateRootInterface
         return $this->withEvents(CardCompleted::of($this));
     }
 
+    public function isCompleted(): bool
+    {
+        return $this->completed !== null;
+    }
+
+    public function isRevoked(): bool
+    {
+        return $this->revoked !== null;
+    }
+
+    public function isBlocked(): bool
+    {
+        return $this->blocked !== null;
+    }
+
     public function revoke(): self
     {
         if ($this->isRevoked() || $this->isCompleted()) {
@@ -134,6 +149,21 @@ final class Card implements AggregateRootInterface
         return $this->withEvents(AchievementNoted::of($this))->tryToSatisfy();
     }
 
+    public function isSatisfied(): bool
+    {
+        return $this->satisfied !== null;
+    }
+
+    private function tryToSatisfy(): self
+    {
+        $requirements = $this->requirements->filterRemaining($this->achievements);
+        if ($requirements->isEmpty()) {
+            $this->satisfied = Carbon::now();
+            return $this->withEvents(CardSatisfied::of($this));
+        }
+        return $this;
+    }
+
     public function dismissAchievement(string $achievementId): self
     {
         if ($this->isCompleted() || $this->isBlocked() || $this->isRevoked()) {
@@ -142,6 +172,21 @@ final class Card implements AggregateRootInterface
 
         $this->achievements = $this->achievements->removeById($achievementId);
         return $this->withEvents(AchievementDismissed::of($this))->tryToWithdrawSatisfaction();
+    }
+
+    private function tryToWithdrawSatisfaction(): self
+    {
+        if (!$this->isSatisfied()) {
+            return $this;
+        }
+
+        $requirements = $this->requirements->filterRemaining($this->achievements);
+        if (!$requirements->isEmpty()) {
+            $this->satisfied = null;
+            return $this->withEvents(CardSatisfactionWithdrawn::of($this));
+        }
+
+        return $this;
     }
 
     public function acceptRequirements(Achievements $requirements): self
@@ -179,51 +224,6 @@ final class Card implements AggregateRootInterface
     public function isIssued(): bool
     {
         return $this->issued !== null;
-    }
-
-    public function isSatisfied(): bool
-    {
-        return $this->satisfied !== null;
-    }
-
-    public function isCompleted(): bool
-    {
-        return $this->completed !== null;
-    }
-
-    public function isRevoked(): bool
-    {
-        return $this->revoked !== null;
-    }
-
-    public function isBlocked(): bool
-    {
-        return $this->blocked !== null;
-    }
-
-    private function tryToSatisfy(): self
-    {
-        $requirements = $this->requirements->filterRemaining($this->achievements);
-        if ($requirements->isEmpty()) {
-            $this->satisfied = Carbon::now();
-            return $this->withEvents(CardSatisfied::of($this));
-        }
-        return $this;
-    }
-
-    private function tryToWithdrawSatisfaction(): self
-    {
-        if (!$this->isSatisfied()) {
-            return $this;
-        }
-
-        $requirements = $this->requirements->filterRemaining($this->achievements);
-        if (!$requirements->isEmpty()) {
-            $this->satisfied = null;
-            return $this->withEvents(CardSatisfactionWithdrawn::of($this));
-        }
-
-        return $this;
     }
 
 }

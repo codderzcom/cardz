@@ -8,7 +8,6 @@ use App\Contexts\Workspaces\Domain\Persistence\Contracts\WorkspaceRepositoryInte
 use App\Contexts\Workspaces\Infrastructure\Exceptions\WorkspaceNotFoundException;
 use App\Models\Workspace as EloquentWorkspace;
 use App\Shared\Infrastructure\Support\PropertiesExtractorTrait;
-use ReflectionClass;
 
 class WorkspaceRepository implements WorkspaceRepositoryInterface
 {

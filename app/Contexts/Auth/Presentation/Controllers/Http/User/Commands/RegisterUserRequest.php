@@ -9,8 +9,11 @@ use Illuminate\Foundation\Http\FormRequest;
 final class RegisterUserRequest extends FormRequest
 {
     public string $name;
+
     public string $password;
+
     public ?string $email;
+
     public ?string $phone;
 
     public function rules(): array

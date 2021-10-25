@@ -20,7 +20,7 @@ class PlansAdapter
     public function add(string $workspaceId, string $description): ServiceResultInterface
     {
         $result = $this->planAppService->add($workspaceId, $description);
-        if ($result->isNotOk()){
+        if ($result->isNotOk()) {
             return $result;
         }
         $planId = (string) $result->getPayload()->planId;
@@ -30,7 +30,7 @@ class PlansAdapter
     public function launch(string $planId): ServiceResultInterface
     {
         $result = $this->planAppService->launch($planId);
-        if ($result->isNotOk()){
+        if ($result->isNotOk()) {
             return $result;
         }
         return $this->serviceResultFactory->ok();
@@ -39,7 +39,7 @@ class PlansAdapter
     public function stop(string $planId): ServiceResultInterface
     {
         $result = $this->planAppService->stop($planId);
-        if ($result->isNotOk()){
+        if ($result->isNotOk()) {
             return $result;
         }
         return $this->serviceResultFactory->ok();
@@ -48,7 +48,7 @@ class PlansAdapter
     public function archive(string $planId): ServiceResultInterface
     {
         $result = $this->planAppService->archive($planId);
-        if ($result->isNotOk()){
+        if ($result->isNotOk()) {
             return $result;
         }
         return $this->serviceResultFactory->ok();
@@ -57,7 +57,7 @@ class PlansAdapter
     public function changeDescription(string $planId, string $description): ServiceResultInterface
     {
         $result = $this->planAppService->changeDescription($planId, $description);
-        if ($result->isNotOk()){
+        if ($result->isNotOk()) {
             return $result;
         }
         return $this->serviceResultFactory->ok();
@@ -66,7 +66,7 @@ class PlansAdapter
     public function addRequirement(string $planId, string $description): ServiceResultInterface
     {
         $result = $this->requirementAppService->add($planId, $description);
-        if ($result->isNotOk()){
+        if ($result->isNotOk()) {
             return $result;
         }
         return $this->serviceResultFactory->ok();
@@ -75,7 +75,7 @@ class PlansAdapter
     public function removeRequirement(string $planId, string $requirementId): ServiceResultInterface
     {
         $result = $this->requirementAppService->remove($planId, $requirementId);
-        if ($result->isNotOk()){
+        if ($result->isNotOk()) {
             return $result;
         }
         return $this->serviceResultFactory->ok();
@@ -84,7 +84,7 @@ class PlansAdapter
     public function changeRequirement(string $planId, string $requirementId, string $description): ServiceResultInterface
     {
         $result = $this->requirementAppService->change($planId, $requirementId, $description);
-        if ($result->isNotOk()){
+        if ($result->isNotOk()) {
             return $result;
         }
         return $this->serviceResultFactory->ok();

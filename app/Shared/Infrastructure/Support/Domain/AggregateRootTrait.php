@@ -14,13 +14,6 @@ trait AggregateRootTrait
      */
     protected array $events = [];
 
-
-    protected function withEvents(EventInterface ...$domainEvents): static
-    {
-        $this->events = array_merge($this->events, $domainEvents);
-        return $this;
-    }
-
     /**
      * @return EventInterface[]
      */
@@ -34,5 +27,11 @@ trait AggregateRootTrait
     public function jsonSerialize()
     {
         return $this->toArray();
+    }
+
+    protected function withEvents(EventInterface ...$domainEvents): static
+    {
+        $this->events = array_merge($this->events, $domainEvents);
+        return $this;
     }
 }

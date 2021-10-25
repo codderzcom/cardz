@@ -10,21 +10,15 @@ use Throwable;
 
 final class CardCode
 {
-    private Carbon $expires;
-
     private const SPLIT_MARKER = '.';
 
     private const EXPIRATION_INTERVAL = 'PT15M';
 
+    private Carbon $expires;
+
     private function __construct(private CardId $cardId)
     {
         $this->expires = Carbon::now()->add(new DateInterval(self::EXPIRATION_INTERVAL));
-    }
-
-    private function setExpires(Carbon $expires): self
-    {
-        $this->expires = $expires;
-        return $this;
     }
 
     public static function ofCardId(CardId $cardId): static
@@ -52,6 +46,12 @@ final class CardCode
         }
     }
 
+    private function setExpires(Carbon $expires): self
+    {
+        $this->expires = $expires;
+        return $this;
+    }
+
     public function isExpired(): bool
     {
         Carbon::now()->gt($this->expires);
@@ -62,14 +62,14 @@ final class CardCode
         return $this->cardId;
     }
 
-    public function getCode(): string
-    {
-        return base64_encode($this->expires) . self::SPLIT_MARKER . base64_encode($this->cardId);
-    }
-
     #[Pure]
     public function __toString(): string
     {
         return $this->getCode();
+    }
+
+    public function getCode(): string
+    {
+        return base64_encode($this->expires) . self::SPLIT_MARKER . base64_encode($this->cardId);
     }
 }

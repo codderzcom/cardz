@@ -37,6 +37,16 @@ class WorkspaceService
         );
     }
 
+    private function getBusinessWorkspaceResult(string $workspaceId): ServiceResultInterface
+    {
+        $workspace = $this->businessWorkspaceReadStorage->find($workspaceId);
+        if ($workspace === null) {
+            return $this->serviceResultFactory->violation("Workspace $workspaceId not found");
+        }
+
+        return $this->serviceResultFactory->ok($workspace);
+    }
+
     public function addWorkspace(string $keeperId, string $name, string $description, string $address): ServiceResultInterface
     {
         $result = $this->workspacesAdapter->addWorkspace($keeperId, $name, $description, $address);
@@ -52,16 +62,6 @@ class WorkspaceService
             },
             AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId)),
         );
-    }
-
-    private function getBusinessWorkspaceResult(string $workspaceId): ServiceResultInterface
-    {
-        $workspace = $this->businessWorkspaceReadStorage->find($workspaceId);
-        if ($workspace === null) {
-            return $this->serviceResultFactory->violation("Workspace $workspaceId not found");
-        }
-
-        return $this->serviceResultFactory->ok($workspace);
     }
 
 }

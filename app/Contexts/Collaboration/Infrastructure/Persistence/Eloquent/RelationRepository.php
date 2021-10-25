@@ -8,10 +8,12 @@ use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
 use App\Contexts\Collaboration\Domain\Persistence\Contracts\RelationRepositoryInterface;
 use App\Contexts\Collaboration\Infrastructure\Exceptions\RelationNotFoundException;
 use App\Models\Relation as EloquentRelation;
-use ReflectionClass;
+use App\Shared\Infrastructure\Support\PropertiesExtractorTrait;
 
 class RelationRepository implements RelationRepositoryInterface
 {
+    use PropertiesExtractorTrait;
+
     public function persist(Relation $relation): void
     {
         EloquentRelation::query()->updateOrCreate(
@@ -32,24 +34,12 @@ class RelationRepository implements RelationRepositoryInterface
 
     private function relationAsData(Relation $relation): array
     {
-        $reflection = new ReflectionClass($relation);
-        $properties = [
-            'relationType' => null,
-            'established' => null,
-        ];
-
-        foreach ($properties as $key => $property) {
-            $property = $reflection->getProperty($key);
-            $property->setAccessible(true);
-            $properties[$key] = $property->getValue($relation);
-        }
-
         $data = [
             'id' => (string) $relation->relationId,
             'collaborator_id' => (string) $relation->collaboratorId,
             'workspace_id' => (string) $relation->workspaceId,
-            'relation_type' => (string) $properties['relationType'],
-            'established_at' => $properties['established'],
+            'relation_type' => (string) $relation->relationType,
+            'established_at' => $this->extractProperty($relation, 'established'),
         ];
 
         return $data;

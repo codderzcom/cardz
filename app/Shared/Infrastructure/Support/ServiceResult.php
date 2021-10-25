@@ -67,6 +67,11 @@ class ServiceResult implements ServiceResultInterface
         return $this->reportables;
     }
 
+    public function __toString(): string
+    {
+        return json_try_encode($this->toArray());
+    }
+
     public function toArray(): array
     {
         $payload = match (true) {
@@ -80,11 +85,6 @@ class ServiceResult implements ServiceResultInterface
             'violation' => $this->violation,
             'error' => $this->error,
         ];
-    }
-
-    public function __toString(): string
-    {
-        return json_try_encode($this->toArray());
     }
 
     #[Pure]

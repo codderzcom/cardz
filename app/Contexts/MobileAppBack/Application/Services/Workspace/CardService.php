@@ -44,6 +44,16 @@ class CardService
         return $this->getIssuedCardResult($cardId);
     }
 
+    private function getIssuedCardResult(string $cardId): ServiceResultInterface
+    {
+        $card = $this->issuedCardReadStorage->find($cardId);
+        if ($card === null) {
+            return $this->serviceResultFactory->violation("Card $cardId not found");
+        }
+
+        return $this->serviceResultFactory->ok($card);
+    }
+
     public function issue(string $keeperId, string $workspaceId, string $planId, string $customerId, string $description): ServiceResultInterface
     {
         return $this->policyEngine->passTrough(
@@ -156,16 +166,6 @@ class CardService
             AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId)),
             AssertCardInWorkspace::of(CardId::of($cardId), WorkspaceId::of($workspaceId)),
         );
-    }
-
-    private function getIssuedCardResult(string $cardId): ServiceResultInterface
-    {
-        $card = $this->issuedCardReadStorage->find($cardId);
-        if ($card === null) {
-            return $this->serviceResultFactory->violation("Card $cardId not found");
-        }
-
-        return $this->serviceResultFactory->ok($card);
     }
 
 }

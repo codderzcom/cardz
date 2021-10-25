@@ -2,9 +2,7 @@
 
 namespace App\Contexts\Collaboration\Integration\Events;
 
-use App\Contexts\Collaboration\Domain\Model\Invite\Invite;
 use App\Contexts\Collaboration\Domain\Model\Relation\Relation;
-use App\Shared\Contracts\Messaging\IntegrationEventConsumerInterface;
 use App\Shared\Contracts\Messaging\IntegrationEventInterface;
 use App\Shared\Infrastructure\Messaging\IntegrationEventTrait;
 use JetBrains\PhpStorm\Pure;

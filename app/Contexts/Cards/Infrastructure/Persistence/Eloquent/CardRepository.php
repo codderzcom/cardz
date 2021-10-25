@@ -7,11 +7,13 @@ use App\Contexts\Cards\Domain\Model\Card\CardId;
 use App\Contexts\Cards\Domain\Persistence\Contracts\CardRepositoryInterface;
 use App\Contexts\Cards\Infrastructure\Exceptions\CardNotFoundException;
 use App\Models\Card as EloquentCard;
-use ReflectionClass;
+use App\Shared\Infrastructure\Support\PropertiesExtractorTrait;
 use function json_try_decode;
 
 class CardRepository implements CardRepositoryInterface
 {
+    use PropertiesExtractorTrait;
+
     public function persist(Card $card): void
     {
         EloquentCard::query()->updateOrCreate(
@@ -32,21 +34,7 @@ class CardRepository implements CardRepositoryInterface
 
     private function cardAsData(Card $card): array
     {
-        $reflection = new ReflectionClass($card);
-        $properties = [
-            'issued' => null,
-            'satisfied' => null,
-            'completed' => null,
-            'revoked' => null,
-            'blocked' => null,
-        ];
-
-        foreach ($properties as $key => $property) {
-            $property = $reflection->getProperty($key);
-            $property->setAccessible(true);
-            $properties[$key] = $property->getValue($card);
-        }
-
+        $properties = $this->extractProperties($card, 'issued', 'satisfied', 'completed', 'revoked', 'blocked');
         $data = [
             'id' => (string) $card->cardId,
             'plan_id' => (string) $card->planId,

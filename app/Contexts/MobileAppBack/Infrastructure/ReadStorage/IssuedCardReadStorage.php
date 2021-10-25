@@ -19,6 +19,24 @@ class IssuedCardReadStorage implements IssuedCardReadStorageInterface
         return $this->issuedCardFromEloquent($card);
     }
 
+    private function issuedCardFromEloquent(EloquentCard $card): IssuedCard
+    {
+        $achievements = is_string($card->achievements) ? json_try_decode($card->achievements) : $card->achievements;
+        $requirements = is_string($card->requirements) ? json_try_decode($card->requirements) : $card->requirements;
+
+        return IssuedCard::make(
+            $card->id,
+            $card->plan_id,
+            $card->customer_id,
+            $card->satisfied_at !== null,
+            $card->completed_at !== null,
+            $card->revoked_at !== null,
+            $card->blocked_at !== null,
+            $achievements,
+            $requirements
+        );
+    }
+
     public function allForPlanId(string $planId): array
     {
         /** @var EloquentCard $card */
@@ -41,23 +59,5 @@ class IssuedCardReadStorage implements IssuedCardReadStorageInterface
         }
 
         return $issuedCards;
-    }
-
-    private function issuedCardFromEloquent(EloquentCard $card): IssuedCard
-    {
-        $achievements = is_string($card->achievements) ? json_try_decode($card->achievements) : $card->achievements;
-        $requirements = is_string($card->requirements) ? json_try_decode($card->requirements) : $card->requirements;
-
-        return IssuedCard::make(
-            $card->id,
-            $card->plan_id,
-            $card->customer_id,
-            $card->satisfied_at !== null,
-            $card->completed_at !== null,
-            $card->revoked_at !== null,
-            $card->blocked_at !== null,
-            $achievements,
-            $requirements
-        );
     }
 }
