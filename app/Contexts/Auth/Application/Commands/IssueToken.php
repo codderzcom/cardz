@@ -2,7 +2,9 @@
 
 namespace App\Contexts\Auth\Application\Commands;
 
-final class IssueToken implements IssueTokenCommandInterface
+use App\Shared\Contracts\Commands\CommandInterface;
+
+final class IssueToken implements CommandInterface
 {
     private function __construct(
         private string $identity,

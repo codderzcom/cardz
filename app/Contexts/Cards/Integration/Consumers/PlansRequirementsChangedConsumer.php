@@ -8,9 +8,13 @@ use App\Contexts\Cards\Infrastructure\ReadStorage\Contracts\IssuedCardReadStorag
 use App\Contexts\Plans\Integration\Events\PlanRequirementsChanged as PlansPlanRequirementsChanged;
 use App\Shared\Contracts\Commands\CommandBusInterface;
 use App\Shared\Contracts\Messaging\IntegrationEventConsumerInterface;
+use App\Shared\Infrastructure\Logging\SimpleLoggerTrait;
+use Throwable;
 
 final class PlansRequirementsChangedConsumer implements IntegrationEventConsumerInterface
 {
+    use SimpleLoggerTrait;
+
     public function __construct(
         private IssuedCardReadStorageInterface $issuedCardReadStorage,
         private CommandBusInterface $commandBus,
@@ -36,7 +40,11 @@ final class PlansRequirementsChangedConsumer implements IntegrationEventConsumer
 
         foreach ($issuedCards as $issuedCard) {
             $command = AcceptRequirements::of($issuedCard->cardId, ...$requirements);
-            $this->commandBus->dispatch($command);
+            try {
+                $this->commandBus->dispatch($command);
+            } catch (Throwable $exception) {
+                $this->info($exception->getMessage());
+            }
         }
     }
 

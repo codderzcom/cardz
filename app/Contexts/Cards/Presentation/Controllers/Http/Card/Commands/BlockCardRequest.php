@@ -3,11 +3,10 @@
 namespace App\Contexts\Cards\Presentation\Controllers\Http\Card\Commands;
 
 use App\Contexts\Cards\Application\Commands\BlockCard;
-use App\Contexts\Cards\Application\Commands\BlockCardCommandInterface;
 
 final class BlockCardRequest extends BaseCommandRequest
 {
-    public function toCommand(): BlockCardCommandInterface
+    public function toCommand(): BlockCard
     {
         return BlockCard::of($this->cardId);
     }

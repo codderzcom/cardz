@@ -2,8 +2,8 @@
 
 namespace App\Contexts\Collaboration\Application\Services;
 
-use App\Contexts\Collaboration\Application\Commands\Invite\ProposeInviteCommandInterface;
-use App\Contexts\Collaboration\Application\Commands\Keeper\KeepWorkspaceCommandInterface;
+use App\Contexts\Collaboration\Application\Commands\Invite\ProposeInvite;
+use App\Contexts\Collaboration\Application\Commands\Keeper\KeepWorkspace;
 use App\Contexts\Collaboration\Domain\Model\Invite\InviteId;
 use App\Contexts\Collaboration\Domain\Model\Relation\RelationId;
 use App\Contexts\Collaboration\Domain\Persistence\Contracts\InviteRepositoryInterface;
@@ -21,7 +21,7 @@ class KeeperAppService
     ) {
     }
 
-    public function keepWorkspace(KeepWorkspaceCommandInterface $command): RelationId
+    public function keepWorkspace(KeepWorkspace $command): RelationId
     {
         $keeper = $this->keeperRepository->take($command->getKeeperId(), $command->getWorkspaceId());
         $relation = $keeper->keep($command->getRelationId());
@@ -30,7 +30,7 @@ class KeeperAppService
         return $relation->relationId;
     }
 
-    public function invite(ProposeInviteCommandInterface $command): InviteId
+    public function invite(ProposeInvite $command): InviteId
     {
         $keeper = $this->keeperRepository->take($command->getKeeperId(), $command->getWorkspaceId());
         $invite = $keeper->invite($command->getInviteId());

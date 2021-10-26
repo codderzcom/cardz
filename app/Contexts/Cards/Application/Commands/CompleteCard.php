@@ -2,6 +2,6 @@
 
 namespace App\Contexts\Cards\Application\Commands;
 
-final class CompleteCard extends BaseCardCommand implements CompleteCardCommandInterface
+final class CompleteCard extends BaseCardCommand implements CardCommandInterface
 {
 }

@@ -2,18 +2,18 @@
 
 namespace App\Contexts\Cards\Application\Services;
 
-use App\Contexts\Cards\Application\Commands\BlockCardCommandInterface;
+use App\Contexts\Cards\Application\Commands\AcceptRequirements;
+use App\Contexts\Cards\Application\Commands\BlockCard;
 use App\Contexts\Cards\Application\Commands\CardCommandInterface;
-use App\Contexts\Cards\Application\Commands\CompleteCardCommandInterface;
-use App\Contexts\Cards\Application\Commands\DismissAchievementCommandInterface;
-use App\Contexts\Cards\Application\Commands\FixAchievementDescriptionCommandInterface;
-use App\Contexts\Cards\Application\Commands\IssueCardCommandInterface;
-use App\Contexts\Cards\Application\Commands\NoteAchievementCommandInterface;
-use App\Contexts\Cards\Application\Commands\RevokeCardCommandInterface;
-use App\Contexts\Cards\Application\Commands\UnblockCardCommandInterface;
+use App\Contexts\Cards\Application\Commands\CompleteCard;
+use App\Contexts\Cards\Application\Commands\DismissAchievement;
+use App\Contexts\Cards\Application\Commands\FixAchievementDescription;
+use App\Contexts\Cards\Application\Commands\IssueCard;
+use App\Contexts\Cards\Application\Commands\NoteAchievement;
+use App\Contexts\Cards\Application\Commands\RevokeCard;
+use App\Contexts\Cards\Application\Commands\UnblockCard;
 use App\Contexts\Cards\Domain\Model\Card\Card;
 use App\Contexts\Cards\Domain\Model\Card\CardId;
-use App\Contexts\Cards\Domain\Model\Plan\Plan;
 use App\Contexts\Cards\Domain\Persistence\Contracts\CardRepositoryInterface;
 use App\Contexts\Cards\Domain\Persistence\Contracts\PlanRepositoryInterface;
 use App\Contexts\Cards\Infrastructure\Messaging\DomainEventBusInterface;
@@ -27,57 +27,58 @@ class CardAppService
     ) {
     }
 
-    public function issue(IssueCardCommandInterface $command): CardId
+    public function issue(IssueCard $command): CardId
     {
-        $plan = $this->plan($command);
+        $plan = $this->planRepository->take($command->getPlanId());
         return $this->release($plan->issueCard($command->getCardId(), $command->getCustomerId()));
     }
 
-    public function complete(CompleteCardCommandInterface $command): CardId
+    public function complete(CompleteCard $command): CardId
     {
         $card = $this->card($command);
         return $this->release($card->complete());
     }
 
-    public function revoke(RevokeCardCommandInterface $command): CardId
+    public function revoke(RevokeCard $command): CardId
     {
         $card = $this->card($command);
         return $this->release($card->revoke());
     }
 
-    public function block(BlockCardCommandInterface $command): CardId
+    public function block(BlockCard $command): CardId
     {
         $card = $this->card($command);
         return $this->release($card->block());
     }
 
-    public function unblock(UnblockCardCommandInterface $command): CardId
+    public function unblock(UnblockCard $command): CardId
     {
         $card = $this->card($command);
         return $this->release($card->unblock());
     }
 
-    public function noteAchievement(NoteAchievementCommandInterface $command): CardId
+    public function noteAchievement(NoteAchievement $command): CardId
     {
         $card = $this->card($command);
         return $this->release($card->noteAchievement($command->getAchievement()));
     }
 
-    public function dismissAchievement(DismissAchievementCommandInterface $command): CardId
+    public function dismissAchievement(DismissAchievement $command): CardId
     {
         $card = $this->card($command);
         return $this->release($card->dismissAchievement($command->getAchievementId()));
     }
 
-    public function fixAchievementDescription(FixAchievementDescriptionCommandInterface $command): CardId
+    public function fixAchievementDescription(FixAchievementDescription $command): CardId
     {
         $card = $this->card($command);
         return $this->release($card->fixAchievementDescription($command->getAchievement()));
     }
 
-    private function plan(IssueCardCommandInterface $command): Plan
+    public function acceptRequirements(AcceptRequirements $command): CardId
     {
-        return $this->planRepository->take($command->getPlanId());
+        $card = $this->card($command);
+        return $this->release($card->acceptRequirements($command->getRequirements()));
     }
 
     private function release(Card $card): CardId

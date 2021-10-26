@@ -4,7 +4,7 @@ namespace App\Contexts\Cards\Application\Commands;
 
 use App\Contexts\Cards\Domain\Model\Card\CardId;
 
-final class DismissAchievement implements DismissAchievementCommandInterface
+final class DismissAchievement implements CardCommandInterface
 {
     private function __construct(
         private string $cardId,

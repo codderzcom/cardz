@@ -4,8 +4,9 @@ namespace App\Contexts\Workspaces\Application\Commands;
 
 use App\Contexts\Workspaces\Domain\Model\Workspace\Profile;
 use App\Contexts\Workspaces\Domain\Model\Workspace\WorkspaceId;
+use App\Shared\Contracts\Commands\CommandInterface;
 
-final class ChangeWorkspaceProfile implements ChangeWorkspaceProfileCommandInterface
+final class ChangeWorkspaceProfile implements CommandInterface
 {
     private function __construct(
         private string $workspaceId,

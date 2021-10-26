@@ -6,7 +6,7 @@ use App\Contexts\Cards\Domain\Model\Card\Achievements;
 use App\Contexts\Cards\Domain\Model\Card\CardId;
 use App\Contexts\Cards\Domain\Model\Plan\Requirement;
 
-final class AcceptRequirements implements AcceptRequirementsCommandInterface
+final class AcceptRequirements implements CardCommandInterface
 {
     /**
      * @var Requirement[]

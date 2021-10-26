@@ -3,7 +3,6 @@
 namespace App\Contexts\Cards\Presentation\Controllers\Http\Card\Commands;
 
 use App\Contexts\Cards\Application\Commands\DismissAchievement;
-use App\Contexts\Cards\Application\Commands\DismissAchievementCommandInterface;
 
 final class DismissAchievementRequest extends BaseCommandRequest
 {
@@ -23,7 +22,7 @@ final class DismissAchievementRequest extends BaseCommandRequest
         $this->achievementId = $this->input('achievementId');
     }
 
-    public function toCommand(): DismissAchievementCommandInterface
+    public function toCommand(): DismissAchievement
     {
         return DismissAchievement::of($this->cardId, $this->achievementId);
     }

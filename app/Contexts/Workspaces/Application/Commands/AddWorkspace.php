@@ -5,8 +5,9 @@ namespace App\Contexts\Workspaces\Application\Commands;
 use App\Contexts\Workspaces\Domain\Model\Workspace\KeeperId;
 use App\Contexts\Workspaces\Domain\Model\Workspace\Profile;
 use App\Contexts\Workspaces\Domain\Model\Workspace\WorkspaceId;
+use App\Shared\Contracts\Commands\CommandInterface;
 
-final class AddWorkspace implements AddWorkspaceCommandInterface
+final class AddWorkspace implements CommandInterface
 {
     private function __construct(
         private string $workspaceId,

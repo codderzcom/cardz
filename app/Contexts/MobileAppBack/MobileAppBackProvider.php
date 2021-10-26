@@ -2,14 +2,14 @@
 
 namespace App\Contexts\MobileAppBack;
 
-use App\Contexts\MobileAppBack\Application\Contracts\BusinessWorkspaceReadStorageInterface;
-use App\Contexts\MobileAppBack\Application\Contracts\CustomerWorkspaceReadStorageInterface;
-use App\Contexts\MobileAppBack\Application\Contracts\IssuedCardReadStorageInterface;
-use App\Contexts\MobileAppBack\Application\Contracts\WorkspacePlanReadStorageInterface;
-use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Customer\CustomerWorkspaceReadStorage;
-use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\IssuedCardReadStorage;
-use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\BusinessWorkspaceReadStorage;
-use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\WorkspacePlanReadStorage;
+use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Customer\Contracts\CustomerWorkspaceReadStorageInterface;
+use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Customer\Eloquent\CustomerWorkspaceReadStorage;
+use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Shared\Contracts\IssuedCardReadStorageInterface;
+use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Shared\Eloquent\IssuedCardReadStorage;
+use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\Contracts\BusinessWorkspaceReadStorageInterface;
+use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\Contracts\WorkspacePlanReadStorageInterface;
+use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\Eloquent\BusinessWorkspaceReadStorage;
+use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\Eloquent\WorkspacePlanReadStorage;
 use Illuminate\Support\ServiceProvider;
 
 class MobileAppBackProvider extends ServiceProvider

@@ -5,7 +5,7 @@ namespace App\Contexts\Plans\Application\Commands\Plan;
 use App\Contexts\Plans\Domain\Model\Plan\Description;
 use App\Contexts\Plans\Domain\Model\Plan\PlanId;
 
-final class ChangePlanDescription implements ChangePlanDescriptionCommandInterface
+final class ChangePlanDescription implements PlanCommandInterface
 {
     private function __construct(
         private string $planId,

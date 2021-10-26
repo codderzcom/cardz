@@ -2,7 +2,7 @@
 
 namespace App\Contexts\Auth\Application\Services;
 
-use App\Contexts\Auth\Application\Commands\IssueTokenCommandInterface;
+use App\Contexts\Auth\Application\Commands\IssueToken;
 use App\Contexts\Auth\Domain\Model\Token\Token;
 use App\Contexts\Auth\Domain\Persistence\Contracts\UserRepositoryInterface;
 use App\Contexts\Auth\Infrastructure\Exceptions\UserNotFoundException;
@@ -18,7 +18,7 @@ class TokenAppService
     ) {
     }
 
-    public function issueToken(IssueTokenCommandInterface $command): Token
+    public function issueToken(IssueToken $command): Token
     {
         $user = $this->userRepository->takeByIdentity($command->getIdentity());
 

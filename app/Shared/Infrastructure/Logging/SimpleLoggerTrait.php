@@ -2,15 +2,18 @@
 
 namespace App\Shared\Infrastructure\Logging;
 
+use App\Shared\Infrastructure\Support\ShortClassNameTrait;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Stringable;
 
 trait SimpleLoggerTrait
 {
+    use ShortClassNameTrait;
+
     protected function info(string $message, array $context = []): void
     {
-        Log::info($message, $this->deObjectifyArray($context));
+        Log::info(self::shortName() . "::$message", $this->deObjectifyArray($context));
     }
 
     private function deObjectifyArray(array $items): array
@@ -39,6 +42,6 @@ trait SimpleLoggerTrait
 
     protected function error(string $message, array $context = []): void
     {
-        Log::error($message, $this->deObjectifyArray($context));
+        Log::error(self::shortName() . "::$message", $this->deObjectifyArray($context));
     }
 }

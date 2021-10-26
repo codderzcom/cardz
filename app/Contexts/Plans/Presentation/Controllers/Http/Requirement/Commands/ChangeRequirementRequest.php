@@ -3,7 +3,6 @@
 namespace App\Contexts\Plans\Presentation\Controllers\Http\Requirement\Commands;
 
 use App\Contexts\Plans\Application\Commands\Requirement\ChangeRequirement;
-use App\Contexts\Plans\Application\Commands\Requirement\ChangeRequirementCommandInterface;
 
 final class ChangeRequirementRequest extends BaseCommandRequest
 {
@@ -25,7 +24,7 @@ final class ChangeRequirementRequest extends BaseCommandRequest
         $this->description = $this->input('description');
     }
 
-    public function toCommand(): ChangeRequirementCommandInterface
+    public function toCommand(): ChangeRequirement
     {
         return ChangeRequirement::of($this->requirementId, $this->description);
     }

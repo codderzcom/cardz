@@ -6,7 +6,7 @@ use App\Contexts\Collaboration\Domain\Model\Invite\InviteId;
 use App\Contexts\Collaboration\Domain\Model\Workspace\KeeperId;
 use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
 
-final class ProposeInvite implements ProposeInviteCommandInterface
+final class ProposeInvite implements InviteCommandInterface
 {
     private function __construct(
         private string $inviteId,

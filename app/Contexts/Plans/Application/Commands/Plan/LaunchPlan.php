@@ -4,7 +4,7 @@ namespace App\Contexts\Plans\Application\Commands\Plan;
 
 use App\Contexts\Plans\Domain\Model\Plan\PlanId;
 
-final class LaunchPlan implements LaunchPlanCommandInterface
+final class LaunchPlan implements PlanCommandInterface
 {
     private function __construct(
         private string $planId,

@@ -2,8 +2,8 @@
 
 namespace App\Contexts\Collaboration\Application\Services;
 
-use App\Contexts\Collaboration\Application\Commands\Invite\AcceptInviteCommandInterface;
-use App\Contexts\Collaboration\Application\Commands\Invite\DiscardInviteCommandInterface;
+use App\Contexts\Collaboration\Application\Commands\Invite\AcceptInvite;
+use App\Contexts\Collaboration\Application\Commands\Invite\DiscardInvite;
 use App\Contexts\Collaboration\Domain\Model\Invite\InviteId;
 use App\Contexts\Collaboration\Domain\Persistence\Contracts\InviteRepositoryInterface;
 use App\Contexts\Collaboration\Infrastructure\Messaging\DomainEventBusInterface;
@@ -16,7 +16,7 @@ class InviteAppService
     ) {
     }
 
-    public function accept(AcceptInviteCommandInterface $command): InviteId
+    public function accept(AcceptInvite $command): InviteId
     {
         $invite = $this->inviteRepository->take($command->getInviteId());
         $invite->accept($command->getCollaboratorId());
@@ -25,7 +25,7 @@ class InviteAppService
         return $invite->inviteId;
     }
 
-    public function discard(DiscardInviteCommandInterface $command): InviteId
+    public function discard(DiscardInvite $command): InviteId
     {
         $invite = $this->inviteRepository->take($command->getInviteId());
         $invite->discard();

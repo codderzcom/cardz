@@ -5,7 +5,7 @@ namespace App\Contexts\Plans\Application\Commands\Requirement;
 use App\Contexts\Plans\Domain\Model\Plan\PlanId;
 use App\Contexts\Plans\Domain\Model\Requirement\RequirementId;
 
-final class AddRequirement implements AddRequirementCommandInterface
+final class AddRequirement implements RequirementCommandInterface
 {
     private function __construct(
         private string $requirementId,

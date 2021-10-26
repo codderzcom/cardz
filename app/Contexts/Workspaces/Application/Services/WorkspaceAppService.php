@@ -2,8 +2,8 @@
 
 namespace App\Contexts\Workspaces\Application\Services;
 
-use App\Contexts\Workspaces\Application\Commands\AddWorkspaceCommandInterface;
-use App\Contexts\Workspaces\Application\Commands\ChangeWorkspaceProfileCommandInterface;
+use App\Contexts\Workspaces\Application\Commands\AddWorkspace;
+use App\Contexts\Workspaces\Application\Commands\ChangeWorkspaceProfile;
 use App\Contexts\Workspaces\Domain\Model\Workspace\Workspace;
 use App\Contexts\Workspaces\Domain\Model\Workspace\WorkspaceId;
 use App\Contexts\Workspaces\Domain\Persistence\Contracts\KeeperRepositoryInterface;
@@ -19,13 +19,13 @@ class WorkspaceAppService
     ) {
     }
 
-    public function add(AddWorkspaceCommandInterface $command): WorkspaceId
+    public function add(AddWorkspace $command): WorkspaceId
     {
         $keeper = $this->keeperRepository->take($command->getKeeperId());
         return $this->release($keeper->keepWorkspace($command->getWorkspaceId(), $command->getProfile()));
     }
 
-    public function changeProfile(ChangeWorkspaceProfileCommandInterface $command): WorkspaceId
+    public function changeProfile(ChangeWorkspaceProfile $command): WorkspaceId
     {
         $workspace = $this->workspaceRepository->take($command->getWorkspaceId());
         return $this->release($workspace->changeProfile($command->getProfile()));

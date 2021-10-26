@@ -2,12 +2,12 @@
 
 namespace App\Contexts\Workspaces\Presentation\Controllers\Http\Workspace\Commands;
 
-use App\Contexts\Workspaces\Application\Commands\ChangeWorkspaceProfileCommandInterface;
+use App\Contexts\Workspaces\Application\Commands\ChangeWorkspaceProfile;
 use App\Contexts\Workspaces\Domain\Model\Workspace\Profile;
 use App\Contexts\Workspaces\Domain\Model\Workspace\WorkspaceId;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ChangeWorkspaceProfileRequest extends FormRequest implements ChangeWorkspaceProfileCommandInterface
+class ChangeWorkspaceProfileRequest extends FormRequest
 {
     private string $workspaceId;
 
@@ -50,9 +50,9 @@ class ChangeWorkspaceProfileRequest extends FormRequest implements ChangeWorkspa
         return WorkspaceId::of($this->workspaceId);
     }
 
-    public function getProfile(): Profile
+    public function toCommand(): ChangeWorkspaceProfile
     {
-        return Profile::of($this->name, $this->description, $this->address);
+        return ChangeWorkspaceProfile::of($this->workspaceId, $this->name, $this->description, $this->address);
     }
 
     protected function prepareForValidation(): void

@@ -3,7 +3,6 @@
 namespace App\Contexts\Personal\Presentation\Controllers\Http\Person\Commands;
 
 use App\Contexts\Personal\Application\Commands\ChangePersonName;
-use App\Contexts\Personal\Application\Commands\ChangePersonNameCommandInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class ChangePersonNameRequest extends FormRequest
@@ -34,7 +33,7 @@ final class ChangePersonNameRequest extends FormRequest
         $this->name = $this->input('name');
     }
 
-    public function toCommand(): ChangePersonNameCommandInterface
+    public function toCommand(): ChangePersonName
     {
         return ChangePersonName::of($this->personId, $this->name);
     }

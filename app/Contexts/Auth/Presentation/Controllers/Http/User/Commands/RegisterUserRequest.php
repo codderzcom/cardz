@@ -3,7 +3,6 @@
 namespace App\Contexts\Auth\Presentation\Controllers\Http\User\Commands;
 
 use App\Contexts\Auth\Application\Commands\RegisterUser;
-use App\Contexts\Auth\Application\Commands\RegisterUserCommandInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class RegisterUserRequest extends FormRequest
@@ -42,7 +41,7 @@ final class RegisterUserRequest extends FormRequest
         $this->phone = $this->input('phone');
     }
 
-    public function toCommand(): RegisterUserCommandInterface
+    public function toCommand(): RegisterUser
     {
         return RegisterUser::of($this->name, $this->password, $this->email, $this->phone);
     }

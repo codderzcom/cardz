@@ -6,8 +6,9 @@ use App\Contexts\Collaboration\Domain\Model\Relation\CollaboratorId;
 use App\Contexts\Collaboration\Domain\Model\Relation\RelationId;
 use App\Contexts\Collaboration\Domain\Model\Relation\RelationType;
 use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
+use App\Shared\Contracts\Commands\CommandInterface;
 
-final class EstablishRelation implements EstablishRelationCommandInterface
+final class EstablishRelation implements CommandInterface
 {
     private function __construct(
         private string $relationId,

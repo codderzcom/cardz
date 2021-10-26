@@ -6,8 +6,9 @@ use App\Contexts\Auth\Domain\Model\User\Password;
 use App\Contexts\Auth\Domain\Model\User\Profile;
 use App\Contexts\Auth\Domain\Model\User\UserId;
 use App\Contexts\Auth\Domain\Model\User\UserIdentity;
+use App\Shared\Contracts\Commands\CommandInterface;
 
-final class RegisterUser implements RegisterUserCommandInterface
+final class RegisterUser implements CommandInterface
 {
     private function __construct(
         private string $userId,

@@ -3,7 +3,6 @@
 namespace App\Contexts\Plans\Presentation\Controllers\Http\Requirement\Commands;
 
 use App\Contexts\Plans\Application\Commands\Requirement\AddRequirement;
-use App\Contexts\Plans\Application\Commands\Requirement\AddRequirementCommandInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class AddRequirementRequest extends FormRequest
@@ -34,7 +33,7 @@ final class AddRequirementRequest extends FormRequest
         $this->description = $this->input('description');
     }
 
-    public function toCommand(): AddRequirementCommandInterface
+    public function toCommand(): AddRequirement
     {
         return AddRequirement::of($this->planId, $this->description);
     }

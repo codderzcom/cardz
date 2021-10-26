@@ -3,7 +3,6 @@
 namespace App\Contexts\Cards\Presentation\Controllers\Http\Card\Commands;
 
 use App\Contexts\Cards\Application\Commands\NoteAchievement;
-use App\Contexts\Cards\Application\Commands\NoteAchievementCommandInterface;
 
 final class NoteAchievementRequest extends BaseCommandRequest
 {
@@ -28,7 +27,7 @@ final class NoteAchievementRequest extends BaseCommandRequest
         $this->achievementDescription = $this->input('description');
     }
 
-    public function toCommand(): NoteAchievementCommandInterface
+    public function toCommand(): NoteAchievement
     {
         return NoteAchievement::of($this->cardId, $this->achievementId, $this->achievementDescription);
     }

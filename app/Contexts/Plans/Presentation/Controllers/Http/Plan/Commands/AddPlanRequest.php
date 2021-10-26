@@ -3,7 +3,6 @@
 namespace App\Contexts\Plans\Presentation\Controllers\Http\Plan\Commands;
 
 use App\Contexts\Plans\Application\Commands\Plan\AddPlan;
-use App\Contexts\Plans\Application\Commands\Plan\AddPlanCommandInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class AddPlanRequest extends FormRequest
@@ -34,7 +33,7 @@ final class AddPlanRequest extends FormRequest
         $this->description = $this->input('description');
     }
 
-    public function toCommand(): AddPlanCommandInterface
+    public function toCommand(): AddPlan
     {
         return AddPlan::of(
             $this->workspaceId,

@@ -3,7 +3,6 @@
 namespace App\Contexts\Workspaces\Presentation\Controllers\Http\Workspace\Commands;
 
 use App\Contexts\Workspaces\Application\Commands\AddWorkspace;
-use App\Contexts\Workspaces\Application\Commands\AddWorkspaceCommandInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AddWorkspaceRequest extends FormRequest
@@ -44,7 +43,7 @@ class AddWorkspaceRequest extends FormRequest
         ];
     }
 
-    public function toCommand(): AddWorkspaceCommandInterface
+    public function toCommand(): AddWorkspace
     {
         return AddWorkspace::of($this->keeperId, $this->name, $this->description, $this->address);
     }

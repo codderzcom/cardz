@@ -2,7 +2,7 @@
 
 namespace App\Contexts\Auth\Application\Services;
 
-use App\Contexts\Auth\Application\Commands\RegisterUserCommandInterface;
+use App\Contexts\Auth\Application\Commands\RegisterUser;
 use App\Contexts\Auth\Application\Exceptions\UserExistsException;
 use App\Contexts\Auth\Domain\Model\User\User;
 use App\Contexts\Auth\Domain\Model\User\UserId;
@@ -17,7 +17,7 @@ class UserAppService
     ) {
     }
 
-    public function register(RegisterUserCommandInterface $command): UserId
+    public function register(RegisterUser $command): UserId
     {
         //ToDo: здесь?
         if ($this->userRepository->isExistingIdentity($command->getUserIdentity())) {

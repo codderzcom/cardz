@@ -2,10 +2,10 @@
 
 namespace App\Contexts\MobileAppBack\Application\Services\Workspace;
 
-use App\Contexts\MobileAppBack\Application\Contracts\BusinessWorkspaceReadStorageInterface;
 use App\Contexts\MobileAppBack\Application\Services\Workspace\Policies\AssertWorkspaceForKeeper;
 use App\Contexts\MobileAppBack\Domain\Model\Collaboration\KeeperId;
 use App\Contexts\MobileAppBack\Domain\Model\Workspace\WorkspaceId;
+use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\Contracts\BusinessWorkspaceReadStorageInterface;
 use App\Contexts\Workspaces\Presentation\Controllers\Rpc\RpcAdapter as WorkspacesAdapter;
 use App\Shared\Contracts\PolicyEngineInterface;
 use App\Shared\Contracts\ServiceResultFactoryInterface;

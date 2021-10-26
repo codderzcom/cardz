@@ -2,9 +2,9 @@
 
 namespace App\Contexts\Plans\Application\Services;
 
-use App\Contexts\Plans\Application\Commands\Requirement\AddRequirementCommandInterface;
-use App\Contexts\Plans\Application\Commands\Requirement\ChangeRequirementCommandInterface;
-use App\Contexts\Plans\Application\Commands\Requirement\RemoveRequirementCommandInterface;
+use App\Contexts\Plans\Application\Commands\Requirement\AddRequirement;
+use App\Contexts\Plans\Application\Commands\Requirement\ChangeRequirement;
+use App\Contexts\Plans\Application\Commands\Requirement\RemoveRequirement;
 use App\Contexts\Plans\Domain\Model\Requirement\Requirement;
 use App\Contexts\Plans\Domain\Model\Requirement\RequirementId;
 use App\Contexts\Plans\Domain\Persistence\Contracts\PlanRepositoryInterface;
@@ -20,19 +20,19 @@ class RequirementAppService
     ) {
     }
 
-    public function add(AddRequirementCommandInterface $command): RequirementId
+    public function add(AddRequirement $command): RequirementId
     {
         $plan = $this->planRepository->take($command->getPlanId());
         return $this->releaseRequirement($plan->addRequirement($command->getRequirementId(), $command->getDescription()));
     }
 
-    public function remove(RemoveRequirementCommandInterface $command): RequirementId
+    public function remove(RemoveRequirement $command): RequirementId
     {
         $requirement = $this->requirementRepository->take($command->getRequirementId());
         return $this->releaseRequirement($requirement->remove());
     }
 
-    public function change(ChangeRequirementCommandInterface $command): RequirementId
+    public function change(ChangeRequirement $command): RequirementId
     {
         $requirement = $this->requirementRepository->take($command->getRequirementId());
         return $this->releaseRequirement($requirement->change($command->getDescription())

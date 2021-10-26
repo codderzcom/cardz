@@ -3,7 +3,6 @@
 namespace App\Contexts\Collaboration\Presentation\Controllers\Http\Invite\Commands;
 
 use App\Contexts\Collaboration\Application\Commands\Invite\AcceptInvite;
-use App\Contexts\Collaboration\Application\Commands\Invite\AcceptInviteCommandInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AcceptInviteRequest extends FormRequest
@@ -34,7 +33,7 @@ class AcceptInviteRequest extends FormRequest
         $this->collaboratorId = $this->input('collaboratorId');
     }
 
-    public function toCommand(): AcceptInviteCommandInterface
+    public function toCommand(): AcceptInvite
     {
         return AcceptInvite::of($this->inviteId, $this->collaboratorId);
     }

@@ -4,8 +4,9 @@ namespace App\Contexts\Collaboration\Application\Commands\Relation;
 
 use App\Contexts\Collaboration\Domain\Model\Relation\CollaboratorId;
 use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
+use App\Shared\Contracts\Commands\CommandInterface;
 
-final class LeaveRelation implements LeaveRelationCommandInterface
+final class LeaveRelation implements CommandInterface
 {
     private function __construct(
         private string $collaboratorId,

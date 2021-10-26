@@ -6,7 +6,7 @@ use App\Contexts\Cards\Domain\Model\Card\CardId;
 use App\Contexts\Cards\Domain\Model\Card\CustomerId;
 use App\Contexts\Cards\Domain\Model\Plan\PlanId;
 
-final class IssueCard implements IssueCardCommandInterface
+final class IssueCard implements CardCommandInterface
 {
     private function __construct(
         private string $cardId,

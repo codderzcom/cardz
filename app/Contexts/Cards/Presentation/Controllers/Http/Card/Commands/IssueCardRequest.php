@@ -3,7 +3,6 @@
 namespace App\Contexts\Cards\Presentation\Controllers\Http\Card\Commands;
 
 use App\Contexts\Cards\Application\Commands\IssueCard;
-use App\Contexts\Cards\Application\Commands\IssueCardCommandInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class IssueCardRequest extends FormRequest
@@ -41,7 +40,7 @@ final class IssueCardRequest extends FormRequest
         ];
     }
 
-    public function toCommand(): IssueCardCommandInterface
+    public function toCommand(): IssueCard
     {
         return IssueCard::of($this->planId, $this->customerId);
     }

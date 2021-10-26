@@ -6,7 +6,7 @@ use App\Contexts\Plans\Domain\Model\Plan\Description;
 use App\Contexts\Plans\Domain\Model\Plan\PlanId;
 use App\Contexts\Plans\Domain\Model\Plan\WorkspaceId;
 
-final class AddPlan implements AddPlanCommandInterface
+final class AddPlan implements PlanCommandInterface
 {
     private function __construct(
         private string $planId,

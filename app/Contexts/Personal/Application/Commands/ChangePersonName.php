@@ -4,8 +4,9 @@ namespace App\Contexts\Personal\Application\Commands;
 
 use App\Contexts\Personal\Domain\Model\Person\Name;
 use App\Contexts\Personal\Domain\Model\Person\PersonId;
+use App\Shared\Contracts\Commands\CommandInterface;
 
-final class ChangePersonName implements ChangePersonNameCommandInterface
+final class ChangePersonName implements CommandInterface
 {
     private function __construct(
         private string $personId,

@@ -5,8 +5,9 @@ namespace App\Contexts\Collaboration\Application\Commands\Keeper;
 use App\Contexts\Collaboration\Domain\Model\Relation\RelationId;
 use App\Contexts\Collaboration\Domain\Model\Workspace\KeeperId;
 use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
+use App\Shared\Contracts\Commands\CommandInterface;
 
-final class KeepWorkspace implements KeepWorkspaceCommandInterface
+final class KeepWorkspace implements CommandInterface
 {
     private function __construct(
         private string $relationId,

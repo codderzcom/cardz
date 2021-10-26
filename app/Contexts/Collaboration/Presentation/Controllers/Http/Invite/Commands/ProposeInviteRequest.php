@@ -3,7 +3,6 @@
 namespace App\Contexts\Collaboration\Presentation\Controllers\Http\Invite\Commands;
 
 use App\Contexts\Collaboration\Application\Commands\Invite\ProposeInvite;
-use App\Contexts\Collaboration\Application\Commands\Invite\ProposeInviteCommandInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class ProposeInviteRequest extends FormRequest
@@ -34,7 +33,7 @@ final class ProposeInviteRequest extends FormRequest
         $this->workspaceId = $this->input('workspaceId');
     }
 
-    public function toCommand(): ProposeInviteCommandInterface
+    public function toCommand(): ProposeInvite
     {
         return ProposeInvite::of($this->keeperId, $this->workspaceId);
     }

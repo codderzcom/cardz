@@ -2,8 +2,8 @@
 
 namespace App\Contexts\Personal\Application\Services;
 
-use App\Contexts\Personal\Application\Commands\ChangePersonNameCommandInterface;
-use App\Contexts\Personal\Application\Commands\JoinPersonCommandInterface;
+use App\Contexts\Personal\Application\Commands\ChangePersonName;
+use App\Contexts\Personal\Application\Commands\JoinPerson;
 use App\Contexts\Personal\Domain\Model\Person\Person;
 use App\Contexts\Personal\Domain\Model\Person\PersonId;
 use App\Contexts\Personal\Domain\Persistence\Contracts\PersonRepositoryInterface;
@@ -17,7 +17,7 @@ class PersonAppService
     ) {
     }
 
-    public function join(JoinPersonCommandInterface $command): PersonId
+    public function join(JoinPerson $command): PersonId
     {
         $person = Person::join($command->getPersonId(), $command->getName());
         $this->personRepository->persist($person);
@@ -25,7 +25,7 @@ class PersonAppService
         return $person->personId;
     }
 
-    public function changeName(ChangePersonNameCommandInterface $command): PersonId
+    public function changeName(ChangePersonName $command): PersonId
     {
         $person = $this->personRepository->take($command->getPersonId());
         $person->changeName($command->getName());

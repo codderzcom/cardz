@@ -4,12 +4,12 @@ use App\Contexts\Auth\Presentation\Controllers\Http\User\UserController;
 use App\Contexts\Cards\Presentation\Controllers\Http\Card\CardController;
 use App\Contexts\Collaboration\Presentation\Controllers\Http\Invite\InviteController;
 use App\Contexts\Collaboration\Presentation\Controllers\Http\Relation\RelationController;
-use App\Contexts\MobileAppBack\Application\Controllers\Web\Customer\CardController as MABCustomerCardController;
-use App\Contexts\MobileAppBack\Application\Controllers\Web\Customer\CustomerController as MABCustomerController;
-use App\Contexts\MobileAppBack\Application\Controllers\Web\Customer\WorkspaceController as MABCustomerWorkspaceController;
-use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\CardController as MABCardController;
-use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\PlanController as MABPlanController;
-use App\Contexts\MobileAppBack\Application\Controllers\Web\Workspace\WorkspaceController as MABWorkspaceController;
+use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer\CardController as MABCustomerCardController;
+use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer\CustomerController as MABCustomerController;
+use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer\WorkspaceController as MABCustomerWorkspaceController;
+use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\CardController as MABCardController;
+use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\PlanController as MABPlanController;
+use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\WorkspaceController as MABWorkspaceController;
 use App\Contexts\Personal\Presentation\Controllers\Http\Person\PersonController;
 use App\Contexts\Plans\Presentation\Controllers\Http\Plan\PlanController;
 use App\Contexts\Plans\Presentation\Controllers\Http\Requirement\RequirementController;
@@ -97,14 +97,11 @@ Route::group(['prefix' => '/mab/v1'], function () {
             Route::get('/', [MABWorkspaceController::class, 'getWorkspace'])->name('MABWorkspaceGet');
             Route::put('/profile', [MABWorkspaceController::class, 'changeWorkspaceProfile'])->name('MABWorkspaceChangeProfile');
 
-            Route::group(['prefix' => '/card'], function () {
-                Route::get('/by-code/{codeId}', [MABCardController::class, 'getCardByCode'])->name('MABCustomerGetCardByCode');
-                Route::get('/by-id/{cardId}', [MABCardController::class, 'getCardById'])->name('MABCustomerGetCardById');
-
-                Route::post('', [MABCardController::class, 'issue'])->name('MABCustomerIssueCard');
-            });
+            Route::post('/card', [MABCardController::class, 'issue'])->name('MABCustomerIssueCard');
 
             Route::group(['prefix' => '/card/{cardId}'], function () {
+                Route::get('/{cardId}', [MABCardController::class, 'getCard'])->name('MABCustomerGetCardById');
+
                 Route::put('/complete', [MABCardController::class, 'complete'])->name('MABCustomerCompleteCard');
                 Route::put('/revoke', [MABCardController::class, 'revoke'])->name('MABCustomerRevokeCard');
                 Route::put('/block', [MABCardController::class, 'block'])->name('MABCustomerBlockCard');
@@ -134,14 +131,12 @@ Route::group(['prefix' => '/mab/v1'], function () {
         });
 
         Route::group(['prefix' => '/customer'], function () {
-            Route::get('/code', [MABCustomerController::class, 'generateCode'])->name('MABCustomerCode');
             Route::get('/card', [MABCustomerCardController::class, 'getCards'])->name('MABCustomerCardListAll');
 
             Route::get('/workspaces', [MABCustomerWorkspaceController::class, 'all'])->name('MABCustomerWorkspaceListAll');
 
             Route::group(['prefix' => '/card/{cardId}'], function () {
                 Route::get('/', [MABCustomerCardController::class, 'getCard'])->name('MABCustomerCard');
-                Route::get('/code', [MABCustomerCardController::class, 'generateCardCode'])->name('MABCustomerCardCode');
             });
         });
     });

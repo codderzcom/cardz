@@ -2,8 +2,8 @@
 
 namespace App\Contexts\Collaboration\Application\Services;
 
-use App\Contexts\Collaboration\Application\Commands\Relation\EstablishRelationCommandInterface;
-use App\Contexts\Collaboration\Application\Commands\Relation\LeaveRelationCommandInterface;
+use App\Contexts\Collaboration\Application\Commands\Relation\EstablishRelation;
+use App\Contexts\Collaboration\Application\Commands\Relation\LeaveRelation;
 use App\Contexts\Collaboration\Domain\Model\Relation\Relation;
 use App\Contexts\Collaboration\Domain\Model\Relation\RelationId;
 use App\Contexts\Collaboration\Domain\Persistence\Contracts\RelationRepositoryInterface;
@@ -17,7 +17,7 @@ class RelationAppService
     ) {
     }
 
-    public function establish(EstablishRelationCommandInterface $command): RelationId
+    public function establish(EstablishRelation $command): RelationId
     {
         $relation = Relation::establish(
             $command->getRelationId(),
@@ -30,7 +30,7 @@ class RelationAppService
         return $command->getRelationId();
     }
 
-    public function leave(LeaveRelationCommandInterface $command): RelationId
+    public function leave(LeaveRelation $command): RelationId
     {
         $relation = $this->relationRepository->find($command->getCollaboratorId(), $command->getWorkspaceId());
         $relation->leave();

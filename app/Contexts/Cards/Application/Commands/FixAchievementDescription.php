@@ -5,7 +5,7 @@ namespace App\Contexts\Cards\Application\Commands;
 use App\Contexts\Cards\Domain\Model\Card\Achievement;
 use App\Contexts\Cards\Domain\Model\Card\CardId;
 
-final class FixAchievementDescription implements FixAchievementDescriptionCommandInterface
+final class FixAchievementDescription implements CardCommandInterface
 {
     private function __construct(
         private string $cardId,

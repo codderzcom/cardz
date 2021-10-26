@@ -2,18 +2,16 @@
 
 namespace App\Contexts\MobileAppBack\Application\Services\Workspace;
 
-use App\Contexts\MobileAppBack\Application\Contracts\IssuedCardReadStorageInterface;
 use App\Contexts\MobileAppBack\Application\Services\Workspace\Policies\AssertCardForKeeper;
 use App\Contexts\MobileAppBack\Application\Services\Workspace\Policies\AssertCardInWorkspace;
 use App\Contexts\MobileAppBack\Application\Services\Workspace\Policies\AssertPlanInWorkspace;
 use App\Contexts\MobileAppBack\Application\Services\Workspace\Policies\AssertWorkspaceForKeeper;
-use App\Contexts\MobileAppBack\Domain\Exceptions\ReconstructionException;
-use App\Contexts\MobileAppBack\Domain\Model\Card\CardCode;
 use App\Contexts\MobileAppBack\Domain\Model\Card\CardId;
 use App\Contexts\MobileAppBack\Domain\Model\Collaboration\KeeperId;
 use App\Contexts\MobileAppBack\Domain\Model\Workspace\PlanId;
 use App\Contexts\MobileAppBack\Domain\Model\Workspace\WorkspaceId;
 use App\Contexts\MobileAppBack\Infrastructure\ACL\Cards\CardsAdapter;
+use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Shared\Contracts\IssuedCardReadStorageInterface;
 use App\Shared\Contracts\PolicyEngineInterface;
 use App\Shared\Contracts\ServiceResultFactoryInterface;
 use App\Shared\Contracts\ServiceResultInterface;
@@ -28,15 +26,8 @@ class CardService
     ) {
     }
 
-    public function getCardByCode(string $keeperId, string $code): ServiceResultInterface
+    public function getCard(string $keeperId, string $cardId): ServiceResultInterface
     {
-        try {
-            $cardCode = CardCode::ofCodeString($code);
-            $cardId = (string) $cardCode->getCardId();
-        } catch (ReconstructionException $exception) {
-            return $this->serviceResultFactory->violation($exception->getMessage());
-        }
-
         if (!AssertCardForKeeper::of(CardId::of($cardId), KeeperId::of($keeperId))->assert()) {
             return $this->serviceResultFactory->violation("Card $cardId is not for keeper $keeperId");
         }

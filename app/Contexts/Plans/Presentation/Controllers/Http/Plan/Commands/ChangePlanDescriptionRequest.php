@@ -3,7 +3,6 @@
 namespace App\Contexts\Plans\Presentation\Controllers\Http\Plan\Commands;
 
 use App\Contexts\Plans\Application\Commands\Plan\ChangePlanDescription;
-use App\Contexts\Plans\Application\Commands\Plan\ChangePlanDescriptionCommandInterface;
 
 final class ChangePlanDescriptionRequest extends BaseCommandRequest
 {
@@ -23,7 +22,7 @@ final class ChangePlanDescriptionRequest extends BaseCommandRequest
         $this->description = $this->input('description');
     }
 
-    public function toCommand(): ChangePlanDescriptionCommandInterface
+    public function toCommand(): ChangePlanDescription
     {
         return ChangePlanDescription::of($this->planId, $this->description);
     }

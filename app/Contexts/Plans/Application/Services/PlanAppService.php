@@ -2,11 +2,11 @@
 
 namespace App\Contexts\Plans\Application\Services;
 
-use App\Contexts\Plans\Application\Commands\Plan\AddPlanCommandInterface;
-use App\Contexts\Plans\Application\Commands\Plan\ChangePlanDescriptionCommandInterface;
-use App\Contexts\Plans\Application\Commands\Plan\LaunchPlanCommandInterface;
+use App\Contexts\Plans\Application\Commands\Plan\AddPlan;
+use App\Contexts\Plans\Application\Commands\Plan\ChangePlanDescription;
+use App\Contexts\Plans\Application\Commands\Plan\LaunchPlan;
 use App\Contexts\Plans\Application\Commands\Plan\PlanCommandInterface;
-use App\Contexts\Plans\Application\Commands\Plan\StopPlanCommandInterface;
+use App\Contexts\Plans\Application\Commands\Plan\StopPlan;
 use App\Contexts\Plans\Domain\Model\Plan\Plan;
 use App\Contexts\Plans\Domain\Model\Plan\PlanId;
 use App\Contexts\Plans\Domain\Persistence\Contracts\PlanRepositoryInterface;
@@ -23,31 +23,31 @@ class PlanAppService
     ) {
     }
 
-    public function add(AddPlanCommandInterface $command): PlanId
+    public function add(AddPlan $command): PlanId
     {
         $workspace = $this->workspaceRepository->take($command->getWorkspaceId());
         return $this->release($workspace->addPlan($command->getPlanId(), $command->getDescription()));
     }
 
-    public function launch(LaunchPlanCommandInterface $command): PlanId
+    public function launch(LaunchPlan $command): PlanId
     {
         $plan = $this->getPlan($command);
         return $this->release($plan->launch());
     }
 
-    public function stop(StopPlanCommandInterface $command): PlanId
+    public function stop(StopPlan $command): PlanId
     {
         $plan = $this->getPlan($command);
         return $this->release($plan->stop());
     }
 
-    public function archive(AddPlanCommandInterface $command): PlanId
+    public function archive(AddPlan $command): PlanId
     {
         $plan = $this->getPlan($command);
         return $this->release($plan->archive());
     }
 
-    public function changeDescription(ChangePlanDescriptionCommandInterface $command): PlanId
+    public function changeDescription(ChangePlanDescription $command): PlanId
     {
         $plan = $this->getPlan($command);
         return $this->release($plan->changeDescription($command->getDescription()));

@@ -3,7 +3,6 @@
 namespace App\Contexts\Collaboration\Presentation\Controllers\Http\Relation\Commands;
 
 use App\Contexts\Collaboration\Application\Commands\Relation\LeaveRelation;
-use App\Contexts\Collaboration\Application\Commands\Relation\LeaveRelationCommandInterface;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class RelationRequest extends FormRequest
@@ -34,7 +33,7 @@ final class RelationRequest extends FormRequest
         $this->workspaceId = $this->input('workspaceId');
     }
 
-    public function toCommand(): LeaveRelationCommandInterface
+    public function toCommand(): LeaveRelation
     {
         return LeaveRelation::of($this->collaboratorId, $this->workspaceId);
     }
