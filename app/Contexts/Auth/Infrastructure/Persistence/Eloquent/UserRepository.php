@@ -51,6 +51,7 @@ class UserRepository implements UserRepositoryInterface
     private function userAsData(User $user): array
     {
         $properties = $this->extractProperties($user, 'registrationInitiated', 'emailVerified', 'password', 'rememberToken');
+        $properties = array_merge($properties, $user->toArray());
         $data = [
             'id' => $properties['userId'],
             'email' => $properties['email'],

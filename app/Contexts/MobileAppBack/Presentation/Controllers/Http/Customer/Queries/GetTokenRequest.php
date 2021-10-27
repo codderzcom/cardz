@@ -2,6 +2,7 @@
 
 namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer\Queries;
 
+use App\Contexts\MobileAppBack\Application\Queries\Customer\GetToken;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class GetTokenRequest extends FormRequest
@@ -35,5 +36,10 @@ final class GetTokenRequest extends FormRequest
         $this->identity = $this->input('identity');
         $this->password = $this->input('password');
         $this->deviceName = $this->input('deviceName');
+    }
+
+    public function toQuery(): GetToken
+    {
+        return GetToken::of($this->identity, $this->password, $this->deviceName);
     }
 }

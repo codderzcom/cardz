@@ -4,8 +4,9 @@ namespace App\Contexts\MobileAppBack\Domain\ReadModel;
 
 use App\Shared\Infrastructure\Support\ArrayPresenterTrait;
 use JetBrains\PhpStorm\Pure;
+use JsonSerializable;
 
-final class IssuedCard
+final class IssuedCard implements JsonSerializable
 {
     use ArrayPresenterTrait;
 
@@ -49,5 +50,10 @@ final class IssuedCard
             $achievements,
             $requirements,
         );
+    }
+
+    public function jsonSerialize()
+    {
+        return $this->toArray();
     }
 }

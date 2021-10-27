@@ -4,7 +4,6 @@ use App\Contexts\Auth\Presentation\Controllers\Http\User\UserController;
 use App\Contexts\Cards\Presentation\Controllers\Http\Card\CardController;
 use App\Contexts\Collaboration\Presentation\Controllers\Http\Invite\InviteController;
 use App\Contexts\Collaboration\Presentation\Controllers\Http\Relation\RelationController;
-use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer\CardController as MABCustomerCardController;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer\CustomerController as MABCustomerController;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer\WorkspaceController as MABCustomerWorkspaceController;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\CardController as MABCardController;
@@ -90,6 +89,12 @@ Route::group(['prefix' => '/mab/v1'], function () {
     Route::post('/customer/register', [MABCustomerController::class, 'register'])->name('MABCustomerRegister');
 
     Route::middleware('auth:sanctum')->group(function () {
+        Route::group(['prefix' => '/customer'], function () {
+            Route::get('/card', [MABCustomerController::class, 'getCards'])->name('MABCustomerCards');
+            Route::get('/card/{cardId}', [MABCustomerController::class, 'getCard'])->name('MABCustomerCard');
+            Route::get('/workspaces', [MABCustomerWorkspaceController::class, 'all'])->name('MABCustomerWorkspaceListAll');
+        });
+
         Route::get('/workspace', [MABWorkspaceController::class, 'getWorkspacesForKeeper'])->name('MABWorkspaceListAll');
         Route::post('/workspace', [MABWorkspaceController::class, 'addWorkspace'])->name('MABWorkspaceAdd');
 
@@ -100,7 +105,7 @@ Route::group(['prefix' => '/mab/v1'], function () {
             Route::post('/card', [MABCardController::class, 'issue'])->name('MABCustomerIssueCard');
 
             Route::group(['prefix' => '/card/{cardId}'], function () {
-                Route::get('/{cardId}', [MABCardController::class, 'getCard'])->name('MABCustomerGetCardById');
+                Route::get('/', [MABCardController::class, 'getCard'])->name('MABCustomerGetCardById');
 
                 Route::put('/complete', [MABCardController::class, 'complete'])->name('MABCustomerCompleteCard');
                 Route::put('/revoke', [MABCardController::class, 'revoke'])->name('MABCustomerRevokeCard');
@@ -127,16 +132,6 @@ Route::group(['prefix' => '/mab/v1'], function () {
                 Route::post('/requirement', [MABPlanController::class, 'addRequirement'])->name('MABPlanAddRequirement');
                 Route::delete('/requirement/{requirementId}', [MABPlanController::class, 'removeRequirement'])->name('MABPlanRemoveRequirement');
                 Route::put('/requirement/{requirementId}', [MABPlanController::class, 'changeRequirement'])->name('MABPlanChangeRequirement');
-            });
-        });
-
-        Route::group(['prefix' => '/customer'], function () {
-            Route::get('/card', [MABCustomerCardController::class, 'getCards'])->name('MABCustomerCardListAll');
-
-            Route::get('/workspaces', [MABCustomerWorkspaceController::class, 'all'])->name('MABCustomerWorkspaceListAll');
-
-            Route::group(['prefix' => '/card/{cardId}'], function () {
-                Route::get('/', [MABCustomerCardController::class, 'getCard'])->name('MABCustomerCard');
             });
         });
     });

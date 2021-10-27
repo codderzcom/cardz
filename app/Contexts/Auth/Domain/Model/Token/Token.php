@@ -21,4 +21,12 @@ final class Token implements AggregateRootInterface
         $token = new self($userId, $plainTextToken);
         return $token->withEvents(TokenAssigned::of($token));
     }
+
+    public function toArray(): array
+    {
+        return [
+            'userId' => $this->userId,
+            'token' => $this->token,
+        ];
+    }
 }

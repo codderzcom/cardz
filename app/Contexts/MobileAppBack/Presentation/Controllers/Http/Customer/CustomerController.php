@@ -2,36 +2,45 @@
 
 namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer;
 
-use App\Contexts\MobileAppBack\Application\Services\Customer\CustomerService;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\BaseController;
+use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer\Queries\GetIssuedCardRequest;
+use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer\Queries\GetIssuedCardsRequest;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer\Queries\GetTokenRequest;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer\Queries\RegisterRequest;
+use App\Shared\Contracts\Commands\CommandBusInterface;
+use App\Shared\Contracts\Queries\QueryBusInterface;
 use Illuminate\Http\JsonResponse;
 
 class CustomerController extends BaseController
 {
     public function __construct(
-        private CustomerService $customerService,
+        private QueryBusInterface $queryBus,
+        private CommandBusInterface $commandBus,
     ) {
     }
 
     public function getToken(GetTokenRequest $request): JsonResponse
     {
-        return $this->response($this->customerService->getToken(
-            $request->identity,
-            $request->password,
-            $request->deviceName,
-        ));
+        return $this->response($this->queryBus->execute($request->toQuery()));
     }
 
     public function register(RegisterRequest $request): JsonResponse
     {
-        return $this->response($this->customerService->register(
-            $request->email,
-            $request->phone,
-            $request->name,
-            $request->password,
-            $request->deviceName,
-        ));
+        $command = $request->toCommand();
+        $query = $request->toQuery();
+        // ToDo: Warning! Sync execution. Incorrect?
+        $this->commandBus->dispatch($command);
+        return $this->response($this->queryBus->execute($query));
     }
+
+    public function getCards(GetIssuedCardsRequest $request): JsonResponse
+    {
+        return $this->response($this->queryBus->execute($request->toQuery()));
+    }
+
+    public function getCard(GetIssuedCardRequest $request): JsonResponse
+    {
+        return $this->response($this->queryBus->execute($request->toQuery()));
+    }
+
 }

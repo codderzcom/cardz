@@ -36,7 +36,7 @@ class PersonRepository implements PersonRepositoryInterface
         $data = [
             'id' => (string) $person->personId,
             'name' => (string) $person->name,
-            'joined' => $this->extractProperty($person, 'joined'),
+            'joined_at' => $this->extractProperty($person, 'joined'),
         ];
 
         return $data;

@@ -10,7 +10,7 @@ use App\Shared\Contracts\Rpc\RpcResponseInterface;
 use App\Shared\Infrastructure\Rpc\RpcAdapterTrait;
 
 /**
- * @method RpcResponseInterface registerUser(?string $email, ?string $phone, string $name, string $password, string $deviceName)
+ * @method RpcResponseInterface registerUser(?string $email, ?string $phone, string $name, string $password)
  * @method RpcResponseInterface getToken(string $identity, string $password, string $deviceName)
  */
 class RpcAdapter
@@ -23,7 +23,7 @@ class RpcAdapter
     ) {
     }
 
-    private function registerUserMethod(?string $email, ?string $phone, string $name, string $password, string $deviceName): string
+    private function registerUserMethod(?string $email, ?string $phone, string $name, string $password): string
     {
         $command = RegisterUser::of($name, $password, $email, $phone);
         $this->commandBus->dispatch($command);
@@ -34,7 +34,7 @@ class RpcAdapter
     {
         //ToDo: видимо, неправильно.
         $token = $this->tokenAppService->issueToken(IssueToken::of($identity, $password, $deviceName));
-        return json_encode($token);
+        return $token->token;
     }
 
 }

@@ -3,6 +3,12 @@
 namespace App\Contexts\MobileAppBack\Application\Services\Customer;
 
 use App\Contexts\Auth\Presentation\Controllers\Rpc\RpcAdapter as AuthRpcAdapter;
+use App\Contexts\MobileAppBack\Application\Commands\Customer\RegisterCustomer;
+use App\Contexts\MobileAppBack\Application\Exceptions\ServiceException;
+use App\Contexts\MobileAppBack\Application\Queries\Customer\GetIssuedCard;
+use App\Contexts\MobileAppBack\Application\Queries\Customer\GetIssuedCards;
+use App\Contexts\MobileAppBack\Application\Queries\Customer\GetToken;
+use App\Contexts\MobileAppBack\Domain\ReadModel\IssuedCard;
 use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Customer\Contracts\CustomerWorkspaceReadStorageInterface;
 use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Shared\Contracts\IssuedCardReadStorageInterface;
 use App\Shared\Contracts\ServiceResultFactoryInterface;
@@ -19,16 +25,14 @@ class CustomerService
     ) {
     }
 
-    public function getIssuedCard(string $customerId, string $cardId): ServiceResultInterface
+    public function getIssuedCard(GetIssuedCard $query): IssuedCard
     {
-        $card = $this->issuedCardReadStorage->forCustomerId($customerId, $cardId);
-        return $this->serviceResultFactory->ok($card);
+        return $this->issuedCardReadStorage->forCustomerId($query->getCustomerId(), $query->getCardId());
     }
 
-    public function getIssuedCards(string $customerId): ServiceResultInterface
+    public function getIssuedCards(GetIssuedCards $query): array
     {
-        $cards = $this->issuedCardReadStorage->allForCustomerId($customerId);
-        return $this->serviceResultFactory->ok($cards);
+        return $this->issuedCardReadStorage->allForCustomerId($query->getCustomerId());
     }
 
     public function getCustomerWorkspaces(): ServiceResultInterface
@@ -37,26 +41,23 @@ class CustomerService
         return $this->serviceResultFactory->ok($workspaces);
     }
 
-    public function getToken(string $identity, string $password, string $deviceName): ServiceResultInterface
+    public function getToken(GetToken $query)
     {
         //ToDo: тут обращение к соседнему контексту. Синхронное. А по идее не должно быть
-        $result = $this->authRpcAdapter->getToken($identity, $password, $deviceName);
+        $result = $this->authRpcAdapter->getToken($query->identity, $query->password, $query->deviceName);
         if (!$result->isOk()) {
-            //ToDo: поменять Exception
-            throw new Exception();
+            throw new ServiceException("Unable to get token");
         }
-        return $this->serviceResultFactory->ok(json_decode($result->getPayload()));
+        return $result->getPayload();
     }
 
-    public function register(?string $email, ?string $phone, string $name, string $password, string $deviceName): ServiceResultInterface
+    public function register(RegisterCustomer $command)
     {
         //ToDo: тут обращение к соседнему контексту. Синхронное. А по идее не должно быть
-        $result = $this->authRpcAdapter->registerUser($email, $phone, $name, $password, $deviceName);
+        $result = $this->authRpcAdapter->registerUser($command->email, $command->phone, $command->name, $command->password);
         if (!$result->isOk()) {
-            //ToDo: поменять Exception
-            throw new Exception();
+            throw new ServiceException("Unable to register user");
         }
-        return $this->serviceResultFactory->ok(json_decode($result->getPayload()));
     }
 }
 
