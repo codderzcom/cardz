@@ -2,7 +2,7 @@
 
 namespace App\Contexts\Collaboration\Domain\Exceptions;
 
-use App\Shared\Contracts\NotFoundExceptionInterface;
+use App\Shared\Contracts\Exceptions\NotFoundExceptionInterface;
 
 interface InviteNotFoundExceptionInterface extends NotFoundExceptionInterface
 {

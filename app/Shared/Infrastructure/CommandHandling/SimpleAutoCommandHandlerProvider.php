@@ -57,7 +57,7 @@ class SimpleAutoCommandHandlerProvider implements CommandHandlerProviderInterfac
         $this->handlers[] = $this->makeHandlerFor($parameterClass->name, $method->name, $handlerCollection);
     }
 
-    public function makeHandlerFor(string $for, string $handlingMethod, ?object $origin = null): CommandHandlerInterface
+    protected function makeHandlerFor(string $for, string $handlingMethod, ?object $origin = null): CommandHandlerInterface
     {
         $origin ??= $this;
         return

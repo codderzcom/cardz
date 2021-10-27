@@ -2,7 +2,7 @@
 
 namespace App\Contexts\Collaboration\Domain\Exceptions;
 
-use App\Contexts\MobileAppBack\Application\Contracts\DomainExceptionInterface;
+use App\Shared\Contracts\Exceptions\DomainExceptionInterface;
 use Exception;
 
 class CannotAcceptOwnInviteException extends Exception implements DomainExceptionInterface

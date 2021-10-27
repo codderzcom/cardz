@@ -2,7 +2,7 @@
 
 namespace App\Contexts\MobileAppBack\Domain\Exceptions;
 
-use App\Contexts\MobileAppBack\Application\Contracts\DomainExceptionInterface;
+use App\Shared\Contracts\Exceptions\DomainExceptionInterface;
 use Exception;
 use JetBrains\PhpStorm\Pure;
 use Throwable;

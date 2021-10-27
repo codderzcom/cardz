@@ -21,10 +21,7 @@ class CustomerService
 
     public function getIssuedCard(string $customerId, string $cardId): ServiceResultInterface
     {
-        $card = $this->issuedCardReadStorage->find($cardId);
-        if ($card === null || $card->customerId !== $customerId) {
-            return $this->serviceResultFactory->notFound("IssuedCard $cardId not found for customer $customerId");
-        }
+        $card = $this->issuedCardReadStorage->forCustomerId($customerId, $cardId);
         return $this->serviceResultFactory->ok($card);
     }
 

@@ -6,7 +6,7 @@ use App\Contexts\MobileAppBack\Domain\ReadModel\IssuedCard;
 
 interface IssuedCardReadStorageInterface
 {
-    public function find(string $cardId): ?IssuedCard;
+    public function find(string $cardId): IssuedCard;
 
     /**
      * @param string $planId
@@ -19,4 +19,10 @@ interface IssuedCardReadStorageInterface
      * @return IssuedCard[]
      */
     public function allForCustomerId(string $customerId): array;
+
+    /**
+     * @param string $customerId
+     * @return IssuedCard[]
+     */
+    public function forCustomerId(string $customerId, string $cardId): IssuedCard;
 }
