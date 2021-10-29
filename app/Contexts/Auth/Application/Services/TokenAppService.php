@@ -3,7 +3,6 @@
 namespace App\Contexts\Auth\Application\Services;
 
 use App\Contexts\Auth\Application\Commands\IssueToken;
-use App\Contexts\Auth\Domain\Model\Token\Token;
 use App\Contexts\Auth\Domain\Persistence\Contracts\UserRepositoryInterface;
 use App\Contexts\Auth\Infrastructure\Exceptions\UserNotFoundException;
 use App\Contexts\Auth\Infrastructure\Messaging\DomainEventBusInterface;
@@ -18,7 +17,7 @@ class TokenAppService
     ) {
     }
 
-    public function issueToken(IssueToken $command): Token
+    public function issueToken(IssueToken $command): string
     {
         $user = $this->userRepository->takeByIdentity($command->getIdentity());
 
@@ -32,6 +31,6 @@ class TokenAppService
         $plainTextToken = $eloquentUser->createToken($command->getDeviceName())->plainTextToken;
         $token = $user->assignToken($plainTextToken);
         $this->domainEventBus->publish(...$token->releaseEvents());
-        return $token;
+        return $token->token;
     }
 }

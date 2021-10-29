@@ -6,6 +6,7 @@ use App\Shared\Contracts\Commands\CommandBusInterface;
 use App\Shared\Contracts\Commands\CommandHandlerInterface;
 use App\Shared\Contracts\Commands\CommandHandlerProviderInterface;
 use App\Shared\Contracts\Commands\CommandInterface;
+use WeakMap;
 
 class QueuedSyncCommandBus implements CommandBusInterface
 {
@@ -16,6 +17,13 @@ class QueuedSyncCommandBus implements CommandBusInterface
     protected array $commandQueue = [];
 
     protected bool $running = false;
+
+    protected WeakMap $results;
+
+    public function __construct()
+    {
+        $this->results = new WeakMap();
+    }
 
     public function dispatch(CommandInterface $command): void
     {
@@ -31,6 +39,11 @@ class QueuedSyncCommandBus implements CommandBusInterface
     public function registerHandlers(CommandHandlerInterface ...$handlers): void
     {
         $this->registeredHandlers = array_merge($this->registeredHandlers, $handlers);
+    }
+
+    public function getCommandResult(CommandInterface $command)
+    {
+        return $this->results[$command] ?? null;
     }
 
     protected function run(): void
@@ -53,6 +66,7 @@ class QueuedSyncCommandBus implements CommandBusInterface
         foreach ($this->registeredHandlers as $handler) {
             if ($handler->handles($command)) {
                 $handler->handle($command);
+                $this->results[$command] = $handler->getResult();
                 break;
             }
         }

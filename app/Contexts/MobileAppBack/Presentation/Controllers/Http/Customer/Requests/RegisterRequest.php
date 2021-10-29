@@ -1,9 +1,7 @@
 <?php
 
-namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer\Commands;
+namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer\Requests;
 
-use App\Contexts\MobileAppBack\Application\Commands\Customer\RegisterCustomer;
-use App\Contexts\MobileAppBack\Application\Queries\Customer\GetToken;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class RegisterRequest extends FormRequest
@@ -11,6 +9,8 @@ final class RegisterRequest extends FormRequest
     public ?string $email;
 
     public ?string $phone;
+
+    public string $identity;
 
     public string $name;
 
@@ -42,18 +42,10 @@ final class RegisterRequest extends FormRequest
     {
         $this->email = $this->input('email');
         $this->phone = $this->input('phone');
+        $this->identity = $this->email ?: $this->phone;
         $this->name = $this->input('name');
         $this->password = $this->input('password');
         $this->deviceName = $this->input('deviceName');
     }
 
-    public function toCommand(): RegisterCustomer
-    {
-        return RegisterCustomer::of($this->name, $this->password, $this->email, $this->phone);
-    }
-
-    public function toQuery(): GetToken
-    {
-        return GetToken::of($this->email ?: $this->phone, $this->password, $this->deviceName);
-    }
 }

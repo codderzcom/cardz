@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer\Queries;
+namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer\Requests;
 
-use App\Contexts\MobileAppBack\Application\Queries\Customer\GetToken;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class GetTokenRequest extends FormRequest
@@ -38,8 +37,4 @@ final class GetTokenRequest extends FormRequest
         $this->deviceName = $this->input('deviceName');
     }
 
-    public function toQuery(): GetToken
-    {
-        return GetToken::of($this->identity, $this->password, $this->deviceName);
-    }
 }
