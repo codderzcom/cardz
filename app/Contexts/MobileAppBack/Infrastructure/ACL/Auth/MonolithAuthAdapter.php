@@ -2,15 +2,17 @@
 
 namespace App\Contexts\MobileAppBack\Infrastructure\ACL\Auth;
 
-use App\Contexts\Auth\Application\Commands\IssueToken;
 use App\Contexts\Auth\Application\Commands\RegisterUser;
+use App\Contexts\Auth\Application\Queries\GetToken;
 use App\Contexts\MobileAppBack\Integration\Contracts\AuthContextInterface;
 use App\Shared\Contracts\Commands\CommandBusInterface;
+use App\Shared\Contracts\Queries\QueryBusInterface;
 
 class MonolithAuthAdapter implements AuthContextInterface
 {
     public function __construct(
         private CommandBusInterface $commandBus,
+        private QueryBusInterface $queryBus,
     ) {
     }
 
@@ -19,14 +21,13 @@ class MonolithAuthAdapter implements AuthContextInterface
         $command = RegisterUser::of($name, $password, $email, $phone);
         $this->commandBus->dispatch($command);
 
-        $this->issueToken($email ?: $phone, $password, $deviceName);
+        $this->getToken($email ?: $phone, $password, $deviceName);
     }
 
-    public function issueToken(string $identity, string $password, string $deviceName): string
+    public function getToken(string $identity, string $password, string $deviceName): string
     {
-        $command = IssueToken::of($identity, $password, $deviceName);
-        $this->commandBus->dispatch($command);
-        return $this->commandBus->getCommandResult($command);
+        $query = GetToken::of($identity, $password, $deviceName);
+        return $this->queryBus->execute($query);
     }
 
 }

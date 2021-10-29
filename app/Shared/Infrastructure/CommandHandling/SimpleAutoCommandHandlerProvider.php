@@ -62,8 +62,6 @@ class SimpleAutoCommandHandlerProvider implements CommandHandlerProviderInterfac
         $origin ??= $this;
         return
             new class($handlingMethod, $for, $origin) implements CommandHandlerInterface {
-                private $result = null;
-
                 public function __construct(
                     private string $method,
                     private string $handles,
@@ -78,12 +76,7 @@ class SimpleAutoCommandHandlerProvider implements CommandHandlerProviderInterfac
 
                 public function handle(CommandInterface $command): void
                 {
-                    $this->result = [$this->origin, $this->method]($command);
-                }
-
-                public function getResult()
-                {
-                    return $this->result;
+                    [$this->origin, $this->method]($command);
                 }
 
             };

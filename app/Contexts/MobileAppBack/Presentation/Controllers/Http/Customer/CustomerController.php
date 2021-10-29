@@ -19,7 +19,7 @@ class CustomerController extends BaseController
 
     public function getToken(GetTokenRequest $request): JsonResponse
     {
-        return $this->response($this->customerAppService->issueToken(
+        return $this->response($this->customerAppService->getToken(
             $request->identity,
             $request->password,
             $request->deviceName,

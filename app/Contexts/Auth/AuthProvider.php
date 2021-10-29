@@ -12,7 +12,9 @@ use App\Contexts\Auth\Infrastructure\Messaging\DomainEventBus;
 use App\Contexts\Auth\Infrastructure\Messaging\DomainEventBusInterface;
 use App\Contexts\Auth\Infrastructure\Persistence\Eloquent\UserRepository;
 use App\Shared\Contracts\Commands\CommandBusInterface;
+use App\Shared\Contracts\Queries\QueryBusInterface;
 use App\Shared\Infrastructure\CommandHandling\SimpleAutoCommandHandlerProvider;
+use App\Shared\Infrastructure\QueryHandling\SimpleAutoQueryExecutorProvider;
 use Illuminate\Support\ServiceProvider;
 
 class AuthProvider extends ServiceProvider
@@ -28,8 +30,10 @@ class AuthProvider extends ServiceProvider
         TokenAppService $tokenAppService,
         DomainEventBusInterface $domainEventBus,
         CommandBusInterface $commandBus,
+        QueryBusInterface $queryBus,
     ) {
-        $commandBus->registerProvider(SimpleAutoCommandHandlerProvider::parse($userAppService, $tokenAppService));
+        $commandBus->registerProvider(SimpleAutoCommandHandlerProvider::parse($userAppService));
+        $queryBus->registerProvider(SimpleAutoQueryExecutorProvider::parse($tokenAppService));
 
         $domainEventBus->subscribe($this->app->make(TokenAssignedConsumer::class));
         $domainEventBus->subscribe($this->app->make(UserProfileProvidedConsumer::class));

@@ -2,8 +2,6 @@
 
 namespace App\Contexts\MobileAppBack\Application\Services\Customer;
 
-use App\Contexts\Auth\Presentation\Controllers\Rpc\RpcAdapter as AuthRpcAdapter;
-use App\Contexts\MobileAppBack\Application\Exceptions\ServiceException;
 use App\Contexts\MobileAppBack\Domain\ReadModel\IssuedCard;
 use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Customer\Contracts\CustomerWorkspaceReadStorageInterface;
 use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Shared\Contracts\IssuedCardReadStorageInterface;
@@ -33,9 +31,9 @@ class CustomerAppService
         return $this->customerWorkspaceReadStorage->all();
     }
 
-    public function issueToken(string $identity, string $password, string $deviceName): string
+    public function getToken(string $identity, string $password, string $deviceName): string
     {
-        return $this->authContext->issueToken($identity, $password, $deviceName);
+        return $this->authContext->getToken($identity, $password, $deviceName);
     }
 
     public function register(?string $email, ?string $phone, string $name, string $password, string $deviceName): string
