@@ -2,12 +2,11 @@
 
 namespace App\Contexts\MobileAppBack\Application\Services\Workspace\Policies;
 
+use App\Contexts\MobileAppBack\Application\Exceptions\AssertionException;
 use App\Contexts\MobileAppBack\Domain\Model\Card\CardId;
 use App\Contexts\MobileAppBack\Domain\Model\Collaboration\KeeperId;
 use App\Models\Card as EloquentCard;
 use App\Shared\Contracts\PolicyAssertionInterface;
-use App\Shared\Contracts\PolicyViolationInterface;
-use App\Shared\Infrastructure\Policy\PolicyViolation;
 use JetBrains\PhpStorm\Pure;
 
 final class AssertCardForKeeper implements PolicyAssertionInterface
@@ -24,7 +23,7 @@ final class AssertCardForKeeper implements PolicyAssertionInterface
         return new self($cardId, $keeperId);
     }
 
-    public function assert(): bool
+    public function assert(): void
     {
         $card = EloquentCard::query()
             ->find($this->cardId)
@@ -32,11 +31,8 @@ final class AssertCardForKeeper implements PolicyAssertionInterface
             ?->workspace()
             ->where('keeper_id', '=', (string) $this->keeperId)
             ->first();
-        return $card !== null;
-    }
-
-    public function violation(): PolicyViolationInterface
-    {
-        return PolicyViolation::of("Card {$this->cardId} is not for keeper {$this->keeperId}");
+        if ($card === null) {
+            throw new AssertionException("Cards {$this->cardId} is not for keeper {$this->keeperId}");
+        }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace;
 
-use App\Contexts\MobileAppBack\Application\Services\Workspace\PlanService;
+use App\Contexts\MobileAppBack\Application\Services\Workspace\PlanAppService;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\BaseController;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Commands\{Plan\AddPlanRequest,
     Plan\AddPlanRequirementRequest,
@@ -17,7 +17,7 @@ use Illuminate\Http\JsonResponse;
 class PlanController extends BaseController
 {
     public function __construct(
-        private PlanService $planService
+        private PlanAppService $planService
     ) {
     }
 

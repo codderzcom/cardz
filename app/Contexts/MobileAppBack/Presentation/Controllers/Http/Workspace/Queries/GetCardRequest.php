@@ -2,6 +2,8 @@
 
 namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Queries;
 
+use App\Contexts\MobileAppBack\Application\Queries\Workspace\GetCard;
+
 class GetCardRequest extends BaseWorkspaceQueryRequest
 {
     protected const RULES = [
@@ -18,6 +20,11 @@ class GetCardRequest extends BaseWorkspaceQueryRequest
     {
         parent::passedValidation();
         $this->cardId = $this->input('cardId');
+    }
+
+    public function toQuery(): GetCard
+    {
+        return GetCard::of($this->keeperId, $this->workspaceId, $this->cardId);
     }
 
     protected function prepareForValidation(): void

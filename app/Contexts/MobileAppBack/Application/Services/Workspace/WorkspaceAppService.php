@@ -7,16 +7,14 @@ use App\Contexts\MobileAppBack\Domain\Model\Collaboration\KeeperId;
 use App\Contexts\MobileAppBack\Domain\Model\Workspace\WorkspaceId;
 use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\Contracts\BusinessWorkspaceReadStorageInterface;
 use App\Contexts\Workspaces\Presentation\Controllers\Rpc\RpcAdapter as WorkspacesAdapter;
-use App\Shared\Contracts\PolicyEngineInterface;
 use App\Shared\Contracts\ServiceResultFactoryInterface;
 use App\Shared\Contracts\ServiceResultInterface;
 
-class WorkspaceService
+class WorkspaceAppService
 {
     public function __construct(
         private WorkspacesAdapter $workspacesAdapter,
         private BusinessWorkspaceReadStorageInterface $businessWorkspaceReadStorage,
-        private PolicyEngineInterface $policyEngine,
         private ServiceResultFactoryInterface $serviceResultFactory,
     ) {
     }
@@ -29,12 +27,8 @@ class WorkspaceService
 
     public function getBusinessWorkspace(string $keeperId, string $workspaceId): ServiceResultInterface
     {
-        return $this->policyEngine->passTrough(
-            function () use ($workspaceId) {
-                return $this->getBusinessWorkspaceResult($workspaceId);
-            },
-            AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId)),
-        );
+        AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert();
+        return $this->getBusinessWorkspaceResult($workspaceId);
     }
 
     private function getBusinessWorkspaceResult(string $workspaceId): ServiceResultInterface
@@ -55,13 +49,9 @@ class WorkspaceService
 
     public function changeProfile(string $keeperId, string $workspaceId, string $name, string $description, string $address): ServiceResultInterface
     {
-        return $this->policyEngine->passTrough(
-            function () use ($workspaceId, $name, $description, $address) {
-                $this->workspacesAdapter->changeProfile($workspaceId, $name, $description, $address);
-                return $this->getBusinessWorkspaceResult($workspaceId);
-            },
-            AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId)),
-        );
+        AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert();
+        $this->workspacesAdapter->changeProfile($workspaceId, $name, $description, $address);
+        return $this->getBusinessWorkspaceResult($workspaceId);
     }
 
 }

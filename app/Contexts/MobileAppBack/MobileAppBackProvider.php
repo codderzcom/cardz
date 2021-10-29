@@ -2,7 +2,12 @@
 
 namespace App\Contexts\MobileAppBack;
 
-use App\Contexts\MobileAppBack\Application\Services\Customer\CustomerService;
+use App\Contexts\MobileAppBack\Application\Services\Customer\CustomerCommandService;
+use App\Contexts\MobileAppBack\Application\Services\Customer\CustomerQueryService;
+use App\Contexts\MobileAppBack\Application\Services\Workspace\CardAppService;
+use App\Contexts\MobileAppBack\Application\Services\Workspace\CollaborationAppService;
+use App\Contexts\MobileAppBack\Application\Services\Workspace\PlanAppService;
+use App\Contexts\MobileAppBack\Application\Services\Workspace\WorkspaceAppService;
 use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Customer\Contracts\CustomerWorkspaceReadStorageInterface;
 use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Customer\Eloquent\CustomerWorkspaceReadStorage;
 use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Shared\Contracts\IssuedCardReadStorageInterface;
@@ -30,9 +35,19 @@ class MobileAppBackProvider extends ServiceProvider
     public function boot(
         QueryBusInterface $queryBus,
         CommandBusInterface $commandBus,
-        CustomerService $customerService,
+        CustomerCommandService $customerCommandService,
+        CustomerQueryService $customerQueryService,
+        CardAppService $cardAppService,
+        CollaborationAppService $collaborationAppService,
+        PlanAppService $planAppService,
+        WorkspaceAppService $workspaceAppService,
     ) {
-        $commandBus->registerProvider(SimpleAutoCommandHandlerProvider::parse($customerService));
-        $queryBus->registerProvider(SimpleAutoQueryExecutorProvider::parse($customerService));
+        $commandBus->registerProvider(SimpleAutoCommandHandlerProvider::parse(
+            $customerCommandService, $cardAppService, $collaborationAppService, $planAppService, $workspaceAppService,
+        ));
+
+        $queryBus->registerProvider(SimpleAutoQueryExecutorProvider::parse(
+            $customerQueryService, $cardAppService, $collaborationAppService, $planAppService, $workspaceAppService,
+        ));
     }
 }

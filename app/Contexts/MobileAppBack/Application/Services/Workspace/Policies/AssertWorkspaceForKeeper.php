@@ -2,12 +2,11 @@
 
 namespace App\Contexts\MobileAppBack\Application\Services\Workspace\Policies;
 
+use App\Contexts\MobileAppBack\Application\Exceptions\AssertionException;
 use App\Contexts\MobileAppBack\Domain\Model\Collaboration\KeeperId;
 use App\Contexts\MobileAppBack\Domain\Model\Workspace\WorkspaceId;
 use App\Models\Workspace as EloquentWorkspace;
 use App\Shared\Contracts\PolicyAssertionInterface;
-use App\Shared\Contracts\PolicyViolationInterface;
-use App\Shared\Infrastructure\Policy\PolicyViolation;
 use JetBrains\PhpStorm\Pure;
 
 final class AssertWorkspaceForKeeper implements PolicyAssertionInterface
@@ -24,18 +23,14 @@ final class AssertWorkspaceForKeeper implements PolicyAssertionInterface
         return new self($workspaceId, $keeperId);
     }
 
-    public function assert(): bool
+    public function assert(): void
     {
         $workspace = EloquentWorkspace::query()
             ->where('id', '=', (string) $this->workspaceId)
             ->where('keeper_id', '=', (string) $this->keeperId)
             ->first();
-        return $workspace !== null;
+        if ($workspace === null) {
+            throw new AssertionException("Workspace {$this->workspaceId} is not for keeper {$this->keeperId}");
+        }
     }
-
-    public function violation(): PolicyViolationInterface
-    {
-        return PolicyViolation::of("Workspace {$this->workspaceId} is not for keeper {$this->keeperId}");
-    }
-
 }

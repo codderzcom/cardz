@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer\Queries;
+namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer\Commands;
 
 use App\Contexts\MobileAppBack\Application\Commands\Customer\RegisterCustomer;
 use App\Contexts\MobileAppBack\Application\Queries\Customer\GetToken;

@@ -2,7 +2,7 @@
 
 namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace;
 
-use App\Contexts\MobileAppBack\Application\Services\Workspace\WorkspaceService;
+use App\Contexts\MobileAppBack\Application\Services\Workspace\WorkspaceAppService;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\BaseController;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Commands\AddWorkspaceRequest;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Commands\ChangeWorkspaceProfileRequest;
@@ -13,7 +13,7 @@ use Illuminate\Http\JsonResponse;
 class WorkspaceController extends BaseController
 {
     public function __construct(
-        private WorkspaceService $workspaceService,
+        private WorkspaceAppService $workspaceService,
     ) {
     }
 

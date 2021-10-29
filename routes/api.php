@@ -5,7 +5,6 @@ use App\Contexts\Cards\Presentation\Controllers\Http\Card\CardController;
 use App\Contexts\Collaboration\Presentation\Controllers\Http\Invite\InviteController;
 use App\Contexts\Collaboration\Presentation\Controllers\Http\Relation\RelationController;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer\CustomerController as MABCustomerController;
-use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer\WorkspaceController as MABCustomerWorkspaceController;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\CardController as MABCardController;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\PlanController as MABPlanController;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\WorkspaceController as MABWorkspaceController;
@@ -85,6 +84,8 @@ Route::group(['prefix' => '/personal/v1/person/{personId}'], function () {
 });
 
 Route::group(['prefix' => '/mab/v1'], function () {
+    Route::get('/customer/workspaces', [MABCustomerController::class, 'getWorkspaces'])->name('MABCustomerGetWorkspaces');
+
     Route::post('/customer/get-token', [MABCustomerController::class, 'getToken'])->name('MABCustomerGetToken');
     Route::post('/customer/register', [MABCustomerController::class, 'register'])->name('MABCustomerRegister');
 
@@ -92,7 +93,6 @@ Route::group(['prefix' => '/mab/v1'], function () {
         Route::group(['prefix' => '/customer'], function () {
             Route::get('/card', [MABCustomerController::class, 'getCards'])->name('MABCustomerCards');
             Route::get('/card/{cardId}', [MABCustomerController::class, 'getCard'])->name('MABCustomerCard');
-            Route::get('/workspaces', [MABCustomerWorkspaceController::class, 'all'])->name('MABCustomerWorkspaceListAll');
         });
 
         Route::get('/workspace', [MABWorkspaceController::class, 'getWorkspacesForKeeper'])->name('MABWorkspaceListAll');
@@ -102,18 +102,18 @@ Route::group(['prefix' => '/mab/v1'], function () {
             Route::get('/', [MABWorkspaceController::class, 'getWorkspace'])->name('MABWorkspaceGet');
             Route::put('/profile', [MABWorkspaceController::class, 'changeWorkspaceProfile'])->name('MABWorkspaceChangeProfile');
 
-            Route::post('/card', [MABCardController::class, 'issue'])->name('MABCustomerIssueCard');
+            Route::post('/card', [MABCardController::class, 'issue'])->name('MABCardIssue');
 
             Route::group(['prefix' => '/card/{cardId}'], function () {
-                Route::get('/', [MABCardController::class, 'getCard'])->name('MABCustomerGetCardById');
+                Route::get('/', [MABCardController::class, 'getCard'])->name('MABCardGetCard');
 
-                Route::put('/complete', [MABCardController::class, 'complete'])->name('MABCustomerCompleteCard');
-                Route::put('/revoke', [MABCardController::class, 'revoke'])->name('MABCustomerRevokeCard');
-                Route::put('/block', [MABCardController::class, 'block'])->name('MABCustomerBlockCard');
-                Route::put('/unblock', [MABCardController::class, 'unblock'])->name('MABCustomerUnblockCard');
+                Route::put('/complete', [MABCardController::class, 'complete'])->name('MABCardComplete');
+                Route::put('/revoke', [MABCardController::class, 'revoke'])->name('MABCardRevoke');
+                Route::put('/block', [MABCardController::class, 'block'])->name('MABCardBlock');
+                Route::put('/unblock', [MABCardController::class, 'unblock'])->name('MABCardUnblock');
 
-                Route::post('/achievement', [MABCardController::class, 'noteAchievement'])->name('MABCustomerNoteAchievement');
-                Route::delete('/achievement', [MABCardController::class, 'dismissAchievement'])->name('MABCustomerDismissAchievement');
+                Route::post('/achievement', [MABCardController::class, 'noteAchievement'])->name('MABCardNoteAchievement');
+                Route::delete('/achievement', [MABCardController::class, 'dismissAchievement'])->name('MABCardDismissAchievement');
             });
 
             Route::group(['prefix' => '/plan'], function () {

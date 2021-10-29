@@ -2,91 +2,48 @@
 
 namespace App\Contexts\MobileAppBack\Infrastructure\ACL\Plans;
 
-use App\Contexts\Plans\Application\Services\PlanAppService;
-use App\Contexts\Plans\Application\Services\RequirementAppService;
-use App\Shared\Contracts\ServiceResultFactoryInterface;
-use App\Shared\Contracts\ServiceResultInterface;
+use App\Contexts\MobileAppBack\Integration\Contracts\PlansContextInterface;
+use App\Contexts\Plans\Application\Commands\Plan\AddPlan;
+use App\Shared\Contracts\Commands\CommandBusInterface;
 
-class PlansAdapter
+class PlansAdapter implements PlansContextInterface
 {
     //ToDo: здесь могло бы быть обращение по HTTP
     public function __construct(
-        private PlanAppService $planAppService,
-        private RequirementAppService $requirementAppService,
-        private ServiceResultFactoryInterface $serviceResultFactory,
+        private CommandBusInterface $commandBus
     ) {
     }
 
-    public function add(string $workspaceId, string $description): ServiceResultInterface
+    public function add(string $name)
     {
-        $result = $this->planAppService->add($workspaceId, $description);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-        $planId = (string) $result->getPayload()->planId;
-        return $this->serviceResultFactory->ok($planId);
+        $command = AddPlan::of();
     }
 
-    public function launch(string $planId): ServiceResultInterface
+    public function launch(string $planId)
     {
-        $result = $this->planAppService->launch($planId);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-        return $this->serviceResultFactory->ok();
     }
 
-    public function stop(string $planId): ServiceResultInterface
+    public function stop(string $planId)
     {
-        $result = $this->planAppService->stop($planId);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-        return $this->serviceResultFactory->ok();
     }
 
-    public function archive(string $planId): ServiceResultInterface
+    public function archive(string $planId)
     {
-        $result = $this->planAppService->archive($planId);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-        return $this->serviceResultFactory->ok();
     }
 
-    public function changeDescription(string $planId, string $description): ServiceResultInterface
+    public function changeDescription(string $planId, string $description)
     {
-        $result = $this->planAppService->changeDescription($planId, $description);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-        return $this->serviceResultFactory->ok();
     }
 
-    public function addRequirement(string $planId, string $description): ServiceResultInterface
+    public function addRequirement(string $planId, string $description)
     {
-        $result = $this->requirementAppService->add($planId, $description);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-        return $this->serviceResultFactory->ok();
     }
 
-    public function removeRequirement(string $planId, string $requirementId): ServiceResultInterface
+    public function removeRequirement(string $planId, string $requirementId)
     {
-        $result = $this->requirementAppService->remove($planId, $requirementId);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-        return $this->serviceResultFactory->ok();
     }
 
-    public function changeRequirement(string $planId, string $requirementId, string $description): ServiceResultInterface
+    public function changeRequirement(string $planId, string $requirementId, string $description)
     {
-        $result = $this->requirementAppService->change($planId, $requirementId, $description);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-        return $this->serviceResultFactory->ok();
     }
 }

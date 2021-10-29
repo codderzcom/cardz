@@ -15,14 +15,11 @@ interface IssuedCardReadStorageInterface
     public function allForPlanId(string $planId): array;
 
     /**
-     * @param string $customerId
      * @return IssuedCard[]
      */
-    public function allForCustomerId(string $customerId): array;
+    public function allForCustomer(string $customerId): array;
 
-    /**
-     * @param string $customerId
-     * @return IssuedCard[]
-     */
-    public function forCustomerId(string $customerId, string $cardId): IssuedCard;
+    public function forCustomer(string $customerId, string $cardId): IssuedCard;
+
+    public function forKeeper(string $keeperId, string $workspaceId, string $cardId): IssuedCard;
 }

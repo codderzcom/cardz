@@ -2,28 +2,28 @@
 
 namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace;
 
-use App\Contexts\MobileAppBack\Application\Services\Workspace\CardService;
+use App\Contexts\MobileAppBack\Application\Services\Workspace\CardAppService;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\BaseController;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Commands\Card\AchievementCardRequest;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Commands\Card\CardCommandRequest;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Commands\Card\IssueCardRequest;
-use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Queries\CardByCodeRequest;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Queries\GetCardRequest;
+use App\Shared\Contracts\Commands\CommandBusInterface;
+use App\Shared\Contracts\Queries\QueryBusInterface;
 use Illuminate\Http\JsonResponse;
 
 class CardController extends BaseController
 {
     public function __construct(
-        private CardService $cardService,
+        private CardAppService $cardService,
+        private QueryBusInterface $queryBus,
+        private CommandBusInterface $commandBus,
     ) {
     }
 
     public function getCard(GetCardRequest $request): JsonResponse
     {
-        return $this->response($this->cardService->getCard(
-            $request->keeperId,
-            $request->cardId,
-        ));
+        return $this->response($this->queryBus->execute($request->toQuery()));
     }
 
     public function issue(IssueCardRequest $request): JsonResponse

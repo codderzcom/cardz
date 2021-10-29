@@ -2,11 +2,13 @@
 
 namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer;
 
+use App\Contexts\MobileAppBack\Application\Queries\Customer\GetToken;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\BaseController;
+use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer\Commands\RegisterRequest;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer\Queries\GetIssuedCardRequest;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer\Queries\GetIssuedCardsRequest;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer\Queries\GetTokenRequest;
-use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer\Queries\RegisterRequest;
+use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer\Queries\GetWorkspacesRequest;
 use App\Shared\Contracts\Commands\CommandBusInterface;
 use App\Shared\Contracts\Queries\QueryBusInterface;
 use Illuminate\Http\JsonResponse;
@@ -39,6 +41,11 @@ class CustomerController extends BaseController
     }
 
     public function getCard(GetIssuedCardRequest $request): JsonResponse
+    {
+        return $this->response($this->queryBus->execute($request->toQuery()));
+    }
+
+    public function getWorkspaces(GetWorkspacesRequest $request): JsonResponse
     {
         return $this->response($this->queryBus->execute($request->toQuery()));
     }

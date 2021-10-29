@@ -33,7 +33,7 @@ class IssuedCardReadStorage implements IssuedCardReadStorageInterface
         return $issuedCards;
     }
 
-    public function allForCustomerId(string $customerId): array
+    public function allForCustomer(string $customerId): array
     {
         /** @var EloquentCard $card */
         $cards = EloquentCard::query()->where('customer_id', '=', $customerId)->get();
@@ -45,7 +45,7 @@ class IssuedCardReadStorage implements IssuedCardReadStorageInterface
         return $issuedCards;
     }
 
-    public function forCustomerId(string $customerId, string $cardId): IssuedCard
+    public function forCustomer(string $customerId, string $cardId): IssuedCard
     {
         /** @var EloquentCard $card */
         $card = EloquentCard::query()
@@ -54,6 +54,30 @@ class IssuedCardReadStorage implements IssuedCardReadStorageInterface
             ->first();
         if ($card === null) {
             throw new CardNotFoundException("Card: $cardId. Customer: $customerId");
+        }
+
+        return $this->issuedCardFromEloquent($card);
+    }
+
+    public function forKeeper(string $keeperId, string $workspaceId, string $cardId): IssuedCard
+    {
+        /** @var EloquentCard $card */
+        $card = EloquentCard::query()->fromQuery(
+            'select c.* from cards c
+                      inner join plans p on p.id = c.plan_id
+                      inner join workspaces w on p.workspace_id = w.id
+                    where w.keeper_id = :keeper_id
+                      and w.id = :workspace_id
+                      and c.id = :card_id',
+            [
+                'keeper_id' => $keeperId,
+                'workspace_id' => $workspaceId,
+                'card_id' => $cardId,
+            ]
+        )->first();
+
+        if ($card === null) {
+            throw new CardNotFoundException("Card: $cardId. Workspace: $workspaceId. Keeper: $keeperId");
         }
 
         return $this->issuedCardFromEloquent($card);
