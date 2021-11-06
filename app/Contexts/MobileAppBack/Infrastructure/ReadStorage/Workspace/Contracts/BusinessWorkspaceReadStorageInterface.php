@@ -13,4 +13,6 @@ interface BusinessWorkspaceReadStorageInterface
      */
     public function allForKeeper(string $keeperId): array;
 
+    public function forKeeper(string $keeperId, string $workspaceId): BusinessWorkspace;
+
 }

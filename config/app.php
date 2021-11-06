@@ -177,6 +177,7 @@ return [
 
         App\Shared\SharedProvider::class,
         App\Contexts\Auth\AuthProvider::class,
+        App\Contexts\Authorization\AuthorizationProvider::class,
         App\Contexts\Cards\CardsProvider::class,
         App\Contexts\Collaboration\CollaborationProvider::class,
         App\Contexts\MobileAppBack\MobileAppBackProvider::class,

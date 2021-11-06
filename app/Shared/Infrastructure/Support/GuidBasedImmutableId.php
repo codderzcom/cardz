@@ -6,10 +6,9 @@ use App\Shared\Contracts\GeneralIdInterface;
 use App\Shared\Exceptions\ParameterAssertionException;
 use JetBrains\PhpStorm\Immutable;
 use Ramsey\Uuid\Guid\Guid;
-use Stringable;
 
 #[Immutable]
-class GuidBasedImmutableId implements Stringable, GeneralIdInterface
+class GuidBasedImmutableId implements GeneralIdInterface
 {
     use ShortClassNameTrait;
 

@@ -3,9 +3,9 @@
 namespace App\Shared\Contracts;
 
 use JsonSerializable;
+use Stringable;
 
-#
-interface GeneralIdInterface extends JsonSerializable
+interface GeneralIdInterface extends JsonSerializable, Stringable
 {
     public static function make(): static;
 

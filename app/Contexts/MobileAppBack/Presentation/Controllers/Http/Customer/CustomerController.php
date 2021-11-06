@@ -2,6 +2,7 @@
 
 namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer;
 
+use App\Contexts\Authorization\Application\AuthorizationService;
 use App\Contexts\MobileAppBack\Application\Services\Customer\CustomerAppService;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\BaseController;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer\Requests\GetIssuedCardRequest;
@@ -14,6 +15,7 @@ class CustomerController extends BaseController
 {
     public function __construct(
         private CustomerAppService $customerAppService,
+        private AuthorizationService $authorizationService,
     ) {
     }
 

@@ -3,6 +3,8 @@
 namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace;
 
 use App\Contexts\MobileAppBack\Application\Services\Workspace\WorkspaceAppService;
+use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\Contracts\BusinessWorkspaceReadStorageInterface;
+use App\Contexts\MobileAppBack\Integration\Contracts\WorkspacesContextInterface;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\BaseController;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Commands\AddWorkspaceRequest;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Commands\ChangeWorkspaceProfileRequest;

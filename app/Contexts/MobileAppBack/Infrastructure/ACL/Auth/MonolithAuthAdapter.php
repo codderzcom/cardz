@@ -16,12 +16,11 @@ class MonolithAuthAdapter implements AuthContextInterface
     ) {
     }
 
-    public function registerUser(?string $email, ?string $phone, string $name, string $password, string $deviceName): string
+    public function registerUser(?string $email, ?string $phone, string $name, string $password): string
     {
         $command = RegisterUser::of($name, $password, $email, $phone);
         $this->commandBus->dispatch($command);
-
-        $this->getToken($email ?: $phone, $password, $deviceName);
+        return $command->getUserId();
     }
 
     public function getToken(string $identity, string $password, string $deviceName): string

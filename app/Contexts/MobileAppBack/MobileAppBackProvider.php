@@ -3,6 +3,7 @@
 namespace App\Contexts\MobileAppBack;
 
 use App\Contexts\MobileAppBack\Infrastructure\ACL\Auth\MonolithAuthAdapter;
+use App\Contexts\MobileAppBack\Infrastructure\ACL\Workspaces\MonolithWorkspacesAdapter;
 use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Customer\Contracts\CustomerWorkspaceReadStorageInterface;
 use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Customer\Eloquent\CustomerWorkspaceReadStorage;
 use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Shared\Contracts\IssuedCardReadStorageInterface;
@@ -12,6 +13,7 @@ use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\Contracts\Wo
 use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\Eloquent\BusinessWorkspaceReadStorage;
 use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\Eloquent\WorkspacePlanReadStorage;
 use App\Contexts\MobileAppBack\Integration\Contracts\AuthContextInterface;
+use App\Contexts\MobileAppBack\Integration\Contracts\WorkspacesContextInterface;
 use Illuminate\Support\ServiceProvider;
 
 class MobileAppBackProvider extends ServiceProvider
@@ -24,6 +26,7 @@ class MobileAppBackProvider extends ServiceProvider
         $this->app->singleton(WorkspacePlanReadStorageInterface::class, WorkspacePlanReadStorage::class);
 
         $this->app->singleton(AuthContextInterface::class, MonolithAuthAdapter::class);
+        $this->app->singleton(WorkspacesContextInterface::class, MonolithWorkspacesAdapter::class);
     }
 
     public function boot()

@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use App\Contexts\Auth\Infrastructure\Exceptions\UserNotFoundException;
+use App\Contexts\Authorization\Exceptions\UnauthorizedException;
 use App\Shared\Exceptions\NotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
@@ -51,6 +52,10 @@ class Handler extends ExceptionHandler
         // ToDo: Hmmmmmm
         if ($e instanceof UserNotFoundException) {
             return response()->json('Cannot authenticate user with given credentials', 401);
+        }
+
+        if ($e instanceof UnauthorizedException) {
+            return response()->json( $e->getMessage() ?: 'Cannot authorize user', 403);
         }
 
         if ($e instanceof MethodNotAllowedHttpException) {

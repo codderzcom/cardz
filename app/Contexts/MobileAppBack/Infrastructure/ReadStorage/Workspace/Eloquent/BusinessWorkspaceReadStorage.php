@@ -3,6 +3,7 @@
 namespace App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\Eloquent;
 
 use App\Contexts\MobileAppBack\Domain\ReadModel\Workspace\BusinessWorkspace;
+use App\Contexts\MobileAppBack\Infrastructure\Exceptions\BusinessWorkspaceNotFoundException;
 use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\Contracts\BusinessWorkspaceReadStorageInterface;
 use App\Models\Workspace as EloquentWorkspace;
 use function json_try_decode;
@@ -20,6 +21,17 @@ class BusinessWorkspaceReadStorage implements BusinessWorkspaceReadStorageInterf
         return $this->workspaceFromEloquent($workspace);
     }
 
+    public function forKeeper(string $keeperId, string $workspaceId): BusinessWorkspace
+    {
+        /** @var EloquentWorkspace $workspace */
+        $workspace = EloquentWorkspace::query()
+            ->where('id', '=', $workspaceId)
+            ->where('keeper_id', '=', $keeperId)
+            ->first();
+
+        return $workspace !== null ? $this->workspaceFromEloquent($workspace) : throw new BusinessWorkspaceNotFoundException();
+    }
+
     private function workspaceFromEloquent(EloquentWorkspace $workspace): BusinessWorkspace
     {
         $profile = is_string($workspace->profile) ? json_try_decode($workspace->profile) : $workspace->profile;
@@ -33,19 +45,4 @@ class BusinessWorkspaceReadStorage implements BusinessWorkspaceReadStorageInterf
         );
     }
 
-    /**
-     * @return BusinessWorkspace[]
-     */
-    public function allForKeeper(string $keeperId): array
-    {
-        $workspaces = EloquentWorkspace::query()
-            ->where('keeper_id', '=', $keeperId)
-            ->get();
-        $customerWorkspaces = [];
-        foreach ($workspaces as $workspace) {
-            $customerWorkspaces[] = $this->workspaceFromEloquent($workspace);
-        }
-
-        return $customerWorkspaces;
-    }
 }

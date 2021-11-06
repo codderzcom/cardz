@@ -38,7 +38,8 @@ class CustomerAppService
 
     public function register(?string $email, ?string $phone, string $name, string $password, string $deviceName): string
     {
-        return $this->authContext->registerUser($email, $phone, $name, $password, $deviceName);
+        $this->authContext->registerUser($email, $phone, $name, $password, $deviceName);
+        return $this->authContext->getToken($email ?: $phone, $password, $deviceName);
     }
 }
 
