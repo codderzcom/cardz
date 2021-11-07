@@ -21,6 +21,18 @@ class BusinessWorkspaceReadStorage implements BusinessWorkspaceReadStorageInterf
         return $this->workspaceFromEloquent($workspace);
     }
 
+    public function allForKeeper(string $keeperId): array
+    {
+        $workspaces = EloquentWorkspace::query()
+            ->where('keeper_id', '=', $keeperId)
+            ->get();
+        $businessWorkspaces = [];
+        foreach ($workspaces as $workspace) {
+            $businessWorkspaces[] = $this->workspaceFromEloquent($workspace);
+        }
+        return $businessWorkspaces;
+    }
+
     public function forKeeper(string $keeperId, string $workspaceId): BusinessWorkspace
     {
         /** @var EloquentWorkspace $workspace */

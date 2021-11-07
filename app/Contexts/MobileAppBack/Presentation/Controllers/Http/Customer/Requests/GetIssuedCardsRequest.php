@@ -4,7 +4,7 @@ namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer\Requ
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GetIssuedCardsRequest extends FormRequest
+final class GetIssuedCardsRequest extends FormRequest
 {
     public string $customerId;
 

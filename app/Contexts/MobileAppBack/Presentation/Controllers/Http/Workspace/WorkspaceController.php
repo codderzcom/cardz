@@ -2,6 +2,7 @@
 
 namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace;
 
+use App\Contexts\MobileAppBack\Application\Services\AuthorizationServiceInterface;
 use App\Contexts\MobileAppBack\Application\Services\Workspace\WorkspaceAppService;
 use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\Contracts\BusinessWorkspaceReadStorageInterface;
 use App\Contexts\MobileAppBack\Integration\Contracts\WorkspacesContextInterface;
@@ -16,6 +17,7 @@ class WorkspaceController extends BaseController
 {
     public function __construct(
         private WorkspaceAppService $workspaceService,
+        private AuthorizationServiceInterface $authorizationService,
     ) {
     }
 
@@ -28,6 +30,7 @@ class WorkspaceController extends BaseController
 
     public function getWorkspace(GetWorkspaceRequest $request): JsonResponse
     {
+        $this->authorizationService->authorizeAction('getWorkspacesForKeeper', $request->keeperId, $request->workspaceId, 'workspace');
         return $this->response($this->workspaceService->getBusinessWorkspace(
             $request->keeperId,
             $request->workspaceId,
