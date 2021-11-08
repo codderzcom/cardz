@@ -10,7 +10,7 @@ trait RelationTrait
     protected function getRelations(string $workspaceId): array
     {
         $relations = Relation::query()->where('workspace_id', '=', $workspaceId)->get();
-        return $this->reconstructRelations($relations);
+        return $this->reconstructRelations($relations->toArray());
     }
 
     protected function reconstructRelations(array $relationsData): array

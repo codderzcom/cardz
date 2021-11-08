@@ -4,8 +4,6 @@ namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace;
 
 use App\Contexts\MobileAppBack\Application\Services\AuthorizationServiceInterface;
 use App\Contexts\MobileAppBack\Application\Services\Workspace\WorkspaceAppService;
-use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\Contracts\BusinessWorkspaceReadStorageInterface;
-use App\Contexts\MobileAppBack\Integration\Contracts\WorkspacesContextInterface;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\BaseController;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Commands\AddWorkspaceRequest;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Commands\ChangeWorkspaceProfileRequest;
@@ -30,7 +28,7 @@ class WorkspaceController extends BaseController
 
     public function getWorkspace(GetWorkspaceRequest $request): JsonResponse
     {
-        $this->authorizationService->authorizeAction('getWorkspacesForKeeper', $request->keeperId, $request->workspaceId, 'workspace');
+        $this->authorizationService->authorizeAction('workspaces.view', $request->keeperId, $request->workspaceId, 'workspace');
         return $this->response($this->workspaceService->getBusinessWorkspace(
             $request->keeperId,
             $request->workspaceId,
@@ -49,6 +47,7 @@ class WorkspaceController extends BaseController
 
     public function changeWorkspaceProfile(ChangeWorkspaceProfileRequest $request): JsonResponse
     {
+        $this->authorizationService->authorizeAction('workspaces.changeProfile', $request->collaboratorId, $request->workspaceId, 'workspace');
         return $this->response($this->workspaceService->changeProfile(
             $request->collaboratorId,
             $request->workspaceId,

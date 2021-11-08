@@ -13,9 +13,9 @@ class AuthorizationService implements AuthorizationServiceInterface
     ) {
     }
 
-    public function authorizeAction(string $action, string $subjectId, string $objectId, string $objectType): void
+    public function authorizeAction(string $permission, string $subjectId, string $objectId, string $objectType): void
     {
-        $isAllowed = $this->authorizationBus->execute(IsAllowed::of($action, $subjectId, $objectId, $objectType));
+        $isAllowed = $this->authorizationBus->execute(IsAllowed::of($permission, $subjectId, $objectId, $objectType));
         if (!$isAllowed) {
             throw new AccessDeniedException("Access denied");
         }

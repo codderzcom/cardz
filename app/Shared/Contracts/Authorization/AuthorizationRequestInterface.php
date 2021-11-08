@@ -2,7 +2,7 @@
 
 namespace App\Shared\Contracts\Authorization;
 
-interface AuthorizationRequest
+interface AuthorizationRequestInterface
 {
 
 }

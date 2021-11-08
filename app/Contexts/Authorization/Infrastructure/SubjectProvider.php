@@ -2,17 +2,17 @@
 
 namespace App\Contexts\Authorization\Infrastructure;
 
-use App\Contexts\Authorization\Domain\AuthorizationObject;
+use App\Contexts\Authorization\Domain\AuthorizationSubject;
 use App\Contexts\Authorization\Exceptions\AuthorizationFailedException;
 use App\Models\User;
 use App\Shared\Infrastructure\Authorization\Abac\Attributes;
 
 class SubjectProvider
 {
-    public function reconstruct(string $subjectId): AuthorizationObject
+    public function reconstruct(string $subjectId): AuthorizationSubject
     {
         $attributes = $this->getAttributes($subjectId);
-        return AuthorizationObject::of($subjectId, $attributes);
+        return AuthorizationSubject::of($subjectId, $attributes);
     }
 
     protected function getAttributes(string $subjectId): Attributes

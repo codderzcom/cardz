@@ -13,6 +13,7 @@ final class PlanProvider extends BaseConcreteObjectProvider
         $plan = $this->getEloquentModel(Plan::query(), $this->objectId);
         $relations = $this->getRelations($plan->workspace_id);
         return [
+            'objectId' => $this->objectId,
             'planId' => $plan->id,
             'workspaceId' => $plan->id,
             'keeperId' => $this->getKeeperId($relations),

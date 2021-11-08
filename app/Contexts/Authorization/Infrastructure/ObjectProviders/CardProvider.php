@@ -15,6 +15,7 @@ final class CardProvider extends BaseConcreteObjectProvider
         $plan = $this->getEloquentModel(Plan::query(), $card->plan_id);
         $relations = $this->getRelations($plan->workspace_id);
         return [
+            'objectId' => $this->objectId,
             'planId' => $plan->id,
             'workspaceId' => $plan->id,
             'keeperId' => $this->getKeeperId($relations),

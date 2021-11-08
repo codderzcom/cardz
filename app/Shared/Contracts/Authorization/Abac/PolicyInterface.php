@@ -2,7 +2,13 @@
 
 namespace App\Shared\Contracts\Authorization\Abac;
 
+use App\Shared\Contracts\Authorization\AuthorizationResolution;
+
 interface PolicyInterface
 {
-    public function apply(SubjectInterface $subject, ObjectInterface $object, SystemInterface $system): bool;
+    public function resolve(
+        AttributeCollectionInterface $subject,
+        AttributeCollectionInterface $object,
+        AttributeCollectionInterface $config,
+    ): AuthorizationResolution;
 }

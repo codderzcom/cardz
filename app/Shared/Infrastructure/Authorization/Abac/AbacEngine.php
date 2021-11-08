@@ -2,33 +2,29 @@
 
 namespace App\Shared\Infrastructure\Authorization\Abac;
 
-use App\Shared\Contracts\Authorization\Abac\AbacAuthorizationRequest;
-use App\Shared\Contracts\Authorization\Abac\AbacResolverInterface;
+use App\Shared\Contracts\Authorization\Abac\AbacAuthorizationRequestInterface;
+use App\Shared\Contracts\Authorization\Abac\RuleInterface;
 use App\Shared\Contracts\Authorization\AuthorizationResolution;
 
 class AbacEngine
 {
+    /** @var RuleInterface[] */
     private array $rules = [];
-    private AbacResolverInterface $resolver;
 
-    public function setup(AbacResolverInterface $resolver, array $rules): void
+    public function setup(RuleInterface ...$rules): void
     {
-        $this->rules = $rules;
-        $this->resolver = $resolver;
+        foreach ($rules as $rule) {
+            $this->rules[(string) $rule->forPermission()] = $rule;
+        }
     }
 
-    public function resolve(AbacAuthorizationRequest $authorizationRequest): AuthorizationResolution
+    public function resolve(AbacAuthorizationRequestInterface $authorizationRequest): AuthorizationResolution
     {
-        $subjectAttributes = $authorizationRequest->getSubjectAttributes();
-        $objectAttributes = $authorizationRequest->getObjectAttributes();
-        $configAttributes = $authorizationRequest->getConfigAttributes();
-        $permission = $authorizationRequest->getPermission();
-        $rule = $this->getRule($permission);
-        $this->resolver->resolve($subjectAttributes, $objectAttributes, $configAttributes, $rule);
-    }
-
-    private function getRule($permission)
-    {
-        return $this->rules[$permission];
+        $rule = $this->rules[(string) $authorizationRequest->getPermission()] ?? null;
+        return $rule?->applyPolicies(
+                $authorizationRequest->getSubject(),
+                $authorizationRequest->getObject(),
+                $authorizationRequest->getConfig(),
+            ) ?? AuthorizationResolution::of();
     }
 }
