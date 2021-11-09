@@ -2,23 +2,25 @@
 
 namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Queries;
 
+use App\Shared\Contracts\GeneralIdInterface;
+use App\Shared\Infrastructure\Support\GuidBasedImmutableId;
 use Illuminate\Foundation\Http\FormRequest;
 
 class BaseWorkspaceQueryRequest extends FormRequest
 {
     protected const RULES = [
         'workspaceId' => 'required',
-        'keeperId' => 'required',
+        'collaboratorId' => 'required',
     ];
 
     protected const MESSAGES = [
         'workspaceId.required' => 'workspaceId required',
-        'keeperId.required' => 'keeperId required',
+        'collaboratorId.required' => 'collaboratorId required',
     ];
 
-    public string $workspaceId;
+    public GeneralIdInterface $workspaceId;
 
-    public string $keeperId;
+    public GeneralIdInterface $collaboratorId;
 
     public function rules(): array
     {
@@ -32,15 +34,15 @@ class BaseWorkspaceQueryRequest extends FormRequest
 
     public function passedValidation(): void
     {
-        $this->workspaceId = $this->input('workspaceId');
-        $this->keeperId = $this->input('keeperId');
+        $this->workspaceId = GuidBasedImmutableId::of($this->input('workspaceId'));
+        $this->collaboratorId = GuidBasedImmutableId::of($this->input('collaboratorId'));
     }
 
     protected function prepareForValidation(): void
     {
         $this->merge([
             'workspaceId' => $this->route('workspaceId'),
-            'keeperId' => $this->user()->id,
+            'collaboratorId' => $this->user()->id,
         ]);
     }
 

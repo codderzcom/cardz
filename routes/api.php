@@ -95,7 +95,7 @@ Route::group(['prefix' => '/mab/v1'], function () {
             Route::get('/card/{cardId}', [MABCustomerController::class, 'getCard'])->name('MABCustomerCard');
         });
 
-        Route::get('/workspace', [MABWorkspaceController::class, 'getWorkspacesForKeeper'])->name('MABWorkspaceListAll');
+        Route::get('/workspace', [MABWorkspaceController::class, 'getWorkspaces'])->name('MABWorkspaceListAll');
         Route::post('/workspace', [MABWorkspaceController::class, 'addWorkspace'])->name('MABWorkspaceAdd');
 
         Route::group(['prefix' => '/workspace/{workspaceId}'], function () {

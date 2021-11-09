@@ -14,9 +14,9 @@ class WorkspaceAppService
     ) {
     }
 
-    public function getBusinessWorkspaces(string $keeperId): array
+    public function getBusinessWorkspaces(string $collaboratorId): array
     {
-        return $this->businessWorkspaceReadStorage->allForKeeper($keeperId);
+        return $this->businessWorkspaceReadStorage->allForCollaborator($collaboratorId);
     }
 
     public function getBusinessWorkspace(string $keeperId, string $workspaceId): BusinessWorkspace

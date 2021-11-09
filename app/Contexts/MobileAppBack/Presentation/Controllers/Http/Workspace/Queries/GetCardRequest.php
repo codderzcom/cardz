@@ -24,7 +24,7 @@ class GetCardRequest extends BaseWorkspaceQueryRequest
 
     public function toQuery(): GetCard
     {
-        return GetCard::of($this->keeperId, $this->workspaceId, $this->cardId);
+        return GetCard::of($this->collaboratorId, $this->workspaceId, $this->cardId);
     }
 
     protected function prepareForValidation(): void

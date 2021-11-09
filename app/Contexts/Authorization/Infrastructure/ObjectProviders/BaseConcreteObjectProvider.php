@@ -2,6 +2,7 @@
 
 namespace App\Contexts\Authorization\Infrastructure\ObjectProviders;
 
+use App\Shared\Contracts\GeneralIdInterface;
 use App\Shared\Infrastructure\Authorization\Abac\Attributes;
 
 abstract class BaseConcreteObjectProvider implements ConcreteObjectProviderInterface
@@ -10,9 +11,9 @@ abstract class BaseConcreteObjectProvider implements ConcreteObjectProviderInter
     {
     }
 
-    public static function of(string $objectId)
+    public static function of(GeneralIdInterface $objectId)
     {
-        return new static($objectId);
+        return new static((string) $objectId);
     }
 
     public function reconstruct(): Attributes

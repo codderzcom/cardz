@@ -7,7 +7,6 @@ use App\Contexts\Authorization\Infrastructure\ObjectProvider;
 use App\Contexts\Authorization\Infrastructure\SubjectProvider;
 use App\Contexts\Authorization\Rules\Workspaces\WorkspacesRuleProvider;
 use App\Shared\Infrastructure\Authorization\Abac\AbacEngine;
-use App\Shared\Infrastructure\Authorization\Abac\AbacPermission;
 use App\Shared\Infrastructure\Authorization\Abac\Attributes;
 
 class AuthorizationService
@@ -27,7 +26,7 @@ class AuthorizationService
         $object = $this->objectProvider->reconstruct($query->objectType, $query->objectId);
         $subject = $this->subjectProvider->reconstruct($query->subjectId);
         $resolution = $this->abacEngine->resolve(AuthorizationRequest::of(
-            AbacPermission::of($query->permission),
+            $query->permission,
             $subject->getAttributes(),
             $object->getAttributes(),
             Attributes::of([])

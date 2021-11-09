@@ -2,35 +2,37 @@
 
 namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Queries;
 
+use App\Shared\Contracts\GeneralIdInterface;
+use App\Shared\Infrastructure\Support\GuidBasedImmutableId;
 use Illuminate\Foundation\Http\FormRequest;
 
-class KeeperQueryRequest extends FormRequest
+class CollaboratorQueryRequest extends FormRequest
 {
-    public string $keeperId;
+    public GeneralIdInterface $collaboratorId;
 
     public function rules(): array
     {
         return [
-            'keeperId' => 'required',
+            'collaboratorId' => 'required',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'keeperId.required' => 'keeperId required',
+            'collaboratorId.required' => 'collaboratorId required',
         ];
     }
 
     public function passedValidation(): void
     {
-        $this->keeperId = $this->input('keeperId');
+        $this->collaboratorId = GuidBasedImmutableId::of($this->input('collaboratorId'));
     }
 
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'keeperId' => $this->user()->id,
+            'collaboratorId' => $this->user()->id,
         ]);
     }
 

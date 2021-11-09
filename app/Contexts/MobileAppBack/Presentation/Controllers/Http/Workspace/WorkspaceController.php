@@ -2,13 +2,15 @@
 
 namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace;
 
+use App\Contexts\Authorization\Dictionary\ObjectTypeRepository;
+use App\Contexts\Authorization\Dictionary\PermissionRepository;
 use App\Contexts\MobileAppBack\Application\Services\AuthorizationServiceInterface;
 use App\Contexts\MobileAppBack\Application\Services\Workspace\WorkspaceAppService;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\BaseController;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Commands\AddWorkspaceRequest;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Commands\ChangeWorkspaceProfileRequest;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Queries\GetWorkspaceRequest;
-use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Queries\KeeperQueryRequest;
+use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Queries\CollaboratorQueryRequest;
 use Illuminate\Http\JsonResponse;
 
 class WorkspaceController extends BaseController
@@ -19,18 +21,24 @@ class WorkspaceController extends BaseController
     ) {
     }
 
-    public function getWorkspacesForKeeper(KeeperQueryRequest $request): JsonResponse
+    public function getWorkspaces(CollaboratorQueryRequest $request): JsonResponse
     {
         return $this->response($this->workspaceService->getBusinessWorkspaces(
-            $request->keeperId,
+            $request->collaboratorId,
         ));
     }
 
     public function getWorkspace(GetWorkspaceRequest $request): JsonResponse
     {
-        $this->authorizationService->authorizeAction('workspaces.view', $request->keeperId, $request->workspaceId, 'workspace');
+        $this->authorizationService->authorize(
+            PermissionRepository::WORKSPACES_VIEW(),
+            ObjectTypeRepository::WORKSPACE(),
+            $request->collaboratorId,
+            $request->workspaceId,
+        );
+
         return $this->response($this->workspaceService->getBusinessWorkspace(
-            $request->keeperId,
+            $request->collaboratorId,
             $request->workspaceId,
         ));
     }
@@ -47,7 +55,13 @@ class WorkspaceController extends BaseController
 
     public function changeWorkspaceProfile(ChangeWorkspaceProfileRequest $request): JsonResponse
     {
-        $this->authorizationService->authorizeAction('workspaces.changeProfile', $request->collaboratorId, $request->workspaceId, 'workspace');
+        $this->authorizationService->authorize(
+            PermissionRepository::WORKSPACES_CHANGE_PROFILE(),
+            ObjectTypeRepository::WORKSPACE(),
+            $request->collaboratorId,
+            $request->workspaceId,
+        );
+
         return $this->response($this->workspaceService->changeProfile(
             $request->collaboratorId,
             $request->workspaceId,

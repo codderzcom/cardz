@@ -2,6 +2,7 @@
 
 namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace;
 
+use App\Contexts\MobileAppBack\Application\Services\AuthorizationServiceInterface;
 use App\Contexts\MobileAppBack\Application\Services\Workspace\PlanAppService;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\BaseController;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Commands\{Plan\AddPlanRequest,
@@ -17,14 +18,15 @@ use Illuminate\Http\JsonResponse;
 class PlanController extends BaseController
 {
     public function __construct(
-        private PlanAppService $planService
+        private PlanAppService $planService,
+        private AuthorizationServiceInterface $authorizationService,
     ) {
     }
 
     public function getPlans(GetWorkspaceRequest $request): JsonResponse
     {
         return $this->response($this->planService->getWorkspacePlans(
-            $request->keeperId,
+            $request->collaboratorId,
             $request->workspaceId,
         ));
     }
@@ -32,7 +34,7 @@ class PlanController extends BaseController
     public function getPlan(GetPlanRequest $request): JsonResponse
     {
         return $this->response($this->planService->getWorkspacePlan(
-            $request->keeperId,
+            $request->collaboratorId,
             $request->workspaceId,
             $request->planId,
         ));

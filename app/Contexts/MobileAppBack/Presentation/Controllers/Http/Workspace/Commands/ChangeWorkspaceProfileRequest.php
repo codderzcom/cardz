@@ -29,5 +29,4 @@ final class ChangeWorkspaceProfileRequest extends BaseCommandRequest
         $this->description = $this->input('description');
         $this->address = $this->input('address');
     }
-
 }

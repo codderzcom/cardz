@@ -2,6 +2,8 @@
 
 namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Commands;
 
+use App\Shared\Contracts\GeneralIdInterface;
+use App\Shared\Infrastructure\Support\GuidBasedImmutableId;
 use Illuminate\Foundation\Http\FormRequest;
 
 abstract class BaseCommandRequest extends FormRequest
@@ -16,9 +18,9 @@ abstract class BaseCommandRequest extends FormRequest
         'collaboratorId.required' => 'collaboratorId required',
     ];
 
-    public string $workspaceId;
+    public GeneralIdInterface $workspaceId;
 
-    public string $collaboratorId;
+    public GeneralIdInterface $collaboratorId;
 
     public function rules(): array
     {
@@ -32,8 +34,8 @@ abstract class BaseCommandRequest extends FormRequest
 
     public function passedValidation(): void
     {
-        $this->workspaceId = $this->input('workspaceId');
-        $this->collaboratorId = $this->input('collaboratorId');
+        $this->workspaceId = GuidBasedImmutableId::of($this->input('workspaceId'));
+        $this->collaboratorId = GuidBasedImmutableId::of($this->input('collaboratorId'));
     }
 
     protected function prepareForValidation(): void

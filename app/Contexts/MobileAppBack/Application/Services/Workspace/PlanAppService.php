@@ -7,7 +7,7 @@ use App\Contexts\MobileAppBack\Application\Services\Workspace\Policies\AssertWor
 use App\Contexts\MobileAppBack\Domain\Model\Collaboration\KeeperId;
 use App\Contexts\MobileAppBack\Domain\Model\Workspace\PlanId;
 use App\Contexts\MobileAppBack\Domain\Model\Workspace\WorkspaceId;
-use App\Contexts\MobileAppBack\Infrastructure\ACL\Plans\PlansAdapter;
+use App\Contexts\MobileAppBack\Infrastructure\ACL\Plans\MonolithPlansAdapter;
 use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\Contracts\WorkspacePlanReadStorageInterface;
 use App\Shared\Contracts\ServiceResultFactoryInterface;
 use App\Shared\Contracts\ServiceResultInterface;
@@ -15,7 +15,7 @@ use App\Shared\Contracts\ServiceResultInterface;
 class PlanAppService
 {
     public function __construct(
-        private PlansAdapter $plansAdapter,
+        private MonolithPlansAdapter $plansAdapter,
         private WorkspacePlanReadStorageInterface $workspacePlanReadStorage,
         private ServiceResultFactoryInterface $serviceResultFactory,
     ) {

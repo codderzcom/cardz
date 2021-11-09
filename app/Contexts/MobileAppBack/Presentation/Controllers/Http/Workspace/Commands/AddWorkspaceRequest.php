@@ -2,11 +2,13 @@
 
 namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Commands;
 
+use App\Shared\Contracts\GeneralIdInterface;
+use App\Shared\Infrastructure\Support\GuidBasedImmutableId;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class AddWorkspaceRequest extends FormRequest
 {
-    public string $keeperId;
+    public GeneralIdInterface $keeperId;
 
     public string $name;
 
@@ -36,7 +38,7 @@ final class AddWorkspaceRequest extends FormRequest
 
     public function passedValidation(): void
     {
-        $this->keeperId = $this->input('keeperId');
+        $this->keeperId = GuidBasedImmutableId::of($this->input('keeperId'));
         $this->name = $this->input('name');
         $this->description = $this->input('description');
         $this->address = $this->input('address');

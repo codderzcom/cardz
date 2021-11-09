@@ -21,11 +21,14 @@ class BusinessWorkspaceReadStorage implements BusinessWorkspaceReadStorageInterf
         return $this->workspaceFromEloquent($workspace);
     }
 
-    public function allForKeeper(string $keeperId): array
+    public function allForCollaborator(string $collaboratorId): array
     {
-        $workspaces = EloquentWorkspace::query()
-            ->where('keeper_id', '=', $keeperId)
-            ->get();
+        $workspaces = EloquentWorkspace::query()->fromQuery("
+            select w.* from workspaces w
+            inner join relations r on w.id = r.workspace_id
+                where w.keeper_id = :collaborator_id
+                or r.collaborator_id = :collaborator_id;
+        ", ['collaborator_id' => $collaboratorId]);
         $businessWorkspaces = [];
         foreach ($workspaces as $workspace) {
             $businessWorkspaces[] = $this->workspaceFromEloquent($workspace);
