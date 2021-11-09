@@ -5,7 +5,7 @@ namespace App\Contexts\MobileAppBack\Domain\ReadModel\Workspace;
 use App\Shared\Infrastructure\Support\ArrayPresenterTrait;
 use JetBrains\PhpStorm\Pure;
 
-final class WorkspacePlan
+final class BusinessPlan
 {
     use ArrayPresenterTrait;
 

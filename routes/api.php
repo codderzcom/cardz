@@ -117,7 +117,7 @@ Route::group(['prefix' => '/mab/v1'], function () {
             });
 
             Route::group(['prefix' => '/plan'], function () {
-                Route::get('/', [MABPlanController::class, 'getPlans'])->name('MABPlanListAll');
+                Route::get('/', [MABPlanController::class, 'getWorkspaceBusinessPlans'])->name('MABPlanListAll');
                 Route::post('/', [MABPlanController::class, 'add'])->name('MABPlanAdd');
             });
 

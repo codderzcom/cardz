@@ -5,6 +5,7 @@ namespace App\Contexts\Authorization\Application;
 use App\Contexts\Authorization\Application\Queries\IsAllowed;
 use App\Contexts\Authorization\Infrastructure\ObjectProvider;
 use App\Contexts\Authorization\Infrastructure\SubjectProvider;
+use App\Contexts\Authorization\Rules\Plans\PlansRuleProvider;
 use App\Contexts\Authorization\Rules\Workspaces\WorkspacesRuleProvider;
 use App\Shared\Infrastructure\Authorization\Abac\AbacEngine;
 use App\Shared\Infrastructure\Authorization\Abac\Attributes;
@@ -16,9 +17,10 @@ class AuthorizationService
         private SubjectProvider $subjectProvider,
         private AbacEngine $abacEngine,
 
+        PlansRuleProvider $plansRuleProvider,
         WorkspacesRuleProvider $workspacesRuleProvider,
     ) {
-        $this->abacEngine->setup(...$workspacesRuleProvider->rules);
+        $this->abacEngine->setup(...$workspacesRuleProvider->rules, ...$plansRuleProvider->rules);
     }
 
     public function isAllowed(IsAllowed $query): bool

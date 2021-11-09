@@ -2,33 +2,34 @@
 
 namespace App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\Eloquent;
 
+use App\Contexts\MobileAppBack\Domain\ReadModel\Workspace\BusinessPlan;
 use App\Contexts\MobileAppBack\Domain\ReadModel\Workspace\BusinessWorkspace;
-use App\Contexts\MobileAppBack\Domain\ReadModel\Workspace\WorkspacePlan;
-use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\Contracts\WorkspacePlanReadStorageInterface;
+use App\Contexts\MobileAppBack\Infrastructure\Exceptions\BusinessPlanNotFoundException;
+use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\Contracts\BusinessPlanReadStorageInterface;
 use App\Models\Plan as EloquentPlan;
 use App\Models\Requirement as EloquentRequirement;
 
-class WorkspacePlanReadStorage implements WorkspacePlanReadStorageInterface
+class BusinessPlanReadStorage implements BusinessPlanReadStorageInterface
 {
-    public function find(string $planId): ?WorkspacePlan
+    public function find(string $planId): BusinessPlan
     {
         /** @var EloquentPlan $plan */
         $plan = EloquentPlan::query()->find($planId);
         if ($plan === null) {
-            return null;
+            throw new BusinessPlanNotFoundException("Plan Id: $planId");
         }
         $eloquentRequirements = EloquentRequirement::query()->where('plan_id', '=', $planId)->get() ?? [];
 
         return $this->planFromEloquent($plan, ...$eloquentRequirements);
     }
 
-    private function planFromEloquent(EloquentPlan $plan, EloquentRequirement ...$eloquentRequirements): WorkspacePlan
+    private function planFromEloquent(EloquentPlan $plan, EloquentRequirement ...$eloquentRequirements): BusinessPlan
     {
         $requirements = [];
         foreach ($eloquentRequirements as $eloquentRequirement) {
             $requirements[] = [$eloquentRequirement->id, $eloquentRequirement->description];
         }
-        return WorkspacePlan::make(
+        return BusinessPlan::make(
             $plan->id,
             $plan->workspace_id,
             $plan->description,

@@ -2,6 +2,9 @@
 
 namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Commands\Plan;
 
+use App\Shared\Contracts\GeneralIdInterface;
+use App\Shared\Infrastructure\Support\GuidBasedImmutableId;
+
 final class RemovePlanRequirementRequest extends PlanCommandRequest
 {
     protected const RULES = [
@@ -12,12 +15,12 @@ final class RemovePlanRequirementRequest extends PlanCommandRequest
         'requirementId.required' => 'requirementId required',
     ];
 
-    public string $requirementId;
+    public GeneralIdInterface $requirementId;
 
     public function passedValidation(): void
     {
         parent::passedValidation();
-        $this->requirementId = $this->input('requirementId');
+        $this->requirementId = GuidBasedImmutableId::of($this->input('requirementId'));
     }
 
     protected function prepareForValidation(): void

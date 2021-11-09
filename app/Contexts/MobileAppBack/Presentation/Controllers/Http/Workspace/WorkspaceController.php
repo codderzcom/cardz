@@ -9,8 +9,8 @@ use App\Contexts\MobileAppBack\Application\Services\Workspace\WorkspaceAppServic
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\BaseController;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Commands\AddWorkspaceRequest;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Commands\ChangeWorkspaceProfileRequest;
-use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Queries\GetWorkspaceRequest;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Queries\CollaboratorQueryRequest;
+use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Queries\GetWorkspaceRequest;
 use Illuminate\Http\JsonResponse;
 
 class WorkspaceController extends BaseController
@@ -23,9 +23,7 @@ class WorkspaceController extends BaseController
 
     public function getWorkspaces(CollaboratorQueryRequest $request): JsonResponse
     {
-        return $this->response($this->workspaceService->getBusinessWorkspaces(
-            $request->collaboratorId,
-        ));
+        return $this->response($this->workspaceService->getBusinessWorkspaces($request->collaboratorId));
     }
 
     public function getWorkspace(GetWorkspaceRequest $request): JsonResponse
@@ -37,10 +35,7 @@ class WorkspaceController extends BaseController
             $request->workspaceId,
         );
 
-        return $this->response($this->workspaceService->getBusinessWorkspace(
-            $request->collaboratorId,
-            $request->workspaceId,
-        ));
+        return $this->response($this->workspaceService->getBusinessWorkspace($request->workspaceId));
     }
 
     public function addWorkspace(AddWorkspaceRequest $request): JsonResponse
@@ -63,7 +58,6 @@ class WorkspaceController extends BaseController
         );
 
         return $this->response($this->workspaceService->changeProfile(
-            $request->collaboratorId,
             $request->workspaceId,
             $request->name,
             $request->description,

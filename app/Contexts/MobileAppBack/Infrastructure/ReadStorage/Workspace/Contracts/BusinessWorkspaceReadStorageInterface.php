@@ -6,7 +6,7 @@ use App\Contexts\MobileAppBack\Domain\ReadModel\Workspace\BusinessWorkspace;
 
 interface BusinessWorkspaceReadStorageInterface
 {
-    public function find(string $workspaceId): ?BusinessWorkspace;
+    public function find(string $workspaceId): BusinessWorkspace;
 
     /**
      * @return BusinessWorkspace[]

@@ -10,12 +10,12 @@ use function json_try_decode;
 
 class BusinessWorkspaceReadStorage implements BusinessWorkspaceReadStorageInterface
 {
-    public function find(string $workspaceId): ?BusinessWorkspace
+    public function find(string $workspaceId): BusinessWorkspace
     {
         /** @var EloquentWorkspace $workspace */
         $workspace = EloquentWorkspace::query()->find($workspaceId);
         if ($workspace === null) {
-            return null;
+            throw new BusinessWorkspaceNotFoundException("Workspace Id: $workspaceId");
         }
 
         return $this->workspaceFromEloquent($workspace);

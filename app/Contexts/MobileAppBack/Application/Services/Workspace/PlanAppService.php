@@ -2,134 +2,76 @@
 
 namespace App\Contexts\MobileAppBack\Application\Services\Workspace;
 
-use App\Contexts\MobileAppBack\Application\Services\Workspace\Policies\AssertPlanInWorkspace;
-use App\Contexts\MobileAppBack\Application\Services\Workspace\Policies\AssertWorkspaceForKeeper;
-use App\Contexts\MobileAppBack\Domain\Model\Collaboration\KeeperId;
-use App\Contexts\MobileAppBack\Domain\Model\Workspace\PlanId;
-use App\Contexts\MobileAppBack\Domain\Model\Workspace\WorkspaceId;
-use App\Contexts\MobileAppBack\Infrastructure\ACL\Plans\MonolithPlansAdapter;
-use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\Contracts\WorkspacePlanReadStorageInterface;
-use App\Shared\Contracts\ServiceResultFactoryInterface;
-use App\Shared\Contracts\ServiceResultInterface;
+use App\Contexts\MobileAppBack\Domain\ReadModel\Workspace\BusinessPlan;
+use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\Contracts\BusinessPlanReadStorageInterface;
+use App\Contexts\MobileAppBack\Integration\Contracts\PlansContextInterface;
 
 class PlanAppService
 {
     public function __construct(
-        private MonolithPlansAdapter $plansAdapter,
-        private WorkspacePlanReadStorageInterface $workspacePlanReadStorage,
-        private ServiceResultFactoryInterface $serviceResultFactory,
+        private PlansContextInterface $plansContext,
+        private BusinessPlanReadStorageInterface $businessPlanReadStorage,
     ) {
     }
 
-    public function getWorkspacePlan(string $keeperId, string $workspaceId, string $planId): ServiceResultInterface
+    public function getBusinessPlan(string $planId): BusinessPlan
     {
-        AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert();
-        AssertPlanInWorkspace::of(PlanId::of($planId), WorkspaceId::of($workspaceId))->assert();
-        return $this->getWorkspacePlanResult($planId);
+        return $this->businessPlanReadStorage->find($planId);
     }
 
-    private function getWorkspacePlanResult(string $planId): ServiceResultInterface
+    /**
+     * @return BusinessPlan[]
+     */
+    public function getWorkspaceBusinessPlans(string $workspaceId): array
     {
-        $plan = $this->workspacePlanReadStorage->find($planId);
-        if ($plan === null) {
-            return $this->serviceResultFactory->notFound("Plan $planId not found");
-        }
-
-        return $this->serviceResultFactory->ok($plan);
+        return $this->businessPlanReadStorage->allForWorkspace($workspaceId);
     }
 
-    public function getWorkspacePlans(string $keeperId, string $workspaceId): ServiceResultInterface
+    public function add(string $workspaceId, string $description): BusinessPlan
     {
-        AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert();
-        $plans = $this->workspacePlanReadStorage->allForWorkspace($workspaceId);
-        return $this->serviceResultFactory->ok($plans);
+        $planId = $this->plansContext->add($workspaceId, $description);
+        return $this->businessPlanReadStorage->find($planId);
     }
 
-    public function add(string $keeperId, string $workspaceId, string $description): ServiceResultInterface
+    public function launch(string $planId): BusinessPlan
     {
-        AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert();
-        $result = $this->plansAdapter->add($workspaceId, $description);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-        $planId = $result->getPayload();
-        return $this->getWorkspacePlanResult($planId);
+        $this->plansContext->launch($planId);
+        return $this->businessPlanReadStorage->find($planId);
     }
 
-    public function launch(string $keeperId, string $workspaceId, string $planId): ServiceResultInterface
+    public function stop(string $planId): BusinessPlan
     {
-        AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert();
-        AssertPlanInWorkspace::of(PlanId::of($planId), WorkspaceId::of($workspaceId));
-        $result = $this->plansAdapter->launch($planId);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-        return $this->getWorkspacePlanResult($planId);
+        $this->plansContext->stop($planId);
+        return $this->businessPlanReadStorage->find($planId);
     }
 
-    public function stop(string $keeperId, string $workspaceId, string $planId): ServiceResultInterface
+    public function archive(string $planId): BusinessPlan
     {
-        AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert();
-        AssertPlanInWorkspace::of(PlanId::of($planId), WorkspaceId::of($workspaceId))->assert();
-        $result = $this->plansAdapter->stop($planId);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-        return $this->getWorkspacePlanResult($planId);
+        $this->plansContext->archive($planId);
+        return $this->businessPlanReadStorage->find($planId);
     }
 
-    public function archive(string $keeperId, string $workspaceId, string $planId): ServiceResultInterface
+    public function changeDescription(string $planId, string $description): BusinessPlan
     {
-        AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert();
-        AssertPlanInWorkspace::of(PlanId::of($planId), WorkspaceId::of($workspaceId))->assert();
-        $result = $this->plansAdapter->archive($planId);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-        return $this->getWorkspacePlanResult($planId);
+        $this->plansContext->changeDescription($planId, $description);
+        return $this->businessPlanReadStorage->find($planId);
     }
 
-    public function changeDescription(string $keeperId, string $workspaceId, string $planId, string $description): ServiceResultInterface
+    public function addRequirement(string $planId, string $description): BusinessPlan
     {
-        AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert();
-        AssertPlanInWorkspace::of(PlanId::of($planId), WorkspaceId::of($workspaceId))->assert();
-        $result = $this->plansAdapter->changeDescription($planId, $description);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-        return $this->getWorkspacePlanResult($planId);
+        $this->plansContext->addRequirement($planId, $description);
+        return $this->businessPlanReadStorage->find($planId);
     }
 
-    public function addRequirement(string $keeperId, string $workspaceId, string $planId, string $description): ServiceResultInterface
+    public function removeRequirement(string $planId, string $requirementId): BusinessPlan
     {
-        AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert();
-        AssertPlanInWorkspace::of(PlanId::of($planId), WorkspaceId::of($workspaceId))->assert();
-        $result = $this->plansAdapter->addRequirement($planId, $description);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-        return $this->getWorkspacePlanResult($planId);
+        $this->plansContext->removeRequirement($requirementId);
+        return $this->businessPlanReadStorage->find($planId);
     }
 
-    public function removeRequirement(string $keeperId, string $workspaceId, string $planId, string $requirementId): ServiceResultInterface
+    public function changeRequirement(string $planId, string $requirementId, string $description): BusinessPlan
     {
-        AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert();
-        AssertPlanInWorkspace::of(PlanId::of($planId), WorkspaceId::of($workspaceId))->assert();
-        $result = $this->plansAdapter->removeRequirement($planId, $requirementId);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-        return $this->getWorkspacePlanResult($planId);
-    }
-
-    public function changeRequirement(string $keeperId, string $workspaceId, string $planId, string $requirementId, string $description): ServiceResultInterface
-    {
-        AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert();
-        AssertPlanInWorkspace::of(PlanId::of($planId), WorkspaceId::of($workspaceId))->assert();
-        $result = $this->plansAdapter->changeRequirement($planId, $requirementId, $description);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-        return $this->getWorkspacePlanResult($planId);
+        $this->plansContext->changeRequirement($requirementId, $description);
+        return $this->businessPlanReadStorage->find($planId);
     }
 }

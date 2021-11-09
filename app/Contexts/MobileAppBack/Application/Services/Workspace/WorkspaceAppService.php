@@ -19,22 +19,21 @@ class WorkspaceAppService
         return $this->businessWorkspaceReadStorage->allForCollaborator($collaboratorId);
     }
 
-    public function getBusinessWorkspace(string $keeperId, string $workspaceId): BusinessWorkspace
+    public function getBusinessWorkspace(string $workspaceId): BusinessWorkspace
     {
-        return $this->businessWorkspaceReadStorage->forKeeper($keeperId, $workspaceId);
+        return $this->businessWorkspaceReadStorage->find($workspaceId);
     }
 
     public function addWorkspace(string $keeperId, string $name, string $description, string $address): BusinessWorkspace
     {
         $workspaceId = $this->workspacesContext->add($keeperId, $name, $description, $address);
-        return $this->businessWorkspaceReadStorage->forKeeper($keeperId, $workspaceId);
+        return $this->businessWorkspaceReadStorage->find($workspaceId);
     }
 
-    public function changeProfile(string $keeperId, string $workspaceId, string $name, string $description, string $address): BusinessWorkspace
+    public function changeProfile(string $workspaceId, string $name, string $description, string $address): BusinessWorkspace
     {
-        $workspace = $this->businessWorkspaceReadStorage->forKeeper($keeperId, $workspaceId);
-        $this->workspacesContext->changeProfile($workspace->workspaceId, $name, $description, $address);
-        return $this->businessWorkspaceReadStorage->forKeeper($keeperId, $workspaceId);
+        $this->workspacesContext->changeProfile($workspaceId, $name, $description, $address);
+        return $this->businessWorkspaceReadStorage->find($workspaceId);
     }
 
 }

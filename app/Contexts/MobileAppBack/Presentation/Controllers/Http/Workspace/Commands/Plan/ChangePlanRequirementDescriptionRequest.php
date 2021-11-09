@@ -2,6 +2,9 @@
 
 namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Commands\Plan;
 
+use App\Shared\Contracts\GeneralIdInterface;
+use App\Shared\Infrastructure\Support\GuidBasedImmutableId;
+
 final class ChangePlanRequirementDescriptionRequest extends PlanCommandRequest
 {
     protected const RULES = [
@@ -14,14 +17,14 @@ final class ChangePlanRequirementDescriptionRequest extends PlanCommandRequest
         'description.required' => 'description required',
     ];
 
-    public string $requirementId;
+    public GeneralIdInterface $requirementId;
 
     public string $description;
 
     public function passedValidation(): void
     {
         parent::passedValidation();
-        $this->requirementId = $this->input('requirementId');
+        $this->requirementId = GuidBasedImmutableId::of($this->input('requirementId'));
         $this->description = $this->input('description');
     }
 

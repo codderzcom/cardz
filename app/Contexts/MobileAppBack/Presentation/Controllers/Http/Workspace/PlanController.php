@@ -2,6 +2,8 @@
 
 namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace;
 
+use App\Contexts\Authorization\Dictionary\ObjectTypeRepository;
+use App\Contexts\Authorization\Dictionary\PermissionRepository;
 use App\Contexts\MobileAppBack\Application\Services\AuthorizationServiceInterface;
 use App\Contexts\MobileAppBack\Application\Services\Workspace\PlanAppService;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\BaseController;
@@ -10,7 +12,8 @@ use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Commands\
     Plan\ChangePlanDescriptionRequest,
     Plan\ChangePlanRequirementDescriptionRequest,
     Plan\PlanCommandRequest,
-    Plan\RemovePlanRequirementRequest};
+    Plan\RemovePlanRequirementRequest
+};
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Queries\GetPlanRequest;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Queries\GetWorkspaceRequest;
 use Illuminate\Http\JsonResponse;
@@ -23,94 +26,124 @@ class PlanController extends BaseController
     ) {
     }
 
-    public function getPlans(GetWorkspaceRequest $request): JsonResponse
+    public function getWorkspaceBusinessPlans(GetWorkspaceRequest $request): JsonResponse
     {
-        return $this->response($this->planService->getWorkspacePlans(
+        $this->authorizationService->authorize(
+            PermissionRepository::PLANS_VIEW(),
+            ObjectTypeRepository::WORKSPACE(),
             $request->collaboratorId,
             $request->workspaceId,
-        ));
+        );
+
+        return $this->response($this->planService->getWorkspaceBusinessPlans($request->workspaceId));
     }
 
     public function getPlan(GetPlanRequest $request): JsonResponse
     {
-        return $this->response($this->planService->getWorkspacePlan(
+        $this->authorizationService->authorize(
+            PermissionRepository::PLANS_VIEW(),
+            ObjectTypeRepository::PLAN(),
             $request->collaboratorId,
-            $request->workspaceId,
             $request->planId,
-        ));
+        );
+
+        return $this->response($this->planService->getBusinessPlan($request->planId));
     }
 
     public function add(AddPlanRequest $request): JsonResponse
     {
-        return $this->response($this->planService->add(
+        $this->authorizationService->authorize(
+            PermissionRepository::WORKSPACES_PLANS_ADD(),
+            ObjectTypeRepository::WORKSPACE(),
             $request->collaboratorId,
             $request->workspaceId,
-            $request->description,
-        ));
+        );
+
+        return $this->response($this->planService->add($request->workspaceId, $request->description));
     }
 
     public function launch(PlanCommandRequest $request): JsonResponse
     {
-        return $this->response($this->planService->launch(
+        $this->authorizationService->authorize(
+            PermissionRepository::PLANS_CHANGE(),
+            ObjectTypeRepository::PLAN(),
             $request->collaboratorId,
-            $request->workspaceId,
             $request->planId,
-        ));
+        );
+
+        return $this->response($this->planService->launch($request->planId));
     }
 
     public function stop(PlanCommandRequest $request): JsonResponse
     {
-        $this->response($this->planService->stop(
+        $this->authorizationService->authorize(
+            PermissionRepository::PLANS_CHANGE(),
+            ObjectTypeRepository::PLAN(),
             $request->collaboratorId,
-            $request->workspaceId,
             $request->planId,
-        ));
+        );
+
+        $this->response($this->planService->stop($request->planId));
     }
 
     public function archive(PlanCommandRequest $request): JsonResponse
     {
-        return $this->response($this->planService->archive(
+        $this->authorizationService->authorize(
+            PermissionRepository::PLANS_CHANGE(),
+            ObjectTypeRepository::PLAN(),
             $request->collaboratorId,
-            $request->workspaceId,
             $request->planId,
-        ));
+        );
+
+        return $this->response($this->planService->archive($request->planId));
     }
 
     public function changeDescription(ChangePlanDescriptionRequest $request): JsonResponse
     {
-        return $this->response($this->planService->changeDescription(
+        $this->authorizationService->authorize(
+            PermissionRepository::PLANS_CHANGE(),
+            ObjectTypeRepository::PLAN(),
             $request->collaboratorId,
-            $request->workspaceId,
             $request->planId,
-            $request->description,
-        ));
+        );
+
+        return $this->response($this->planService->changeDescription($request->planId, $request->description));
     }
 
     public function addRequirement(AddPlanRequirementRequest $request): JsonResponse
     {
-        return $this->response($this->planService->addRequirement(
+        $this->authorizationService->authorize(
+            PermissionRepository::PLANS_CHANGE(),
+            ObjectTypeRepository::PLAN(),
             $request->collaboratorId,
-            $request->workspaceId,
             $request->planId,
-            $request->description,
-        ));
+        );
+
+        return $this->response($this->planService->addRequirement($request->planId, $request->description));
     }
 
     public function removeRequirement(RemovePlanRequirementRequest $request): JsonResponse
     {
-        return $this->response($this->planService->removeRequirement(
+        $this->authorizationService->authorize(
+            PermissionRepository::PLANS_CHANGE(),
+            ObjectTypeRepository::PLAN(),
             $request->collaboratorId,
-            $request->workspaceId,
             $request->planId,
-            $request->requirementId,
-        ));
+        );
+
+        return $this->response($this->planService->removeRequirement($request->planId, $request->requirementId));
     }
 
     public function changeRequirement(ChangePlanRequirementDescriptionRequest $request): JsonResponse
     {
-        return $this->response($this->planService->changeRequirement(
+        $this->authorizationService->authorize(
+            PermissionRepository::PLANS_CHANGE(),
+            ObjectTypeRepository::PLAN(),
             $request->collaboratorId,
-            $request->workspaceId,
+            $request->planId,
+        );
+
+        return $this->response($this->planService->changeRequirement(
             $request->planId,
             $request->requirementId,
             $request->description,
