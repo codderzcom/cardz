@@ -6,20 +6,22 @@ use App\Contexts\MobileAppBack\Application\Services\AuthorizationService;
 use App\Contexts\MobileAppBack\Application\Services\AuthorizationServiceInterface;
 use App\Contexts\MobileAppBack\Infrastructure\ACL\Auth\MonolithAuthAdapter;
 use App\Contexts\MobileAppBack\Infrastructure\ACL\Cards\MonolithCardsAdapter;
+use App\Contexts\MobileAppBack\Infrastructure\ACL\Collaboration\MonolithCollaborationAdapter;
 use App\Contexts\MobileAppBack\Infrastructure\ACL\Plans\MonolithPlansAdapter;
 use App\Contexts\MobileAppBack\Infrastructure\ACL\Workspaces\MonolithWorkspacesAdapter;
 use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Customer\Contracts\CustomerWorkspaceReadStorageInterface;
+use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Customer\Contracts\IssuedCardReadStorageInterface;
 use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Customer\Eloquent\CustomerWorkspaceReadStorage;
-use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Shared\Contracts\IssuedCardReadStorageInterface;
-use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Shared\Eloquent\IssuedCardReadStorage;
+use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Customer\Eloquent\IssuedCardReadStorage;
 use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\Contracts\BusinessCardReadStorageInterface;
-use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\Contracts\BusinessWorkspaceReadStorageInterface;
 use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\Contracts\BusinessPlanReadStorageInterface;
+use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\Contracts\BusinessWorkspaceReadStorageInterface;
 use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\Eloquent\BusinessCardReadStorage;
-use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\Eloquent\BusinessWorkspaceReadStorage;
 use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\Eloquent\BusinessPlanReadStorage;
+use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\Eloquent\BusinessWorkspaceReadStorage;
 use App\Contexts\MobileAppBack\Integration\Contracts\AuthContextInterface;
 use App\Contexts\MobileAppBack\Integration\Contracts\CardsContextInterface;
+use App\Contexts\MobileAppBack\Integration\Contracts\CollaborationContextInterface;
 use App\Contexts\MobileAppBack\Integration\Contracts\PlansContextInterface;
 use App\Contexts\MobileAppBack\Integration\Contracts\WorkspacesContextInterface;
 use Illuminate\Support\ServiceProvider;
@@ -39,6 +41,7 @@ class MobileAppBackProvider extends ServiceProvider
 
         $this->app->singleton(AuthContextInterface::class, MonolithAuthAdapter::class);
         $this->app->singleton(CardsContextInterface::class, MonolithCardsAdapter::class);
+        $this->app->singleton(CollaborationContextInterface::class, MonolithCollaborationAdapter::class);
         $this->app->singleton(PlansContextInterface::class, MonolithPlansAdapter::class);
         $this->app->singleton(WorkspacesContextInterface::class, MonolithWorkspacesAdapter::class);
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Shared\Contracts;
+namespace App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Customer\Contracts;
 
 use App\Contexts\MobileAppBack\Domain\ReadModel\IssuedCard;
 

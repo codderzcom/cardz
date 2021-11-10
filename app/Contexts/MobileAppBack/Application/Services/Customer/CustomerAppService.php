@@ -4,7 +4,7 @@ namespace App\Contexts\MobileAppBack\Application\Services\Customer;
 
 use App\Contexts\MobileAppBack\Domain\ReadModel\IssuedCard;
 use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Customer\Contracts\CustomerWorkspaceReadStorageInterface;
-use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Shared\Contracts\IssuedCardReadStorageInterface;
+use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Customer\Contracts\IssuedCardReadStorageInterface;
 use App\Contexts\MobileAppBack\Integration\Contracts\AuthContextInterface;
 
 class CustomerAppService
