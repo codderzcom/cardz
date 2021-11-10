@@ -3,6 +3,8 @@
 namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Commands\Card;
 
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Commands\BaseCommandRequest;
+use App\Shared\Contracts\GeneralIdInterface;
+use App\Shared\Infrastructure\Support\GuidBasedImmutableId;
 
 final class CardCommandRequest extends BaseCommandRequest
 {
@@ -16,15 +18,15 @@ final class CardCommandRequest extends BaseCommandRequest
         'cardId.required' => 'cardId required',
     ];
 
-    public string $planId;
+    public GeneralIdInterface $planId;
 
-    public string $cardId;
+    public GeneralIdInterface $cardId;
 
     public function passedValidation(): void
     {
         parent::passedValidation();
-        $this->planId = $this->input('planId');
-        $this->cardId = $this->input('cardId');
+        $this->planId = GuidBasedImmutableId::of($this->input('planId'));
+        $this->cardId = GuidBasedImmutableId::of($this->input('cardId'));
     }
 
     protected function prepareForValidation(): void

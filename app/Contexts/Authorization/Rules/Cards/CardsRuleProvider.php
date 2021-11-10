@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Contexts\Authorization\Rules\Plans;
+namespace App\Contexts\Authorization\Rules\Cards;
 
 use App\Contexts\Authorization\Dictionary\PermissionRepository;
 use App\Contexts\Authorization\Policies\AllowOnlyForCollaborators;
 use App\Shared\Infrastructure\Authorization\Abac\AbacRule;
 
-class PlansRuleProvider
+class CardsRuleProvider
 {
     public array $rules = [];
 
@@ -14,9 +14,8 @@ class PlansRuleProvider
     {
         $allowOnlyForCollaborators = new AllowOnlyForCollaborators();
         $this->rules = [
-            AbacRule::of(PermissionRepository::PLANS_VIEW(), $allowOnlyForCollaborators),
-            AbacRule::of(PermissionRepository::PLANS_CHANGE(), $allowOnlyForCollaborators),
-            AbacRule::of(PermissionRepository::PLANS_CARDS_ADD(), $allowOnlyForCollaborators),
+            AbacRule::of(PermissionRepository::CARDS_VIEW(), $allowOnlyForCollaborators),
+            AbacRule::of(PermissionRepository::CARDS_CHANGE(), $allowOnlyForCollaborators),
         ];
     }
 }

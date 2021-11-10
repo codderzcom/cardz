@@ -2,122 +2,63 @@
 
 namespace App\Contexts\MobileAppBack\Application\Services\Workspace;
 
-use App\Contexts\MobileAppBack\Application\Queries\Workspace\GetCard;
-use App\Contexts\MobileAppBack\Application\Services\Workspace\Policies\AssertCardInWorkspace;
-use App\Contexts\MobileAppBack\Application\Services\Workspace\Policies\AssertPlanInWorkspace;
-use App\Contexts\MobileAppBack\Application\Services\Workspace\Policies\AssertWorkspaceForKeeper;
-use App\Contexts\MobileAppBack\Domain\Model\Card\CardId;
-use App\Contexts\MobileAppBack\Domain\Model\Collaboration\KeeperId;
-use App\Contexts\MobileAppBack\Domain\Model\Workspace\PlanId;
-use App\Contexts\MobileAppBack\Domain\Model\Workspace\WorkspaceId;
-use App\Contexts\MobileAppBack\Domain\ReadModel\IssuedCard;
-use App\Contexts\MobileAppBack\Infrastructure\ACL\Cards\CardsAdapter;
-use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Shared\Contracts\IssuedCardReadStorageInterface;
-use App\Shared\Contracts\ServiceResultFactoryInterface;
-use App\Shared\Contracts\ServiceResultInterface;
+use App\Contexts\MobileAppBack\Domain\ReadModel\Workspace\BusinessCard;
+use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\Contracts\BusinessCardReadStorageInterface;
+use App\Contexts\MobileAppBack\Integration\Contracts\CardsContextInterface;
 
 class CardAppService
 {
     public function __construct(
-        private IssuedCardReadStorageInterface $issuedCardReadStorage,
-        private CardsAdapter $cardsAdapter,
-        private ServiceResultFactoryInterface $serviceResultFactory,
+        private CardsContextInterface $cardsContext,
+        private BusinessCardReadStorageInterface $businessCardReadStorage,
     ) {
     }
 
-    public function getCard(GetCard $query): IssuedCard
+    public function getCard(string $cardId): BusinessCard
     {
-        return $this->issuedCardReadStorage->forKeeper($query->keeperId, $query->workspaceId, $query->cardId);
+        return $this->businessCardReadStorage->find($cardId);
     }
 
-    private function getIssuedCardResult(string $cardId): ServiceResultInterface
+    public function issue(string $planId, string $customerId): BusinessCard
     {
-        $card = $this->issuedCardReadStorage->find($cardId);
-        if ($card === null) {
-            return $this->serviceResultFactory->violation("Cards $cardId not found");
-        }
-
-        return $this->serviceResultFactory->ok($card);
+        $cardId = $this->cardsContext->issue($planId, $customerId);
+        return $this->businessCardReadStorage->find($cardId);
     }
 
-    public function issue(string $keeperId, string $workspaceId, string $planId, string $customerId, string $description): ServiceResultInterface
+    public function complete(string $cardId): BusinessCard
     {
-        AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert();
-        AssertPlanInWorkspace::of(PlanId::of($planId), WorkspaceId::of($workspaceId))->assert();
-        $result = $this->cardsAdapter->issueCard($planId, $customerId, $description);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-        $cardId = $result->getPayload();
-        return $this->getIssuedCardResult($cardId);
+        $this->cardsContext->complete($cardId);
+        return $this->businessCardReadStorage->find($cardId);
     }
 
-    public function complete(string $keeperId, string $workspaceId, string $cardId): ServiceResultInterface
+    public function revoke(string $cardId): BusinessCard
     {
-        AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert();
-        AssertCardInWorkspace::of(CardId::of($cardId), WorkspaceId::of($workspaceId))->assert();
-        $result = $this->cardsAdapter->completeCard($cardId);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-        return $this->getIssuedCardResult($cardId);
+        $this->cardsContext->revoke($cardId);
+        return $this->businessCardReadStorage->find($cardId);
     }
 
-    public function revoke(string $keeperId, string $workspaceId, string $cardId): ServiceResultInterface
+    public function block(string $cardId): BusinessCard
     {
-        AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert();
-        AssertCardInWorkspace::of(CardId::of($cardId), WorkspaceId::of($workspaceId))->assert();
-        $result = $this->cardsAdapter->revokeCard($cardId);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-        return $this->getIssuedCardResult($cardId);
+        $this->cardsContext->revoke($cardId);
+        return $this->businessCardReadStorage->find($cardId);
     }
 
-    public function block(string $keeperId, string $workspaceId, string $cardId): ServiceResultInterface
+    public function unblock(string $cardId): BusinessCard
     {
-        AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert();
-        AssertCardInWorkspace::of(CardId::of($cardId), WorkspaceId::of($workspaceId))->assert();
-        $result = $this->cardsAdapter->blockCard($cardId);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-        return $this->getIssuedCardResult($cardId);
+        $this->cardsContext->unblock($cardId);
+        return $this->businessCardReadStorage->find($cardId);
     }
 
-    public function unblock(string $keeperId, string $workspaceId, string $cardId): ServiceResultInterface
+    public function noteAchievement(string $cardId, string $achievementId, string $description): BusinessCard
     {
-        AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert();
-        AssertCardInWorkspace::of(CardId::of($cardId), WorkspaceId::of($workspaceId))->assert();
-        $result = $this->cardsAdapter->unblockCard($cardId);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-
-        return $this->getIssuedCardResult($cardId);
+        $this->cardsContext->noteAchievement($cardId, $achievementId, $description);
+        return $this->businessCardReadStorage->find($cardId);
     }
 
-    public function noteAchievement(string $keeperId, string $workspaceId, string $cardId, string $achievementId, string $description): ServiceResultInterface
+    public function dismissAchievement(string $cardId, string $achievementId): BusinessCard
     {
-        AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert();
-        AssertCardInWorkspace::of(CardId::of($cardId), WorkspaceId::of($workspaceId))->assert();
-
-        $result = $this->cardsAdapter->noteAchievement($cardId, $achievementId, $description);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-        return $this->getIssuedCardResult($cardId);
-    }
-
-    public function dismissAchievement(string $keeperId, string $workspaceId, string $cardId, string $achievementId, string $description): ServiceResultInterface
-    {
-        AssertWorkspaceForKeeper::of(WorkspaceId::of($workspaceId), KeeperId::of($keeperId))->assert();
-        AssertCardInWorkspace::of(CardId::of($cardId), WorkspaceId::of($workspaceId))->assert();
-        $result = $this->cardsAdapter->dismissAchievement($cardId, $achievementId, $description);
-        if ($result->isNotOk()) {
-            return $result;
-        }
-        return $this->getIssuedCardResult($cardId);
+        $this->cardsContext->dismissAchievement($cardId, $achievementId);
+        return $this->businessCardReadStorage->find($cardId);
     }
 
 }

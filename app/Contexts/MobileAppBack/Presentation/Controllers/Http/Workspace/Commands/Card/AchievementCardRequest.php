@@ -3,6 +3,8 @@
 namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Commands\Card;
 
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Commands\BaseCommandRequest;
+use App\Shared\Contracts\GeneralIdInterface;
+use App\Shared\Infrastructure\Support\GuidBasedImmutableId;
 
 final class AchievementCardRequest extends BaseCommandRequest
 {
@@ -18,17 +20,17 @@ final class AchievementCardRequest extends BaseCommandRequest
         'description.required' => 'description required',
     ];
 
-    public string $cardId;
+    public GeneralIdInterface $cardId;
 
-    public string $achievementId;
+    public GeneralIdInterface $achievementId;
 
     public string $description;
 
     public function passedValidation(): void
     {
         parent::passedValidation();
-        $this->cardId = $this->input('cardId');
-        $this->achievementId = $this->input('achievementId');
+        $this->cardId = GuidBasedImmutableId::of($this->input('cardId'));
+        $this->achievementId = GuidBasedImmutableId::of($this->input('achievementId'));
         $this->description = $this->input('description');
     }
 

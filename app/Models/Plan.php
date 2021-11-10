@@ -30,4 +30,9 @@ class Plan extends Model
     {
         return $this->hasMany(Card::class);
     }
+
+    public function requirements(): HasMany
+    {
+        return $this->hasMany(Requirement::class);
+    }
 }

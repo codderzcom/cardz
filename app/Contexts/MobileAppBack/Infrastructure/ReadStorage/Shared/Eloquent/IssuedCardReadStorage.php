@@ -10,29 +10,6 @@ use function json_try_decode;
 
 class IssuedCardReadStorage implements IssuedCardReadStorageInterface
 {
-    public function find(string $cardId): IssuedCard
-    {
-        /** @var EloquentCard $card */
-        $card = EloquentCard::query()->find($cardId);
-        if ($card === null) {
-            throw new CardNotFoundException("Card: $cardId");
-        }
-
-        return $this->issuedCardFromEloquent($card);
-    }
-
-    public function allForPlanId(string $planId): array
-    {
-        /** @var EloquentCard $card */
-        $cards = EloquentCard::query()->where('plan_id', '=', $planId)->get();
-        $issuedCards = [];
-        foreach ($cards as $card) {
-            $issuedCards[] = $this->issuedCardFromEloquent($card);
-        }
-
-        return $issuedCards;
-    }
-
     public function allForCustomer(string $customerId): array
     {
         /** @var EloquentCard $card */
@@ -54,30 +31,6 @@ class IssuedCardReadStorage implements IssuedCardReadStorageInterface
             ->first();
         if ($card === null) {
             throw new CardNotFoundException("Card: $cardId. Customer: $customerId");
-        }
-
-        return $this->issuedCardFromEloquent($card);
-    }
-
-    public function forKeeper(string $keeperId, string $workspaceId, string $cardId): IssuedCard
-    {
-        /** @var EloquentCard $card */
-        $card = EloquentCard::query()->fromQuery(
-            'select c.* from cards c
-                      inner join plans p on p.id = c.plan_id
-                      inner join workspaces w on p.workspace_id = w.id
-                    where w.keeper_id = :keeper_id
-                      and w.id = :workspace_id
-                      and c.id = :card_id',
-            [
-                'keeper_id' => $keeperId,
-                'workspace_id' => $workspaceId,
-                'card_id' => $cardId,
-            ]
-        )->first();
-
-        if ($card === null) {
-            throw new CardNotFoundException("Card: $cardId. Workspace: $workspaceId. Keeper: $keeperId");
         }
 
         return $this->issuedCardFromEloquent($card);

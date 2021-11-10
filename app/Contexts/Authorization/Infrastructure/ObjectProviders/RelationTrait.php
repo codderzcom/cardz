@@ -30,7 +30,7 @@ trait RelationTrait
     {
         foreach ($relations as $relation) {
             if ($relation['relationType'] === 'keeper') {
-                return $relation['relationId'];
+                return $relation['collaboratorId'];
             }
         }
         throw new AuthorizationFailedException("Unable to find keeper");

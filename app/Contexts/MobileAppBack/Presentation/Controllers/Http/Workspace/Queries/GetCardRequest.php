@@ -3,6 +3,8 @@
 namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Queries;
 
 use App\Contexts\MobileAppBack\Application\Queries\Workspace\GetCard;
+use App\Shared\Contracts\GeneralIdInterface;
+use App\Shared\Infrastructure\Support\GuidBasedImmutableId;
 
 class GetCardRequest extends BaseWorkspaceQueryRequest
 {
@@ -14,12 +16,12 @@ class GetCardRequest extends BaseWorkspaceQueryRequest
         'cardId.required' => 'cardId required',
     ];
 
-    public string $cardId;
+    public GeneralIdInterface $cardId;
 
     public function passedValidation(): void
     {
         parent::passedValidation();
-        $this->cardId = $this->input('cardId');
+        $this->cardId = GuidBasedImmutableId::of($this->input('cardId'));
     }
 
     public function toQuery(): GetCard

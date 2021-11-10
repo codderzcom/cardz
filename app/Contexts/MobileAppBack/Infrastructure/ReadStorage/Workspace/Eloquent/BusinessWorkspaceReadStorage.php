@@ -36,17 +36,6 @@ class BusinessWorkspaceReadStorage implements BusinessWorkspaceReadStorageInterf
         return $businessWorkspaces;
     }
 
-    public function forKeeper(string $keeperId, string $workspaceId): BusinessWorkspace
-    {
-        /** @var EloquentWorkspace $workspace */
-        $workspace = EloquentWorkspace::query()
-            ->where('id', '=', $workspaceId)
-            ->where('keeper_id', '=', $keeperId)
-            ->first();
-
-        return $workspace !== null ? $this->workspaceFromEloquent($workspace) : throw new BusinessWorkspaceNotFoundException();
-    }
-
     private function workspaceFromEloquent(EloquentWorkspace $workspace): BusinessWorkspace
     {
         $profile = is_string($workspace->profile) ? json_try_decode($workspace->profile) : $workspace->profile;

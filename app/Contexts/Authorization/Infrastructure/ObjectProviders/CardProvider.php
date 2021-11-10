@@ -16,6 +16,7 @@ final class CardProvider extends BaseConcreteObjectProvider
         $relations = $this->getRelations($plan->workspace_id);
         return [
             'objectId' => $this->objectId,
+            'ownerId' => $card->customer_id,
             'planId' => $plan->id,
             'workspaceId' => $plan->id,
             'keeperId' => $this->getKeeperId($relations),

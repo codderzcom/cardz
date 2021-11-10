@@ -15,7 +15,7 @@ final class PlanProvider extends BaseConcreteObjectProvider
         return [
             'objectId' => $this->objectId,
             'planId' => $plan->id,
-            'workspaceId' => $plan->id,
+            'workspaceId' => $plan->workspace_id,
             'keeperId' => $this->getKeeperId($relations),
             'memberIds' => $this->getMemberIds($relations),
             'isActive' => $plan->launched_at !== null && $plan->stopped_at === null && $plan->archived_at === null,

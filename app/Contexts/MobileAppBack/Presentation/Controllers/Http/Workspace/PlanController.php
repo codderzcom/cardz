@@ -16,6 +16,7 @@ use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Commands\
 };
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Queries\GetPlanRequest;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\Queries\GetWorkspaceRequest;
+use App\Shared\Contracts\GeneralIdInterface;
 use Illuminate\Http\JsonResponse;
 
 class PlanController extends BaseController
@@ -64,90 +65,58 @@ class PlanController extends BaseController
 
     public function launch(PlanCommandRequest $request): JsonResponse
     {
-        $this->authorizationService->authorize(
-            PermissionRepository::PLANS_CHANGE(),
-            ObjectTypeRepository::PLAN(),
-            $request->collaboratorId,
-            $request->planId,
-        );
-
+        $this->authorizePlanChange($request->collaboratorId, $request->planId);
         return $this->response($this->planService->launch($request->planId));
     }
 
     public function stop(PlanCommandRequest $request): JsonResponse
     {
-        $this->authorizationService->authorize(
-            PermissionRepository::PLANS_CHANGE(),
-            ObjectTypeRepository::PLAN(),
-            $request->collaboratorId,
-            $request->planId,
-        );
-
+        $this->authorizePlanChange($request->collaboratorId, $request->planId);
         $this->response($this->planService->stop($request->planId));
     }
 
     public function archive(PlanCommandRequest $request): JsonResponse
     {
-        $this->authorizationService->authorize(
-            PermissionRepository::PLANS_CHANGE(),
-            ObjectTypeRepository::PLAN(),
-            $request->collaboratorId,
-            $request->planId,
-        );
-
+        $this->authorizePlanChange($request->collaboratorId, $request->planId);
         return $this->response($this->planService->archive($request->planId));
     }
 
     public function changeDescription(ChangePlanDescriptionRequest $request): JsonResponse
     {
-        $this->authorizationService->authorize(
-            PermissionRepository::PLANS_CHANGE(),
-            ObjectTypeRepository::PLAN(),
-            $request->collaboratorId,
-            $request->planId,
-        );
-
+        $this->authorizePlanChange($request->collaboratorId, $request->planId);
         return $this->response($this->planService->changeDescription($request->planId, $request->description));
     }
 
     public function addRequirement(AddPlanRequirementRequest $request): JsonResponse
     {
-        $this->authorizationService->authorize(
-            PermissionRepository::PLANS_CHANGE(),
-            ObjectTypeRepository::PLAN(),
-            $request->collaboratorId,
-            $request->planId,
-        );
-
+        $this->authorizePlanChange($request->collaboratorId, $request->planId);
         return $this->response($this->planService->addRequirement($request->planId, $request->description));
     }
 
     public function removeRequirement(RemovePlanRequirementRequest $request): JsonResponse
     {
-        $this->authorizationService->authorize(
-            PermissionRepository::PLANS_CHANGE(),
-            ObjectTypeRepository::PLAN(),
-            $request->collaboratorId,
-            $request->planId,
-        );
-
+        $this->authorizePlanChange($request->collaboratorId, $request->planId);
         return $this->response($this->planService->removeRequirement($request->planId, $request->requirementId));
     }
 
     public function changeRequirement(ChangePlanRequirementDescriptionRequest $request): JsonResponse
     {
-        $this->authorizationService->authorize(
-            PermissionRepository::PLANS_CHANGE(),
-            ObjectTypeRepository::PLAN(),
-            $request->collaboratorId,
-            $request->planId,
-        );
-
+        $this->authorizePlanChange($request->collaboratorId, $request->planId);
         return $this->response($this->planService->changeRequirement(
             $request->planId,
             $request->requirementId,
             $request->description,
         ));
+    }
+
+    private function authorizePlanChange(GeneralIdInterface $collaboratorId, GeneralIdInterface $planId): void
+    {
+        $this->authorizationService->authorize(
+            PermissionRepository::PLANS_CHANGE(),
+            ObjectTypeRepository::PLAN(),
+            $collaboratorId,
+            $planId,
+        );
     }
 
 }

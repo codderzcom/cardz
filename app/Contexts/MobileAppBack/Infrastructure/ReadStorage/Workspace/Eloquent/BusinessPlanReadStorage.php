@@ -7,7 +7,6 @@ use App\Contexts\MobileAppBack\Domain\ReadModel\Workspace\BusinessWorkspace;
 use App\Contexts\MobileAppBack\Infrastructure\Exceptions\BusinessPlanNotFoundException;
 use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Workspace\Contracts\BusinessPlanReadStorageInterface;
 use App\Models\Plan as EloquentPlan;
-use App\Models\Requirement as EloquentRequirement;
 
 class BusinessPlanReadStorage implements BusinessPlanReadStorageInterface
 {
@@ -18,23 +17,7 @@ class BusinessPlanReadStorage implements BusinessPlanReadStorageInterface
         if ($plan === null) {
             throw new BusinessPlanNotFoundException("Plan Id: $planId");
         }
-        $eloquentRequirements = EloquentRequirement::query()->where('plan_id', '=', $planId)->get() ?? [];
-
-        return $this->planFromEloquent($plan, ...$eloquentRequirements);
-    }
-
-    private function planFromEloquent(EloquentPlan $plan, EloquentRequirement ...$eloquentRequirements): BusinessPlan
-    {
-        $requirements = [];
-        foreach ($eloquentRequirements as $eloquentRequirement) {
-            $requirements[] = [$eloquentRequirement->id, $eloquentRequirement->description];
-        }
-        return BusinessPlan::make(
-            $plan->id,
-            $plan->workspace_id,
-            $plan->description,
-            $requirements
-        );
+        return $this->planFromEloquent($plan);
     }
 
     /**
@@ -51,5 +34,20 @@ class BusinessPlanReadStorage implements BusinessPlanReadStorageInterface
         }
 
         return $workspacePlans;
+    }
+
+    private function planFromEloquent(EloquentPlan $plan): BusinessPlan
+    {
+        $requirements = [];
+        $eloquentRequirements = $plan->requirements()->get();
+        foreach ($eloquentRequirements as $eloquentRequirement) {
+            $requirements[] = [$eloquentRequirement->id, $eloquentRequirement->description];
+        }
+        return BusinessPlan::make(
+            $plan->id,
+            $plan->workspace_id,
+            $plan->description,
+            $requirements
+        );
     }
 }
