@@ -6,6 +6,7 @@ use App\Contexts\Collaboration\Presentation\Controllers\Http\Invite\InviteContro
 use App\Contexts\Collaboration\Presentation\Controllers\Http\Relation\RelationController;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer\CustomerController as MABCustomerController;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\CardController as MABCardController;
+use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\CollaborationController as MABCollaborationController;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\PlanController as MABPlanController;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\WorkspaceController as MABWorkspaceController;
 use App\Contexts\Personal\Presentation\Controllers\Http\Person\PersonController;
@@ -133,6 +134,15 @@ Route::group(['prefix' => '/mab/v1'], function () {
                 Route::delete('/requirement/{requirementId}', [MABPlanController::class, 'removeRequirement'])->name('MABPlanRemoveRequirement');
                 Route::put('/requirement/{requirementId}', [MABPlanController::class, 'changeRequirement'])->name('MABPlanChangeRequirement');
             });
+
+            Route::group(['prefix' => '/collaboration'], function () {
+                Route::post('/leave', [MABCollaborationController::class, 'leave'])->name('LeaveRelation');
+
+                Route::post('/invite', [MABCollaborationController::class, 'propose'])->name('ProposeInvite');
+                Route::post('/invite/{inviteId}/accept', [MABCollaborationController::class, 'accept'])->name('AcceptInvite');
+                Route::post('/invite/{inviteId}/discard', [MABCollaborationController::class, 'discard'])->name('DiscardInvite');
+            });
+
         });
     });
 });

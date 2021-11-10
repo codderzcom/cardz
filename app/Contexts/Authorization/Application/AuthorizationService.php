@@ -6,6 +6,7 @@ use App\Contexts\Authorization\Application\Queries\IsAllowed;
 use App\Contexts\Authorization\Infrastructure\ObjectProvider;
 use App\Contexts\Authorization\Infrastructure\SubjectProvider;
 use App\Contexts\Authorization\Rules\Cards\CardsRuleProvider;
+use App\Contexts\Authorization\Rules\Collaboration\CollaborationRuleProvider;
 use App\Contexts\Authorization\Rules\Plans\PlansRuleProvider;
 use App\Contexts\Authorization\Rules\Workspaces\WorkspacesRuleProvider;
 use App\Shared\Infrastructure\Authorization\Abac\AbacEngine;
@@ -19,6 +20,7 @@ class AuthorizationService
         private AbacEngine $abacEngine,
 
         CardsRuleProvider $cardsRuleProvider,
+        CollaborationRuleProvider $collaborationRuleProvider,
         PlansRuleProvider $plansRuleProvider,
         WorkspacesRuleProvider $workspacesRuleProvider,
     ) {
@@ -26,6 +28,7 @@ class AuthorizationService
             ...$cardsRuleProvider->rules,
             ...$plansRuleProvider->rules,
             ...$workspacesRuleProvider->rules,
+            ...$collaborationRuleProvider->rules,
         );
     }
 

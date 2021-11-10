@@ -2,38 +2,33 @@
 
 namespace App\Contexts\MobileAppBack\Application\Services\Workspace;
 
-use App\Contexts\MobileAppBack\Infrastructure\ACL\Collaboration\MonolithCollaborationAdapter;
+use App\Contexts\MobileAppBack\Integration\Contracts\CollaborationContextInterface;
 
 class CollaborationAppService
 {
     public function __construct(
-        private MonolithCollaborationAdapter $collaborationAdapter,
+        private CollaborationContextInterface $collaborationContext,
     ) {
     }
 
-    public function propose(string $keeperId, string $memberId, string $workspaceId)
+    public function propose(string $collaboratorId, string $workspaceId)
     {
-        return $this->collaborationAdapter->propose($keeperId, $memberId, $workspaceId);
+        return $this->collaborationContext->propose($collaboratorId, $workspaceId);
     }
 
-    public function accept(string $inviteId)
+    public function accept(string $collaboratorId, string $inviteId)
     {
-        return $this->collaborationAdapter->accept($inviteId);
-    }
-
-    public function reject(string $inviteId)
-    {
-        return $this->collaborationAdapter->reject($inviteId);
+        return $this->collaborationContext->accept($inviteId, $collaboratorId);
     }
 
     public function discard(string $inviteId)
     {
-        return $this->collaborationAdapter->discard($inviteId);
+        return $this->collaborationContext->discard($inviteId);
     }
 
-    public function leave(string $relationId)
+    public function leave(string $collaboratorId, string $workspaceId)
     {
-        return $this->collaborationAdapter->leave($relationId);
+        return $this->collaborationContext->leave($collaboratorId, $workspaceId);
     }
 
 }
