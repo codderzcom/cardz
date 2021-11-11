@@ -15,8 +15,8 @@ class IssuedCardReadStorage implements IssuedCardReadStorageInterface
         /** @var EloquentCard $card */
         $cards = EloquentCard::query()
             ->where('customer_id', '=', $customerId)
-            ->whereNull('revoked_id')
-            ->whereNull('blocked_id')
+            ->whereNull('revoked_at')
+            ->whereNull('blocked_at')
             ->get();
         $issuedCards = [];
         foreach ($cards as $card) {
@@ -31,9 +31,9 @@ class IssuedCardReadStorage implements IssuedCardReadStorageInterface
         /** @var EloquentCard $card */
         $card = EloquentCard::query()
             ->where('id', '=', $cardId)
-            ->where('customerId', '=', $customerId)
-            ->whereNull('revoked_id')
-            ->whereNull('blocked_id')
+            ->where('customer_id', '=', $customerId)
+            ->whereNull('revoked_at')
+            ->whereNull('blocked_at')
             ->first();
         if ($card === null) {
             throw new IssuedCardNotFoundException("Card: $cardId. Customer: $customerId");

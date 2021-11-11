@@ -6,6 +6,7 @@ use App\Contexts\MobileAppBack\Domain\ReadModel\IssuedCard;
 use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Customer\Contracts\CustomerWorkspaceReadStorageInterface;
 use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Customer\Contracts\IssuedCardReadStorageInterface;
 use App\Contexts\MobileAppBack\Integration\Contracts\AuthContextInterface;
+use Illuminate\Support\Facades\Auth;
 
 class CustomerAppService
 {
@@ -14,6 +15,11 @@ class CustomerAppService
         private CustomerWorkspaceReadStorageInterface $customerWorkspaceReadStorage,
         private AuthContextInterface $authContext,
     ) {
+    }
+
+    public function getCustomerId(): string
+    {
+        return Auth::id();
     }
 
     public function getIssuedCard(string $customerId, string $cardId): IssuedCard

@@ -18,6 +18,11 @@ class CustomerController extends BaseController
     ) {
     }
 
+    public function getId(): JsonResponse
+    {
+        return $this->response($this->customerAppService->getCustomerId());
+    }
+
     public function getToken(GetTokenRequest $request): JsonResponse
     {
         return $this->response($this->customerAppService->getToken(

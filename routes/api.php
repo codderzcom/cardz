@@ -92,6 +92,7 @@ Route::group(['prefix' => '/mab/v1'], function () {
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::group(['prefix' => '/customer'], function () {
+            Route::get('/id', [MABCustomerController::class, 'getId'])->name('MABCustomerId');
             Route::get('/card', [MABCustomerController::class, 'getCards'])->name('MABCustomerCards');
             Route::get('/card/{cardId}', [MABCustomerController::class, 'getCard'])->name('MABCustomerCard');
         });
