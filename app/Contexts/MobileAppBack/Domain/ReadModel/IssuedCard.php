@@ -2,10 +2,11 @@
 
 namespace App\Contexts\MobileAppBack\Domain\ReadModel;
 
-use App\Contexts\Shared\Infrastructure\Support\ArrayPresenterTrait;
+use App\Shared\Infrastructure\Support\ArrayPresenterTrait;
 use JetBrains\PhpStorm\Pure;
+use JsonSerializable;
 
-final class IssuedCard
+final class IssuedCard implements JsonSerializable
 {
     use ArrayPresenterTrait;
 
@@ -15,8 +16,6 @@ final class IssuedCard
         public string $customerId,
         public bool $satisfied,
         public bool $completed,
-        public bool $revoked,
-        public bool $blocked,
         public array $achievements,
         public array $requirements,
     ) {
@@ -33,8 +32,6 @@ final class IssuedCard
         string $customerId,
         bool $satisfied,
         bool $completed,
-        bool $revoked,
-        bool $blocked,
         array $achievements,
         array $requirements,
     ): self {
@@ -44,10 +41,13 @@ final class IssuedCard
             $customerId,
             $satisfied,
             $completed,
-            $revoked,
-            $blocked,
             $achievements,
             $requirements,
         );
+    }
+
+    public function jsonSerialize()
+    {
+        return $this->toArray();
     }
 }

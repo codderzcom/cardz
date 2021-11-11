@@ -2,7 +2,7 @@
 
 namespace App\Contexts\Plans\Domain\Model\Requirement;
 
-use App\Contexts\Shared\Infrastructure\Support\GuidBasedImmutableId;
+use App\Shared\Infrastructure\Support\GuidBasedImmutableId;
 
 final class RequirementId extends GuidBasedImmutableId
 {

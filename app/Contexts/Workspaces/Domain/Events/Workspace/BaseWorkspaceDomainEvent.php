@@ -2,14 +2,13 @@
 
 namespace App\Contexts\Workspaces\Domain\Events\Workspace;
 
-use App\Contexts\Plans\Domain\Events\BaseDomainEvent;
-use App\Contexts\Workspaces\Domain\Model\Workspace\WorkspaceId;
+use App\Contexts\Workspaces\Domain\Model\Workspace\Workspace;
+use App\Shared\Infrastructure\Support\Domain\DomainEvent;
 
-abstract class BaseWorkspaceDomainEvent extends BaseDomainEvent
+abstract class BaseWorkspaceDomainEvent extends DomainEvent
 {
-    protected function __construct(
-        public WorkspaceId $workspaceId
-    ) {
-        parent::__construct();
+    public function with(): Workspace
+    {
+        return $this->aggregateRoot;
     }
 }

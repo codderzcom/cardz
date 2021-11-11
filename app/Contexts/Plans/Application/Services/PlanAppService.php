@@ -2,101 +2,66 @@
 
 namespace App\Contexts\Plans\Application\Services;
 
-use App\Contexts\Plans\Application\Contracts\PlanRepositoryInterface;
-use App\Contexts\Plans\Application\IntegrationEvents\PlanAdded;
-use App\Contexts\Plans\Application\IntegrationEvents\PlanArchived;
-use App\Contexts\Plans\Application\IntegrationEvents\PlanDescriptionChanged;
-use App\Contexts\Plans\Application\IntegrationEvents\PlanLaunched;
-use App\Contexts\Plans\Application\IntegrationEvents\PlanStopped;
+use App\Contexts\Plans\Application\Commands\Plan\AddPlan;
+use App\Contexts\Plans\Application\Commands\Plan\ChangePlanDescription;
+use App\Contexts\Plans\Application\Commands\Plan\LaunchPlan;
+use App\Contexts\Plans\Application\Commands\Plan\PlanCommandInterface;
+use App\Contexts\Plans\Application\Commands\Plan\StopPlan;
 use App\Contexts\Plans\Domain\Model\Plan\Plan;
 use App\Contexts\Plans\Domain\Model\Plan\PlanId;
-use App\Contexts\Plans\Domain\Model\Shared\Description;
-use App\Contexts\Plans\Domain\Model\Shared\WorkspaceId;
-use App\Contexts\Shared\Contracts\ReportingBusInterface;
-use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
-use App\Contexts\Shared\Contracts\ServiceResultInterface;
-use App\Contexts\Shared\Infrastructure\Support\ReportingServiceTrait;
+use App\Contexts\Plans\Domain\Persistence\Contracts\PlanRepositoryInterface;
+use App\Contexts\Plans\Domain\Persistence\Contracts\WorkspaceRepositoryInterface;
+use App\Contexts\Plans\Infrastructure\Messaging\DomainEventBusInterface;
 
 class PlanAppService
 {
-    use ReportingServiceTrait;
 
     public function __construct(
         private PlanRepositoryInterface $planRepository,
-        private ReportingBusInterface $reportingBus,
-        private ServiceResultFactoryInterface $resultFactory,
+        private WorkspaceRepositoryInterface $workspaceRepository,
+        private DomainEventBusInterface $domainEventBus,
     ) {
     }
 
-    public function add(string $workspaceId, string $description): ServiceResultInterface
+    public function add(AddPlan $command): PlanId
     {
-        $plan = Plan::make(
-            PlanId::make(),
-            WorkspaceId::of($workspaceId),
-            Description::of($description)
-        );
-
-        $plan->add();
-        $this->planRepository->persist($plan);
-
-        $result = $this->resultFactory->ok($plan, new PlanAdded($plan->planId));
-        return $this->reportResult($result, $this->reportingBus);
+        $workspace = $this->workspaceRepository->take($command->getWorkspaceId());
+        return $this->release($workspace->addPlan($command->getPlanId(), $command->getDescription()));
     }
 
-    public function launch(string $planId): ServiceResultInterface
+    public function launch(LaunchPlan $command): PlanId
     {
-        $plan = $this->planRepository->take(PlanId::of($planId));
-        if ($plan === null) {
-            return $this->resultFactory->notFound("$planId not found");
-        }
-
-        $plan->launch();
-        $this->planRepository->persist($plan);
-
-        $result = $this->resultFactory->ok($plan, new PlanLaunched($plan->planId));
-        return $this->reportResult($result, $this->reportingBus);
+        $plan = $this->getPlan($command);
+        return $this->release($plan->launch());
     }
 
-    public function stop(string $planId): ServiceResultInterface
+    public function stop(StopPlan $command): PlanId
     {
-        $plan = $this->planRepository->take(PlanId::of($planId));
-        if ($plan === null) {
-            return $this->resultFactory->notFound("$planId not found");
-        }
-
-        $plan->stop();
-        $this->planRepository->persist($plan);
-
-        $result = $this->resultFactory->ok($plan, new PlanStopped($plan->planId));
-        return $this->reportResult($result, $this->reportingBus);
+        $plan = $this->getPlan($command);
+        return $this->release($plan->stop());
     }
 
-    public function archive(string $planId): ServiceResultInterface
+    public function archive(AddPlan $command): PlanId
     {
-        $plan = $this->planRepository->take(PlanId::of($planId));
-        if ($plan === null) {
-            return $this->resultFactory->notFound("$planId not found");
-        }
-
-        $plan->archive();
-        $this->planRepository->persist($plan);
-
-        $result = $this->resultFactory->ok($plan, new PlanArchived($plan->planId));
-        return $this->reportResult($result, $this->reportingBus);
+        $plan = $this->getPlan($command);
+        return $this->release($plan->archive());
     }
 
-    public function changeDescription(string $planId, string $description): ServiceResultInterface
+    public function changeDescription(ChangePlanDescription $command): PlanId
     {
-        $plan = $this->planRepository->take(PlanId::of($planId));
-        if ($plan === null) {
-            return $this->resultFactory->notFound("$planId not found");
-        }
-
-        $plan->changeDescription(Description::of($description));
-        $this->planRepository->persist($plan);
-
-        $result = $this->resultFactory->ok($plan, new PlanDescriptionChanged($plan->planId));
-        return $this->reportResult($result, $this->reportingBus);
+        $plan = $this->getPlan($command);
+        return $this->release($plan->changeDescription($command->getDescription()));
     }
 
+    private function release(Plan $plan): PlanId
+    {
+        $this->planRepository->persist($plan);
+        $this->domainEventBus->publish(...$plan->releaseEvents());
+        return $plan->planId;
+    }
+
+    private function getPlan(PlanCommandInterface $command): Plan
+    {
+        return $this->planRepository->take($command->getPlanId());
+    }
 }

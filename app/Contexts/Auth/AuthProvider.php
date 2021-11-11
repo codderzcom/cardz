@@ -2,11 +2,19 @@
 
 namespace App\Contexts\Auth;
 
-use App\Contexts\Auth\Application\Contracts\UserRepositoryInterface;
-use App\Contexts\Auth\Application\Controllers\Consumers\TokenGeneratedConsumer;
-use App\Contexts\Auth\Application\Controllers\Consumers\UserNameProvidedConsumer;
-use App\Contexts\Auth\Infrastructure\Persistence\UserRepository;
-use App\Contexts\Shared\Contracts\ReportingBusInterface;
+use App\Contexts\Auth\Application\Consumers\TokenAssignedConsumer;
+use App\Contexts\Auth\Application\Consumers\UserProfileProvidedConsumer;
+use App\Contexts\Auth\Application\Consumers\UserRegistrationInitiatedConsumer;
+use App\Contexts\Auth\Application\Services\TokenAppService;
+use App\Contexts\Auth\Application\Services\UserAppService;
+use App\Contexts\Auth\Domain\Persistence\Contracts\UserRepositoryInterface;
+use App\Contexts\Auth\Infrastructure\Messaging\DomainEventBus;
+use App\Contexts\Auth\Infrastructure\Messaging\DomainEventBusInterface;
+use App\Contexts\Auth\Infrastructure\Persistence\Eloquent\UserRepository;
+use App\Shared\Contracts\Commands\CommandBusInterface;
+use App\Shared\Contracts\Queries\QueryBusInterface;
+use App\Shared\Infrastructure\CommandHandling\SimpleAutoCommandHandlerProvider;
+use App\Shared\Infrastructure\QueryHandling\SimpleAutoQueryExecutorProvider;
 use Illuminate\Support\ServiceProvider;
 
 class AuthProvider extends ServiceProvider
@@ -14,11 +22,21 @@ class AuthProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(UserRepositoryInterface::class, UserRepository::class);
+        $this->app->singleton(DomainEventBusInterface::class, DomainEventBus::class);
     }
 
-    public function boot(ReportingBusInterface $reportingBus)
-    {
-        $reportingBus->subscribe($this->app->make(UserNameProvidedConsumer::class));
-        $reportingBus->subscribe($this->app->make(TokenGeneratedConsumer::class));
+    public function boot(
+        UserAppService $userAppService,
+        TokenAppService $tokenAppService,
+        DomainEventBusInterface $domainEventBus,
+        CommandBusInterface $commandBus,
+        QueryBusInterface $queryBus,
+    ) {
+        $commandBus->registerProvider(SimpleAutoCommandHandlerProvider::parse($userAppService));
+        $queryBus->registerProvider(SimpleAutoQueryExecutorProvider::parse($tokenAppService));
+
+        $domainEventBus->subscribe($this->app->make(TokenAssignedConsumer::class));
+        $domainEventBus->subscribe($this->app->make(UserProfileProvidedConsumer::class));
+        $domainEventBus->subscribe($this->app->make(UserRegistrationInitiatedConsumer::class));
     }
 }

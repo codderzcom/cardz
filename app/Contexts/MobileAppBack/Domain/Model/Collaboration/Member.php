@@ -14,16 +14,13 @@ final class Member
 
     public function acceptInvite()
     {
-
     }
 
     public function rejectInvite()
     {
-
     }
 
     public function leaveWorkspace()
     {
-
     }
 }

@@ -2,14 +2,13 @@
 
 namespace App\Contexts\Collaboration\Domain\Events\Relation;
 
-use App\Contexts\Collaboration\Domain\Events\BaseDomainEvent;
-use App\Contexts\Collaboration\Domain\Model\Relation\RelationId;
+use App\Contexts\Collaboration\Domain\Model\Relation\Relation;
+use App\Shared\Infrastructure\Support\Domain\DomainEvent;
 
-abstract class BaseRelationDomainEvent extends BaseDomainEvent
+abstract class BaseRelationDomainEvent extends DomainEvent
 {
-    protected function __construct(
-        public RelationId $relationId
-    ) {
-        parent::__construct();
+    public function with(): Relation
+    {
+        return $this->aggregateRoot;
     }
 }

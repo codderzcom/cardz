@@ -2,42 +2,33 @@
 
 namespace App\Contexts\MobileAppBack\Application\Services\Workspace;
 
-use App\Contexts\MobileAppBack\Infrastructure\ACL\Collaboration\CollaborationAdapter;
-use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
-use App\Contexts\Shared\Contracts\ServiceResultInterface;
+use App\Contexts\MobileAppBack\Integration\Contracts\CollaborationContextInterface;
 
 class CollaborationAppService
 {
     public function __construct(
-        private CollaborationAdapter $collaborationAdapter,
-        private ServiceResultFactoryInterface $serviceResultFactory,
-    )
-    {
+        private CollaborationContextInterface $collaborationContext,
+    ) {
     }
 
-    public function propose(string $keeperId, string $memberId, string $workspaceId): ServiceResultInterface
+    public function propose(string $collaboratorId, string $workspaceId)
     {
-        return $this->collaborationAdapter->propose($keeperId, $memberId, $workspaceId);
+        return $this->collaborationContext->propose($collaboratorId, $workspaceId);
     }
 
-    public function accept(string $inviteId): ServiceResultInterface
+    public function accept(string $collaboratorId, string $inviteId)
     {
-        return $this->collaborationAdapter->accept($inviteId);
+        return $this->collaborationContext->accept($inviteId, $collaboratorId);
     }
 
-    public function reject(string $inviteId): ServiceResultInterface
+    public function discard(string $inviteId)
     {
-        return $this->collaborationAdapter->reject($inviteId);
+        return $this->collaborationContext->discard($inviteId);
     }
 
-    public function discard(string $inviteId): ServiceResultInterface
+    public function leave(string $collaboratorId, string $workspaceId)
     {
-        return $this->collaborationAdapter->discard($inviteId);
-    }
-
-    public function leave(string $relationId): ServiceResultInterface
-    {
-        return $this->collaborationAdapter->leave($relationId);
+        return $this->collaborationContext->leave($collaboratorId, $workspaceId);
     }
 
 }

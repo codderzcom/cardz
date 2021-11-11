@@ -2,48 +2,35 @@
 
 namespace App\Contexts\Personal\Application\Services;
 
-use App\Contexts\Personal\Application\Contracts\PersonRepositoryInterface;
-use App\Contexts\Personal\Application\IntegrationEvents\PersonJoined;
-use App\Contexts\Personal\Application\IntegrationEvents\PersonNameChanged;
-use App\Contexts\Personal\Domain\Model\Person\Name;
+use App\Contexts\Personal\Application\Commands\ChangePersonName;
+use App\Contexts\Personal\Application\Commands\JoinPerson;
 use App\Contexts\Personal\Domain\Model\Person\Person;
 use App\Contexts\Personal\Domain\Model\Person\PersonId;
-use App\Contexts\Shared\Contracts\ReportingBusInterface;
-use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
-use App\Contexts\Shared\Contracts\ServiceResultInterface;
-use App\Contexts\Shared\Infrastructure\Support\ReportingServiceTrait;
+use App\Contexts\Personal\Domain\Persistence\Contracts\PersonRepositoryInterface;
+use App\Contexts\Personal\Infrastructure\Messaging\DomainEventBusInterface;
 
 class PersonAppService
 {
-    use ReportingServiceTrait;
-
     public function __construct(
         private PersonRepositoryInterface $personRepository,
-        private ReportingBusInterface $reportingBus,
-        private ServiceResultFactoryInterface $serviceResultFactory,
+        private DomainEventBusInterface $domainEventBus,
     ) {
     }
 
-    public function join(string $personId, string $name): ServiceResultInterface
+    public function join(JoinPerson $command): PersonId
     {
-        $person = Person::make(PersonId::of($personId), Name::of($name));
-        $person->join();
+        $person = Person::join($command->getPersonId(), $command->getName());
         $this->personRepository->persist($person);
-
-        $result = $this->serviceResultFactory->ok($person, new PersonJoined($person->personId));
-        return $this->reportResult($result, $this->reportingBus);
+        $this->domainEventBus->publish(...$person->releaseEvents());
+        return $person->personId;
     }
 
-    public function changeName(string $personId, string $name): ServiceResultInterface
+    public function changeName(ChangePersonName $command): PersonId
     {
-        $person = $this->personRepository->take(PersonId::of($personId));
-        if ($person === null) {
-            return $this->serviceResultFactory->notFound("Person $personId not found");
-        }
-        $person->changeName(Name::of($name));
+        $person = $this->personRepository->take($command->getPersonId());
+        $person->changeName($command->getName());
         $this->personRepository->persist($person);
-
-        $result = $this->serviceResultFactory->ok($person, new PersonNameChanged($person->personId));
-        return $this->reportResult($result, $this->reportingBus);
+        $this->domainEventBus->publish(...$person->releaseEvents());
+        return $person->personId;
     }
 }

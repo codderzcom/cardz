@@ -2,21 +2,32 @@
 
 namespace App\Contexts\Workspaces\Domain\Model\Workspace;
 
-use App\Contexts\Workspaces\Domain\Model\Shared\AggregateRoot;
+use App\Shared\Contracts\Domain\AggregateRootInterface;
+use App\Shared\Infrastructure\Support\Domain\AggregateRootTrait;
+use JetBrains\PhpStorm\Pure;
 
-final class Keeper extends AggregateRoot
+final class Keeper implements AggregateRootInterface
 {
-    public function __construct(
+    use AggregateRootTrait;
+
+    #[Pure]
+    private function __construct(
         public KeeperId $keeperId,
     ) {
     }
 
-    public function keepWorkspace(WorkspaceId $workspaceId, string $name, string $description, string $address): Workspace
+    #[Pure]
+    public static function restore(KeeperId $keeperId): self
+    {
+        return new self($keeperId);
+    }
+
+    public function keepWorkspace(WorkspaceId $workspaceId, Profile $profile): Workspace
     {
         return Workspace::add(
             $workspaceId,
             $this->keeperId,
-            Profile::of($name, $description, $address),
+            $profile,
         );
     }
 }

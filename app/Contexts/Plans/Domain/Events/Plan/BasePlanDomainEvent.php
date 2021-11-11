@@ -2,14 +2,13 @@
 
 namespace App\Contexts\Plans\Domain\Events\Plan;
 
-use App\Contexts\Plans\Domain\Events\BaseDomainEvent;
-use App\Contexts\Plans\Domain\Model\Plan\PlanId;
+use App\Contexts\Plans\Domain\Model\Plan\Plan;
+use App\Shared\Infrastructure\Support\Domain\DomainEvent;
 
-abstract class BasePlanDomainEvent extends BaseDomainEvent
+abstract class BasePlanDomainEvent extends DomainEvent
 {
-    protected function __construct(
-        public PlanId $planId
-    ) {
-        parent::__construct();
+    public function with(): Plan
+    {
+        return $this->aggregateRoot;
     }
 }

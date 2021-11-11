@@ -2,10 +2,10 @@
 
 namespace App\Contexts\Cards\Domain\Model\Card;
 
-use App\Contexts\Cards\Domain\Model\Shared\ValueObject;
+use App\Shared\Contracts\Domain\ValueObjectInterface;
 use JetBrains\PhpStorm\Pure;
 
-final class Achievement extends ValueObject
+final class Achievement implements ValueObjectInterface
 {
     private function __construct(
         private string $id,
@@ -38,14 +38,6 @@ final class Achievement extends ValueObject
     public function toArray(): array
     {
         return [$this->id, $this->description];
-    }
-
-    private function from(
-        string $id,
-        string $description,
-    ): void {
-        $this->id = $id;
-        $this->description = $description;
     }
 }
 

@@ -2,59 +2,40 @@
 
 namespace App\Contexts\Collaboration\Application\Services;
 
-use App\Contexts\Collaboration\Application\Contracts\InviteRepositoryInterface;
-use App\Contexts\Collaboration\Application\Contracts\KeeperRepositoryInterface;
-use App\Contexts\Collaboration\Application\Contracts\RelationRepositoryInterface;
-use App\Contexts\Collaboration\Application\IntegrationEvents\InviteProposed;
-use App\Contexts\Collaboration\Application\IntegrationEvents\RelationEntered;
-use App\Contexts\Collaboration\Domain\Model\Collaborator\CollaboratorId;
-use App\Contexts\Collaboration\Domain\Model\Relation\RelationType;
-use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
-use App\Contexts\Shared\Contracts\ReportingBusInterface;
-use App\Contexts\Shared\Contracts\ServiceResultFactoryInterface;
-use App\Contexts\Shared\Contracts\ServiceResultInterface;
-use App\Contexts\Shared\Infrastructure\Support\ReportingServiceTrait;
+use App\Contexts\Collaboration\Application\Commands\Invite\ProposeInvite;
+use App\Contexts\Collaboration\Application\Commands\Keeper\KeepWorkspace;
+use App\Contexts\Collaboration\Domain\Model\Invite\InviteId;
+use App\Contexts\Collaboration\Domain\Model\Relation\RelationId;
+use App\Contexts\Collaboration\Domain\Persistence\Contracts\InviteRepositoryInterface;
+use App\Contexts\Collaboration\Domain\Persistence\Contracts\KeeperRepositoryInterface;
+use App\Contexts\Collaboration\Domain\Persistence\Contracts\RelationRepositoryInterface;
+use App\Contexts\Collaboration\Infrastructure\Messaging\DomainEventBusInterface;
 
 class KeeperAppService
 {
-    use ReportingServiceTrait;
-
     public function __construct(
         private KeeperRepositoryInterface $keeperRepository,
         private RelationRepositoryInterface $relationRepository,
         private InviteRepositoryInterface $inviteRepository,
-        private ReportingBusInterface $reportingBus,
-        private ServiceResultFactoryInterface $serviceResultFactory,
+        private DomainEventBusInterface $domainEventBus,
     ) {
     }
 
-    public function bindWorkspace(string $keeperId, string $workspaceId): ServiceResultInterface
+    public function keepWorkspace(KeepWorkspace $command): RelationId
     {
-        $keeper = $this->keeperRepository->take(CollaboratorId::of($keeperId), WorkspaceId::of($workspaceId));
-        if ($keeper === null) {
-            return $this->serviceResultFactory->violation("Collaborator $keeperId does not keep workspace $workspaceId");
-        }
-
-        $relation = $keeper->keepWorkspace();
-        $relation->enter(RelationType::KEEPER());
+        $keeper = $this->keeperRepository->take($command->getKeeperId(), $command->getWorkspaceId());
+        $relation = $keeper->keep($command->getRelationId());
         $this->relationRepository->persist($relation);
-
-        $result = $this->serviceResultFactory->ok($relation->relationId, new RelationEntered($relation->relationId));
-        return $this->reportResult($result, $this->reportingBus);
+        $this->domainEventBus->publish(...$relation->releaseEvents());
+        return $relation->relationId;
     }
 
-    public function invite(string $keeperId, string $memberId, string $workspaceId): ServiceResultInterface
+    public function invite(ProposeInvite $command): InviteId
     {
-        $keeper = $this->keeperRepository->take(CollaboratorId::of($keeperId), WorkspaceId::of($workspaceId));
-        if ($keeper === null) {
-            return $this->serviceResultFactory->violation("Collaborator $keeperId cannot make invitations to the workspace $workspaceId");
-        }
-
-        $invite = $keeper->invite(CollaboratorId::of($memberId));
-        $invite->propose();
+        $keeper = $this->keeperRepository->take($command->getKeeperId(), $command->getWorkspaceId());
+        $invite = $keeper->invite($command->getInviteId());
         $this->inviteRepository->persist($invite);
-
-        $result = $this->serviceResultFactory->ok($invite->inviteId, new InviteProposed($invite->inviteId));
-        return $this->reportResult($result, $this->reportingBus);
+        $this->domainEventBus->publish(...$invite->releaseEvents());
+        return $invite->inviteId;
     }
 }

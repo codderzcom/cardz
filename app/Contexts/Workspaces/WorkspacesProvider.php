@@ -2,12 +2,16 @@
 
 namespace App\Contexts\Workspaces;
 
-use App\Contexts\Shared\Contracts\ReportingBusInterface;
-use App\Contexts\Workspaces\Application\Contracts\KeeperRepositoryInterface;
-use App\Contexts\Workspaces\Application\Contracts\WorkspaceRepositoryInterface;
-use App\Contexts\Workspaces\Application\Controllers\Consumers\WorkspaceAddedConsumer;
-use App\Contexts\Workspaces\Infrastructure\Persistence\KeeperRepository;
-use App\Contexts\Workspaces\Infrastructure\Persistence\WorkspaceRepository;
+use App\Contexts\Workspaces\Application\Consumers\WorkspaceAddedDomainConsumer;
+use App\Contexts\Workspaces\Application\Services\WorkspaceAppService;
+use App\Contexts\Workspaces\Domain\Persistence\Contracts\KeeperRepositoryInterface;
+use App\Contexts\Workspaces\Domain\Persistence\Contracts\WorkspaceRepositoryInterface;
+use App\Contexts\Workspaces\Infrastructure\Messaging\DomainEventBus;
+use App\Contexts\Workspaces\Infrastructure\Messaging\DomainEventBusInterface;
+use App\Contexts\Workspaces\Infrastructure\Persistence\Eloquent\KeeperRepository;
+use App\Contexts\Workspaces\Infrastructure\Persistence\Eloquent\WorkspaceRepository;
+use App\Shared\Contracts\Commands\CommandBusInterface;
+use App\Shared\Infrastructure\CommandHandling\SimpleAutoCommandHandlerProvider;
 use Illuminate\Support\ServiceProvider;
 
 class WorkspacesProvider extends ServiceProvider
@@ -16,10 +20,16 @@ class WorkspacesProvider extends ServiceProvider
     {
         $this->app->singleton(KeeperRepositoryInterface::class, KeeperRepository::class);
         $this->app->singleton(WorkspaceRepositoryInterface::class, WorkspaceRepository::class);
+        $this->app->singleton(DomainEventBusInterface::class, DomainEventBus::class);
     }
 
-    public function boot(ReportingBusInterface $reportingBus)
-    {
-        $reportingBus->subscribe($this->app->make(WorkspaceAddedConsumer::class));
+    public function boot(
+        WorkspaceAppService $workspaceAppService,
+        CommandBusInterface $commandBus,
+        DomainEventBusInterface $domainEventBus,
+    ) {
+        $commandBus->registerProvider(SimpleAutoCommandHandlerProvider::parse($workspaceAppService));
+
+        $domainEventBus->subscribe($this->app->make(WorkspaceAddedDomainConsumer::class));
     }
 }

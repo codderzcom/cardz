@@ -2,77 +2,52 @@
 
 namespace App\Contexts\Collaboration\Domain\Model\Relation;
 
-use App\Contexts\Auth\Domain\Model\Shared\AggregateRoot;
-use App\Contexts\Collaboration\Domain\Events\Relation\RelationEntered;
+use App\Contexts\Collaboration\Domain\Events\Relation\RelationEstablished;
 use App\Contexts\Collaboration\Domain\Events\Relation\RelationLeft;
-use App\Contexts\Collaboration\Domain\Model\Collaborator\CollaboratorId;
+use App\Contexts\Collaboration\Domain\Exceptions\InvalidOperationException;
 use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
+use App\Shared\Contracts\Domain\AggregateRootInterface;
+use App\Shared\Infrastructure\Support\Domain\AggregateRootTrait;
 use Carbon\Carbon;
 
-final class Relation extends AggregateRoot
+final class Relation implements AggregateRootInterface
 {
-    private RelationType $relationType;
+    use AggregateRootTrait;
 
-    private ?Carbon $entered = null;
-
-    private ?Carbon $left = null;
+    private ?Carbon $established = null;
 
     private function __construct(
         public RelationId $relationId,
         public CollaboratorId $collaboratorId,
         public WorkspaceId $workspaceId,
+        public RelationType $relationType,
     ) {
-        $this->relationType = RelationType::PENDING();
     }
 
-    public static function make(RelationId $relationId, CollaboratorId $collaboratorId, WorkspaceId $workspaceId): self
+    public static function establish(RelationId $relationId, CollaboratorId $collaboratorId, WorkspaceId $workspaceId, RelationType $relationType): self
     {
-        return new self($relationId, $collaboratorId, $workspaceId);
+        $relation = new self($relationId, $collaboratorId, $workspaceId, $relationType);
+        $relation->established = Carbon::now();
+        return $relation->withEvents(RelationEstablished::of($relation));
     }
 
-    public function enter(RelationType $relationType): RelationEntered
-    {
-        $this->relationType = $relationType;
-        $this->entered = Carbon::now();
-        return RelationEntered::with($this->relationId);
-    }
-
-    public function leave(): RelationLeft
-    {
-        $this->left = Carbon::now();
-        return RelationLeft::with($this->relationId);
-    }
-
-    public function getRelationType(): RelationType
-    {
-        return $this->relationType;
-    }
-
-    public function isEntered(): bool
-    {
-        return $this->entered !== null && $this->left === null;
-    }
-
-    public function isLeft(): bool
-    {
-        return $this->left !== null && $this->entered !== null;
-    }
-
-    private function from(
+    public static function restore(
         string $relationId,
         string $collaboratorId,
         string $workspaceId,
         string $relationType,
-        ?Carbon $entered,
-        ?Carbon $left,
-    ): self
+        ?Carbon $established,
+    ): self {
+        $relation = new self(RelationId::of($relationId), CollaboratorId::of($collaboratorId), WorkspaceId::of($workspaceId), RelationType::of($relationType));
+        $relation->established = $established;
+        return $relation;
+    }
+
+    public function leave(): self
     {
-        $this->relationId = RelationId::of($relationId);
-        $this->collaboratorId = CollaboratorId::of($collaboratorId);
-        $this->workspaceId = WorkspaceId::of($workspaceId);
-        $this->relationType = RelationType::of($relationType);
-        $this->entered = $entered;
-        $this->left = $left;
-        return $this;
+        if ($this->relationType->equals(RelationType::KEEPER())) {
+            throw new InvalidOperationException("Keeper is not allowed to leave");
+        }
+        return $this->withEvents(RelationLeft::of($this));
     }
 }

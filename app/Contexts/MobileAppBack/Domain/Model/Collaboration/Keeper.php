@@ -14,11 +14,9 @@ final class Keeper
 
     public function proposeInvite()
     {
-
     }
 
     public function discardInvite()
     {
-
     }
 }

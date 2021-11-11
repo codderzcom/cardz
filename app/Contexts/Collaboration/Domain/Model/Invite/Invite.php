@@ -2,77 +2,86 @@
 
 namespace App\Contexts\Collaboration\Domain\Model\Invite;
 
-use App\Contexts\Auth\Domain\Model\Shared\AggregateRoot;
 use App\Contexts\Collaboration\Domain\Events\Invite\InviteAccepted;
 use App\Contexts\Collaboration\Domain\Events\Invite\InviteDiscarded;
 use App\Contexts\Collaboration\Domain\Events\Invite\InviteProposed;
-use App\Contexts\Collaboration\Domain\Events\Invite\InviteRejected;
-use App\Contexts\Collaboration\Domain\Model\Collaborator\CollaboratorId;
+use App\Contexts\Collaboration\Domain\Exceptions\CannotAcceptOwnInviteException;
+use App\Contexts\Collaboration\Domain\Exceptions\InvalidOperationException;
+use App\Contexts\Collaboration\Domain\Model\Relation\CollaboratorId;
 use App\Contexts\Collaboration\Domain\Model\Workspace\WorkspaceId;
+use App\Shared\Contracts\Domain\AggregateRootInterface;
+use App\Shared\Infrastructure\Support\Domain\AggregateRootTrait;
 use Carbon\Carbon;
 
-final class Invite extends AggregateRoot
+final class Invite implements AggregateRootInterface
 {
+    use AggregateRootTrait;
+
     private ?Carbon $proposed = null;
 
-    private ?Carbon $accepted = null;
+    private ?Carbon $acceptedAt = null;
+
+    private ?Carbon $discardedAt = null;
+
+    private ?CollaboratorId $collaboratorId = null;
 
     private function __construct(
         public InviteId $inviteId,
-        public CollaboratorId $memberId,
+        public InviterId $inviterId,
         public WorkspaceId $workspaceId,
     ) {
     }
 
-    public static function make(InviteId $inviteId, CollaboratorId $memberId, WorkspaceId $workspaceId): self
+    public static function propose(InviteId $inviteId, InviterId $inviterId, WorkspaceId $workspaceId): self
     {
-        return new self($inviteId, $memberId, $workspaceId);
+        $invite = new self($inviteId, $inviterId, $workspaceId);
+        $invite->proposed = Carbon::now();
+        return $invite->withEvents(InviteProposed::of($invite));
     }
 
-    public function propose(): InviteProposed
-    {
-        $this->proposed = Carbon::now();
-        return InviteProposed::with($this->inviteId);
+    public static function restore(
+        string $inviteId,
+        string $inviterId,
+        string $workspaceId,
+        ?Carbon $proposed,
+    ): self {
+        $invite = new self(InviteId::of($inviteId), InviterId::of($inviterId), WorkspaceId::of($workspaceId));
+        $invite->proposed = $proposed;
+        return $invite;
     }
 
-    public function accept(): InviteAccepted
+    public function accept(CollaboratorId $collaboratorId): self
     {
-        $this->accepted = Carbon::now();
-        return InviteAccepted::with($this->inviteId);
+        if ($this->inviterId->equals($collaboratorId)) {
+            throw new CannotAcceptOwnInviteException();
+        }
+        $this->acceptedAt = Carbon::now();
+        $this->collaboratorId = $collaboratorId;
+        return $this->withEvents(InviteAccepted::of($this));
     }
 
-    public function discard(): InviteDiscarded
+    public function discard(): self
     {
-        return InviteDiscarded::with($this->inviteId);
-    }
-
-    public function reject(): InviteRejected
-    {
-        return InviteRejected::with($this->inviteId);
-    }
-
-    public function isProposed(): bool
-    {
-        return $this->proposed !== null;
+        $this->discardedAt = Carbon::now();
+        return $this->withEvents(InviteDiscarded::of($this));
     }
 
     public function isAccepted(): bool
     {
-        return $this->accepted !== null;
+        return $this->acceptedAt !== null;
     }
 
-    private function from(
-        string $inviteId,
-        string $memberId,
-        string $workspaceId,
-        ?Carbon $proposed,
-        ?Carbon $accepted,
-    ): self {
-        $this->inviteId = InviteId::of($inviteId);
-        $this->memberId = CollaboratorId::of($memberId);
-        $this->workspaceId = WorkspaceId::of($workspaceId);
-        $this->proposed = $proposed;
-        $this->accepted = $accepted;
-        return $this;
+    public function isDiscarded(): bool
+    {
+        return $this->discardedAt !== null;
+    }
+
+    public function getCollaboratorId(): CollaboratorId
+    {
+        if ($this->collaboratorId === null) {
+            throw new InvalidOperationException();
+        }
+
+        return $this->collaboratorId;
     }
 }

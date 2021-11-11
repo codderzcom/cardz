@@ -6,13 +6,17 @@ use App\Contexts\Plans\Domain\Events\Requirement\RequirementAdded;
 use App\Contexts\Plans\Domain\Events\Requirement\RequirementChanged;
 use App\Contexts\Plans\Domain\Events\Requirement\RequirementRemoved;
 use App\Contexts\Plans\Domain\Model\Plan\PlanId;
-use App\Contexts\Plans\Domain\Model\Shared\AggregateRoot;
+use App\Shared\Contracts\Domain\AggregateRootInterface;
+use App\Shared\Infrastructure\Support\Domain\AggregateRootTrait;
 use Carbon\Carbon;
-use JetBrains\PhpStorm\Pure;
 
-final class Requirement extends AggregateRoot
+final class Requirement implements AggregateRootInterface
 {
+    use AggregateRootTrait;
+
     private ?Carbon $added = null;
+
+    private ?Carbon $removed = null;
 
     private function __construct(
         public RequirementId $requirementId,
@@ -21,32 +25,31 @@ final class Requirement extends AggregateRoot
     ) {
     }
 
-    #[Pure]
-    public static function make(RequirementId $requirementId, PlanId $planId, string $description): self
+    public static function add(RequirementId $requirementId, PlanId $planId, string $description): self
     {
-        return new self($requirementId, $planId, $description);
+        $requirement = new self($requirementId, $planId, $description);
+        $requirement->added = Carbon::now();
+        return $requirement->withEvents(RequirementAdded::of($requirement));
     }
 
-    public function getDescription(): string
+    public static function restore(string $requirementId, string $planId, string $description, ?Carbon $added, ?Carbon $removed): self
     {
-        return $this->description;
+        $requirement = new self(RequirementId::of($requirementId), PlanId::of($planId), $description);
+        $requirement->added = $added;
+        $requirement->removed = $removed;
+        return $requirement;
     }
 
-    public function add(): RequirementAdded
+    public function remove(): self
     {
-        $this->added = Carbon::now();
-        return RequirementAdded::with($this->requirementId);
+        $this->removed = Carbon::now();
+        return $this->withEvents(RequirementRemoved::of($this));
     }
 
-    public function remove(): RequirementRemoved
-    {
-        return RequirementRemoved::with($this->requirementId);
-    }
-
-    public function change(string $description): RequirementChanged
+    public function change(string $description): self
     {
         $this->description = $description;
-        return RequirementChanged::with($this->requirementId);
+        return $this->withEvents(RequirementChanged::of($this));
     }
 
     public function isAdded(): bool
@@ -54,15 +57,13 @@ final class Requirement extends AggregateRoot
         return $this->added !== null;
     }
 
-    private function from(
-        string $requirementId,
-        string $planId,
-        string $description,
-        ?Carbon $added,
-    ): void {
-        $this->requirementId = RequirementId::of($requirementId);
-        $this->planId = PlanId::of($planId);
-        $this->description = $description;
-        $this->added = $added;
+    public function isRemoved(): bool
+    {
+        return $this->removed !== null;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
     }
 }
