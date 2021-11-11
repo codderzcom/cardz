@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contexts\Authorization\Policies;
+namespace App\Contexts\Authorization\Domain\Policies;
 
 use App\Shared\Contracts\Authorization\Abac\AttributeCollectionInterface;
 use App\Shared\Contracts\Authorization\Abac\PolicyInterface;

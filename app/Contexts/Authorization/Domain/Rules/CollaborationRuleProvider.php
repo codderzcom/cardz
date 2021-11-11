@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Contexts\Authorization\Rules\Collaboration;
+namespace App\Contexts\Authorization\Domain\Rules;
 
 use App\Contexts\Authorization\Dictionary\PermissionRepository;
-use App\Contexts\Authorization\Policies\AllowOnlyForCollaborators;
-use App\Contexts\Authorization\Policies\AllowOnlyForKeeper;
-use App\Contexts\Authorization\Policies\DenyForKeeper;
+use App\Contexts\Authorization\Domain\Policies\AllowOnlyForCollaborators;
+use App\Contexts\Authorization\Domain\Policies\AllowOnlyForKeeper;
+use App\Contexts\Authorization\Domain\Policies\DenyForKeeper;
 use App\Shared\Infrastructure\Authorization\Abac\AbacRule;
 
 class CollaborationRuleProvider

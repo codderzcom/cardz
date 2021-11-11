@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Contexts\Authorization\Rules\Workspaces;
+namespace App\Contexts\Authorization\Domain\Rules;
 
 use App\Contexts\Authorization\Dictionary\PermissionRepository;
-use App\Contexts\Authorization\Policies\AllowOnlyForCollaborators;
-use App\Contexts\Authorization\Policies\AllowOnlyForKeeper;
+use App\Contexts\Authorization\Domain\Policies\AllowOnlyForCollaborators;
+use App\Contexts\Authorization\Domain\Policies\AllowOnlyForKeeper;
 use App\Shared\Infrastructure\Authorization\Abac\AbacRule;
 
 class WorkspacesRuleProvider
@@ -14,7 +14,6 @@ class WorkspacesRuleProvider
     public function __construct()
     {
         $allowOnlyForCollaborators = new AllowOnlyForCollaborators();
-        $allowOnlyForKeeper = new AllowOnlyForKeeper();
         $this->rules = [
             AbacRule::of(PermissionRepository::WORKSPACES_VIEW(), $allowOnlyForCollaborators),
             AbacRule::of(PermissionRepository::WORKSPACES_CHANGE_PROFILE(), $allowOnlyForCollaborators),

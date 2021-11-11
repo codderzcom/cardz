@@ -3,12 +3,12 @@
 namespace App\Contexts\Authorization\Application;
 
 use App\Contexts\Authorization\Application\Queries\IsAllowed;
+use App\Contexts\Authorization\Domain\Rules\CardsRuleProvider;
+use App\Contexts\Authorization\Domain\Rules\CollaborationRuleProvider;
+use App\Contexts\Authorization\Domain\Rules\PlansRuleProvider;
+use App\Contexts\Authorization\Domain\Rules\WorkspacesRuleProvider;
 use App\Contexts\Authorization\Infrastructure\ObjectProvider;
 use App\Contexts\Authorization\Infrastructure\SubjectProvider;
-use App\Contexts\Authorization\Rules\Cards\CardsRuleProvider;
-use App\Contexts\Authorization\Rules\Collaboration\CollaborationRuleProvider;
-use App\Contexts\Authorization\Rules\Plans\PlansRuleProvider;
-use App\Contexts\Authorization\Rules\Workspaces\WorkspacesRuleProvider;
 use App\Shared\Infrastructure\Authorization\Abac\AbacEngine;
 use App\Shared\Infrastructure\Authorization\Abac\Attributes;
 

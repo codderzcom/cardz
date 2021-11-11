@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Contexts\Authorization\Rules\Cards;
+namespace App\Contexts\Authorization\Domain\Rules;
 
 use App\Contexts\Authorization\Dictionary\PermissionRepository;
-use App\Contexts\Authorization\Policies\AllowOnlyForCollaborators;
+use App\Contexts\Authorization\Domain\Policies\AllowOnlyForCollaborators;
 use App\Shared\Infrastructure\Authorization\Abac\AbacRule;
 
 class CardsRuleProvider
