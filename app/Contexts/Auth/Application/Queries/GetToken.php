@@ -11,6 +11,7 @@ final class GetToken implements QueryInterface
         private string $password,
         private string $deviceName,
     ) {
+        $this->identity = mb_strtolower($this->identity);
     }
 
     public static function of(string $identity, string $password, string $deviceName): self

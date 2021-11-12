@@ -50,7 +50,7 @@ class CustomerController extends BaseController
 
     public function getCard(GetIssuedCardRequest $request): JsonResponse
     {
-        return $this->response($this->customerAppService->getIssuedCards($request->customerId, $request->cardId));
+        return $this->response($this->customerAppService->getIssuedCard($request->customerId, $request->cardId));
     }
 
     public function getWorkspaces(): JsonResponse
