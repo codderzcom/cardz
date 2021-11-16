@@ -7,7 +7,7 @@ use App\Shared\Contracts\Commands\CommandHandlerInterface;
 use App\Shared\Contracts\Commands\CommandHandlerProviderInterface;
 use App\Shared\Contracts\Commands\CommandInterface;
 
-class TestSyncCommandBus implements CommandBusInterface
+class TestCommandBus implements CommandBusInterface
 {
     protected array $registeredHandlers = [];
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contexts\Workspaces\Tests\Support;
+namespace App\Contexts\Workspaces\Tests\Support\Builders;
 
 use App\Contexts\Workspaces\Domain\Model\Workspace\KeeperId;
 use App\Contexts\Workspaces\Domain\Model\Workspace\Workspace;

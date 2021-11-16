@@ -10,7 +10,7 @@ abstract class BaseTestCase extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->app->singleton(CommandBusInterface::class, TestSyncCommandBus::class);
+        //$this->app->singleton(CommandBusInterface::class, TestCommandBus::class);
     }
 
 }
