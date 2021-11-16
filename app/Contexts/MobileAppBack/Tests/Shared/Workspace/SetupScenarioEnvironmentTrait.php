@@ -3,6 +3,7 @@
 namespace App\Contexts\MobileAppBack\Tests\Shared\Workspace;
 
 use App\Contexts\MobileAppBack\Tests\Shared\Customer\CustomerProviderTrait;
+use App\Models\User;
 use Illuminate\Foundation\Testing\Concerns\MakesHttpRequests;
 
 trait SetupScenarioEnvironmentTrait

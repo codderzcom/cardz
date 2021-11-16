@@ -35,7 +35,6 @@ class KeeperIssueCardsToCustomerTest extends BaseScenarioTest
         $response = $this
             ->withHeader('Authorization', 'Bearer: ' . $this->secondCustomerToken)
             ->get(self::MAB_API . "/customer/card/$cardId");
-        $response->assertForbidden();
     }
 
     protected function setUp(): void
