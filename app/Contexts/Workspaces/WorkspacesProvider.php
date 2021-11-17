@@ -11,8 +11,7 @@ use App\Contexts\Workspaces\Infrastructure\Messaging\DomainEventBusInterface;
 use App\Contexts\Workspaces\Infrastructure\Persistence\Eloquent\KeeperRepository;
 use App\Contexts\Workspaces\Infrastructure\Persistence\Eloquent\WorkspaceRepository;
 use App\Shared\Contracts\Commands\CommandBusInterface;
-use App\Shared\Infrastructure\CommandHandling\SimpleAutoCommandClassHandlerProvider;
-use App\Shared\Infrastructure\CommandHandling\SimpleAutoCommandHandlerProvider;
+use App\Shared\Infrastructure\CommandHandling\LaravelHandlerGenerator;
 use Illuminate\Support\ServiceProvider;
 
 class WorkspacesProvider extends ServiceProvider
@@ -28,7 +27,7 @@ class WorkspacesProvider extends ServiceProvider
         CommandBusInterface $commandBus,
         DomainEventBusInterface $domainEventBus,
     ) {
-        $commandBus->registerProvider(SimpleAutoCommandClassHandlerProvider::parse(WorkspaceAppService::class));
+        $commandBus->registerProvider(LaravelHandlerGenerator::of(WorkspaceAppService::class));
 
         $domainEventBus->subscribe($this->app->make(WorkspaceAddedDomainConsumer::class));
     }

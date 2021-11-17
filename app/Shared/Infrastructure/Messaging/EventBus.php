@@ -12,7 +12,7 @@ use Throwable;
 
 class EventBus implements EventBusInterface
 {
-    use SimpleLoggerTrait;
+    use SimpleLoggerTrait, EventRecorderTrait;
 
     public function __construct(
         private MessageBrokerInterface $messageBroker,
@@ -24,6 +24,7 @@ class EventBus implements EventBusInterface
         $this->info("Publishing: ", $events);
         foreach ($events as $event) {
             $name = $event::class;
+            $this->recordEvent($name, $event);
             $this->messageBroker->publish(SimpleMessageChannel::of($name), $event);
 
             if ($this->messageBroker->hasErrors()) {

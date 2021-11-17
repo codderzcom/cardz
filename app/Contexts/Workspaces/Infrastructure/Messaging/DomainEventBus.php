@@ -22,4 +22,9 @@ class DomainEventBus implements DomainEventBusInterface
     {
         $this->eventBus->publish(...$domainEvents);
     }
+
+    public function hasEvent($eventIdentifier): bool
+    {
+        return $this->eventBus->hasRecordedEvent($eventIdentifier);
+    }
 }

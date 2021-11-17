@@ -21,15 +21,15 @@ trait ApplicationTestTrait
         return $this->app->make(QueryBusInterface::class);
     }
 
-    protected function eventBus(): TestEventBus
+    protected function eventBus(): EventBusInterface
     {
         return $this->app->make(EventBusInterface::class);
     }
 
-    protected function assertEvent(string $name)
+    protected function assertEvent($eventIdentifier)
     {
-        if (!$this->eventBus()->hasEvent($name)) {
-            $this->fail("Event $name missing");
+        if (!$this->eventBus()->hasRecordedEvent($eventIdentifier)) {
+            $this->fail("Missing event");
         }
     }
 }

@@ -5,44 +5,67 @@ namespace App\Shared\Infrastructure\CommandHandling;
 use App\Shared\Contracts\Commands\CommandHandlerInterface;
 use App\Shared\Contracts\Commands\CommandHandlerProviderInterface;
 use App\Shared\Contracts\Commands\CommandInterface;
+use Closure;
+use phpDocumentor\Reflection\Types\Callable_;
 use ReflectionClass;
 use ReflectionMethod;
 
-class SimpleAutoCommandClassHandlerProvider implements CommandHandlerProviderInterface
+class DeferredHandlerGenerator implements CommandHandlerProviderInterface
 {
     /**
      * @var CommandHandlerInterface[]
      */
     protected array $handlers = [];
 
-    public function __construct()
+    protected $maker;
+
+    /** @var array string[] */
+    protected array $handlerContainerClasses;
+
+    protected bool $registered = false;
+
+    public function __construct(callable $maker)
     {
+        $this->maker = $maker;
     }
 
-    public static function parse(string ...$handlerCollections): static
+    public static function of(callable $maker): static
     {
-        $provider = new static();
-        foreach ($handlerCollections as $handlerCollection) {
-            $provider->registerHandlerCollection($handlerCollection);
-        }
-        return $provider;
+        return new static($maker);
+    }
+
+    public function parse(string ...$handlerContainerClasses): static
+    {
+        $this->handlerContainerClasses = $handlerContainerClasses;
+        return $this;
     }
 
     public function getHandlers(): array
     {
+        if (!$this->registered) {
+            $this->registerHandlerContainers();
+        }
         return $this->handlers;
     }
 
-    protected function registerHandlerCollection(string $handlerCollection): void
+    protected function registerHandlerContainers(): void
     {
-        $reflection = new ReflectionClass($handlerCollection);
+        foreach ($this->handlerContainerClasses as $handlerContainerClass) {
+            $this->registerHandlerContainer($handlerContainerClass);
+        }
+        $this->registered = true;
+    }
+
+    protected function registerHandlerContainer(string $handlerContainerClass): void
+    {
+        $reflection = new ReflectionClass($handlerContainerClass);
         $methods = $reflection->getMethods(ReflectionMethod::IS_PUBLIC);
         foreach ($methods as $method) {
-            $this->registerMethod($handlerCollection, $method);
+            $this->registerMethod($handlerContainerClass, $method);
         }
     }
 
-    protected function registerMethod(string $handlerCollection, ReflectionMethod $method): void
+    protected function registerMethod(string $handlerContainerClass, ReflectionMethod $method): void
     {
         $parameters = $method->getParameters();
         if (count($parameters) !== 1) {
@@ -54,19 +77,22 @@ class SimpleAutoCommandClassHandlerProvider implements CommandHandlerProviderInt
         if ($parameterClass === null || !$parameterClass->implementsInterface(CommandInterface::class)) {
             return;
         }
-        $this->handlers[] = $this->makeHandlerFor($parameterClass->name, $method->name, $handlerCollection);
+        $this->handlers[] = $this->makeHandlerFor($parameterClass->name, $method->name, $handlerContainerClass);
     }
 
     protected function makeHandlerFor(string $for, string $handlingMethod, string $origin): CommandHandlerInterface
     {
         $origin ??= $this;
         return
-            new class($handlingMethod, $for, $origin) implements CommandHandlerInterface {
+            new class($handlingMethod, $for, $origin, $this->maker) implements CommandHandlerInterface {
+                private $originMaker;
                 public function __construct(
                     private string $method,
                     private string $handles,
                     private string $origin,
+                    callable $originMaker,
                 ) {
+                    $this->originMaker = $originMaker;
                 }
 
                 public function handles(CommandInterface $command): bool
@@ -76,7 +102,7 @@ class SimpleAutoCommandClassHandlerProvider implements CommandHandlerProviderInt
 
                 public function handle(CommandInterface $command): void
                 {
-                    [app()->make($this->origin), $this->method]($command);
+                    [call_user_func($this->originMaker, $this->origin), $this->method]($command);
                 }
             };
     }
