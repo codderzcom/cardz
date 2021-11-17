@@ -15,10 +15,6 @@ trait WorkspacesTestHelperTrait
     {
         $this->app->singleton(WorkspaceRepositoryInterface::class, WorkspaceInMemoryRepository::class);
         $this->app->singleton(KeeperRepositoryInterface::class, KeeperInMemoryRepository::class);
-
-        $this->commandBus()->registerProvider(SimpleAutoCommandHandlerProvider::parse(
-            $this->app->make(WorkspaceAppService::class)
-        ));
     }
 
     protected function getWorkspaceRepository(): WorkspaceRepositoryInterface

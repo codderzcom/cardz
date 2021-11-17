@@ -24,7 +24,7 @@ final class AddWorkspaceCommandTest extends BaseTestCase
 
         $workspace = $this->getWorkspaceRepository()->take($command->getWorkspaceId());
 
-        $this->assertSame((string) $workspace->workspaceId, (string) $command->getWorkspaceId());
+        $this->assertSame((string) $command->getWorkspaceId(), (string) $workspace->workspaceId);
         $this->assertEvent(WorkspaceAdded::class);
     }
 
