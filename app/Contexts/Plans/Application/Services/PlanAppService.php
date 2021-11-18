@@ -3,6 +3,7 @@
 namespace App\Contexts\Plans\Application\Services;
 
 use App\Contexts\Plans\Application\Commands\Plan\AddPlan;
+use App\Contexts\Plans\Application\Commands\Plan\ArchivePlan;
 use App\Contexts\Plans\Application\Commands\Plan\ChangePlanDescription;
 use App\Contexts\Plans\Application\Commands\Plan\LaunchPlan;
 use App\Contexts\Plans\Application\Commands\Plan\PlanCommandInterface;
@@ -41,7 +42,7 @@ class PlanAppService
         return $this->release($plan->stop());
     }
 
-    public function archive(AddPlan $command): PlanId
+    public function archive(ArchivePlan $command): PlanId
     {
         $plan = $this->getPlan($command);
         return $this->release($plan->archive());

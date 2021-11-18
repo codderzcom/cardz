@@ -2,29 +2,8 @@
 
 namespace App\Contexts\Workspaces\Infrastructure\Messaging;
 
-use App\Shared\Contracts\Messaging\EventBusInterface;
-use App\Shared\Contracts\Messaging\EventConsumerInterface;
-use App\Shared\Contracts\Messaging\EventInterface;
+use App\Shared\Infrastructure\Messaging\BaseDomainEventBus;
 
-class DomainEventBus implements DomainEventBusInterface
+class DomainEventBus extends BaseDomainEventBus implements DomainEventBusInterface
 {
-    public function __construct(
-        private EventBusInterface $eventBus,
-    ) {
-    }
-
-    public function subscribe(EventConsumerInterface $consumer): void
-    {
-        $this->eventBus->subscribe($consumer);
-    }
-
-    public function publish(EventInterface ...$domainEvents): void
-    {
-        $this->eventBus->publish(...$domainEvents);
-    }
-
-    public function hasEvent($eventIdentifier): bool
-    {
-        return $this->eventBus->hasRecordedEvent($eventIdentifier);
-    }
 }

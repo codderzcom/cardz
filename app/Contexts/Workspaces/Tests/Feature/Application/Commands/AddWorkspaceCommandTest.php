@@ -5,7 +5,6 @@ namespace App\Contexts\Workspaces\Tests\Feature\Application\Commands;
 use App\Contexts\Workspaces\Application\Commands\AddWorkspace;
 use App\Contexts\Workspaces\Domain\Events\Workspace\WorkspaceAdded;
 use App\Contexts\Workspaces\Domain\Model\Workspace\KeeperId;
-use App\Contexts\Workspaces\Domain\Persistence\Contracts\KeeperRepositoryInterface;
 use App\Contexts\Workspaces\Tests\Feature\WorkspacesTestHelperTrait;
 use App\Contexts\Workspaces\Tests\Support\Builders\WorkspaceBuilder;
 use App\Shared\Infrastructure\Tests\ApplicationTestTrait;
@@ -24,7 +23,7 @@ final class AddWorkspaceCommandTest extends BaseTestCase
 
         $workspace = $this->getWorkspaceRepository()->take($command->getWorkspaceId());
 
-        $this->assertSame((string) $command->getWorkspaceId(), (string) $workspace->workspaceId);
+        $this->assertEquals($command->getWorkspaceId(), $workspace->workspaceId);
         $this->assertEvent(WorkspaceAdded::class);
     }
 

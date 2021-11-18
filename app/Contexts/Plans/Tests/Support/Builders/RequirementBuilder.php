@@ -5,53 +5,41 @@ namespace App\Contexts\Plans\Tests\Support\Builders;
 use App\Contexts\Plans\Domain\Model\Plan\Plan;
 use App\Contexts\Plans\Domain\Model\Plan\PlanId;
 use App\Contexts\Plans\Domain\Model\Plan\WorkspaceId;
+use App\Contexts\Plans\Domain\Model\Requirement\Requirement;
+use App\Contexts\Plans\Domain\Model\Requirement\RequirementId;
 use App\Shared\Infrastructure\Tests\BaseBuilder;
 use Carbon\Carbon;
 
-final class PlanBuilder extends BaseBuilder
+final class RequirementBuilder extends BaseBuilder
 {
-    private string $planId;
+    private string $requirementId;
 
-    private string $workspaceId;
+    private string $planId;
 
     private string $description;
 
     private Carbon $added;
 
-    private ?Carbon $launched;
+    private ?Carbon $removed;
 
-    private ?Carbon $stopped;
-
-    private ?Carbon $archived;
-
-    public function build(): Plan
+    public function build(): Requirement
     {
-        return Plan::restore(
+        return Requirement::restore(
+            $this->requirementId,
             $this->planId,
-            $this->workspaceId,
             $this->description,
             $this->added,
-            $this->launched,
-            $this->stopped,
-            $this->archived,
+            $this->removed,
         );
-    }
-
-    public function buildLaunched(): Plan
-    {
-        $this->launched = Carbon::now();
-        return $this->build();
     }
 
     public function generate(): static
     {
+        $this->requirementId = RequirementId::makeValue();
         $this->planId = PlanId::makeValue();
-        $this->workspaceId = WorkspaceId::makeValue();
         $this->description = $this->faker->text();
         $this->added = Carbon::now();
-        $this->launched = null;
-        $this->stopped = null;
-        $this->archived = null;
+        $this->removed = null;
         return $this;
     }
 }

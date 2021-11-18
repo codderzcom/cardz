@@ -5,6 +5,7 @@ namespace App\Contexts\Plans\Tests\Support\Mocks;
 use App\Contexts\Plans\Domain\Model\Plan\Plan;
 use App\Contexts\Plans\Domain\Model\Plan\PlanId;
 use App\Contexts\Plans\Domain\Persistence\Contracts\PlanRepositoryInterface;
+use App\Contexts\Plans\Infrastructure\Exceptions\PlanNotFoundException;
 
 class PlanInMemoryRepository implements PlanRepositoryInterface
 {
@@ -17,6 +18,11 @@ class PlanInMemoryRepository implements PlanRepositoryInterface
 
     public function take(PlanId $planId): Plan
     {
-        return static::$storage[(string) $planId];
+        /** @var Plan $plan */
+        $plan = static::$storage[(string) $planId];
+        if ($plan->isArchived()) {
+            throw  new PlanNotFoundException();
+        }
+        return $plan;
     }
 }

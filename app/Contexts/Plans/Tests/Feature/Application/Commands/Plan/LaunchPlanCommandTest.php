@@ -2,29 +2,31 @@
 
 namespace App\Contexts\Plans\Tests\Feature\Application\Commands\Plan;
 
-use App\Contexts\Plans\Application\Commands\Plan\AddPlan;
-use App\Contexts\Plans\Domain\Events\Plan\PlanAdded;
-use App\Contexts\Plans\Domain\Model\Plan\PlanId;
+use App\Contexts\Plans\Application\Commands\Plan\LaunchPlan;
+use App\Contexts\Plans\Domain\Events\Plan\PlanLaunched;
 use App\Contexts\Plans\Tests\Feature\PlansTestHelperTrait;
 use App\Contexts\Plans\Tests\Support\Builders\PlanBuilder;
 use App\Shared\Infrastructure\Tests\ApplicationTestTrait;
 use App\Shared\Infrastructure\Tests\BaseTestCase;
 
-final class AddPlanCommandTest extends BaseTestCase
+final class LaunchPlanCommandTest extends BaseTestCase
 {
     use ApplicationTestTrait, PlansTestHelperTrait;
 
-    public function test_plan_can_be_added()
+    public function test_plan_can_be_launched()
     {
-        $planTemplate = PlanBuilder::make()->build();
+        $plan = PlanBuilder::make()->build();
+        $this->getPlanRepository()->persist($plan);
+        $this->assertFalse($plan->isLaunched());
 
-        $command = AddPlan::of(PlanId::makeValue(), $planTemplate->getDescription());
+        $command = LaunchPlan::of($plan->planId);
         $this->commandBus()->dispatch($command);
 
         $plan = $this->getPlanRepository()->take($command->getPlanId());
+        $this->assertTrue($plan->isLaunched());
+        $this->assertFalse($plan->isStopped());
 
-        $this->assertEquals($command->getPlanId(), $plan->planId);
-        $this->assertEvent(PlanAdded::class);
+        $this->assertEvent(PlanLaunched::class);
     }
 
     protected function setUp(): void

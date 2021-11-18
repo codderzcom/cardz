@@ -2,29 +2,29 @@
 
 namespace App\Contexts\Plans\Tests\Feature\Application\Commands\Plan;
 
-use App\Contexts\Plans\Application\Commands\Plan\AddPlan;
-use App\Contexts\Plans\Domain\Events\Plan\PlanAdded;
-use App\Contexts\Plans\Domain\Model\Plan\PlanId;
+use App\Contexts\Plans\Application\Commands\Plan\ChangePlanDescription;
+use App\Contexts\Plans\Domain\Events\Plan\PlanDescriptionChanged;
 use App\Contexts\Plans\Tests\Feature\PlansTestHelperTrait;
 use App\Contexts\Plans\Tests\Support\Builders\PlanBuilder;
 use App\Shared\Infrastructure\Tests\ApplicationTestTrait;
 use App\Shared\Infrastructure\Tests\BaseTestCase;
 
-final class AddPlanCommandTest extends BaseTestCase
+final class ChangePlanDescriptionCommandTest extends BaseTestCase
 {
     use ApplicationTestTrait, PlansTestHelperTrait;
 
-    public function test_plan_can_be_added()
+    public function test_plan_description_can_be_changed()
     {
-        $planTemplate = PlanBuilder::make()->build();
+        $plan = PlanBuilder::make()->build();
+        $this->getPlanRepository()->persist($plan);
 
-        $command = AddPlan::of(PlanId::makeValue(), $planTemplate->getDescription());
+        $command = ChangePlanDescription::of($plan->planId, 'Changed');
         $this->commandBus()->dispatch($command);
 
         $plan = $this->getPlanRepository()->take($command->getPlanId());
+        $this->assertEquals('Changed', $plan->getDescription());
 
-        $this->assertEquals($command->getPlanId(), $plan->planId);
-        $this->assertEvent(PlanAdded::class);
+        $this->assertEvent(PlanDescriptionChanged::class);
     }
 
     protected function setUp(): void
