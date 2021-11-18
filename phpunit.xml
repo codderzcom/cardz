@@ -23,6 +23,9 @@
         <testsuite name="Personal">
             <directory>./app/Contexts/Personal/Tests</directory>
         </testsuite>
+        <testsuite name="Collaboration">
+            <directory>./app/Contexts/Collaboration/Tests</directory>
+        </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>
