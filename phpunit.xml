@@ -20,6 +20,9 @@
         <testsuite name="Plans">
             <directory>./app/Contexts/Plans/Tests</directory>
         </testsuite>
+        <testsuite name="Personal">
+            <directory>./app/Contexts/Personal/Tests</directory>
+        </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>

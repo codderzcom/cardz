@@ -26,10 +26,8 @@ trait ApplicationTestTrait
         return $this->app->make(EventBusInterface::class);
     }
 
-    protected function assertEvent($eventIdentifier)
+    protected function assertEvent($eventIdentifier): void
     {
-        if (!$this->eventBus()->hasRecordedEvent($eventIdentifier)) {
-            $this->fail("Missing event");
-        }
+        $this->assertTrue($this->eventBus()->hasRecordedEvent($eventIdentifier), 'Missing event');
     }
 }
