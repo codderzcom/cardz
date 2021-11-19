@@ -3,32 +3,34 @@
 namespace App\Contexts\Cards\Tests\Support\Builders;
 
 use App\Contexts\Cards\Domain\Model\Card\Achievement;
+use App\Contexts\Cards\Domain\Model\Card\Achievements;
 use App\Contexts\Cards\Domain\Model\Card\Card;
 use App\Contexts\Cards\Domain\Model\Card\CardId;
 use App\Contexts\Cards\Domain\Model\Card\CustomerId;
 use App\Contexts\Cards\Domain\Model\Plan\PlanId;
+use App\Contexts\Cards\Domain\Model\Plan\Requirement;
 use App\Shared\Infrastructure\Tests\BaseBuilder;
 use Carbon\Carbon;
 
 final class CardBuilder extends BaseBuilder
 {
-    private string $cardId;
+    public string $cardId;
 
-    private string $planId;
+    public string $planId;
 
-    private string $customerId;
+    public string $customerId;
 
-    private string $description;
+    public string $description;
 
-    private ?Carbon $issued = null;
+    public ?Carbon $issued = null;
 
-    private ?Carbon $satisfied = null;
+    public ?Carbon $satisfied = null;
 
-    private ?Carbon $completed = null;
+    public ?Carbon $completed = null;
 
-    private ?Carbon $revoked = null;
+    public ?Carbon $revoked = null;
 
-    private ?Carbon $blocked = null;
+    public ?Carbon $blocked = null;
 
     /**
      * @var Achievement[]
@@ -55,6 +57,22 @@ final class CardBuilder extends BaseBuilder
             $this->achievements,
             $this->requirements,
         );
+    }
+
+    public function withRequirements(Requirement ... $requirements): self
+    {
+        $this->requirements = Achievements::from(...$requirements)->toArray();
+        return $this;
+    }
+
+    public function withAchievements(Achievement ... $achievements): self
+    {
+        $achievementData = [];
+        foreach ($achievements as $achievement) {
+            $achievementData[] = $achievement->toArray();
+        }
+        $this->achievements = $achievementData;
+        return $this;
     }
 
     public function generate(): static

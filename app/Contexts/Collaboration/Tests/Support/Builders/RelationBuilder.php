@@ -12,17 +12,17 @@ use Carbon\Carbon;
 
 final class RelationBuilder extends BaseBuilder
 {
-    private string $relationId;
+    public string $relationId;
 
-    private string $collaboratorId;
+    public string $collaboratorId;
 
-    private string $workspaceId;
+    public string $workspaceId;
 
-    private string $relationType;
+    public string $relationType;
 
-    private Carbon $established;
+    public Carbon $established;
 
-    private ?Carbon $left = null;
+    public ?Carbon $left = null;
 
     public function build(): Relation
     {

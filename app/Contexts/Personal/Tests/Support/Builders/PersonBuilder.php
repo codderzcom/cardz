@@ -9,11 +9,11 @@ use Carbon\Carbon;
 
 final class PersonBuilder extends BaseBuilder
 {
-    private string $personId;
+    public string $personId;
 
-    private string $name;
+    public string $name;
 
-    private Carbon $joined;
+    public Carbon $joined;
 
     public function build(): Person
     {

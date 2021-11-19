@@ -12,15 +12,15 @@ use Carbon\Carbon;
 
 final class RequirementBuilder extends BaseBuilder
 {
-    private string $requirementId;
+    public string $requirementId;
 
-    private string $planId;
+    public string $planId;
 
-    private string $description;
+    public string $description;
 
-    private Carbon $added;
+    public Carbon $added;
 
-    private ?Carbon $removed;
+    public ?Carbon $removed;
 
     public function build(): Requirement
     {

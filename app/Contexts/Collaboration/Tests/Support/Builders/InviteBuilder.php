@@ -11,13 +11,13 @@ use Carbon\Carbon;
 
 final class InviteBuilder extends BaseBuilder
 {
-    private string $inviteId;
+    public string $inviteId;
 
-    private string $inviterId;
+    public string $inviterId;
 
-    private string $workspaceId;
+    public string $workspaceId;
 
-    private Carbon $proposed;
+    public Carbon $proposed;
 
     public function build(): Invite
     {

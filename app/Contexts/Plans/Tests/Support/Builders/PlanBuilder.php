@@ -10,19 +10,19 @@ use Carbon\Carbon;
 
 final class PlanBuilder extends BaseBuilder
 {
-    private string $planId;
+    public string $planId;
 
-    private string $workspaceId;
+    public string $workspaceId;
 
-    private string $description;
+    public string $description;
 
-    private Carbon $added;
+    public Carbon $added;
 
-    private ?Carbon $launched;
+    public ?Carbon $launched;
 
-    private ?Carbon $stopped;
+    public ?Carbon $stopped;
 
-    private ?Carbon $archived;
+    public ?Carbon $archived;
 
     public function build(): Plan
     {

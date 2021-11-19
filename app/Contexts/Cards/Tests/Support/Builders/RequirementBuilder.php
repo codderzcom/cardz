@@ -2,17 +2,15 @@
 
 namespace App\Contexts\Cards\Tests\Support\Builders;
 
-use App\Contexts\Cards\Domain\Model\Plan\Plan;
-use App\Contexts\Cards\Domain\Model\Plan\PlanId;
 use App\Contexts\Cards\Domain\Model\Plan\Requirement;
 use App\Shared\Infrastructure\Support\GuidBasedImmutableId;
 use App\Shared\Infrastructure\Tests\BaseBuilder;
 
 final class RequirementBuilder extends BaseBuilder
 {
-    private string $requirementId;
+    public string $requirementId;
 
-    private string $description;
+    public string $description;
 
     public function build(): Requirement
     {

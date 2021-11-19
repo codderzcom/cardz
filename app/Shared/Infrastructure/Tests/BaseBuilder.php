@@ -8,7 +8,7 @@ use Faker\Generator;
 
 abstract class BaseBuilder implements BuilderInterface
 {
-    protected Generator $faker;
+    public Generator $faker;
 
     public static function make(): static
     {

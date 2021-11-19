@@ -10,17 +10,17 @@ use Carbon\Carbon;
 
 final class WorkspaceBuilder extends BaseBuilder
 {
-    private string $workspaceId;
+    public string $workspaceId;
 
-    private string $keeperId;
+    public string $keeperId;
 
-    private string $name;
+    public string $name;
 
-    private string $description;
+    public string $description;
 
-    private string $address;
+    public string $address;
 
-    private Carbon $added;
+    public Carbon $added;
 
     public function build(): Workspace
     {

@@ -10,9 +10,9 @@ use App\Shared\Infrastructure\Tests\BaseBuilder;
 
 final class PlanBuilder extends BaseBuilder
 {
-    private PlanId $planId;
+    public PlanId $planId;
 
-    private string $description;
+    public string $description;
 
     /**
      * @var Requirement[]
