@@ -16,7 +16,7 @@ use App\Contexts\Cards\Integration\Consumers\PlansRequirementDescriptionChangedC
 use App\Contexts\Cards\Integration\Consumers\PlansRequirementsChangedConsumer;
 use App\Shared\Contracts\Commands\CommandBusInterface;
 use App\Shared\Contracts\Messaging\IntegrationEventBusInterface;
-use App\Shared\Infrastructure\CommandHandling\SimpleAutoCommandHandlerProvider;
+use App\Shared\Infrastructure\CommandHandling\LaravelHandlerGenerator;
 use Illuminate\Support\ServiceProvider;
 
 class CardsProvider extends ServiceProvider
@@ -30,12 +30,11 @@ class CardsProvider extends ServiceProvider
     }
 
     public function boot(
-        CardAppService $cardAppService,
         CommandBusInterface $commandBus,
         DomainEventBusInterface $domainEventBus,
         IntegrationEventBusInterface $integrationEventBus,
     ) {
-        $commandBus->registerProvider(SimpleAutoCommandHandlerProvider::parse($cardAppService));
+        $commandBus->registerProvider(LaravelHandlerGenerator::of(CardAppService::class));
 
         $integrationEventBus->subscribe($this->app->make(PlansRequirementsChangedConsumer::class));
         $integrationEventBus->subscribe($this->app->make(PlansRequirementDescriptionChangedConsumer::class));
