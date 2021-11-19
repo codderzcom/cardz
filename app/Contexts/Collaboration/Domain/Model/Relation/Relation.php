@@ -16,6 +16,8 @@ final class Relation implements AggregateRootInterface
 
     private ?Carbon $established = null;
 
+    private ?Carbon $left = null;
+
     private function __construct(
         public RelationId $relationId,
         public CollaboratorId $collaboratorId,
@@ -37,9 +39,11 @@ final class Relation implements AggregateRootInterface
         string $workspaceId,
         string $relationType,
         ?Carbon $established,
+        ?Carbon $left,
     ): self {
         $relation = new self(RelationId::of($relationId), CollaboratorId::of($collaboratorId), WorkspaceId::of($workspaceId), RelationType::of($relationType));
         $relation->established = $established;
+        $relation->left = $left;
         return $relation;
     }
 
@@ -48,6 +52,12 @@ final class Relation implements AggregateRootInterface
         if ($this->relationType->equals(RelationType::KEEPER())) {
             throw new InvalidOperationException("Keeper is not allowed to leave");
         }
+        $this->left = Carbon::now();
         return $this->withEvents(RelationLeft::of($this));
+    }
+
+    public function isLeft(): bool
+    {
+        return $this->left !== null;
     }
 }

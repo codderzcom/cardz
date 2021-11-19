@@ -22,6 +22,8 @@ final class RelationBuilder extends BaseBuilder
 
     private Carbon $established;
 
+    private ?Carbon $left = null;
+
     public function build(): Relation
     {
         return Relation::restore(
@@ -30,6 +32,20 @@ final class RelationBuilder extends BaseBuilder
             $this->workspaceId,
             $this->relationType,
             $this->established,
+            $this->left,
+        );
+    }
+
+    public function buildForKeeper(): Relation
+    {
+        $this->relationType = RelationType::KEEPER;
+        return Relation::restore(
+            $this->relationId,
+            $this->collaboratorId,
+            $this->workspaceId,
+            $this->relationType,
+            $this->established,
+            $this->left,
         );
     }
 
@@ -40,6 +56,7 @@ final class RelationBuilder extends BaseBuilder
         $this->workspaceId = WorkspaceId::makeValue();
         $this->relationType = RelationType::MEMBER;
         $this->established = Carbon::now();
+        $this->left = null;
         return $this;
     }
 }
