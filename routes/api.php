@@ -1,20 +1,26 @@
 <?php
 
-use App\Contexts\Auth\Presentation\Controllers\Http\User\UserController;
+/*
 use App\Contexts\Cards\Presentation\Controllers\Http\Card\CardController;
 use App\Contexts\Collaboration\Presentation\Controllers\Http\Invite\InviteController;
 use App\Contexts\Collaboration\Presentation\Controllers\Http\Relation\RelationController;
+use App\Contexts\Identity\Presentation\Controllers\Http\User\UserController;
+*/
+
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer\CustomerController as MABCustomerController;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\CardController as MABCardController;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\CollaborationController as MABCollaborationController;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\PlanController as MABPlanController;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\WorkspaceController as MABWorkspaceController;
+use Illuminate\Support\Facades\Route;
+
+/*
 use App\Contexts\Personal\Presentation\Controllers\Http\Person\PersonController;
 use App\Contexts\Plans\Presentation\Controllers\Http\Plan\PlanController;
 use App\Contexts\Plans\Presentation\Controllers\Http\Requirement\RequirementController;
 use App\Contexts\Workspaces\Presentation\Controllers\Http\Workspace\WorkspaceController;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+*/
 
 /*
 |--------------------------------------------------------------------------
@@ -26,63 +32,6 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::group(['prefix' => '/auth/v1'], function () {
-    Route::post('/user/register', [UserController::class, 'register'])->name('RegisterUser');
-});
-
-Route::group(['prefix' => '/cards/v1'], function () {
-    Route::post('/card', [CardController::class, 'issue'])->name('IssueCard');
-
-    Route::group(['prefix' => '/card/{cardId}'], function () {
-        Route::post('/complete', [CardController::class, 'complete'])->name('CompleteCard');
-        Route::post('/revoke', [CardController::class, 'revoke'])->name('RevokeCard');
-        Route::post('/block', [CardController::class, 'block'])->name('BlockCard');
-        Route::post('/unblock', [CardController::class, 'unblock'])->name('UnblockBlockedCard');
-
-        Route::post('/achievement', [CardController::class, 'addAchievement'])->name('AddAchievement');
-        Route::delete('/achievement/{achievementId}', [CardController::class, 'removeAchievement'])->name('RemoveAchievement');
-    });
-});
-
-Route::group(['prefix' => '/plans/v1'], function () {
-    Route::post('/plan', [PlanController::class, 'add'])->name('AddPlan');
-
-    Route::group(['prefix' => '/plan/{planId}'], function () {
-        Route::post('/launch', [PlanController::class, 'launch'])->name('LaunchPlan');
-        Route::post('/stop', [PlanController::class, 'stop'])->name('StopPlan');
-        Route::post('/archive', [PlanController::class, 'archive'])->name('ArchivePlan');
-
-        Route::put('/description', [PlanController::class, 'changeDescription'])->name('ChangePlanDescription');
-
-        Route::post('/requirement', [RequirementController::class, 'add'])->name('AddPlanRequirement');
-        Route::delete('/requirement/{requirementId}', [RequirementController::class, 'remove'])->name('RemovePlanRequirement');
-        Route::put('/requirement/{requirementId}', [RequirementController::class, 'change'])->name('ChangePlanRequirement');
-    });
-});
-
-Route::group(['prefix' => '/workspaces/v1'], function () {
-    Route::group(['prefix' => '/workspace'], function () {
-        Route::post('/', [WorkspaceController::class, 'add'])->name('AddWorkspace');
-        Route::put('/{workspaceId}/profile', [WorkspaceController::class, 'changeProfile'])->name('ChangeWorkspaceProfile');
-    });
-});
-
-Route::group(['prefix' => '/collaboration/v1'], function () {
-    Route::post('/relation/leave', [RelationController::class, 'leave'])->name('LeaveRelation');
-
-    Route::post('/invite', [InviteController::class, 'propose'])->name('ProposeInvite');
-    Route::post('/invite/{inviteId}/accept', [InviteController::class, 'accept'])->name('AcceptInvite');
-    Route::post('/invite/{inviteId}/discard', [InviteController::class, 'discard'])->name('DiscardInvite');
-});
-
-Route::group(['prefix' => '/personal/v1/person/{personId}'], function () {
-    Route::put('/name', [PersonController::class, 'changeName'])->name('ChangePersonName');
-});
 
 Route::group(['prefix' => '/mab/v1'], function () {
     Route::get('/customer/workspaces', [MABCustomerController::class, 'getWorkspaces'])->name('MABCustomerGetWorkspaces');
@@ -143,8 +92,66 @@ Route::group(['prefix' => '/mab/v1'], function () {
                 Route::post('/invite/{inviteId}/accept', [MABCollaborationController::class, 'accept'])->name('MABAcceptInvite');
                 Route::post('/invite/{inviteId}/discard', [MABCollaborationController::class, 'discard'])->name('MABDiscardInvite');
             });
-
         });
     });
 });
 
+/*
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
+Route::group(['prefix' => '/identity/v1'], function () {
+    Route::post('/user/register', [UserController::class, 'register'])->name('RegisterUser');
+});
+
+Route::group(['prefix' => '/cards/v1'], function () {
+    Route::post('/card', [CardController::class, 'issue'])->name('IssueCard');
+
+    Route::group(['prefix' => '/card/{cardId}'], function () {
+        Route::post('/complete', [CardController::class, 'complete'])->name('CompleteCard');
+        Route::post('/revoke', [CardController::class, 'revoke'])->name('RevokeCard');
+        Route::post('/block', [CardController::class, 'block'])->name('BlockCard');
+        Route::post('/unblock', [CardController::class, 'unblock'])->name('UnblockBlockedCard');
+
+        Route::post('/achievement', [CardController::class, 'addAchievement'])->name('AddAchievement');
+        Route::delete('/achievement/{achievementId}', [CardController::class, 'removeAchievement'])->name('RemoveAchievement');
+    });
+});
+
+Route::group(['prefix' => '/plans/v1'], function () {
+    Route::post('/plan', [PlanController::class, 'add'])->name('AddPlan');
+
+    Route::group(['prefix' => '/plan/{planId}'], function () {
+        Route::post('/launch', [PlanController::class, 'launch'])->name('LaunchPlan');
+        Route::post('/stop', [PlanController::class, 'stop'])->name('StopPlan');
+        Route::post('/archive', [PlanController::class, 'archive'])->name('ArchivePlan');
+
+        Route::put('/description', [PlanController::class, 'changeDescription'])->name('ChangePlanDescription');
+
+        Route::post('/requirement', [RequirementController::class, 'add'])->name('AddPlanRequirement');
+        Route::delete('/requirement/{requirementId}', [RequirementController::class, 'remove'])->name('RemovePlanRequirement');
+        Route::put('/requirement/{requirementId}', [RequirementController::class, 'change'])->name('ChangePlanRequirement');
+    });
+});
+
+Route::group(['prefix' => '/workspaces/v1'], function () {
+    Route::group(['prefix' => '/workspace'], function () {
+        Route::post('/', [WorkspaceController::class, 'add'])->name('AddWorkspace');
+        Route::put('/{workspaceId}/profile', [WorkspaceController::class, 'changeProfile'])->name('ChangeWorkspaceProfile');
+    });
+});
+
+Route::group(['prefix' => '/collaboration/v1'], function () {
+    Route::post('/relation/leave', [RelationController::class, 'leave'])->name('LeaveRelation');
+
+    Route::post('/invite', [InviteController::class, 'propose'])->name('ProposeInvite');
+    Route::post('/invite/{inviteId}/accept', [InviteController::class, 'accept'])->name('AcceptInvite');
+    Route::post('/invite/{inviteId}/discard', [InviteController::class, 'discard'])->name('DiscardInvite');
+});
+
+Route::group(['prefix' => '/personal/v1/person/{personId}'], function () {
+    Route::put('/name', [PersonController::class, 'changeName'])->name('ChangePersonName');
+});
+
+*/

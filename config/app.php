@@ -176,7 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         App\Shared\SharedProvider::class,
-        App\Contexts\Auth\AuthProvider::class,
+        App\Contexts\Identity\IdentityProvider::class,
         App\Contexts\Authorization\AuthorizationProvider::class,
         App\Contexts\Cards\CardsProvider::class,
         App\Contexts\Collaboration\CollaborationProvider::class,

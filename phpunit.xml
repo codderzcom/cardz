@@ -8,8 +8,8 @@
         <!--        <testsuite name="Unit">-->
         <!--            <directory suffix="Test.php">./tests/Unit</directory>-->
         <!--        </testsuite>-->
-        <!--        <testsuite name="Feature">-->
-        <!--            <directory suffix="Test.php">./tests/Feature</directory>-->
+        <!--        <testsuite name="Scenarios">-->
+        <!--            <directory suffix="Test.php">./tests/Scenarios</directory>-->
         <!--        </testsuite>-->
         <testsuite name="MobileAppBack">
             <directory>./app/Contexts/MobileAppBack/Tests</directory>
@@ -29,8 +29,8 @@
         <testsuite name="Cards">
             <directory>./app/Contexts/Cards/Tests</directory>
         </testsuite>
-        <testsuite name="Auth">
-            <directory>./app/Contexts/Auth/Tests</directory>
+        <testsuite name="Identity">
+            <directory>./app/Contexts/Identity/Tests</directory>
         </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">

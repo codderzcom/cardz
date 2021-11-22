@@ -80,7 +80,6 @@ class DeferredExecutorGenerator implements QueryExecutorProviderInterface
 
     protected function makeExecutor(string $executingMethod, string $origin): Closure
     {
-        $maker = $this->maker;
-        return fn ($query) => [$maker($origin), $executingMethod]($query);
+        return fn ($query) => [($this->maker)($origin), $executingMethod]($query);
     }
 }

@@ -5,7 +5,7 @@ namespace App\Contexts\Authorization;
 use App\Contexts\Authorization\Application\AuthorizationBusInterface;
 use App\Contexts\Authorization\Application\AuthorizationService;
 use App\Contexts\Authorization\Infrastructure\AuthorizationBus;
-use App\Shared\Infrastructure\QueryHandling\SimpleAutoQueryExecutorProvider;
+use App\Shared\Infrastructure\QueryHandling\LaravelExecutorGenerator;
 use Illuminate\Support\ServiceProvider;
 
 class AuthorizationProvider extends ServiceProvider
@@ -17,9 +17,7 @@ class AuthorizationProvider extends ServiceProvider
 
     public function boot(
         AuthorizationBusInterface $authorizationBus,
-        AuthorizationService $authorizationService,
-    )
-    {
-        $authorizationBus->registerProvider(SimpleAutoQueryExecutorProvider::parse($authorizationService));
+    ) {
+        $authorizationBus->registerProvider(LaravelExecutorGenerator::of(AuthorizationService::class));
     }
 }
