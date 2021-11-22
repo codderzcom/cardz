@@ -35,12 +35,12 @@ final class CardBuilder extends BaseBuilder
     /**
      * @var Achievement[]
      */
-    private array $achievements;
+    public array $achievements;
 
     /**
      * @var Achievement[]
      */
-    private array $requirements;
+    public array $requirements;
 
     public function build(): Card
     {

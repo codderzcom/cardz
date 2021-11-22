@@ -11,4 +11,9 @@ interface AggregateRootInterface extends JsonSerializable
      * @return EventInterface[]
      */
     public function releaseEvents(): array;
+
+    /**
+     * @return EventInterface[]
+     */
+    public function tapEvents(): array;
 }

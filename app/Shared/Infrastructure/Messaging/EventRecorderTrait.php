@@ -4,7 +4,7 @@ namespace App\Shared\Infrastructure\Messaging;
 
 trait EventRecorderTrait
 {
-    protected array $recordedEvents;
+    protected array $recordedEvents = [];
 
     protected function recordEvent($eventIdentifier, $event)
     {

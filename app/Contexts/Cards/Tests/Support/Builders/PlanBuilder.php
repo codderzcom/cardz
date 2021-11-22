@@ -5,7 +5,6 @@ namespace App\Contexts\Cards\Tests\Support\Builders;
 use App\Contexts\Cards\Domain\Model\Plan\Plan;
 use App\Contexts\Cards\Domain\Model\Plan\PlanId;
 use App\Contexts\Cards\Domain\Model\Plan\Requirement;
-use App\Shared\Infrastructure\Support\GuidBasedImmutableId;
 use App\Shared\Infrastructure\Tests\BaseBuilder;
 
 final class PlanBuilder extends BaseBuilder
@@ -17,7 +16,7 @@ final class PlanBuilder extends BaseBuilder
     /**
      * @var Requirement[]
      */
-    private array $requirements = [];
+    public array $requirements = [];
 
     public function build(): Plan
     {

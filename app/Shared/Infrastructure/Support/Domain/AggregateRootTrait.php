@@ -24,6 +24,14 @@ trait AggregateRootTrait
         return $events;
     }
 
+    /**
+     * @return EventInterface[]
+     */
+    public function tapEvents(): array
+    {
+        return $this->events;
+    }
+
     public function jsonSerialize()
     {
         return $this->toArray();

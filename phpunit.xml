@@ -29,6 +29,9 @@
         <testsuite name="Cards">
             <directory>./app/Contexts/Cards/Tests</directory>
         </testsuite>
+        <testsuite name="Auth">
+            <directory>./app/Contexts/Auth/Tests</directory>
+        </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>

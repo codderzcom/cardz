@@ -45,4 +45,9 @@ final class UserIdentity implements ValueObjectInterface
     {
         return $this->email === $identity->email && $this->phone === $identity->phone;
     }
+
+    public function __toString()
+    {
+        return $this->getEmail() ?? $this->getPhone() ?? throw new ParameterAssertionException();
+    }
 }

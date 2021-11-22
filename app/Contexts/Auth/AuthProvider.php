@@ -13,7 +13,9 @@ use App\Contexts\Auth\Infrastructure\Messaging\DomainEventBusInterface;
 use App\Contexts\Auth\Infrastructure\Persistence\Eloquent\UserRepository;
 use App\Shared\Contracts\Commands\CommandBusInterface;
 use App\Shared\Contracts\Queries\QueryBusInterface;
+use App\Shared\Infrastructure\CommandHandling\LaravelHandlerGenerator;
 use App\Shared\Infrastructure\CommandHandling\SimpleAutoCommandHandlerProvider;
+use App\Shared\Infrastructure\QueryHandling\LaravelExecutorGenerator;
 use App\Shared\Infrastructure\QueryHandling\SimpleAutoQueryExecutorProvider;
 use Illuminate\Support\ServiceProvider;
 
@@ -26,14 +28,12 @@ class AuthProvider extends ServiceProvider
     }
 
     public function boot(
-        UserAppService $userAppService,
-        TokenAppService $tokenAppService,
         DomainEventBusInterface $domainEventBus,
         CommandBusInterface $commandBus,
         QueryBusInterface $queryBus,
     ) {
-        $commandBus->registerProvider(SimpleAutoCommandHandlerProvider::parse($userAppService));
-        $queryBus->registerProvider(SimpleAutoQueryExecutorProvider::parse($tokenAppService));
+        $commandBus->registerProvider(LaravelHandlerGenerator::of(UserAppService::class));
+        $queryBus->registerProvider(LaravelExecutorGenerator::of(TokenAppService::class));
 
         $domainEventBus->subscribe($this->app->make(TokenAssignedConsumer::class));
         $domainEventBus->subscribe($this->app->make(UserProfileProvidedConsumer::class));

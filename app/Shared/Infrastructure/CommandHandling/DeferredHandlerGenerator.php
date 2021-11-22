@@ -17,6 +17,9 @@ class DeferredHandlerGenerator implements CommandHandlerProviderInterface
      */
     protected array $handlers = [];
 
+    /**
+     * @var callable
+     */
     protected $maker;
 
     /** @var array string[] */
@@ -37,6 +40,7 @@ class DeferredHandlerGenerator implements CommandHandlerProviderInterface
     public function parse(string ...$handlerContainerClasses): static
     {
         $this->handlerContainerClasses = $handlerContainerClasses;
+        $this->registered = false;
         return $this;
     }
 
@@ -82,7 +86,6 @@ class DeferredHandlerGenerator implements CommandHandlerProviderInterface
 
     protected function makeHandlerFor(string $for, string $handlingMethod, string $origin): CommandHandlerInterface
     {
-        $origin ??= $this;
         return
             new class($handlingMethod, $for, $origin, $this->maker) implements CommandHandlerInterface {
                 private $originMaker;
