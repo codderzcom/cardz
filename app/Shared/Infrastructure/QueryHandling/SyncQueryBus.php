@@ -12,7 +12,6 @@ class SyncQueryBus implements QueryBusInterface
 
     public function execute(QueryInterface $query)
     {
-        $f = $this->executors['App\Contexts\Auth\Application\Queries\GetToken'];
         $name = $query::class;
         return array_key_exists($name, $this->executors) ? $this->executors[$name]($query) : null;
     }
