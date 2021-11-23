@@ -6,6 +6,5 @@ trait ScenarioTestTrait
 {
     public function setUpEnvironment(): void
     {
-
     }
 }

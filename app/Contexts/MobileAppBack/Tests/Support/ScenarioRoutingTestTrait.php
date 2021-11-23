@@ -2,18 +2,16 @@
 
 namespace App\Contexts\MobileAppBack\Tests\Support;
 
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
+
 trait ScenarioRoutingTestTrait
 {
-    protected string $basePrefix = '/api/mab/v1';
-    protected array $routes = [
-
-    ];
-
-    public function getRoute(string $name, ...$arguments)
+    public function getRoute(string $name, array $arguments = []): string
     {
-        $route = $this->routes[$name] ?? null;
-        if ($route === null) {
-            $this->fail("Route not found");
+        try {
+            return route($name, $arguments);
+        } catch (RouteNotFoundException) {
+            $this->fail("Route $name not found");
         }
     }
 
