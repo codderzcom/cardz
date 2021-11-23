@@ -75,6 +75,18 @@ final class CardBuilder extends BaseBuilder
         return $this;
     }
 
+    public function withCustomerId(string $customerId): self
+    {
+        $this->customerId = $customerId;
+        return $this;
+    }
+
+    public function withPlanId(string $planId): self
+    {
+        $this->planId = $planId;
+        return $this;
+    }
+
     public function generate(): static
     {
         $this->cardId = CardId::makeValue();

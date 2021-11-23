@@ -36,6 +36,12 @@ final class WorkspaceBuilder extends BaseBuilder
         );
     }
 
+    public function withKeeperId(string $keeperId): static
+    {
+        $this->keeperId = $keeperId;
+        return $this;
+    }
+
     public function generate(): static
     {
         $this->workspaceId = WorkspaceId::makeValue();

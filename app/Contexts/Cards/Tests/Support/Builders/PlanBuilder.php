@@ -27,13 +27,10 @@ final class PlanBuilder extends BaseBuilder
         );
     }
 
-    public function buildForId(PlanId $planId): Plan
+    public function withPlanId(PlanId $planId): self
     {
-        return Plan::restore(
-            $planId,
-            $this->description,
-            ...$this->requirements,
-        );
+        $this->planId = $planId;
+        return $this;
     }
 
     public function generate(): static

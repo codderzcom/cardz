@@ -43,6 +43,12 @@ final class PlanBuilder extends BaseBuilder
         return $this->build();
     }
 
+    public function withWorkspaceId(string $workspaceId): self
+    {
+        $this->workspaceId = $workspaceId;
+        return $this;
+    }
+
     public function generate(): static
     {
         $this->planId = PlanId::makeValue();
