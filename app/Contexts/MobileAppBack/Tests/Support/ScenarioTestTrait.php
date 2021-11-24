@@ -19,7 +19,10 @@ trait ScenarioTestTrait
     public function setUpEnvironment(): void
     {
         $this->environment = EnvironmentBuilder::make()->build();
+    }
 
+    public function persistEnvironment(): void
+    {
         foreach ($this->environment->keepers as $keeper) {
             $this->getUserRepository()->persist($keeper);
         }

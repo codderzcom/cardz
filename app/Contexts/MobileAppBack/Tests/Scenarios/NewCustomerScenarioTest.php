@@ -8,6 +8,7 @@ class NewCustomerScenarioTest extends BaseScenarioTestCase
 {
     public function test_customer_can_register()
     {
+        $this->persistEnvironment();
         $userBuilder = UserBuilder::make();
 
         $token = $this->post($this->getRoute('MABCustomerRegister'), [

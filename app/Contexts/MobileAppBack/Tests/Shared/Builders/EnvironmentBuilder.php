@@ -26,11 +26,7 @@ use Faker\Generator;
 final class EnvironmentBuilder implements BuilderInterface
 {
     public const SMALL_SET_SIZE = 3;
-    public const SMALL_SET_MAX = 2;
     public const MEDIUM_SET_SIZE = 6;
-    public const MEDIUM_SET_MAX = 5;
-    public const LARGE_SET_SIZE = 10;
-    public const LARGE_SET_MAX = 9;
 
     /** @var User[] */
     public array $keepers = [];
@@ -136,17 +132,9 @@ final class EnvironmentBuilder implements BuilderInterface
             array_push($this->requirements, ...$requirements);
         }
 
-        for ($i = 0; $i < self::LARGE_SET_SIZE * 10; $i++) {
-            $customerId = $this->customers[random_int(1, self::SMALL_SET_MAX)]->userId;
-            $plan = $this->plans[random_int(0, self::LARGE_SET_MAX)];
-            $requirements = RequirementBuilder::buildSeriesForPlanId($plan->planId, random_int(0, self::LARGE_SET_MAX));
-            array_push($this->requirements, ...$requirements);
-
-            $this->cards[] = CardBuilder::make()
-                ->withRequirements(...array_map(fn($req) => CardRequirement::of($req->requirementId, $req->getDescription()), $requirements))
-                ->withPlanId($plan->planId)
-                ->withCustomerId($customerId)
-                ->build();
+        foreach ($this->plans as $plan) {
+            $cards = $this->generateCards($plan->planId);
+            array_push($this->cards, ...$cards);
         }
 
         return $this;
@@ -249,10 +237,10 @@ final class EnvironmentBuilder implements BuilderInterface
         $plans[] = $planBuilder->generate()->withWorkspaceId($workspaceId)->build();
 
         $plans[] = $planBuilder->generate()->withWorkspaceId($workspaceId)->withLaunched()->build();
-        array_push($requirements, ...$requirementBuilder::buildSeriesForPlanId($planBuilder->planId, self::SMALL_SET_SIZE));
+        array_push($requirements, ...$requirementBuilder::buildSeriesForPlanId($planBuilder->planId, self::MEDIUM_SET_SIZE));
 
         $plans[] = $planBuilder->generate()->withWorkspaceId($workspaceId)->withStopped()->build();
-        array_push($requirements, ...$requirementBuilder::buildSeriesForPlanId($planBuilder->planId, self::SMALL_SET_SIZE));
+        array_push($requirements, ...$requirementBuilder::buildSeriesForPlanId($planBuilder->planId, self::MEDIUM_SET_SIZE));
 
         $plans[] = $planBuilder->generate()->withWorkspaceId($workspaceId)->withArchived()->build();
 
@@ -261,4 +249,38 @@ final class EnvironmentBuilder implements BuilderInterface
             $requirements,
         ];
     }
+
+    private function generateCards(string $planId): array
+    {
+        $cardBuilder = $this->cardBuilder;
+        $cards = [];
+        $requirements = $this->requirementsByPlanId($planId);
+
+        $customerId = $this->customers[1]->userId;
+        $cards[] = $cardBuilder
+            ->withRequirements(...array_map(fn($req) => CardRequirement::of($req->requirementId, $req->getDescription()), $requirements))
+            ->withPlanId($planId)
+            ->withCustomerId($customerId)
+            ->build();
+
+        $customerId = $this->customers[2]->userId;
+        $cards[] = $cardBuilder
+            ->withRequirements(...array_map(fn($req) => CardRequirement::of($req->requirementId, $req->getDescription()), $requirements))
+            ->withPlanId($planId)
+            ->withCustomerId($customerId)
+            ->build();
+        return $cards;
+    }
+
+    private function requirementsByPlanId(string $planId): array
+    {
+        $requirements = [];
+        foreach ($this->requirements as $index => $requirement) {
+            if ($requirement->planId->is($planId)) {
+                $requirements[$index] = $requirement;
+            }
+        }
+        return $requirements;
+    }
+
 }

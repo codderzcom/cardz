@@ -15,7 +15,7 @@ interface GeneralIdInterface extends JsonSerializable, Stringable
 
     public function equals(GeneralIdInterface $id): bool;
 
-    public function isA(string $id): bool;
+    public function is(string $id): bool;
 
     public function jsonSerialize();
 

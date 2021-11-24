@@ -44,7 +44,7 @@ class GuidBasedImmutableId implements GeneralIdInterface
         return $this->id === $id->id;
     }
 
-    public function isA(string $id): bool
+    public function is(string $id): bool
     {
         return $this->id === $id;
     }
