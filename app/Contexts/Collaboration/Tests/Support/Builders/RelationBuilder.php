@@ -49,6 +49,26 @@ final class RelationBuilder extends BaseBuilder
         );
     }
 
+    public function withKeeperId(string $keeperId): self
+    {
+        $this->collaboratorId = $keeperId;
+        $this->relationType = RelationType::KEEPER;
+        return $this;
+    }
+
+    public function withCollaboratorId(string $collaboratorId): self
+    {
+        $this->collaboratorId = $collaboratorId;
+        $this->relationType = RelationType::MEMBER;
+        return $this;
+    }
+
+    public function withWorkspaceId(string $workspaceId): self
+    {
+        $this->workspaceId = $workspaceId;
+        return $this;
+    }
+
     public function generate(): static
     {
         $this->relationId = RelationId::makeValue();

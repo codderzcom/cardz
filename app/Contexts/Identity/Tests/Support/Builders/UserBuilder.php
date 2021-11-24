@@ -52,4 +52,9 @@ final class UserBuilder extends BaseBuilder
         $this->password = Hash::make($this->plainTextPassword);
         return $this;
     }
+
+    public function getIdentity(): string
+    {
+        return $this->email ?? $this->phone;
+    }
 }

@@ -2,17 +2,22 @@
 
 namespace App\Contexts\MobileAppBack\Tests\Scenarios;
 
-use App\Contexts\MobileAppBack\Tests\Shared\Builders\EnvironmentBuilder;
+use App\Contexts\Identity\Tests\Support\Builders\UserBuilder;
 
 class NewCustomerScenarioTest extends BaseScenarioTestCase
 {
-    public function test_customer_can_appear()
+    public function test_customer_can_register()
     {
-        $environmentBuilder = EnvironmentBuilder::make();
+        $userBuilder = UserBuilder::make();
 
-        dd($environmentBuilder->cards[1]);
-
-        $this->assertTrue(true);
+        $token = $this->post($this->getRoute('MABCustomerRegister'), [
+            'email' => $userBuilder->email,
+            'phone' => $userBuilder->phone,
+            'name' => $userBuilder->name,
+            'password' => $userBuilder->plainTextPassword,
+            'deviceName' => $this->faker->word(),
+        ])->json();
+        $this->assertMatchesRegularExpression('/\d+\|.{40}/', $token);
     }
 
 }
