@@ -35,6 +35,11 @@ trait ScenarioRoutingTestTrait
         return $this->request('put', $name, $routeArgs, $params);
     }
 
+    public function routeDelete(string $name, array $routeArgs = [], array $params = []): TestResponse
+    {
+        return $this->request('delete', $name, $routeArgs, $params);
+    }
+
     public function request(string $method, string $name, array $routeArgs = [], array $params = []): TestResponse
     {
         if (!empty($this->token)) {

@@ -41,7 +41,12 @@ class BusinessPlanReadStorage implements BusinessPlanReadStorageInterface
         $requirements = [];
         $eloquentRequirements = $plan->requirements()->get();
         foreach ($eloquentRequirements as $eloquentRequirement) {
-            $requirements[] = [$eloquentRequirement->id, $eloquentRequirement->description];
+            if ($eloquentRequirement->removed_at === null) {
+                $requirements[] = [
+                    'requirementId' => $eloquentRequirement->id,
+                    'description' => $eloquentRequirement->description,
+                ];
+            }
         }
         return BusinessPlan::make(
             $plan->id,
