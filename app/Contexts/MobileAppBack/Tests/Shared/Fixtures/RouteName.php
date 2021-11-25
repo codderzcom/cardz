@@ -15,5 +15,8 @@ final class RouteName extends Enum
     public const LAUNCH_PLAN = 'MABPlanLaunch';
     public const STOP_PLAN = 'MABPlanStop';
     public const ARCHIVE_PLAN = 'MABPlanArchive';
+    public const ADD_PLAN_REQUIREMENT = 'MABPlanAddRequirement';
+    public const REMOVE_PLAN_REQUIREMENT = 'MABPlanRemoveRequirement';
+    public const CHANGE_PLAN_REQUIREMENT = 'MABPlanChangeRequirement';
 
 }

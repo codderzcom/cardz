@@ -11,15 +11,14 @@ class PlanTest extends BaseScenarioTestCase
     {
         $this->persistEnvironment();
         $keeperInfo = $this->environment->keeperInfos[0];
-        $token = $this->getToken($keeperInfo);
+        $this->token = $this->getToken($keeperInfo);
 
-        $workspaces = $this->routeGet(RouteName::GET_WORKSPACES, $token)->json();
+        $workspaces = $this->routeGet(RouteName::GET_WORKSPACES)->json();
         $workspaceId = $workspaces[0]['workspaceId'];
 
         $planBuilder = PlanBuilder::make();
 
         $plan = $this->routePost(RouteName::ADD_PLAN,
-            $token,
             ['workspaceId' => $workspaceId],
             ['description' => $planBuilder->description]
         )->json();
@@ -31,15 +30,14 @@ class PlanTest extends BaseScenarioTestCase
     {
         $this->persistEnvironment();
         $collaboratorInfo = $this->environment->collaboratorInfos[0];
-        $token = $this->getToken($collaboratorInfo);
+        $this->token = $this->getToken($collaboratorInfo);
 
-        $workspaces = $this->routeGet(RouteName::GET_WORKSPACES, $token)->json();
+        $workspaces = $this->routeGet(RouteName::GET_WORKSPACES)->json();
         $workspaceId = $workspaces[0]['workspaceId'];
 
         $planBuilder = PlanBuilder::make();
 
         $plan = $this->routePost(RouteName::ADD_PLAN,
-            $token,
             ['workspaceId' => $workspaceId],
             ['description' => $planBuilder->description]
         )->json();
@@ -51,12 +49,12 @@ class PlanTest extends BaseScenarioTestCase
     {
         $this->persistEnvironment();
         $collaboratorInfo = $this->environment->collaboratorInfos[0];
-        $token = $this->getToken($collaboratorInfo);
+        $this->token = $this->getToken($collaboratorInfo);
 
-        $workspaces = $this->routeGet(RouteName::GET_WORKSPACES, $token)->json();
+        $workspaces = $this->routeGet(RouteName::GET_WORKSPACES)->json();
         $workspaceId = $workspaces[0]['workspaceId'];
 
-        $plans = $this->routeGet(RouteName::GET_PLANS, $token, ['workspaceId' => $workspaceId])->json();
+        $plans = $this->routeGet(RouteName::GET_PLANS, ['workspaceId' => $workspaceId])->json();
         $plan = $plans[0];
         $planId = $plan['planId'];
 
@@ -69,24 +67,24 @@ class PlanTest extends BaseScenarioTestCase
 
         $routeArgs = ['workspaceId' => $workspaceId, 'planId' => $planId];
 
-        $plan = $this->routePut(RouteName::LAUNCH_PLAN, $token, $routeArgs)->json();
+        $plan = $this->routePut(RouteName::LAUNCH_PLAN, $routeArgs)->json();
 
         $this->assertNotEquals($changed, $plan['description']);
         $this->assertTrue($plan['isLaunched']);
         $this->assertFalse($plan['isStopped']);
         $this->assertFalse($plan['isArchived']);
 
-        $plan = $this->routePut(RouteName::CHANGE_PLAN_DESCRIPTION, $token, $routeArgs, ['description' => $changed])->json();
+        $plan = $this->routePut(RouteName::CHANGE_PLAN_DESCRIPTION, $routeArgs, ['description' => $changed])->json();
 
         $this->assertEquals($changed, $plan['description']);
 
-        $plan = $this->routePut(RouteName::STOP_PLAN, $token, $routeArgs)->json();
+        $plan = $this->routePut(RouteName::STOP_PLAN, $routeArgs)->json();
 
         $this->assertFalse($plan['isLaunched']);
         $this->assertTrue($plan['isStopped']);
         $this->assertFalse($plan['isArchived']);
 
-        $plan = $this->routePut(RouteName::ARCHIVE_PLAN, $token, $routeArgs)->json();
+        $plan = $this->routePut(RouteName::ARCHIVE_PLAN, $routeArgs)->json();
         $this->assertTrue($plan['isArchived']);
     }
 
@@ -94,20 +92,20 @@ class PlanTest extends BaseScenarioTestCase
     {
         $this->persistEnvironment();
         $collaborator = end($this->environment->collaboratorInfos);
-        $token = $this->getToken($collaborator);
+        $this->token = $this->getToken($collaborator);
 
         $workspaceId = $this->environment->workspaces[0]->workspaceId;
         $planId = $this->environment->plans[0]->planId;
 
         $routeArgs = ['workspaceId' => $workspaceId, 'planId' => $planId];
 
-        $response = $this->routePut(RouteName::LAUNCH_PLAN, $token, $routeArgs);
+        $response = $this->routePut(RouteName::LAUNCH_PLAN, $routeArgs);
         $response->assertForbidden();
 
-        $response = $this->routePut(RouteName::STOP_PLAN, $token, $routeArgs);
+        $response = $this->routePut(RouteName::STOP_PLAN, $routeArgs);
         $response->assertForbidden();
 
-        $response = $this->routePut(RouteName::ARCHIVE_PLAN, $token, $routeArgs);
+        $response = $this->routePut(RouteName::ARCHIVE_PLAN, $routeArgs);
         $response->assertForbidden();
     }
 
@@ -115,27 +113,27 @@ class PlanTest extends BaseScenarioTestCase
     {
         $this->persistEnvironment();
         $collaboratorInfo = $this->environment->collaboratorInfos[0];
-        $token = $this->getToken($collaboratorInfo);
+        $this->token = $this->getToken($collaboratorInfo);
 
-        $workspaces = $this->routeGet(RouteName::GET_WORKSPACES, $token)->json();
+        $workspaces = $this->routeGet(RouteName::GET_WORKSPACES)->json();
         $workspaceId = $workspaces[0]['workspaceId'];
 
-        $plans = $this->routeGet(RouteName::GET_PLANS, $token, ['workspaceId' => $workspaceId])->json();
+        $plans = $this->routeGet(RouteName::GET_PLANS, ['workspaceId' => $workspaceId])->json();
         $plan = $plans[0];
         $planId = $plan['planId'];
 
         $routeArgs = ['workspaceId' => $workspaceId, 'planId' => $planId];
 
-        $plan = $this->routePut(RouteName::LAUNCH_PLAN, $token, $routeArgs)->json();
+        $plan = $this->routePut(RouteName::LAUNCH_PLAN, $routeArgs)->json();
         $this->assertTrue($plan['isLaunched']);
 
-        $response = $this->routePut(RouteName::LAUNCH_PLAN, $token, $routeArgs);
+        $response = $this->routePut(RouteName::LAUNCH_PLAN, $routeArgs);
         $response->assertStatus(500);
 
-        $plan = $this->routePut(RouteName::STOP_PLAN, $token, $routeArgs)->json();
+        $plan = $this->routePut(RouteName::STOP_PLAN, $routeArgs)->json();
         $this->assertTrue($plan['isStopped']);
 
-        $response = $this->routePut(RouteName::STOP_PLAN, $token, $routeArgs);
+        $response = $this->routePut(RouteName::STOP_PLAN, $routeArgs);
         $response->assertStatus(500);
     }
 

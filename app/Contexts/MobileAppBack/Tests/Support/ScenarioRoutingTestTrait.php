@@ -9,6 +9,8 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 trait ScenarioRoutingTestTrait
 {
+    protected string $token = '';
+
     public function getRoute(string $name, array $arguments = []): string
     {
         try {
@@ -18,25 +20,25 @@ trait ScenarioRoutingTestTrait
         }
     }
 
-    public function routeGet(string $name, string $token = '', array $routeArgs = []): TestResponse
+    public function routeGet(string $name, array $routeArgs = []): TestResponse
     {
-        return $this->request('get', $name, $token, $routeArgs);
+        return $this->request('get', $name, $routeArgs);
     }
 
-    public function routePost(string $name, string $token = '', array $routeArgs = [], array $params = []): TestResponse
+    public function routePost(string $name, array $routeArgs = [], array $params = []): TestResponse
     {
-        return $this->request('post', $name, $token, $routeArgs, $params);
+        return $this->request('post', $name, $routeArgs, $params);
     }
 
-    public function routePut(string $name, string $token = '', array $routeArgs = [], array $params = []): TestResponse
+    public function routePut(string $name, array $routeArgs = [], array $params = []): TestResponse
     {
-        return $this->request('put', $name, $token, $routeArgs, $params);
+        return $this->request('put', $name, $routeArgs, $params);
     }
 
-    public function request(string $method, string $name, string $token = '', array $routeArgs = [], array $params = []): TestResponse
+    public function request(string $method, string $name, array $routeArgs = [], array $params = []): TestResponse
     {
-        if ($token) {
-            $this->withHeader('Authorization', "Bearer: $token");
+        if (!empty($this->token)) {
+            $this->withHeader('Authorization', "Bearer: $this->token");
         }
         return $this->$method($this->getRoute($name, $routeArgs), $params);
     }

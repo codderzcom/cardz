@@ -3,7 +3,10 @@
 namespace App\Contexts\Plans\Tests\Feature\Application\Commands\Plan;
 
 use App\Contexts\Plans\Application\Commands\Plan\LaunchPlan;
+use App\Contexts\Plans\Application\Commands\Plan\StopPlan;
 use App\Contexts\Plans\Domain\Events\Plan\PlanLaunched;
+use App\Contexts\Plans\Domain\Events\Plan\PlanStopped;
+use App\Contexts\Plans\Domain\Exceptions\InvalidPlanStateException;
 use App\Contexts\Plans\Tests\Feature\PlansTestHelperTrait;
 use App\Contexts\Plans\Tests\Support\Builders\PlanBuilder;
 use App\Shared\Infrastructure\Tests\ApplicationTestTrait;

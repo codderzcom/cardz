@@ -6,7 +6,6 @@ use App\Shared\Contracts\Commands\CommandBusInterface;
 use App\Shared\Contracts\Commands\CommandHandlerInterface;
 use App\Shared\Contracts\Commands\CommandHandlerProviderInterface;
 use App\Shared\Contracts\Commands\CommandInterface;
-use WeakMap;
 
 class QueuedSyncCommandBus implements CommandBusInterface
 {
@@ -41,11 +40,14 @@ class QueuedSyncCommandBus implements CommandBusInterface
         }
 
         $this->running = true;
-        for ($index = 0; $index < $this::FAILSAFE && count($this->commandQueue) > 0; $index++) {
-            $command = array_shift($this->commandQueue);
-            $this->handleCommand($command);
+        try {
+            for ($index = 0; $index < $this::FAILSAFE && count($this->commandQueue) > 0; $index++) {
+                $command = array_shift($this->commandQueue);
+                $this->handleCommand($command);
+            }
+        } finally {
+            $this->running = false;
         }
-        $this->running = false;
     }
 
     protected function handleCommand(CommandInterface $command): void

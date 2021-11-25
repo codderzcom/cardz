@@ -10,17 +10,17 @@ class CollaboratorIssuesCardScenarioTest extends BaseScenarioTestCase
     {
         $this->persistEnvironment();
         $collaborator = $this->environment->collaboratorInfos[0];
-        $token = $this->getToken($collaborator);
+        $this->token = $this->getToken($collaborator);
 
         $customerInfo = $this->environment->customerInfos[0];
 
-        $workspaces = $this->routeGet(RouteName::GET_WORKSPACES, $token)->json();
+        $workspaces = $this->routeGet(RouteName::GET_WORKSPACES)->json();
         $workspaceId = $workspaces[0]['workspaceId'];
 
-        $plans = $this->routeGet(RouteName::GET_PLANS, $token, ['workspaceId' => $workspaceId])->json();
+        $plans = $this->routeGet(RouteName::GET_PLANS, ['workspaceId' => $workspaceId])->json();
         $planId = $plans[0]['planId'];
 
-        $card = $this->routePost(RouteName::ISSUE_CARD, $token,
+        $card = $this->routePost(RouteName::ISSUE_CARD,
             ['workspaceId' => $workspaceId],
             ['planId' => $planId, 'customerId' => $customerInfo->id]
         )->json();
@@ -34,15 +34,15 @@ class CollaboratorIssuesCardScenarioTest extends BaseScenarioTestCase
     {
         $this->persistEnvironment();
         $collaborator = end($this->environment->collaboratorInfos);
-        $token = $this->getToken($collaborator);
+        $this->token = $this->getToken($collaborator);
 
         $workspaceId = $this->environment->workspaces[0]->workspaceId;
         $planId = $this->environment->plans[0]->planId;
 
-        $response = $this->routeGet(RouteName::GET_PLANS, $token, ['workspaceId' => $workspaceId]);
+        $response = $this->routeGet(RouteName::GET_PLANS, ['workspaceId' => $workspaceId]);
         $response->assertForbidden();
 
-        $response = $this->routePost(RouteName::ISSUE_CARD, $token,
+        $response = $this->routePost(RouteName::ISSUE_CARD,
             ['workspaceId' => $workspaceId],
             ['planId' => $planId, 'customerId' => $this->environment->customerInfos[0]->id]
         );
