@@ -13,6 +13,9 @@ final class BusinessPlan
         public string $planId,
         public string $workspaceId,
         public string $description,
+        public bool $isLaunched,
+        public bool $isStopped,
+        public bool $isArchived,
         public array $requirements,
     ) {
     }
@@ -22,9 +25,12 @@ final class BusinessPlan
         string $planId,
         string $workspaceId,
         string $description,
+        bool $isLaunched,
+        bool $isStopped,
+        bool $isArchived,
         array $requirements,
     ): self {
-        return new self($planId, $workspaceId, $description, $requirements);
+        return new self($planId, $workspaceId, $description, $isLaunched, $isStopped, $isArchived, $requirements);
     }
 
 }

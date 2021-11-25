@@ -55,6 +55,27 @@ Route::group(['prefix' => '/mab/v1'], function () {
 
             Route::post('/card', [MABCardController::class, 'issue'])->name('MABCardIssue');
 
+            Route::group(['prefix' => '/collaboration'], function () {
+                Route::post('/leave', [MABCollaborationController::class, 'leave'])->name('MABLeaveRelation');
+
+                Route::post('/invite', [MABCollaborationController::class, 'propose'])->name('MABProposeInvite');
+                Route::post('/invite/{inviteId}/accept', [MABCollaborationController::class, 'accept'])->name('MABAcceptInvite');
+                Route::post('/invite/{inviteId}/discard', [MABCollaborationController::class, 'discard'])->name('MABDiscardInvite');
+            });
+
+            Route::group(['prefix' => '/plan/{planId}'], function () {
+                Route::get('/', [MABPlanController::class, 'getPlan'])->name('MABPlanGet');
+
+                Route::put('/description', [MABPlanController::class, 'changeDescription'])->name('MABPlanChangeDescription');
+                Route::put('/launch', [MABPlanController::class, 'launch'])->name('MABPlanLaunch');
+                Route::put('/stop', [MABPlanController::class, 'stop'])->name('MABPlanStop');
+                Route::put('/archive', [MABPlanController::class, 'archive'])->name('MABPlanArchive');
+
+                Route::post('/requirement', [MABPlanController::class, 'addRequirement'])->name('MABPlanAddRequirement');
+                Route::delete('/requirement/{requirementId}', [MABPlanController::class, 'removeRequirement'])->name('MABPlanRemoveRequirement');
+                Route::put('/requirement/{requirementId}', [MABPlanController::class, 'changeRequirement'])->name('MABPlanChangeRequirement');
+            });
+
             Route::group(['prefix' => '/card/{cardId}'], function () {
                 Route::get('/', [MABCardController::class, 'getCard'])->name('MABCardGetCard');
 
@@ -72,26 +93,6 @@ Route::group(['prefix' => '/mab/v1'], function () {
                 Route::post('/', [MABPlanController::class, 'add'])->name('MABPlanAdd');
             });
 
-            Route::group(['prefix' => '/plan/{planId}'], function () {
-                Route::get('/', [MABPlanController::class, 'getPlan'])->name('MABPlanGet');
-
-                Route::put('/description', [MABPlanController::class, 'changeDescription'])->name('MABPlanChangeDescription');
-                Route::put('/launch', [MABPlanController::class, 'launch'])->name('MABPlanLaunch');
-                Route::put('/stop', [MABPlanController::class, 'stop'])->name('MABPlanStop');
-                Route::put('/archive', [MABPlanController::class, 'archive'])->name('MABPlanArchive');
-
-                Route::post('/requirement', [MABPlanController::class, 'addRequirement'])->name('MABPlanAddRequirement');
-                Route::delete('/requirement/{requirementId}', [MABPlanController::class, 'removeRequirement'])->name('MABPlanRemoveRequirement');
-                Route::put('/requirement/{requirementId}', [MABPlanController::class, 'changeRequirement'])->name('MABPlanChangeRequirement');
-            });
-
-            Route::group(['prefix' => '/collaboration'], function () {
-                Route::post('/leave', [MABCollaborationController::class, 'leave'])->name('MABLeaveRelation');
-
-                Route::post('/invite', [MABCollaborationController::class, 'propose'])->name('MABProposeInvite');
-                Route::post('/invite/{inviteId}/accept', [MABCollaborationController::class, 'accept'])->name('MABAcceptInvite');
-                Route::post('/invite/{inviteId}/discard', [MABCollaborationController::class, 'discard'])->name('MABDiscardInvite');
-            });
         });
     });
 });

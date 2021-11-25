@@ -28,9 +28,9 @@ trait ScenarioRoutingTestTrait
         return $this->request('post', $name, $token, $routeArgs, $params);
     }
 
-    public function routePut(string $name, string $token = '', array $routeArgs = []): TestResponse
+    public function routePut(string $name, string $token = '', array $routeArgs = [], array $params = []): TestResponse
     {
-        return $this->request('put', $name, $token, $routeArgs);
+        return $this->request('put', $name, $token, $routeArgs, $params);
     }
 
     public function request(string $method, string $name, string $token = '', array $routeArgs = [], array $params = []): TestResponse

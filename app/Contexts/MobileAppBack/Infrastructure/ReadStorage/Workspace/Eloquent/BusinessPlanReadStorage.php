@@ -47,6 +47,9 @@ class BusinessPlanReadStorage implements BusinessPlanReadStorageInterface
             $plan->id,
             $plan->workspace_id,
             $plan->description,
+            $plan->launched_at !== null,
+            $plan->stopped_at !== null,
+            $plan->archived_at !== null,
             $requirements
         );
     }
