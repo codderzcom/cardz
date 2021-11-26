@@ -2,6 +2,6 @@
 
 namespace App\Contexts\Cards\Application\Commands;
 
-final class BlockCard extends BaseCardCommand implements CardCommandInterface
+final class BlockCard extends BaseCardCommand
 {
 }

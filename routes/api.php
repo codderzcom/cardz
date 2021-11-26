@@ -59,8 +59,8 @@ Route::group(['prefix' => '/mab/v1'], function () {
                 Route::post('/leave', [MABCollaborationController::class, 'leave'])->name('MABLeaveRelation');
 
                 Route::post('/invite', [MABCollaborationController::class, 'propose'])->name('MABProposeInvite');
-                Route::post('/invite/{inviteId}/accept', [MABCollaborationController::class, 'accept'])->name('MABAcceptInvite');
-                Route::post('/invite/{inviteId}/discard', [MABCollaborationController::class, 'discard'])->name('MABDiscardInvite');
+                Route::put('/invite/{inviteId}/accept', [MABCollaborationController::class, 'accept'])->name('MABAcceptInvite');
+                Route::delete('/invite/{inviteId}/discard', [MABCollaborationController::class, 'discard'])->name('MABDiscardInvite');
             });
 
             Route::group(['prefix' => '/plan/{planId}'], function () {

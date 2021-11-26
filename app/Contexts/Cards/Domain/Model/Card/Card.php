@@ -135,7 +135,7 @@ final class Card implements AggregateRootInterface
             throw new InvalidCardStateException();
         }
 
-        $this->blocked = Carbon::now();
+        $this->blocked = null;
         return $this->withEvents(CardUnblocked::of($this));
     }
 

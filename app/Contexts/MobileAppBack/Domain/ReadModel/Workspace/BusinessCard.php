@@ -3,7 +3,6 @@
 namespace App\Contexts\MobileAppBack\Domain\ReadModel\Workspace;
 
 use App\Shared\Infrastructure\Support\ArrayPresenterTrait;
-use Carbon\Carbon;
 use JetBrains\PhpStorm\Pure;
 
 final class BusinessCard
@@ -14,11 +13,11 @@ final class BusinessCard
         public string $cardId,
         public string $planId,
         public string $customerId,
-        public ?Carbon $issued,
-        public ?Carbon $satisfied,
-        public ?Carbon $completed,
-        public ?Carbon $revoked,
-        public ?Carbon $blocked,
+        public bool $isIssued,
+        public bool $isSatisfied,
+        public bool $isCompleted,
+        public bool $isRevoked,
+        public bool $isBlocked,
         public array $achievements,
         public array $requirements,
     ) {
@@ -33,11 +32,11 @@ final class BusinessCard
         string $cardId,
         string $planId,
         string $customerId,
-        ?Carbon $issued,
-        ?Carbon $satisfied,
-        ?Carbon $completed,
-        ?Carbon $revoked,
-        ?Carbon $blocked,
+        bool $isIssued,
+        bool $isSatisfied,
+        bool $isCompleted,
+        bool $isRevoked,
+        bool $isBlocked,
         array $achievements,
         array $requirements,
     ): self {
@@ -45,11 +44,11 @@ final class BusinessCard
             $cardId,
             $planId,
             $customerId,
-            $issued,
-            $satisfied,
-            $completed,
-            $revoked,
-            $blocked,
+            $isIssued,
+            $isSatisfied,
+            $isCompleted,
+            $isRevoked,
+            $isBlocked,
             $achievements,
             $requirements,
         );

@@ -88,13 +88,17 @@ class PlanTest extends BaseScenarioTestCase
         $this->assertTrue($plan['isArchived']);
     }
 
-    public function test_plan_cannot_be_accessed_by_non_collaborator()
+    public function test_plan_cannot_be_accessed_by_stranger()
     {
         $this->persistEnvironment();
         $collaborator = end($this->environment->collaboratorInfos);
         $this->token = $this->getToken($collaborator);
 
         $workspaceId = $this->environment->workspaces[0]->workspaceId;
+
+        $response = $this->routePost(RouteName::ADD_PLAN, ['workspaceId' => $workspaceId], ['description' => 'description']);
+        $response->assertForbidden();
+
         $planId = $this->environment->plans[0]->planId;
 
         $routeArgs = ['workspaceId' => $workspaceId, 'planId' => $planId];

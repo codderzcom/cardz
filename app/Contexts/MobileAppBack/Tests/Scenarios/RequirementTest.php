@@ -38,4 +38,25 @@ class RequirementTest extends BaseScenarioTestCase
         $this->assertCount($count, $plan['requirements']);
     }
 
+
+    public function test_requirement_cannot_be_accessed_by_by_stranger()
+    {
+        $this->persistEnvironment();
+
+        $collaborator = $this->environment->collaboratorInfos[0];
+        $this->token = $this->getToken($collaborator);
+
+        $workspaceId = end($this->environment->workspaces)->workspaceId;
+        $plan = end($this->environment->plans);
+        $requirement = end($this->environment->requirements);
+
+        $routeArgs = ['workspaceId' => $workspaceId, 'planId' => $plan->planId];
+        $response = $this->routePost(RouteName::ADD_PLAN_REQUIREMENT, $routeArgs, ['description' => $this->faker->text()]);
+        $response->assertForbidden();
+
+        $routeArgs = ['workspaceId' => $workspaceId, 'planId' => $plan->planId, 'requirementId' => $requirement->requirementId];
+        $response = $this->routePut(RouteName::CHANGE_PLAN_REQUIREMENT, $routeArgs, ['description' => 'description']);
+        $response->assertForbidden();
+    }
+
 }
