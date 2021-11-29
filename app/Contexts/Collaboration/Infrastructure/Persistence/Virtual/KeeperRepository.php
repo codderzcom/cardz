@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contexts\Collaboration\Infrastructure\Persistence\Eloquent;
+namespace App\Contexts\Collaboration\Infrastructure\Persistence\Virtual;
 
 use App\Contexts\Collaboration\Domain\Model\Workspace\Keeper;
 use App\Contexts\Collaboration\Domain\Model\Workspace\KeeperId;

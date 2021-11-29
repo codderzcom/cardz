@@ -27,7 +27,7 @@ final class Person implements AggregateRootInterface
         return $person->withEvents(PersonJoined::of($person));
     }
 
-    public static function restore(string $personId, string $name, ?Carbon $joined,): self
+    public static function restore(string $personId, string $name, ?Carbon $joined): self
     {
         $person = new self(PersonId::of($personId), Name::of($name));
         $person->joined = $joined;

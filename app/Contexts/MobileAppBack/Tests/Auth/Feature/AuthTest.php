@@ -3,7 +3,7 @@
 namespace App\Contexts\MobileAppBack\Tests\Auth\Feature;
 
 use App\Contexts\MobileAppBack\Application\Services\Customer\CustomerAppService;
-use App\Contexts\MobileAppBack\Tests\Shared\CustomerProviderTrait;
+use App\Contexts\MobileAppBack\Tests\Shared\Customer\CustomerProviderTrait;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

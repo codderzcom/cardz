@@ -10,7 +10,7 @@ use App\Contexts\Personal\Infrastructure\Persistence\Eloquent\PersonRepository;
 use App\Contexts\Personal\Integration\Consumers\RegistrationCompletedConsumer;
 use App\Shared\Contracts\Commands\CommandBusInterface;
 use App\Shared\Contracts\Messaging\IntegrationEventBusInterface;
-use App\Shared\Infrastructure\CommandHandling\SimpleAutoCommandHandlerProvider;
+use App\Shared\Infrastructure\CommandHandling\LaravelHandlerGenerator;
 use Illuminate\Support\ServiceProvider;
 
 class PersonalProvider extends ServiceProvider
@@ -23,10 +23,9 @@ class PersonalProvider extends ServiceProvider
 
     public function boot(
         CommandBusInterface $commandBus,
-        PersonAppService $personAppService,
         IntegrationEventBusInterface $integrationEventBus,
     ) {
-        $commandBus->registerProvider(SimpleAutoCommandHandlerProvider::parse($personAppService));
+        $commandBus->registerProvider(LaravelHandlerGenerator::of(PersonAppService::class));
         $integrationEventBus->subscribe($this->app->make(RegistrationCompletedConsumer::class));
     }
 }

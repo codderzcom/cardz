@@ -16,8 +16,13 @@ class RelationRepository implements RelationRepositoryInterface
 
     public function persist(Relation $relation): void
     {
+        $relationId = (string) $relation->relationId;
+        if ($relation->isLeft()) {
+            EloquentRelation::query()->where('id', '=', $relationId)->delete();
+            return;
+        }
         EloquentRelation::query()->updateOrCreate(
-            ['id' => $relation->relationId],
+            ['id' => $relationId],
             $this->relationAsData($relation)
         );
     }
@@ -53,6 +58,7 @@ class RelationRepository implements RelationRepositoryInterface
             $eloquentRelation->workspace_id,
             $eloquentRelation->relation_type,
             $eloquentRelation->established_at,
+            null,
         );
         return $relation;
     }

@@ -15,13 +15,14 @@ class InviteRepository implements InviteRepositoryInterface
 
     public function persist(Invite $invite): void
     {
+        $inviteId = (string) $invite->inviteId;
         if ($invite->isAccepted() || $invite->isDiscarded()) {
-            $this->delete($invite->inviteId);
+            EloquentInvite::query()->where('id', '=', $inviteId)->delete();
             return;
         }
 
         EloquentInvite::query()->updateOrCreate(
-            ['id' => (string) $invite->inviteId],
+            ['id' => $inviteId],
             $this->inviteAsData($invite)
         );
     }
@@ -31,11 +32,6 @@ class InviteRepository implements InviteRepositoryInterface
         /** @var EloquentInvite $eloquentInvite */
         $eloquentInvite = EloquentInvite::query()->find((string) $inviteId);
         return $eloquentInvite ? $this->inviteFromData($eloquentInvite) : throw new InviteNotFoundException((string) $inviteId);
-    }
-
-    private function delete(InviteId $inviteId): void
-    {
-        EloquentInvite::query()->where('id', '=', (string) $inviteId)->delete();
     }
 
     private function inviteAsData(Invite $invite): array

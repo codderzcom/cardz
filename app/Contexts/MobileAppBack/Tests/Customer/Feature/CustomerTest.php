@@ -7,8 +7,8 @@ use App\Contexts\MobileAppBack\Application\Services\Workspace\CardAppService;
 use App\Contexts\MobileAppBack\Application\Services\Workspace\PlanAppService;
 use App\Contexts\MobileAppBack\Application\Services\Workspace\WorkspaceAppService;
 use App\Contexts\MobileAppBack\Infrastructure\Exceptions\IssuedCardNotFoundException;
-use App\Contexts\MobileAppBack\Tests\Shared\CustomerDTO;
-use App\Contexts\MobileAppBack\Tests\Shared\CustomerProviderTrait;
+use App\Contexts\MobileAppBack\Tests\Shared\Customer\CustomerProviderTrait;
+use App\Contexts\MobileAppBack\Tests\Shared\Customer\CustomerRequestDTO;
 use App\Contexts\MobileAppBack\Tests\Shared\LoginTrait;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
@@ -76,7 +76,7 @@ class CustomerTest extends TestCase
         return count($cards) > 1 ? $cards : $cards[0];
     }
 
-    protected function setupCustomer(CustomerDTO $client): string
+    protected function setupCustomer(CustomerRequestDTO $client): string
     {
         $this->customerAppService->register(...$client->toArray());
         return Auth::id();

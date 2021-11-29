@@ -14,6 +14,24 @@
         <testsuite name="MobileAppBack">
             <directory>./app/Contexts/MobileAppBack/Tests</directory>
         </testsuite>
+        <testsuite name="Workspaces">
+            <directory>./app/Contexts/Workspaces/Tests</directory>
+        </testsuite>
+        <testsuite name="Plans">
+            <directory>./app/Contexts/Plans/Tests</directory>
+        </testsuite>
+        <testsuite name="Personal">
+            <directory>./app/Contexts/Personal/Tests</directory>
+        </testsuite>
+        <testsuite name="Collaboration">
+            <directory>./app/Contexts/Collaboration/Tests</directory>
+        </testsuite>
+        <testsuite name="Cards">
+            <directory>./app/Contexts/Cards/Tests</directory>
+        </testsuite>
+        <testsuite name="Auth">
+            <directory>./app/Contexts/Auth/Tests</directory>
+        </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>

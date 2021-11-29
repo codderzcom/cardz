@@ -7,6 +7,7 @@ use App\Contexts\Plans\Domain\Events\Plan\PlanArchived;
 use App\Contexts\Plans\Domain\Events\Plan\PlanDescriptionChanged;
 use App\Contexts\Plans\Domain\Events\Plan\PlanLaunched;
 use App\Contexts\Plans\Domain\Events\Plan\PlanStopped;
+use App\Contexts\Plans\Domain\Exceptions\InvalidPlanStateException;
 use App\Contexts\Plans\Domain\Model\Requirement\Requirement;
 use App\Contexts\Plans\Domain\Model\Requirement\RequirementId;
 use App\Shared\Contracts\Domain\AggregateRootInterface;
@@ -60,18 +61,29 @@ final class Plan implements AggregateRootInterface
 
     public function addRequirement(RequirementId $requirementId, string $description): Requirement
     {
+        if ($this->isArchived()) {
+            throw new InvalidPlanStateException();
+        }
         return Requirement::add($requirementId, $this->planId, $description);
     }
 
     public function launch(): self
     {
+        if ($this->isLaunched() || $this->isArchived()) {
+            throw new InvalidPlanStateException();
+        }
         $this->launched = Carbon::now();
+        $this->stopped = null;
         return $this->withEvents(PlanLaunched::of($this));
     }
 
     public function stop(): self
     {
+        if ($this->isStopped() || $this->isArchived()) {
+            throw new InvalidPlanStateException();
+        }
         $this->stopped = Carbon::now();
+        $this->launched = null;
         return $this->withEvents(PlanStopped::of($this));
     }
 
@@ -99,12 +111,12 @@ final class Plan implements AggregateRootInterface
 
     public function isLaunched(): bool
     {
-        return $this->launched !== null;
+        return $this->launched !== null && $this->stopped === null;
     }
 
     public function isStopped(): bool
     {
-        return $this->stopped !== null;
+        return $this->stopped !== null && $this->launched === null;
     }
 
     public function isArchived(): bool

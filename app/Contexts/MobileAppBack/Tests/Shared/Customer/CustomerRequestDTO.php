@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Contexts\MobileAppBack\Tests\Shared;
+namespace App\Contexts\MobileAppBack\Tests\Shared\Customer;
 
 use App\Shared\Infrastructure\Support\ArrayPresenterTrait;
 
-class CustomerDTO
+class CustomerRequestDTO
 {
     use ArrayPresenterTrait;
 

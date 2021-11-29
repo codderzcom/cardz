@@ -12,15 +12,15 @@ use App\Contexts\Collaboration\Domain\Persistence\Contracts\RelationRepositoryIn
 use App\Contexts\Collaboration\Infrastructure\Messaging\DomainEventBus;
 use App\Contexts\Collaboration\Infrastructure\Messaging\DomainEventBusInterface;
 use App\Contexts\Collaboration\Infrastructure\Persistence\Eloquent\InviteRepository;
-use App\Contexts\Collaboration\Infrastructure\Persistence\Eloquent\KeeperRepository;
 use App\Contexts\Collaboration\Infrastructure\Persistence\Eloquent\RelationRepository;
+use App\Contexts\Collaboration\Infrastructure\Persistence\Virtual\KeeperRepository;
 use App\Contexts\Collaboration\Infrastructure\ReadStorage\Contracts\AddedWorkspaceReadStorageInterface;
 use App\Contexts\Collaboration\Infrastructure\ReadStorage\Eloquent\AddedWorkspaceReadStorage;
 use App\Contexts\Collaboration\Integration\Consumers\DomainEventConsumer;
 use App\Contexts\Collaboration\Integration\Consumers\WorkspacesNewWorkspaceRegisteredConsumer;
 use App\Shared\Contracts\Commands\CommandBusInterface;
 use App\Shared\Contracts\Messaging\IntegrationEventBusInterface;
-use App\Shared\Infrastructure\CommandHandling\SimpleAutoCommandHandlerProvider;
+use App\Shared\Infrastructure\CommandHandling\LaravelHandlerGenerator;
 use Illuminate\Support\ServiceProvider;
 
 class CollaborationProvider extends ServiceProvider
@@ -39,13 +39,10 @@ class CollaborationProvider extends ServiceProvider
     public function boot(
         IntegrationEventBusInterface $integrationEventBus,
         DomainEventBusInterface $domainEventBus,
-        InviteAppService $inviteAppService,
-        KeeperAppService $keeperAppService,
-        RelationAppService $relationAppService,
         CommandBusInterface $commandBus,
     ) {
-        $commandBus->registerProvider(SimpleAutoCommandHandlerProvider::parse(
-            $inviteAppService, $keeperAppService, $relationAppService,
+        $commandBus->registerProvider(LaravelHandlerGenerator::of(
+            InviteAppService::class, KeeperAppService::class, RelationAppService::class,
         ));
 
         $domainEventBus->subscribe($this->app->make(DomainEventConsumer::class));
