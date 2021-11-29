@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use App\Contexts\Identity\Infrastructure\Exceptions\UserNotFoundException;
 use App\Contexts\MobileAppBack\Application\Exceptions\AccessDeniedException;
+use App\Shared\Exceptions\AuthorizationFailedException;
 use App\Shared\Exceptions\NotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
@@ -54,7 +55,7 @@ class Handler extends ExceptionHandler
             return response()->json('Cannot authenticate user with given credentials', 401);
         }
 
-        if ($e instanceof AccessDeniedException) {
+        if ($e instanceof AccessDeniedException || $e instanceof AuthorizationFailedException) {
             return response()->json($e->getMessage(), 403);
         }
 
