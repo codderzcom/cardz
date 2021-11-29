@@ -61,7 +61,7 @@ class AbacRule implements RuleInterface
         AttributeCollectionInterface $object,
         AttributeCollectionInterface $config,
     ): AuthorizationResolution {
-        $resolution = AuthorizationResolution::of();
+        $resolution = AuthorizationResolution::of(false);
         foreach ($this->policies as $policy) {
             $resolution = $policy->resolve($subject, $object, $config);
             if ($resolution->isRestrictive()) {
