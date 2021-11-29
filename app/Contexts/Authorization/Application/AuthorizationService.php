@@ -7,6 +7,7 @@ use App\Contexts\Authorization\Domain\Rules\RuleConfig;
 use App\Contexts\Authorization\Infrastructure\ObjectProvider;
 use App\Contexts\Authorization\Infrastructure\SubjectProvider;
 use App\Shared\Infrastructure\Authorization\Abac\AbacEngine;
+use App\Shared\Infrastructure\Authorization\Abac\AbacResolutionStrategy;
 use App\Shared\Infrastructure\Authorization\Abac\Attributes;
 
 class AuthorizationService
@@ -27,7 +28,7 @@ class AuthorizationService
             $query->permission,
             $subject->getAttributes(),
             $object->getAttributes(),
-            Attributes::of(['abac.strategy' => 'restrictive'])
+            Attributes::of(['abac.strategy' => AbacResolutionStrategy::RESTRICTIVE])
         ));
         return !$resolution->isRestrictive();
     }

@@ -3,8 +3,8 @@
 namespace App\Contexts\Authorization\Domain\Rules;
 
 use App\Contexts\Authorization\Domain\Permissions\AuthorizationPermission;
-use App\Contexts\Authorization\Domain\Policies\AllowOnlyForCollaborators;
-use App\Contexts\Authorization\Domain\Policies\AllowOnlyForKeeper;
+use App\Contexts\Authorization\Domain\Policies\AllowForCollaborators;
+use App\Contexts\Authorization\Domain\Policies\AllowForKeeper;
 use App\Contexts\Authorization\Domain\Policies\DenyForKeeper;
 use App\Shared\Contracts\Authorization\Abac\RuleInterface;
 use App\Shared\Infrastructure\Authorization\Abac\AbacRule;
@@ -23,22 +23,22 @@ final class RuleConfig
 
     public static function make(): self
     {
-        $allowOnlyForCollaborators = new AllowOnlyForCollaborators();
-        $allowOnlyForKeeper = new AllowOnlyForKeeper();
+        $allowForCollaborators = new AllowForCollaborators();
+        $allowForKeeper = new AllowForKeeper();
         $denyForKeeper = new DenyForKeeper();
 
         $rules = [
-            AbacRule::of(AuthorizationPermission::WORKSPACE_VIEW(), $allowOnlyForCollaborators),
-            AbacRule::of(AuthorizationPermission::WORKSPACE_CHANGE_PROFILE(), $allowOnlyForKeeper),
-            AbacRule::of(AuthorizationPermission::PLAN_ADD(), $allowOnlyForCollaborators),
-            AbacRule::of(AuthorizationPermission::PLAN_VIEW(), $allowOnlyForCollaborators),
-            AbacRule::of(AuthorizationPermission::PLAN_CHANGE(), $allowOnlyForCollaborators),
-            AbacRule::of(AuthorizationPermission::PLAN_CARD_ADD(), $allowOnlyForCollaborators),
-            AbacRule::of(AuthorizationPermission::CARD_VIEW(), $allowOnlyForCollaborators),
-            AbacRule::of(AuthorizationPermission::CARD_CHANGE(), $allowOnlyForCollaborators),
-            AbacRule::of(AuthorizationPermission::INVITE_PROPOSE(), $allowOnlyForKeeper),
-            AbacRule::of(AuthorizationPermission::INVITE_DISCARD(), $allowOnlyForKeeper),
-            AbacRule::of(AuthorizationPermission::COLLABORATION_LEAVE(), $allowOnlyForCollaborators, $denyForKeeper),
+            AbacRule::of(AuthorizationPermission::WORKSPACE_VIEW(), $allowForCollaborators),
+            AbacRule::of(AuthorizationPermission::WORKSPACE_CHANGE_PROFILE(), $allowForKeeper),
+            AbacRule::of(AuthorizationPermission::PLAN_ADD(), $allowForCollaborators),
+            AbacRule::of(AuthorizationPermission::PLAN_VIEW(), $allowForCollaborators),
+            AbacRule::of(AuthorizationPermission::PLAN_CHANGE(), $allowForCollaborators),
+            AbacRule::of(AuthorizationPermission::PLAN_CARD_ADD(), $allowForCollaborators),
+            AbacRule::of(AuthorizationPermission::CARD_VIEW(), $allowForCollaborators),
+            AbacRule::of(AuthorizationPermission::CARD_CHANGE(), $allowForCollaborators),
+            AbacRule::of(AuthorizationPermission::INVITE_PROPOSE(), $allowForKeeper),
+            AbacRule::of(AuthorizationPermission::INVITE_DISCARD(), $allowForKeeper),
+            AbacRule::of(AuthorizationPermission::COLLABORATION_LEAVE(), $allowForCollaborators, $denyForKeeper),
             AbacRule::of(AuthorizationPermission::NULL_PERMISSION()),
         ];
         return new self(...$rules);

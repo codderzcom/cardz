@@ -6,7 +6,7 @@ use App\Shared\Contracts\Authorization\Abac\AttributeCollectionInterface;
 use App\Shared\Contracts\Authorization\Abac\PolicyInterface;
 use App\Shared\Contracts\Authorization\AuthorizationResolution;
 
-class AllowOnlyForCollaborators implements PolicyInterface
+class AllowForCollaborators implements PolicyInterface
 {
     public function resolve(
         AttributeCollectionInterface $subject,

@@ -35,8 +35,8 @@ class AbacRule implements RuleInterface
         AttributeCollectionInterface $object,
         AttributeCollectionInterface $config,
     ): AuthorizationResolution {
-        $ruleApplicationStrategy = $config['abac.strategy'] ?? null;
-        return $ruleApplicationStrategy === 'permissive'
+        $ruleApplicationStrategy = AbacResolutionStrategy::ofConfig($config);
+        return $ruleApplicationStrategy->isPermissive()
             ? $this->applyPermissive($subject, $object, $config)
             : $this->applyRestrictive($subject, $object, $config);
     }

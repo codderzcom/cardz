@@ -21,6 +21,11 @@ class AbacEngine
     public function resolve(AbacAuthorizationRequestInterface $authorizationRequest): AuthorizationResolution
     {
         $rule = $this->rules[(string) $authorizationRequest->getPermission()] ?? null;
+
+        $strategy = AbacResolutionStrategy::ofConfig($authorizationRequest->getConfig());
+        if ($rule === null && !$strategy->isPermissive()) {
+            return AuthorizationResolution::of(false);
+        }
         return $rule?->applyPolicies(
                 $authorizationRequest->getSubject(),
                 $authorizationRequest->getObject(),

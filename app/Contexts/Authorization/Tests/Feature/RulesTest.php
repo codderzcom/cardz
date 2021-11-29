@@ -10,6 +10,11 @@ class RulesTest extends BaseTestCase
 {
     use AuthTestHelperTrait, ApplicationTestTrait;
 
+    public function test_rule()
+    {
+        $this->assertGranted(AuthorizationPermission::PLAN_VIEW(), $this->keeperId, $this->workspaceId);
+    }
+
     public function test_workspace_permissions()
     {
         $this->assertGranted(AuthorizationPermission::WORKSPACE_VIEW(), $this->keeperId, $this->workspaceId);
