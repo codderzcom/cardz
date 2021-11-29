@@ -32,6 +32,9 @@
         <testsuite name="Identity">
             <directory>./app/Contexts/Identity/Tests</directory>
         </testsuite>
+        <testsuite name="Authorization">
+            <directory>./app/Contexts/Authorization/Tests</directory>
+        </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>

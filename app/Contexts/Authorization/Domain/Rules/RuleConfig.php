@@ -29,7 +29,7 @@ final class RuleConfig
 
         $rules = [
             AbacRule::of(AuthorizationPermission::WORKSPACE_VIEW(), $allowOnlyForCollaborators),
-            AbacRule::of(AuthorizationPermission::WORKSPACE_CHANGE_PROFILE(), $allowOnlyForCollaborators),
+            AbacRule::of(AuthorizationPermission::WORKSPACE_CHANGE_PROFILE(), $allowOnlyForKeeper),
             AbacRule::of(AuthorizationPermission::PLAN_ADD(), $allowOnlyForCollaborators),
             AbacRule::of(AuthorizationPermission::PLAN_VIEW(), $allowOnlyForCollaborators),
             AbacRule::of(AuthorizationPermission::PLAN_CHANGE(), $allowOnlyForCollaborators),

@@ -27,7 +27,7 @@ class AuthorizationService
             $query->permission,
             $subject->getAttributes(),
             $object->getAttributes(),
-            Attributes::of(['abac.strategy' => 'permissive'])
+            Attributes::of(['abac.strategy' => 'restrictive'])
         ));
         return !$resolution->isRestrictive();
     }
