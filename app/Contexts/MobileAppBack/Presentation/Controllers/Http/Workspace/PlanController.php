@@ -72,7 +72,7 @@ class PlanController extends BaseController
     public function stop(PlanCommandRequest $request): JsonResponse
     {
         $this->authorizePlanChange($request->collaboratorId, $request->planId);
-        $this->response($this->planService->stop($request->planId));
+        return $this->response($this->planService->stop($request->planId));
     }
 
     public function archive(PlanCommandRequest $request): JsonResponse

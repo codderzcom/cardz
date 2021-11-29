@@ -43,6 +43,32 @@ final class PlanBuilder extends BaseBuilder
         return $this->build();
     }
 
+    public function withLaunched(?Carbon $launched = null): self
+    {
+        $this->launched = $launched ?? Carbon::now();
+        $this->stopped = null;
+        return $this;
+    }
+
+    public function withStopped(?Carbon $stopped = null): self
+    {
+        $this->stopped = $stopped ?? Carbon::now();
+        $this->launched = null;
+        return $this;
+    }
+
+    public function withArchived(?Carbon $archived = null): self
+    {
+        $this->archived = $archived ?? Carbon::now();
+        return $this;
+    }
+
+    public function withWorkspaceId(string $workspaceId): self
+    {
+        $this->workspaceId = $workspaceId;
+        return $this;
+    }
+
     public function generate(): static
     {
         $this->planId = PlanId::makeValue();

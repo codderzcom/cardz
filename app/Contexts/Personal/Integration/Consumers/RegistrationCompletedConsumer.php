@@ -2,7 +2,7 @@
 
 namespace App\Contexts\Personal\Integration\Consumers;
 
-use App\Contexts\Auth\Integration\Events\RegistrationCompleted;
+use App\Contexts\Identity\Integration\Events\RegistrationCompleted;
 use App\Contexts\Personal\Application\Commands\JoinPerson;
 use App\Shared\Contracts\Commands\CommandBusInterface;
 use App\Shared\Contracts\Messaging\IntegrationEventConsumerInterface;

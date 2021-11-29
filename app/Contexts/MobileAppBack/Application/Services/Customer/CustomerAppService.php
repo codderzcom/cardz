@@ -5,7 +5,7 @@ namespace App\Contexts\MobileAppBack\Application\Services\Customer;
 use App\Contexts\MobileAppBack\Domain\ReadModel\IssuedCard;
 use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Customer\Contracts\CustomerWorkspaceReadStorageInterface;
 use App\Contexts\MobileAppBack\Infrastructure\ReadStorage\Customer\Contracts\IssuedCardReadStorageInterface;
-use App\Contexts\MobileAppBack\Integration\Contracts\AuthContextInterface;
+use App\Contexts\MobileAppBack\Integration\Contracts\IdentityContextInterface;
 use Illuminate\Support\Facades\Auth;
 
 class CustomerAppService
@@ -13,7 +13,7 @@ class CustomerAppService
     public function __construct(
         private IssuedCardReadStorageInterface $issuedCardReadStorage,
         private CustomerWorkspaceReadStorageInterface $customerWorkspaceReadStorage,
-        private AuthContextInterface $authContext,
+        private IdentityContextInterface $authContext,
     ) {
     }
 

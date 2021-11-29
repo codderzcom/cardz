@@ -29,6 +29,18 @@ final class InviteBuilder extends BaseBuilder
         );
     }
 
+    public function withWorkspaceId(string $workspaceId): self
+    {
+        $this->workspaceId = $workspaceId;
+        return $this;
+    }
+
+    public function withInviterId(string $inviterId): self
+    {
+        $this->inviterId = $inviterId;
+        return $this;
+    }
+
     public function generate(): static
     {
         $this->inviteId = InviteId::makeValue();

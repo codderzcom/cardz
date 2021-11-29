@@ -2,9 +2,7 @@
 
 namespace App\Contexts\Plans\Tests\Support\Builders;
 
-use App\Contexts\Plans\Domain\Model\Plan\Plan;
 use App\Contexts\Plans\Domain\Model\Plan\PlanId;
-use App\Contexts\Plans\Domain\Model\Plan\WorkspaceId;
 use App\Contexts\Plans\Domain\Model\Requirement\Requirement;
 use App\Contexts\Plans\Domain\Model\Requirement\RequirementId;
 use App\Shared\Infrastructure\Tests\BaseBuilder;
@@ -22,6 +20,16 @@ final class RequirementBuilder extends BaseBuilder
 
     public ?Carbon $removed;
 
+    /** @return Requirement[] */
+    public static function buildSeriesForPlanId(string $planId, int $quantity = 5): array
+    {
+        $requirements = [];
+        for ($i = 0; $i < $quantity; $i++) {
+            $requirements[] = self::make()->withPlanId($planId)->build();
+        }
+        return $requirements;
+    }
+
     public function build(): Requirement
     {
         return Requirement::restore(
@@ -31,6 +39,12 @@ final class RequirementBuilder extends BaseBuilder
             $this->added,
             $this->removed,
         );
+    }
+
+    public function withPlanId(string $planId): self
+    {
+        $this->planId = $planId;
+        return $this;
     }
 
     public function generate(): static

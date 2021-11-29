@@ -39,7 +39,7 @@ class CardAppService
 
     public function block(string $cardId): BusinessCard
     {
-        $this->cardsContext->revoke($cardId);
+        $this->cardsContext->block($cardId);
         return $this->businessCardReadStorage->find($cardId);
     }
 

@@ -44,6 +44,11 @@ class GuidBasedImmutableId implements GeneralIdInterface
         return $this->id === $id->id;
     }
 
+    public function is(string $id): bool
+    {
+        return $this->id === $id;
+    }
+
     public function jsonSerialize()
     {
         return [$this::shortName() => (string) $this];

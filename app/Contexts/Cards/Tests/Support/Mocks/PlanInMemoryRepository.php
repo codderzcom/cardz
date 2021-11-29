@@ -11,7 +11,7 @@ class PlanInMemoryRepository implements PlanRepositoryInterface
 {
     public function take(PlanId $planId): Plan
     {
-        return PlanBuilder::make()->buildForId($planId);
+        return PlanBuilder::make()->withPlanId($planId)->build();
     }
 
 }
