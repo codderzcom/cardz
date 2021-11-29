@@ -10,7 +10,7 @@ class CardTest extends BaseScenarioTestCase
     {
         $this->persistEnvironment();
         $collaborator = $this->environment->collaboratorInfos[0];
-        $this->token = $this->getToken($collaborator);
+        $this->setAuthTokenFor($collaborator);
 
         $customerInfo = $this->environment->customerInfos[0];
 
@@ -34,7 +34,7 @@ class CardTest extends BaseScenarioTestCase
     {
         $this->persistEnvironment();
         $collaborator = end($this->environment->collaboratorInfos);
-        $this->token = $this->getToken($collaborator);
+        $this->setAuthTokenFor($collaborator);
 
         $workspaceId = $this->environment->workspaces[0]->workspaceId;
         $planId = $this->environment->plans[0]->planId;
@@ -53,7 +53,7 @@ class CardTest extends BaseScenarioTestCase
     {
         $this->persistEnvironment();
         $collaborator = end($this->environment->collaboratorInfos);
-        $this->token = $this->getToken($collaborator);
+        $this->setAuthTokenFor($collaborator);
         $customerInfo = $this->environment->customerInfos[0];
 
         $workspaces = $this->routeGet(RouteName::GET_WORKSPACES)->json();

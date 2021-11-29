@@ -11,7 +11,7 @@ class PlanTest extends BaseScenarioTestCase
     {
         $this->persistEnvironment();
         $keeperInfo = $this->environment->keeperInfos[0];
-        $this->token = $this->getToken($keeperInfo);
+        $this->setAuthTokenFor($keeperInfo);
 
         $workspaces = $this->routeGet(RouteName::GET_WORKSPACES)->json();
         $workspaceId = $workspaces[0]['workspaceId'];
@@ -30,7 +30,7 @@ class PlanTest extends BaseScenarioTestCase
     {
         $this->persistEnvironment();
         $collaboratorInfo = $this->environment->collaboratorInfos[0];
-        $this->token = $this->getToken($collaboratorInfo);
+        $this->setAuthTokenFor($collaboratorInfo);
 
         $workspaces = $this->routeGet(RouteName::GET_WORKSPACES)->json();
         $workspaceId = $workspaces[0]['workspaceId'];
@@ -49,7 +49,7 @@ class PlanTest extends BaseScenarioTestCase
     {
         $this->persistEnvironment();
         $collaboratorInfo = $this->environment->collaboratorInfos[0];
-        $this->token = $this->getToken($collaboratorInfo);
+        $this->setAuthTokenFor($collaboratorInfo);
 
         $workspaces = $this->routeGet(RouteName::GET_WORKSPACES)->json();
         $workspaceId = $workspaces[0]['workspaceId'];
@@ -92,7 +92,7 @@ class PlanTest extends BaseScenarioTestCase
     {
         $this->persistEnvironment();
         $collaborator = end($this->environment->collaboratorInfos);
-        $this->token = $this->getToken($collaborator);
+        $this->setAuthTokenFor($collaborator);
 
         $workspaceId = $this->environment->workspaces[0]->workspaceId;
 
@@ -117,7 +117,7 @@ class PlanTest extends BaseScenarioTestCase
     {
         $this->persistEnvironment();
         $collaboratorInfo = $this->environment->collaboratorInfos[0];
-        $this->token = $this->getToken($collaboratorInfo);
+        $this->setAuthTokenFor($collaboratorInfo);
 
         $workspaces = $this->routeGet(RouteName::GET_WORKSPACES)->json();
         $workspaceId = $workspaces[0]['workspaceId'];

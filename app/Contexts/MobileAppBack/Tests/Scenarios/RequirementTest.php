@@ -11,7 +11,7 @@ class RequirementTest extends BaseScenarioTestCase
         $this->persistEnvironment();
 
         $collaboratorInfo = $this->environment->collaboratorInfos[0];
-        $this->token = $this->getToken($collaboratorInfo);
+        $this->setAuthTokenFor($collaboratorInfo);
 
         $workspaces = $this->routeGet(RouteName::GET_WORKSPACES)->json();
         $workspaceId = $workspaces[0]['workspaceId'];
@@ -44,7 +44,7 @@ class RequirementTest extends BaseScenarioTestCase
         $this->persistEnvironment();
 
         $collaborator = $this->environment->collaboratorInfos[0];
-        $this->token = $this->getToken($collaborator);
+        $this->setAuthTokenFor($collaborator);
 
         $workspaceId = end($this->environment->workspaces)->workspaceId;
         $plan = end($this->environment->plans);

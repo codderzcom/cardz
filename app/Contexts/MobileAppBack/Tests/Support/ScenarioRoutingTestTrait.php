@@ -43,17 +43,18 @@ trait ScenarioRoutingTestTrait
     public function request(string $method, string $name, array $routeArgs = [], array $params = []): TestResponse
     {
         if (!empty($this->token)) {
-            $this->withHeader('Authorization', "Bearer: $this->token");
+            $this->withToken($this->token);
         }
         return $this->$method($this->getRoute($name, $routeArgs), $params);
     }
 
-    public function getToken(UserLoginInfo $loginInfo): string
+    public function setAuthTokenFor(UserLoginInfo $loginInfo): void
     {
-        return $this->post($this->getRoute(RouteName::GET_TOKEN), [
+        $token = $this->post($this->getRoute(RouteName::GET_TOKEN), [
             'identity' => $loginInfo->identity,
             'password' => $loginInfo->password,
             'deviceName' => $loginInfo->deviceName,
         ])->json();
+        $this->withToken($token);
     }
 }

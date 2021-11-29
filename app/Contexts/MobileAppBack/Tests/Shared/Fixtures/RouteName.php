@@ -6,6 +6,7 @@ use MyCLabs\Enum\Enum;
 
 final class RouteName extends Enum
 {
+    public const REGISTER = 'MABCustomerRegister';
     public const GET_TOKEN = 'MABCustomerGetToken';
     public const GET_WORKSPACES = 'MABWorkspaceListAll';
     public const ADD_WORKSPACE = 'MABWorkspaceAdd';

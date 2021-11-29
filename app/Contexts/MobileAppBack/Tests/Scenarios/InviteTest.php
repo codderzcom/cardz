@@ -10,7 +10,7 @@ class InviteTest extends BaseScenarioTestCase
     {
         $this->persistEnvironment();
         $keeper = $this->environment->keeperInfos[0];
-        $this->token = $this->getToken($keeper);
+        $this->setAuthTokenFor($keeper);
 
         $workspaces = $this->routeGet(RouteName::GET_WORKSPACES)->json();
         $workspaceId = $workspaces[0]['workspaceId'];
@@ -31,7 +31,7 @@ class InviteTest extends BaseScenarioTestCase
     {
         $this->persistEnvironment();
         $intendedCollaborator = $this->environment->customerInfos[0];
-        $this->token = $this->getToken($intendedCollaborator);
+        $this->setAuthTokenFor($intendedCollaborator);
 
         $workspaces = $this->routeGet(RouteName::GET_WORKSPACES)->json();
         $this->assertEmpty($workspaces);
@@ -53,7 +53,7 @@ class InviteTest extends BaseScenarioTestCase
     {
         $this->persistEnvironment();
         $collaborator = $this->environment->collaboratorInfos[0];
-        $this->token = $this->getToken($collaborator);
+        $this->setAuthTokenFor($collaborator);
 
         $workspaces = $this->routeGet(RouteName::GET_WORKSPACES)->json();
         $workspaceId = $workspaces[0]['workspaceId'];

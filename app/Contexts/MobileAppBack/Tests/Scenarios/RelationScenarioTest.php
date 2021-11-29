@@ -13,7 +13,7 @@ class RelationScenarioTest extends BaseScenarioTestCase
     {
         $this->persistEnvironment();
         $keeper = $this->environment->keeperInfos[0];
-        $this->token = $this->getToken($keeper);
+        $this->setAuthTokenFor($keeper);
 
         $workspaceBuilder = WorkspaceBuilder::make();
         $workspace = $this->routePost(RouteName::ADD_WORKSPACE, [], [
@@ -35,7 +35,7 @@ class RelationScenarioTest extends BaseScenarioTestCase
     {
         $this->persistEnvironment();
         $intendedCollaborator = $this->environment->customerInfos[0];
-        $this->token = $this->getToken($intendedCollaborator);
+        $this->setAuthTokenFor($intendedCollaborator);
         $invite = $this->environment->invites[0];
 
         $this->routePut(RouteName::ACCEPT_INVITE, ['workspaceId' => $invite->workspaceId, 'inviteId' => $invite->inviteId]);
