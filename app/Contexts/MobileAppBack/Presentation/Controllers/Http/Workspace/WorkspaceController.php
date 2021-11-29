@@ -2,8 +2,7 @@
 
 namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace;
 
-use App\Contexts\Authorization\Dictionary\ObjectTypeRepository;
-use App\Contexts\Authorization\Dictionary\PermissionRepository;
+use App\Contexts\Authorization\Domain\Permissions\AuthorizationPermission;
 use App\Contexts\MobileAppBack\Application\Services\AuthorizationServiceInterface;
 use App\Contexts\MobileAppBack\Application\Services\Workspace\WorkspaceAppService;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\BaseController;
@@ -29,8 +28,7 @@ class WorkspaceController extends BaseController
     public function getWorkspace(GetWorkspaceRequest $request): JsonResponse
     {
         $this->authorizationService->authorize(
-            PermissionRepository::WORKSPACES_VIEW(),
-            ObjectTypeRepository::WORKSPACE(),
+            AuthorizationPermission::WORKSPACE_VIEW(),
             $request->collaboratorId,
             $request->workspaceId,
         );
@@ -51,8 +49,7 @@ class WorkspaceController extends BaseController
     public function changeWorkspaceProfile(ChangeWorkspaceProfileRequest $request): JsonResponse
     {
         $this->authorizationService->authorize(
-            PermissionRepository::WORKSPACES_CHANGE_PROFILE(),
-            ObjectTypeRepository::WORKSPACE(),
+            AuthorizationPermission::WORKSPACE_CHANGE_PROFILE(),
             $request->collaboratorId,
             $request->workspaceId,
         );

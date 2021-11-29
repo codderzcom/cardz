@@ -2,27 +2,24 @@
 
 namespace App\Contexts\Authorization\Application\Queries;
 
-use App\Contexts\Authorization\Domain\AuthorizationObjectType;
+use App\Contexts\Authorization\Domain\Permissions\AuthorizationPermission;
 use App\Shared\Contracts\GeneralIdInterface;
 use App\Shared\Contracts\Queries\QueryInterface;
-use App\Shared\Infrastructure\Authorization\Abac\AbacPermission;
 
 final class IsAllowed implements QueryInterface
 {
     private function __construct(
-        public AbacPermission $permission,
+        public AuthorizationPermission $permission,
         public GeneralIdInterface $subjectId,
-        public GeneralIdInterface $objectId,
-        public AuthorizationObjectType $objectType,
+        public ?GeneralIdInterface $objectId,
     ) {
     }
 
     public static function of(
-        AbacPermission $permission,
+        AuthorizationPermission $permission,
         GeneralIdInterface $subjectId,
-        GeneralIdInterface $objectId,
-        AuthorizationObjectType $objectType
+        ?GeneralIdInterface $objectId,
     ): self {
-        return new self($permission, $subjectId, $objectId, $objectType);
+        return new self($permission, $subjectId, $objectId);
     }
 }

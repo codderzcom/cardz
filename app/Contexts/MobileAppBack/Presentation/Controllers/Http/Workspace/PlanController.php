@@ -2,8 +2,7 @@
 
 namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace;
 
-use App\Contexts\Authorization\Dictionary\ObjectTypeRepository;
-use App\Contexts\Authorization\Dictionary\PermissionRepository;
+use App\Contexts\Authorization\Domain\Permissions\AuthorizationPermission;
 use App\Contexts\MobileAppBack\Application\Services\AuthorizationServiceInterface;
 use App\Contexts\MobileAppBack\Application\Services\Workspace\PlanAppService;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\BaseController;
@@ -30,8 +29,7 @@ class PlanController extends BaseController
     public function getWorkspaceBusinessPlans(GetWorkspaceRequest $request): JsonResponse
     {
         $this->authorizationService->authorize(
-            PermissionRepository::PLANS_VIEW(),
-            ObjectTypeRepository::WORKSPACE(),
+            AuthorizationPermission::PLAN_VIEW(),
             $request->collaboratorId,
             $request->workspaceId,
         );
@@ -42,10 +40,9 @@ class PlanController extends BaseController
     public function getPlan(GetPlanRequest $request): JsonResponse
     {
         $this->authorizationService->authorize(
-            PermissionRepository::PLANS_VIEW(),
-            ObjectTypeRepository::PLAN(),
+            AuthorizationPermission::PLAN_VIEW(),
             $request->collaboratorId,
-            $request->planId,
+            $request->workspaceId,
         );
 
         return $this->response($this->planService->getBusinessPlan($request->planId));
@@ -54,8 +51,7 @@ class PlanController extends BaseController
     public function add(AddPlanRequest $request): JsonResponse
     {
         $this->authorizationService->authorize(
-            PermissionRepository::WORKSPACES_PLANS_ADD(),
-            ObjectTypeRepository::WORKSPACE(),
+            AuthorizationPermission::PLAN_ADD(),
             $request->collaboratorId,
             $request->workspaceId,
         );
@@ -112,8 +108,7 @@ class PlanController extends BaseController
     private function authorizePlanChange(GeneralIdInterface $collaboratorId, GeneralIdInterface $planId): void
     {
         $this->authorizationService->authorize(
-            PermissionRepository::PLANS_CHANGE(),
-            ObjectTypeRepository::PLAN(),
+            AuthorizationPermission::PLAN_CHANGE(),
             $collaboratorId,
             $planId,
         );

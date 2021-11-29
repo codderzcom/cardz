@@ -2,8 +2,7 @@
 
 namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace;
 
-use App\Contexts\Authorization\Dictionary\ObjectTypeRepository;
-use App\Contexts\Authorization\Dictionary\PermissionRepository;
+use App\Contexts\Authorization\Domain\Permissions\AuthorizationPermission;
 use App\Contexts\MobileAppBack\Application\Services\AuthorizationServiceInterface;
 use App\Contexts\MobileAppBack\Application\Services\Workspace\CollaborationAppService;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\BaseController;
@@ -23,8 +22,7 @@ class CollaborationController extends BaseController
     public function propose(ProposeInviteRequest $request): JsonResponse
     {
         $this->authorizationService->authorize(
-            PermissionRepository::INVITES_PROPOSE(),
-            ObjectTypeRepository::WORKSPACE(),
+            AuthorizationPermission::INVITE_PROPOSE(),
             $request->collaboratorId,
             $request->workspaceId,
         );
@@ -40,8 +38,7 @@ class CollaborationController extends BaseController
     public function discard(InviteRequest $request): JsonResponse
     {
         $this->authorizationService->authorize(
-            PermissionRepository::INVITES_DISCARD(),
-            ObjectTypeRepository::WORKSPACE(),
+            AuthorizationPermission::INVITE_DISCARD(),
             $request->collaboratorId,
             $request->workspaceId,
         );
@@ -52,8 +49,7 @@ class CollaborationController extends BaseController
     public function leave(LeaveCollaborationRequest $request): JsonResponse
     {
         $this->authorizationService->authorize(
-            PermissionRepository::COLLABORATION_LEAVE(),
-            ObjectTypeRepository::WORKSPACE(),
+            AuthorizationPermission::COLLABORATION_LEAVE(),
             $request->collaboratorId,
             $request->workspaceId,
         );

@@ -3,21 +3,15 @@
 namespace App\Shared\Infrastructure\Authorization\Abac;
 
 use App\Shared\Contracts\Authorization\Abac\PermissionInterface;
+use App\Shared\Exceptions\AuthorizationFailedException;
+use MyCLabs\Enum\Enum;
 
-class AbacPermission implements PermissionInterface
+class AbacPermission extends Enum implements PermissionInterface
 {
-    private function __construct(
-        private string $permission,
-    ) {
-    }
-
     public static function of(string $permission): static
     {
-        return new static($permission);
-    }
-
-    public function __toString(): string
-    {
-        return $this->permission;
+        return static::isValid($permission)
+            ? new static($permission)
+            : throw new AuthorizationFailedException("Unknown permission");
     }
 }

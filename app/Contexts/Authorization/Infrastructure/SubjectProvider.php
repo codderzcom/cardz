@@ -3,8 +3,8 @@
 namespace App\Contexts\Authorization\Infrastructure;
 
 use App\Contexts\Authorization\Domain\AuthorizationSubject;
-use App\Contexts\Authorization\Exceptions\AuthorizationFailedException;
 use App\Models\User;
+use App\Shared\Exceptions\AuthorizationFailedException;
 use App\Shared\Infrastructure\Authorization\Abac\Attributes;
 
 class SubjectProvider

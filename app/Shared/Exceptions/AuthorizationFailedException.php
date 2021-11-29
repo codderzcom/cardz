@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contexts\Authorization\Exceptions;
+namespace App\Shared\Exceptions;
 
 use Exception;
 

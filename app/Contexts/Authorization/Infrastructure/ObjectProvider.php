@@ -2,8 +2,9 @@
 
 namespace App\Contexts\Authorization\Infrastructure;
 
+use App\Contexts\Authorization\Dictionary\ObjectTypeName;
 use App\Contexts\Authorization\Domain\AuthorizationObject;
-use App\Contexts\Authorization\Domain\AuthorizationObjectType;
+use App\Contexts\Authorization\Domain\Permissions\ObjectTypePrescribingPermissionInterface;
 use App\Contexts\Authorization\Infrastructure\ObjectProviders\CardProvider;
 use App\Contexts\Authorization\Infrastructure\ObjectProviders\ConcreteObjectProviderInterface;
 use App\Contexts\Authorization\Infrastructure\ObjectProviders\DefaultObjectProvider;
@@ -13,18 +14,21 @@ use App\Shared\Contracts\GeneralIdInterface;
 
 class ObjectProvider
 {
-    public function reconstruct(AuthorizationObjectType $objectType, GeneralIdInterface $objectId): AuthorizationObject
-    {
-        $attributes = $this->specificProvider($objectType, $objectId)->reconstruct();
+    public function reconstructForPermission(
+        ?GeneralIdInterface $objectId,
+        ObjectTypePrescribingPermissionInterface $permission
+    ): AuthorizationObject {
+        $objectType = $permission->getObjectType();
+        $attributes = $this->specificProvider($objectId, $objectType)->reconstruct();
         return AuthorizationObject::of($objectId, $attributes);
     }
 
-    private function specificProvider(AuthorizationObjectType $objectType, GeneralIdInterface $objectId): ConcreteObjectProviderInterface
+    private function specificProvider(?GeneralIdInterface $objectId, ObjectTypeName $objectType): ConcreteObjectProviderInterface
     {
         return match ($objectType->getValue()) {
-            AuthorizationObjectType::CARD => CardProvider::of($objectId),
-            AuthorizationObjectType::PLAN => PlanProvider::of($objectId),
-            AuthorizationObjectType::WORKSPACE => WorkspaceProvider::of($objectId),
+            ObjectTypeName::CARD => CardProvider::of($objectId),
+            ObjectTypeName::PLAN => PlanProvider::of($objectId),
+            ObjectTypeName::WORKSPACE => WorkspaceProvider::of($objectId),
             default => DefaultObjectProvider::of($objectId),
         };
     }

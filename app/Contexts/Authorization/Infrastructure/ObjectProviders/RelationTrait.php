@@ -2,8 +2,8 @@
 
 namespace App\Contexts\Authorization\Infrastructure\ObjectProviders;
 
-use App\Contexts\Authorization\Exceptions\AuthorizationFailedException;
 use App\Models\Relation;
+use App\Shared\Exceptions\AuthorizationFailedException;
 
 trait RelationTrait
 {

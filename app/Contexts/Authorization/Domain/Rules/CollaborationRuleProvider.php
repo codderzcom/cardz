@@ -2,7 +2,7 @@
 
 namespace App\Contexts\Authorization\Domain\Rules;
 
-use App\Contexts\Authorization\Dictionary\PermissionRepository;
+use App\Contexts\Authorization\Domain\Permissions\AuthorizationPermission;
 use App\Contexts\Authorization\Domain\Policies\AllowOnlyForCollaborators;
 use App\Contexts\Authorization\Domain\Policies\AllowOnlyForKeeper;
 use App\Contexts\Authorization\Domain\Policies\DenyForKeeper;
@@ -18,9 +18,9 @@ class CollaborationRuleProvider
         $allowOnlyForCollaborators = new AllowOnlyForCollaborators();
         $denyForKeeper = new DenyForKeeper();
         $this->rules = [
-            AbacRule::of(PermissionRepository::INVITES_PROPOSE(), $allowOnlyForKeeper),
-            AbacRule::of(PermissionRepository::INVITES_DISCARD(), $allowOnlyForKeeper),
-            AbacRule::of(PermissionRepository::COLLABORATION_LEAVE(), $allowOnlyForCollaborators, $denyForKeeper),
+            AbacRule::of(AuthorizationPermission::INVITE_PROPOSE(), $allowOnlyForKeeper),
+            AbacRule::of(AuthorizationPermission::INVITE_DISCARD(), $allowOnlyForKeeper),
+            AbacRule::of(AuthorizationPermission::COLLABORATION_LEAVE(), $allowOnlyForCollaborators, $denyForKeeper),
         ];
     }
 }

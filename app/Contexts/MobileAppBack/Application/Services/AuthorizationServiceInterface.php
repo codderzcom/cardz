@@ -2,16 +2,14 @@
 
 namespace App\Contexts\MobileAppBack\Application\Services;
 
-use App\Contexts\Authorization\Domain\AuthorizationObjectType;
+use App\Contexts\Authorization\Domain\Permissions\AuthorizationPermission;
 use App\Shared\Contracts\GeneralIdInterface;
-use App\Shared\Infrastructure\Authorization\Abac\AbacPermission;
 
 interface AuthorizationServiceInterface
 {
     public function authorize(
-        AbacPermission $permission,
-        AuthorizationObjectType $objectType,
+        AuthorizationPermission $permission,
         GeneralIdInterface $subjectId,
-        GeneralIdInterface $objectId,
+        ?GeneralIdInterface $objectId,
     ): void;
 }

@@ -34,7 +34,7 @@ class AuthorizationService
 
     public function isAllowed(IsAllowed $query): bool
     {
-        $object = $this->objectProvider->reconstruct($query->objectType, $query->objectId);
+        $object = $this->objectProvider->reconstructForPermission($query->objectId, $query->permission);
         $subject = $this->subjectProvider->reconstruct($query->subjectId);
         $resolution = $this->abacEngine->resolve(AuthorizationRequest::of(
             $query->permission,

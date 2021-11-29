@@ -2,7 +2,7 @@
 
 namespace App\Contexts\Authorization\Domain\Rules;
 
-use App\Contexts\Authorization\Dictionary\PermissionRepository;
+use App\Contexts\Authorization\Domain\Permissions\AuthorizationPermission;
 use App\Contexts\Authorization\Domain\Policies\AllowOnlyForCollaborators;
 use App\Shared\Infrastructure\Authorization\Abac\AbacRule;
 
@@ -14,9 +14,9 @@ class PlansRuleProvider
     {
         $allowOnlyForCollaborators = new AllowOnlyForCollaborators();
         $this->rules = [
-            AbacRule::of(PermissionRepository::PLANS_VIEW(), $allowOnlyForCollaborators),
-            AbacRule::of(PermissionRepository::PLANS_CHANGE(), $allowOnlyForCollaborators),
-            AbacRule::of(PermissionRepository::PLANS_CARDS_ADD(), $allowOnlyForCollaborators),
+            AbacRule::of(AuthorizationPermission::PLAN_VIEW(), $allowOnlyForCollaborators),
+            AbacRule::of(AuthorizationPermission::PLAN_CHANGE(), $allowOnlyForCollaborators),
+            AbacRule::of(AuthorizationPermission::PLAN_CARD_ADD(), $allowOnlyForCollaborators),
         ];
     }
 }

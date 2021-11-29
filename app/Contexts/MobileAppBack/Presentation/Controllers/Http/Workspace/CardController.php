@@ -2,8 +2,7 @@
 
 namespace App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace;
 
-use App\Contexts\Authorization\Dictionary\ObjectTypeRepository;
-use App\Contexts\Authorization\Dictionary\PermissionRepository;
+use App\Contexts\Authorization\Domain\Permissions\AuthorizationPermission;
 use App\Contexts\MobileAppBack\Application\Services\AuthorizationServiceInterface;
 use App\Contexts\MobileAppBack\Application\Services\Workspace\CardAppService;
 use App\Contexts\MobileAppBack\Presentation\Controllers\Http\BaseController;
@@ -25,8 +24,7 @@ class CardController extends BaseController
     public function getCard(GetCardRequest $request): JsonResponse
     {
         $this->authorizationService->authorize(
-            PermissionRepository::CARDS_VIEW(),
-            ObjectTypeRepository::CARD(),
+            AuthorizationPermission::CARD_VIEW(),
             $request->collaboratorId,
             $request->cardId,
         );
@@ -37,8 +35,7 @@ class CardController extends BaseController
     public function issue(IssueCardRequest $request): JsonResponse
     {
         $this->authorizationService->authorize(
-            PermissionRepository::PLANS_CARDS_ADD(),
-            ObjectTypeRepository::PLAN(),
+            AuthorizationPermission::PLAN_CARD_ADD(),
             $request->collaboratorId,
             $request->planId,
         );
@@ -85,8 +82,7 @@ class CardController extends BaseController
     private function authorizeCardChange(GeneralIdInterface $collaboratorId, GeneralIdInterface $cardId): void
     {
         $this->authorizationService->authorize(
-            PermissionRepository::CARDS_CHANGE(),
-            ObjectTypeRepository::CARD(),
+            AuthorizationPermission::CARD_CHANGE(),
             $collaboratorId,
             $cardId,
         );
