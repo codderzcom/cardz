@@ -34,10 +34,10 @@ final class RouteNameToPermissionMap
         RouteName::CHANGE_PLAN_REQUIREMENT => AuthorizationPermission::PLAN_CHANGE,
         RouteName::PROPOSE_INVITE => AuthorizationPermission::INVITE_PROPOSE,
         RouteName::ACCEPT_INVITE => AuthorizationPermission::NULL_PERMISSION,
-        RouteName::DISCARD_INVITE => AuthorizationPermission::INVITE_PROPOSE,
+        RouteName::DISCARD_INVITE => AuthorizationPermission::INVITE_DISCARD,
 
         RouteName::GET_WORKSPACE => AuthorizationPermission::WORKSPACE_VIEW,
-        RouteName::CHANGE_PROFILE => AuthorizationPermission::NULL_PERMISSION,
+        RouteName::CHANGE_PROFILE => AuthorizationPermission::WORKSPACE_CHANGE_PROFILE,
         RouteName::LEAVE_RELATION => AuthorizationPermission::COLLABORATION_LEAVE,
         RouteName::GET_PLAN => AuthorizationPermission::PLAN_VIEW,
 

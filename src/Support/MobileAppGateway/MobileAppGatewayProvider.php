@@ -2,8 +2,6 @@
 
 namespace Cardz\Support\MobileAppGateway;
 
-use Cardz\Support\MobileAppGateway\Application\Services\AuthorizationService;
-use Cardz\Support\MobileAppGateway\Application\Services\AuthorizationServiceInterface;
 use Cardz\Support\MobileAppGateway\Infrastructure\ACL\Cards\MonolithCardsAdapter;
 use Cardz\Support\MobileAppGateway\Infrastructure\ACL\Collaboration\MonolithCollaborationAdapter;
 use Cardz\Support\MobileAppGateway\Infrastructure\ACL\Identity\MonolithIdentityAdapter;
@@ -35,9 +33,6 @@ class MobileAppGatewayProvider extends ServiceProvider
         $this->app->singleton(BusinessCardReadStorageInterface::class, BusinessCardReadStorage::class);
         $this->app->singleton(BusinessPlanReadStorageInterface::class, BusinessPlanReadStorage::class);
         $this->app->singleton(BusinessWorkspaceReadStorageInterface::class, BusinessWorkspaceReadStorage::class);
-
-        $this->app->singleton(AuthorizationServiceInterface::class, AuthorizationService::class);
-
 
         $this->app->singleton(IdentityContextInterface::class, MonolithIdentityAdapter::class);
         $this->app->singleton(CardsContextInterface::class, MonolithCardsAdapter::class);

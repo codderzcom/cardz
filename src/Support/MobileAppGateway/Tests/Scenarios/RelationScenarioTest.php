@@ -48,4 +48,17 @@ class RelationScenarioTest extends BaseScenarioTestCase
 
         $this->assertNotEmpty($relation);
     }
+
+    public function test_keeper_cannot_leave_workspace()
+    {
+        $this->persistEnvironment();
+        $keeper = $this->environment->keeperInfos[0];
+        $this->setAuthTokenFor($keeper);
+
+        $workspaces = $this->routeGet(RouteName::GET_WORKSPACES)->json();
+        $workspaceId = $workspaces[0]['workspaceId'];
+
+        $response = $this->routePost(RouteName::LEAVE_RELATION, ['workspaceId' => $workspaceId, 'collaboratorId' => $keeper->id]);
+        $response->assertForbidden();
+    }
 }

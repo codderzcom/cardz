@@ -33,10 +33,11 @@ final class RouteName extends Enum
     public const ACCEPT_INVITE = 'MAG.Business.AcceptInvite';
     public const DISCARD_INVITE = 'MAG.Business.DiscardInvite';
 
+    public const LEAVE_RELATION = 'MAG.Business.Leave';
+
     /* begin untested */
     public const GET_WORKSPACE = 'MAG.Business.GetWorkspace';
     public const CHANGE_PROFILE = 'MAG.Business.ChangeProfile';
-    public const LEAVE_RELATION = 'MAG.Business.Leave';
     public const GET_PLAN = 'MAG.Business.GetPlan';
 
     public const CUSTOMER_WORKSPACES = 'MAG.Customer.GetWorkspaces';

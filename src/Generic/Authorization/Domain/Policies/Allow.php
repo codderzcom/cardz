@@ -13,6 +13,6 @@ class Allow implements PolicyInterface
         AttributeCollectionInterface $object,
         AttributeCollectionInterface $config,
     ): AuthorizationResolution {
-        return AuthorizationResolution::of(true);
+        return AuthorizationResolution::ALLOW();
     }
 }

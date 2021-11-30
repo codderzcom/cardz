@@ -2,13 +2,13 @@
 
 namespace Cardz\Generic\Authorization\Domain\Rules;
 
-use Cardz\Generic\Authorization\Domain\Permissions\AuthorizationPermission;
+use Cardz\Generic\Authorization\Domain\Permissions\AuthorizationPermission as Permission;
 use Cardz\Generic\Authorization\Domain\Policies\Allow;
 use Cardz\Generic\Authorization\Domain\Policies\AllowForCollaborators;
 use Cardz\Generic\Authorization\Domain\Policies\AllowForKeeper;
 use Cardz\Generic\Authorization\Domain\Policies\DenyForKeeper;
 use Codderz\Platypus\Contracts\Authorization\Abac\RuleInterface;
-use Codderz\Platypus\Infrastructure\Authorization\Abac\AbacRule;
+use Codderz\Platypus\Infrastructure\Authorization\Abac\AbacRule as Rule;
 
 final class RuleConfig
 {
@@ -30,18 +30,18 @@ final class RuleConfig
         $allow = new Allow();
 
         $rules = [
-            AbacRule::of(AuthorizationPermission::WORKSPACE_VIEW(), $allowForCollaborators),
-            AbacRule::of(AuthorizationPermission::WORKSPACE_CHANGE_PROFILE(), $allowForKeeper),
-            AbacRule::of(AuthorizationPermission::PLAN_ADD(), $allowForCollaborators),
-            AbacRule::of(AuthorizationPermission::PLAN_VIEW(), $allowForCollaborators),
-            AbacRule::of(AuthorizationPermission::PLAN_CHANGE(), $allowForCollaborators),
-            AbacRule::of(AuthorizationPermission::PLAN_CARD_ADD(), $allowForCollaborators),
-            AbacRule::of(AuthorizationPermission::CARD_VIEW(), $allowForCollaborators),
-            AbacRule::of(AuthorizationPermission::CARD_CHANGE(), $allowForCollaborators),
-            AbacRule::of(AuthorizationPermission::INVITE_PROPOSE(), $allowForKeeper),
-            AbacRule::of(AuthorizationPermission::INVITE_DISCARD(), $allowForKeeper),
-            AbacRule::of(AuthorizationPermission::COLLABORATION_LEAVE(), $allowForCollaborators, $denyForKeeper),
-            AbacRule::of(AuthorizationPermission::NULL_PERMISSION(), $allow),
+            Rule::of(Permission::WORKSPACE_VIEW(), $allowForCollaborators),
+            Rule::of(Permission::WORKSPACE_CHANGE_PROFILE(), $allowForKeeper),
+            Rule::of(Permission::PLAN_ADD(), $allowForCollaborators),
+            Rule::of(Permission::PLAN_VIEW(), $allowForCollaborators),
+            Rule::of(Permission::PLAN_CHANGE(), $allowForCollaborators),
+            Rule::of(Permission::PLAN_CARD_ADD(), $allowForCollaborators),
+            Rule::of(Permission::CARD_VIEW(), $allowForCollaborators),
+            Rule::of(Permission::CARD_CHANGE(), $allowForCollaborators),
+            Rule::of(Permission::INVITE_PROPOSE(), $allowForKeeper),
+            Rule::of(Permission::INVITE_DISCARD(), $allowForKeeper),
+            Rule::of(Permission::COLLABORATION_LEAVE(), $allowForCollaborators, $denyForKeeper),
+            Rule::of(Permission::NULL_PERMISSION(), $allow),
         ];
         return new self(...$rules);
     }
