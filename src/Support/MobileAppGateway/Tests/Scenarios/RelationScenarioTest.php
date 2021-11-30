@@ -4,8 +4,8 @@ namespace Cardz\Support\MobileAppGateway\Tests\Scenarios;
 
 use App\Models\Relation;
 use Cardz\Core\Workspaces\Tests\Support\Builders\WorkspaceBuilder;
+use Cardz\Support\MobileAppGateway\Config\Routes\RouteName;
 use Cardz\Support\MobileAppGateway\Domain\ReadModel\Collaboration\RelationType;
-use Cardz\Support\MobileAppGateway\Tests\Shared\Fixtures\RouteName;
 
 class RelationScenarioTest extends BaseScenarioTestCase
 {

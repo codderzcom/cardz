@@ -7,13 +7,6 @@ use Cardz\Support\Collaboration\Presentation\Controllers\Http\Relation\RelationC
 use Cardz\Generic\Identity\Presentation\Controllers\Http\User\UserController;
 */
 
-use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer\CustomerController as MABCustomerController;
-use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\CardController as MABCardController;
-use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\CollaborationController as MABCollaborationController;
-use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\PlanController as MABPlanController;
-use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\WorkspaceController as MABWorkspaceController;
-use Illuminate\Support\Facades\Route;
-
 /*
 use Cardz\Core\Personal\Presentation\Controllers\Http\Person\PersonController;
 use Cardz\Core\Plans\Presentation\Controllers\Http\Plan\PlanController;
@@ -33,69 +26,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group(['prefix' => '/mab/v1'], function () {
-    Route::get('/customer/workspaces', [MABCustomerController::class, 'getWorkspaces'])->name('MABCustomerGetWorkspaces');
-
-    Route::post('/customer/get-token', [MABCustomerController::class, 'getToken'])->name('MABCustomerGetToken');
-    Route::post('/customer/register', [MABCustomerController::class, 'register'])->name('MABCustomerRegister');
-
-    Route::middleware('auth:sanctum')->group(function () {
-        Route::group(['prefix' => '/customer'], function () {
-            Route::get('/id', [MABCustomerController::class, 'getId'])->name('MABCustomerId');
-            Route::get('/card', [MABCustomerController::class, 'getCards'])->name('MABCustomerCards');
-            Route::get('/card/{cardId}', [MABCustomerController::class, 'getCard'])->name('MABCustomerCard');
-        });
-
-        Route::get('/workspace', [MABWorkspaceController::class, 'getWorkspaces'])->name('MABWorkspaceListAll');
-        Route::post('/workspace', [MABWorkspaceController::class, 'addWorkspace'])->name('MABWorkspaceAdd');
-
-        Route::group(['prefix' => '/workspace/{workspaceId}'], function () {
-            Route::get('/', [MABWorkspaceController::class, 'getWorkspace'])->name('MABWorkspaceGet');
-            Route::put('/profile', [MABWorkspaceController::class, 'changeWorkspaceProfile'])->name('MABWorkspaceChangeProfile');
-
-            Route::post('/card', [MABCardController::class, 'issue'])->name('MABCardIssue');
-
-            Route::group(['prefix' => '/collaboration'], function () {
-                Route::post('/leave', [MABCollaborationController::class, 'leave'])->name('MABLeaveRelation');
-
-                Route::post('/invite', [MABCollaborationController::class, 'propose'])->name('MABProposeInvite');
-                Route::put('/invite/{inviteId}/accept', [MABCollaborationController::class, 'accept'])->name('MABAcceptInvite');
-                Route::delete('/invite/{inviteId}/discard', [MABCollaborationController::class, 'discard'])->name('MABDiscardInvite');
-            });
-
-            Route::group(['prefix' => '/plan/{planId}'], function () {
-                Route::get('/', [MABPlanController::class, 'getPlan'])->name('MABPlanGet');
-
-                Route::put('/description', [MABPlanController::class, 'changeDescription'])->name('MABPlanChangeDescription');
-                Route::put('/launch', [MABPlanController::class, 'launch'])->name('MABPlanLaunch');
-                Route::put('/stop', [MABPlanController::class, 'stop'])->name('MABPlanStop');
-                Route::put('/archive', [MABPlanController::class, 'archive'])->name('MABPlanArchive');
-
-                Route::post('/requirement', [MABPlanController::class, 'addRequirement'])->name('MABPlanAddRequirement');
-                Route::delete('/requirement/{requirementId}', [MABPlanController::class, 'removeRequirement'])->name('MABPlanRemoveRequirement');
-                Route::put('/requirement/{requirementId}', [MABPlanController::class, 'changeRequirement'])->name('MABPlanChangeRequirement');
-            });
-
-            Route::group(['prefix' => '/card/{cardId}'], function () {
-                Route::get('/', [MABCardController::class, 'getCard'])->name('MABCardGetCard');
-
-                Route::put('/complete', [MABCardController::class, 'complete'])->name('MABCardComplete');
-                Route::put('/revoke', [MABCardController::class, 'revoke'])->name('MABCardRevoke');
-                Route::put('/block', [MABCardController::class, 'block'])->name('MABCardBlock');
-                Route::put('/unblock', [MABCardController::class, 'unblock'])->name('MABCardUnblock');
-
-                Route::post('/achievement', [MABCardController::class, 'noteAchievement'])->name('MABCardNoteAchievement');
-                Route::delete('/achievement', [MABCardController::class, 'dismissAchievement'])->name('MABCardDismissAchievement');
-            });
-
-            Route::group(['prefix' => '/plan'], function () {
-                Route::get('/', [MABPlanController::class, 'getWorkspaceBusinessPlans'])->name('MABPlanListAll');
-                Route::post('/', [MABPlanController::class, 'add'])->name('MABPlanAdd');
-            });
-
-        });
-    });
-});
 
 /*
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

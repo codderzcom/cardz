@@ -2,7 +2,7 @@
 
 namespace Cardz\Support\MobileAppGateway\Tests\Support;
 
-use Cardz\Support\MobileAppGateway\Tests\Shared\Fixtures\RouteName;
+use Cardz\Support\MobileAppGateway\Config\Routes\RouteName;
 use Cardz\Support\MobileAppGateway\Tests\Shared\Fixtures\UserLoginInfo;
 use Illuminate\Testing\TestResponse;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;

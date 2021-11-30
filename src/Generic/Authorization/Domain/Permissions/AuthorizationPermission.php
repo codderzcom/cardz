@@ -49,4 +49,13 @@ final class AuthorizationPermission extends AbacPermission implements ObjectType
             : throw new AuthorizationFailedException("Unknown objectType");
     }
 
+    public function getObjectIdName(): ?string
+    {
+        if ($this->equals(self::NULL_PERMISSION())) {
+            return null;
+        }
+
+        $permissionKey = explode('.', (string) $this)[0];
+        return $permissionKey . 'Id';
+    }
 }

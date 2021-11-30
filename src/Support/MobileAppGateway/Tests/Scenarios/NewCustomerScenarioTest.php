@@ -3,7 +3,7 @@
 namespace Cardz\Support\MobileAppGateway\Tests\Scenarios;
 
 use Cardz\Generic\Identity\Tests\Support\Builders\UserBuilder;
-use Cardz\Support\MobileAppGateway\Tests\Shared\Fixtures\RouteName;
+use Cardz\Support\MobileAppGateway\Config\Routes\RouteName;
 
 class NewCustomerScenarioTest extends BaseScenarioTestCase
 {

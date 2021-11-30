@@ -5,7 +5,7 @@ namespace Cardz;
 use Cardz\Generic\Authorization\AuthorizationProvider;
 use Cardz\Generic\Identity\IdentityProvider;
 use Cardz\Support\Collaboration\CollaborationProvider;
-use Cardz\Support\MobileAppGateway\MobileAppBackProvider;
+use Cardz\Support\MobileAppGateway\MobileAppGatewayProvider;
 use Codderz\Platypus\Contracts\Commands\CommandBusInterface;
 use Codderz\Platypus\Contracts\Messaging\EventBusInterface;
 use Codderz\Platypus\Contracts\Messaging\IntegrationEventBusInterface;
@@ -27,7 +27,7 @@ final class CardzServiceProvider extends ServiceProvider
             IdentityProvider::class,
             AuthorizationProvider::class,
 
-            MobileAppBackProvider::class,
+            MobileAppGatewayProvider::class,
             CollaborationProvider::class,
 
         ];

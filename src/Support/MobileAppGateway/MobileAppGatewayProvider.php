@@ -26,7 +26,7 @@ use Cardz\Support\MobileAppGateway\Integration\Contracts\PlansContextInterface;
 use Cardz\Support\MobileAppGateway\Integration\Contracts\WorkspacesContextInterface;
 use Illuminate\Support\ServiceProvider;
 
-class MobileAppBackProvider extends ServiceProvider
+class MobileAppGatewayProvider extends ServiceProvider
 {
     public function register()
     {
@@ -48,5 +48,6 @@ class MobileAppBackProvider extends ServiceProvider
 
     public function boot()
     {
+        $this->loadRoutesFrom(__DIR__ . '/Config/Routes/api.php');
     }
 }

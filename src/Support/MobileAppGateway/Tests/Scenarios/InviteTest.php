@@ -2,7 +2,7 @@
 
 namespace Cardz\Support\MobileAppGateway\Tests\Scenarios;
 
-use Cardz\Support\MobileAppGateway\Tests\Shared\Fixtures\RouteName;
+use Cardz\Support\MobileAppGateway\Config\Routes\RouteName;
 
 class InviteTest extends BaseScenarioTestCase
 {
