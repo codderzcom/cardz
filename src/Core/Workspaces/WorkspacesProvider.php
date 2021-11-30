@@ -3,6 +3,7 @@
 namespace Cardz\Core\Workspaces;
 
 use Cardz\Core\Workspaces\Application\Consumers\WorkspaceAddedDomainConsumer;
+use Cardz\Core\Workspaces\Application\Consumers\WorkspaceChangedDomainConsumer;
 use Cardz\Core\Workspaces\Application\Services\WorkspaceAppService;
 use Cardz\Core\Workspaces\Domain\Persistence\Contracts\KeeperRepositoryInterface;
 use Cardz\Core\Workspaces\Domain\Persistence\Contracts\WorkspaceRepositoryInterface;
@@ -30,5 +31,6 @@ class WorkspacesProvider extends ServiceProvider
         $commandBus->registerProvider(LaravelHandlerGenerator::of(WorkspaceAppService::class));
 
         $domainEventBus->subscribe($this->app->make(WorkspaceAddedDomainConsumer::class));
+        $domainEventBus->subscribe($this->app->make(WorkspaceChangedDomainConsumer::class));
     }
 }
