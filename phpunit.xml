@@ -11,29 +11,31 @@
         <!--        <testsuite name="Scenarios">-->
         <!--            <directory suffix="Test.php">./tests/Scenarios</directory>-->
         <!--        </testsuite>-->
-        <testsuite name="MobileAppBack">
-            <directory>./app/Contexts/MobileAppBack/Tests</directory>
-        </testsuite>
-        <testsuite name="Workspaces">
-            <directory>./app/Contexts/Workspaces/Tests</directory>
-        </testsuite>
-        <testsuite name="Plans">
-            <directory>./app/Contexts/Plans/Tests</directory>
-        </testsuite>
-        <testsuite name="Personal">
-            <directory>./app/Contexts/Personal/Tests</directory>
-        </testsuite>
-        <testsuite name="Collaboration">
-            <directory>./app/Contexts/Collaboration/Tests</directory>
-        </testsuite>
-        <testsuite name="Cards">
-            <directory>./app/Contexts/Cards/Tests</directory>
-        </testsuite>
         <testsuite name="Identity">
-            <directory>./app/Contexts/Identity/Tests</directory>
+            <directory>./src/Generic/Identity/Tests</directory>
         </testsuite>
         <testsuite name="Authorization">
-            <directory>./app/Contexts/Authorization/Tests</directory>
+            <directory>./src/Generic/Authorization/Tests</directory>
+        </testsuite>
+
+        <testsuite name="Cards">
+            <directory>./src/Core/Cards/Tests</directory>
+        </testsuite>
+        <testsuite name="Plans">
+            <directory>./src/Core/Plans/Tests</directory>
+        </testsuite>
+        <testsuite name="Personal">
+            <directory>./src/Core/Personal/Tests</directory>
+        </testsuite>
+        <testsuite name="Workspaces">
+            <directory>./src/Core/Workspaces/Tests</directory>
+        </testsuite>
+
+        <testsuite name="Collaboration">
+            <directory>./src/Support/Collaboration/Tests</directory>
+        </testsuite>
+        <testsuite name="MobileAppGateway">
+            <directory>./src/Support/MobileAppGateway/Tests</directory>
         </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">

@@ -1,24 +1,24 @@
 <?php
 
 /*
-use App\Contexts\Cards\Presentation\Controllers\Http\Card\CardController;
-use App\Contexts\Collaboration\Presentation\Controllers\Http\Invite\InviteController;
-use App\Contexts\Collaboration\Presentation\Controllers\Http\Relation\RelationController;
-use App\Contexts\Identity\Presentation\Controllers\Http\User\UserController;
+use Cardz\Core\Cards\Presentation\Controllers\Http\Card\CardController;
+use Cardz\Support\Collaboration\Presentation\Controllers\Http\Invite\InviteController;
+use Cardz\Support\Collaboration\Presentation\Controllers\Http\Relation\RelationController;
+use Cardz\Generic\Identity\Presentation\Controllers\Http\User\UserController;
 */
 
-use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Customer\CustomerController as MABCustomerController;
-use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\CardController as MABCardController;
-use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\CollaborationController as MABCollaborationController;
-use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\PlanController as MABPlanController;
-use App\Contexts\MobileAppBack\Presentation\Controllers\Http\Workspace\WorkspaceController as MABWorkspaceController;
+use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer\CustomerController as MABCustomerController;
+use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\CardController as MABCardController;
+use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\CollaborationController as MABCollaborationController;
+use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\PlanController as MABPlanController;
+use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\WorkspaceController as MABWorkspaceController;
 use Illuminate\Support\Facades\Route;
 
 /*
-use App\Contexts\Personal\Presentation\Controllers\Http\Person\PersonController;
-use App\Contexts\Plans\Presentation\Controllers\Http\Plan\PlanController;
-use App\Contexts\Plans\Presentation\Controllers\Http\Requirement\RequirementController;
-use App\Contexts\Workspaces\Presentation\Controllers\Http\Workspace\WorkspaceController;
+use Cardz\Core\Personal\Presentation\Controllers\Http\Person\PersonController;
+use Cardz\Core\Plans\Presentation\Controllers\Http\Plan\PlanController;
+use Cardz\Core\Plans\Presentation\Controllers\Http\Requirement\RequirementController;
+use Cardz\Core\Workspaces\Presentation\Controllers\Http\Workspace\WorkspaceController;
 use Illuminate\Http\Request;
 */
 
