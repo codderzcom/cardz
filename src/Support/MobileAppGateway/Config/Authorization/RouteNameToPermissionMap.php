@@ -11,7 +11,7 @@ final class RouteNameToPermissionMap
         RouteName::REGISTER => AuthorizationPermission::NULL_PERMISSION,
         RouteName::GET_TOKEN => AuthorizationPermission::NULL_PERMISSION,
 
-        RouteName::GET_WORKSPACES => AuthorizationPermission::WORKSPACE_VIEW,
+        RouteName::GET_WORKSPACES => AuthorizationPermission::NULL_PERMISSION,
         RouteName::ADD_WORKSPACE => AuthorizationPermission::NULL_PERMISSION,
         RouteName::GET_PLANS => AuthorizationPermission::PLAN_VIEW,
         RouteName::ISSUE_CARD => AuthorizationPermission::PLAN_CARD_ADD,

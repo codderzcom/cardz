@@ -3,6 +3,7 @@
 namespace Cardz\Generic\Authorization\Domain\Rules;
 
 use Cardz\Generic\Authorization\Domain\Permissions\AuthorizationPermission;
+use Cardz\Generic\Authorization\Domain\Policies\Allow;
 use Cardz\Generic\Authorization\Domain\Policies\AllowForCollaborators;
 use Cardz\Generic\Authorization\Domain\Policies\AllowForKeeper;
 use Cardz\Generic\Authorization\Domain\Policies\DenyForKeeper;
@@ -26,6 +27,7 @@ final class RuleConfig
         $allowForCollaborators = new AllowForCollaborators();
         $allowForKeeper = new AllowForKeeper();
         $denyForKeeper = new DenyForKeeper();
+        $allow = new Allow();
 
         $rules = [
             AbacRule::of(AuthorizationPermission::WORKSPACE_VIEW(), $allowForCollaborators),
@@ -39,7 +41,7 @@ final class RuleConfig
             AbacRule::of(AuthorizationPermission::INVITE_PROPOSE(), $allowForKeeper),
             AbacRule::of(AuthorizationPermission::INVITE_DISCARD(), $allowForKeeper),
             AbacRule::of(AuthorizationPermission::COLLABORATION_LEAVE(), $allowForCollaborators, $denyForKeeper),
-            AbacRule::of(AuthorizationPermission::NULL_PERMISSION()),
+            AbacRule::of(AuthorizationPermission::NULL_PERMISSION(), $allow),
         ];
         return new self(...$rules);
     }

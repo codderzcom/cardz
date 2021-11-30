@@ -7,13 +7,13 @@ use Codderz\Platypus\Infrastructure\Authorization\Abac\Attributes;
 final class AuthorizationObject
 {
     private function __construct(
-        private string $objectId,
+        private ?string $objectId,
         private Attributes $attributes,
     ) {
         $this->attributes['id'] = $this->objectId;
     }
 
-    public static function of(string $objectId, Attributes $attributes): self
+    public static function of(?string $objectId, Attributes $attributes): self
     {
         return new self($objectId, $attributes);
     }

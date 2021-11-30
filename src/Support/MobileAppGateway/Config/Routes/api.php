@@ -19,13 +19,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['prefix' => '/mab/v1', 'middleware' => ['authorization.mag']], function () {
+Route::group(['prefix' => '/mab/v1'], function () {
     Route::post('/customer/get-token', [CustomerController::class, 'getToken'])->name(RouteName::GET_TOKEN);
     Route::post('/customer/register', [CustomerController::class, 'register'])->name(RouteName::REGISTER);
 
     Route::get('/customer/workspaces', [CustomerController::class, 'getWorkspaces'])->name(RouteName::CUSTOMER_WORKSPACES);
 
-    Route::middleware('auth:sanctum')->group(function () {
+    Route::group(['middleware' => ['auth:sanctum', 'authorization.mag']], function () {
         Route::group(['prefix' => '/customer'], function () {
             Route::get('/id', [CustomerController::class, 'getId'])->name(RouteName::CUSTOMER_ID);
             Route::get('/card', [CustomerController::class, 'getCards'])->name(RouteName::CUSTOMER_CARDS);

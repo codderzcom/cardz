@@ -4,10 +4,12 @@ namespace Cardz\Support\MobileAppGateway\Config\Authorization;
 
 use Cardz\Generic\Authorization\Application\AuthorizationBusInterface;
 use Cardz\Generic\Authorization\Application\Queries\IsAllowed;
+use Cardz\Support\MobileAppGateway\Application\Exceptions\AccessDeniedException;
+use Cardz\Support\MobileAppGateway\Config\Routes\RouteName;
 use Closure;
-use Codderz\Platypus\Exceptions\AuthorizationFailedException;
 use Codderz\Platypus\Infrastructure\Support\GuidBasedImmutableId;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthorizationMiddleware
 {
@@ -29,20 +31,30 @@ class AuthorizationMiddleware
             return;
         }
 
+        $isAllowedQuery = $this->requestToQuery($request);
+        if (!$this->authorizationBus->execute($isAllowedQuery)) {
+            $message = sprintf(
+                "Subject %s is not authorized for %s %s",
+                $isAllowedQuery->subjectId,
+                $isAllowedQuery->permission->getObjectType(),
+                $isAllowedQuery->objectId,
+            );
+            throw new AccessDeniedException($message);
+        }
+    }
+
+    private function requestToQuery(Request $request): IsAllowed
+    {
         $routeName = $request->route()?->getName();
         $permission = RouteNameToPermissionMap::map($routeName);
 
         $objectIdName = $permission->getObjectIdName();
-        $objectId = $objectIdName ? GuidBasedImmutableId::of($request->$objectIdName) : null;
+        $objectId = $objectIdName !== null ? GuidBasedImmutableId::of($request->$objectIdName) : null;
 
-        $isAllowed = $this->authorizationBus->execute(IsAllowed::of(
+        return IsAllowed::of(
             $permission,
-            GuidBasedImmutableId::of($subjectId),
+            GuidBasedImmutableId::of($request->user()?->id),
             $objectId,
-        ));
-
-        if (!$isAllowed) {
-            throw new AuthorizationFailedException("Subject is not authorized");
-        }
+        );
     }
 }

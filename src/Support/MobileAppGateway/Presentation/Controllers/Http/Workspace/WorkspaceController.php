@@ -2,8 +2,6 @@
 
 namespace Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace;
 
-use Cardz\Generic\Authorization\Domain\Permissions\AuthorizationPermission;
-use Cardz\Support\MobileAppGateway\Application\Services\AuthorizationServiceInterface;
 use Cardz\Support\MobileAppGateway\Application\Services\Workspace\WorkspaceAppService;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\BaseController;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\AddWorkspaceRequest;
@@ -16,7 +14,6 @@ class WorkspaceController extends BaseController
 {
     public function __construct(
         private WorkspaceAppService $workspaceService,
-        private AuthorizationServiceInterface $authorizationService,
     ) {
     }
 
@@ -27,12 +24,6 @@ class WorkspaceController extends BaseController
 
     public function getWorkspace(GetWorkspaceRequest $request): JsonResponse
     {
-        $this->authorizationService->authorize(
-            AuthorizationPermission::WORKSPACE_VIEW(),
-            $request->collaboratorId,
-            $request->workspaceId,
-        );
-
         return $this->response($this->workspaceService->getBusinessWorkspace($request->workspaceId));
     }
 
@@ -48,12 +39,6 @@ class WorkspaceController extends BaseController
 
     public function changeWorkspaceProfile(ChangeWorkspaceProfileRequest $request): JsonResponse
     {
-        $this->authorizationService->authorize(
-            AuthorizationPermission::WORKSPACE_CHANGE_PROFILE(),
-            $request->collaboratorId,
-            $request->workspaceId,
-        );
-
         return $this->response($this->workspaceService->changeProfile(
             $request->workspaceId,
             $request->name,
