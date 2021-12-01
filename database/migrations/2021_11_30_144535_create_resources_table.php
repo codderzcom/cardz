@@ -13,11 +13,16 @@ class CreateResourcesTable extends Migration
      */
     public function up()
     {
-        Schema::create('relations', function (Blueprint $table) {
-            $table->bigInteger('id')->primary();
-            $table->uuid('resource_id')->primary();
-            $table->text('resource_type')->index();
+        Schema::create('resources', function (Blueprint $table) {
+            $table->uuid('resource_id')->index();
+            $table->string('resource_type')->index();
 
+            $table->jsonb('attributes');
+
+            $table->timestamp('created_at')->useCurrent()->index();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->index();
+
+            $table->primary(['resource_id', 'resource_type']);
         });
     }
 

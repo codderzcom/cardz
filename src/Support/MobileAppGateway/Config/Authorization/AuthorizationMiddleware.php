@@ -5,11 +5,9 @@ namespace Cardz\Support\MobileAppGateway\Config\Authorization;
 use Cardz\Generic\Authorization\Application\AuthorizationBusInterface;
 use Cardz\Generic\Authorization\Application\Queries\IsAllowed;
 use Cardz\Support\MobileAppGateway\Application\Exceptions\AccessDeniedException;
-use Cardz\Support\MobileAppGateway\Config\Routes\RouteName;
 use Closure;
 use Codderz\Platypus\Infrastructure\Support\GuidBasedImmutableId;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class AuthorizationMiddleware
 {
