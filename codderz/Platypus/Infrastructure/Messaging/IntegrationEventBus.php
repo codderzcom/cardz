@@ -40,6 +40,7 @@ class IntegrationEventBus implements IntegrationEventBusInterface
         $this->error('Error occurred when publishing an integration event ' . $event::class, [
             'event' => $event,
             'error' => $error->getMessage(),
+            'errorData' =>  $error->getTraceAsString(),
         ]);
     }
 

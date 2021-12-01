@@ -7,7 +7,6 @@ use Cardz\Support\Collaboration\Application\Commands\Keeper\KeepWorkspace;
 use Cardz\Support\Collaboration\Infrastructure\ReadStorage\Contracts\AddedWorkspaceReadStorageInterface;
 use Codderz\Platypus\Contracts\Commands\CommandBusInterface;
 use Codderz\Platypus\Contracts\Messaging\IntegrationEventConsumerInterface;
-use function json_try_decode;
 
 final class WorkspacesNewWorkspaceRegisteredConsumer implements IntegrationEventConsumerInterface
 {
@@ -27,10 +26,13 @@ final class WorkspacesNewWorkspaceRegisteredConsumer implements IntegrationEvent
 
     public function handle(string $event): void
     {
-        $data = json_try_decode($event, true);
-        $workspaceId = $data['workspaceId'] ?? null;
+        $payload = json_decode($event)?->payload;
+        if (!is_object($payload)) {
+            return;
+        }
+
         //ToDo: переделать на query?
-        $addedWorkspace = $this->addedWorkspaceReadStorage->find($workspaceId);
+        $addedWorkspace = $this->addedWorkspaceReadStorage->find($payload->workspaceId);
         if ($addedWorkspace === null) {
             return;
         }

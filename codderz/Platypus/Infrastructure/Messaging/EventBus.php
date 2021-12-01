@@ -40,6 +40,7 @@ class EventBus implements EventBusInterface
         $this->error('Error occurred when publishing in ' . $event::class, [
             'event' => $event,
             'error' => $error->getMessage(),
+            'errorData' =>  $error->getTraceAsString(),
         ]);
     }
 

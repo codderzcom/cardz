@@ -11,6 +11,8 @@ use Cardz\Core\Workspaces\Infrastructure\Messaging\DomainEventBus;
 use Cardz\Core\Workspaces\Infrastructure\Messaging\DomainEventBusInterface;
 use Cardz\Core\Workspaces\Infrastructure\Persistence\Eloquent\KeeperRepository;
 use Cardz\Core\Workspaces\Infrastructure\Persistence\Eloquent\WorkspaceRepository;
+use Cardz\Core\Workspaces\Infrastructure\ReadStorage\Contracts\ReadWorkspaceStorageInterface;
+use Cardz\Core\Workspaces\Infrastructure\ReadStorage\Eloquent\ReadWorkspaceStorage;
 use Codderz\Platypus\Contracts\Commands\CommandBusInterface;
 use Codderz\Platypus\Infrastructure\CommandHandling\LaravelHandlerGenerator;
 use Illuminate\Support\ServiceProvider;
@@ -21,6 +23,7 @@ class WorkspacesProvider extends ServiceProvider
     {
         $this->app->singleton(KeeperRepositoryInterface::class, KeeperRepository::class);
         $this->app->singleton(WorkspaceRepositoryInterface::class, WorkspaceRepository::class);
+        $this->app->singleton(ReadWorkspaceStorageInterface::class, ReadWorkspaceStorage::class);
         $this->app->singleton(DomainEventBusInterface::class, DomainEventBus::class);
     }
 

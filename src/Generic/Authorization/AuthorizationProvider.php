@@ -27,8 +27,8 @@ class AuthorizationProvider extends ServiceProvider
         IntegrationEventBusInterface $integrationEventBus,
     ) {
         $authorizationBus->registerProvider(LaravelExecutorGenerator::of(AuthorizationService::class));
-        $integrationEventBus->subscribe($this->app->make(SubjectResourceEventConsumer::class));
-        $integrationEventBus->subscribe($this->app->make(WorkspaceResourceEventConsumer::class));
-        $integrationEventBus->subscribe($this->app->make(PlanResourceEventConsumer::class));
+        //$integrationEventBus->subscribe($this->app->make(SubjectResourceEventConsumer::class));
+        //$integrationEventBus->subscribe($this->app->make(WorkspaceResourceEventConsumer::class));
+        //$integrationEventBus->subscribe($this->app->make(PlanResourceEventConsumer::class));
     }
 }

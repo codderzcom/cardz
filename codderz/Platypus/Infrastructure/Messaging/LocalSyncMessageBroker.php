@@ -22,14 +22,14 @@ class LocalSyncMessageBroker implements MessageBrokerInterface
 
     public function publish(MessageChannelInterface $channel, MessageInterface ...$messages): void
     {
-        try {
-            $this->errors = [];
-            $this->subscribers[(string) $channel] ??= [];
-            foreach ($this->subscribers[(string) $channel] as $subscriber) {
+        $this->errors = [];
+        $this->subscribers[(string) $channel] ??= [];
+        foreach ($this->subscribers[(string) $channel] as $subscriber) {
+            try {
                 $subscriber(...$messages);
+            } catch (Throwable $exception) {
+                $this->errors[] = $exception;
             }
-        } catch (Throwable $exception) {
-            $this->errors[] = $exception;
         }
     }
 

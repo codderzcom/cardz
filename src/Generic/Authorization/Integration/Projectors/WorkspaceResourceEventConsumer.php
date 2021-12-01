@@ -10,8 +10,6 @@ use Cardz\Generic\Authorization\Integration\Mappers\WorkspaceEventToResourceMapp
 
 final class WorkspaceResourceEventConsumer extends BaseResourceEventConsumer
 {
-    use RelationAttributeAugmentTrait;
-
     public function __construct(
         ResourceRepositoryInterface $resourceRepository,
         WorkspaceEventToResourceMapper $mapper,
@@ -30,7 +28,6 @@ final class WorkspaceResourceEventConsumer extends BaseResourceEventConsumer
 
     protected function augmentAttributes(Resource $resource): void
     {
-        $resource->appendAttributes(['memberIds' => $this->getMemberIds($this->getRelations($resource->resourceId))]);
     }
 
 }

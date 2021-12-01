@@ -23,16 +23,16 @@ class RabbitMQMessageBroker implements MessageBrokerInterface
 
     public function publish(MessageChannelInterface $channel, MessageInterface ...$messages): void
     {
-        try {
-            $this->errors = [];
-            $this->subscribers[(string) $channel] ??= [];
-            foreach ($this->subscribers[(string) $channel] as $subscriber) {
-                foreach ($messages as $message) {
+        $this->errors = [];
+        $this->subscribers[(string) $channel] ??= [];
+        foreach ($this->subscribers[(string) $channel] as $subscriber) {
+            foreach ($messages as $message) {
+                try {
                     $subscriber(json_encode($message->jsonSerialize()));
+                } catch (Throwable $exception) {
+                    $this->errors[] = $exception;
                 }
             }
-        } catch (Throwable $exception) {
-            $this->errors[] = $exception;
         }
     }
 
