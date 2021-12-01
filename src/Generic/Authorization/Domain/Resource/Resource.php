@@ -2,12 +2,10 @@
 
 namespace Cardz\Generic\Authorization\Domain\Resource;
 
-use Cardz\Support\Collaboration\Domain\Model\Relation\RelationId;
-
 final class Resource
 {
     private function __construct(
-        public RelationId $resourceId,
+        public ResourceId $resourceId,
         public ResourceType $resourceType,
         public Attributes $attributes,
     ) {
@@ -15,12 +13,19 @@ final class Resource
 
     public static function restore(string $resourceId, string $resourceType, array $attributes): self
     {
-        return new self(RelationId::of($resourceId), ResourceType::of($resourceType), Attributes::fromData($attributes));
+        return new self(ResourceId::of($resourceId), ResourceType::of($resourceType), Attributes::fromData($attributes));
     }
 
-    public function appendAttributes(array $attributes): void
+    public function appendAttributes(array $attributes, bool $replace = true): void
     {
-        $this->attributes->merge(...Attributes::fromData($attributes));
+        if ($replace) {
+            dump($this->attributes, Attributes::fromData($attributes));
+            $this->attributes = $this->attributes->merge(...Attributes::fromData($attributes)->all());
+            dump($this->attributes);
+        } else {
+            $newAttributes = Attributes::fromData($attributes);
+            $this->attributes = $newAttributes->merge(...$this->attributes);
+        }
     }
 
     public function __get(string $name)

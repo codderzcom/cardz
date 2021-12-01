@@ -7,7 +7,10 @@ use Cardz\Generic\Authorization\Application\AuthorizationService;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceRepositoryInterface;
 use Cardz\Generic\Authorization\Infrastructure\AuthorizationBus;
 use Cardz\Generic\Authorization\Infrastructure\Persistence\Eloquent\ResourceRepository;
+use Cardz\Generic\Authorization\Integration\Projectors\CardResourceEventConsumer;
 use Cardz\Generic\Authorization\Integration\Projectors\PlanResourceEventConsumer;
+use Cardz\Generic\Authorization\Integration\Projectors\RelationEstablishedEventConsumer;
+use Cardz\Generic\Authorization\Integration\Projectors\RelationLeftEventConsumer;
 use Cardz\Generic\Authorization\Integration\Projectors\SubjectResourceEventConsumer;
 use Cardz\Generic\Authorization\Integration\Projectors\WorkspaceResourceEventConsumer;
 use Codderz\Platypus\Contracts\Messaging\IntegrationEventBusInterface;
@@ -27,8 +30,11 @@ class AuthorizationProvider extends ServiceProvider
         IntegrationEventBusInterface $integrationEventBus,
     ) {
         $authorizationBus->registerProvider(LaravelExecutorGenerator::of(AuthorizationService::class));
-        //$integrationEventBus->subscribe($this->app->make(SubjectResourceEventConsumer::class));
-        //$integrationEventBus->subscribe($this->app->make(WorkspaceResourceEventConsumer::class));
-        //$integrationEventBus->subscribe($this->app->make(PlanResourceEventConsumer::class));
+        $integrationEventBus->subscribe($this->app->make(SubjectResourceEventConsumer::class));
+        $integrationEventBus->subscribe($this->app->make(WorkspaceResourceEventConsumer::class));
+        $integrationEventBus->subscribe($this->app->make(PlanResourceEventConsumer::class));
+        $integrationEventBus->subscribe($this->app->make(CardResourceEventConsumer::class));
+        $integrationEventBus->subscribe($this->app->make(RelationEstablishedEventConsumer::class));
+        $integrationEventBus->subscribe($this->app->make(RelationLeftEventConsumer::class));
     }
 }

@@ -4,9 +4,13 @@ namespace Cardz\Generic\Authorization\Domain\Resource;
 
 use Codderz\Platypus\Contracts\Authorization\Abac\AttributeInterface;
 use Codderz\Platypus\Exceptions\ParameterAssertionException;
+use Codderz\Platypus\Infrastructure\Support\ArrayPresenterTrait;
+use JsonSerializable;
 
-final class Attribute implements AttributeInterface
+final class Attribute implements AttributeInterface, JsonSerializable
 {
+    use ArrayPresenterTrait;
+
     public function __construct(
         private string $name,
         private $value,
@@ -38,4 +42,10 @@ final class Attribute implements AttributeInterface
     {
         return $this->value;
     }
+
+    public function jsonSerialize()
+    {
+        return $this->toArray();
+    }
+
 }

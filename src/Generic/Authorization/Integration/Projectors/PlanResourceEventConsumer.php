@@ -9,13 +9,14 @@ use Cardz\Core\Plans\Integration\Events\PlanRequirementsChanged;
 use Cardz\Core\Plans\Integration\Events\PlanStopped;
 use Cardz\Generic\Authorization\Domain\Resource\Resource;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceRepositoryInterface;
-use Cardz\Generic\Authorization\Integration\Mappers\WorkspaceEventToResourceMapper;
+use Cardz\Generic\Authorization\Domain\Resource\ResourceType;
+use Cardz\Generic\Authorization\Integration\Mappers\PlanEventToResourceMapper;
 
 final class PlanResourceEventConsumer extends BaseResourceEventConsumer
 {
     public function __construct(
         ResourceRepositoryInterface $resourceRepository,
-        WorkspaceEventToResourceMapper $mapper,
+        PlanEventToResourceMapper $mapper,
     ) {
         $this->resourceRepository = $resourceRepository;
         $this->mapper = $mapper;
@@ -34,6 +35,8 @@ final class PlanResourceEventConsumer extends BaseResourceEventConsumer
 
     protected function augmentAttributes(Resource $resource): void
     {
+        $workspace = $this->resourceRepository->find($resource->workspaceId, ResourceType::WORKSPACE());
+        $resource->appendAttributes(['memberIds' => $workspace->memberIds], false);
     }
 
 }

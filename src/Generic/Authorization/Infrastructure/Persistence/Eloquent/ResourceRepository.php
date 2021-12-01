@@ -6,20 +6,19 @@ use App\Models\Resource as EloquentResource;
 use Cardz\Generic\Authorization\Domain\Resource\Resource;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceRepositoryInterface;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceType;
-use Cardz\Support\Collaboration\Domain\Model\Relation\RelationId;
-use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use Cardz\Generic\Authorization\Infrastructure\Exceptions\ResourceNotFoundException;
 
 class ResourceRepository implements ResourceRepositoryInterface
 {
-    public function find(RelationId $resourceId, ResourceType $resourceType): Resource
+    public function find(string $resourceId, ResourceType $resourceType): Resource
     {
         /** @var EloquentResource $eloquentResource */
         $eloquentResource = EloquentResource::query()
-            ->where('resource_id', '=', (string) $resourceId)
+            ->where('resource_id', '=', $resourceId)
             ->where('resource_type', '=', (string) $resourceType)
             ->first();
         if ($eloquentResource === null) {
-            throw new RouteNotFoundException("Resource: id $resourceId type $resourceType");
+            throw new ResourceNotFoundException("Resource: id $resourceId type $resourceType");
         }
         return $this->resourceFromData($eloquentResource);
     }
@@ -47,7 +46,7 @@ class ResourceRepository implements ResourceRepositoryInterface
         return [
             'resource_id' => (string) $resource->resourceId,
             'resource_type' => (string) $resource->resourceType,
-            'attributes' => $resource->attributes->toArray(),
+            'attributes' => $resource->attributes->toJson(),
         ];
     }
 

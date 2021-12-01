@@ -4,17 +4,17 @@ namespace Cardz\Generic\Authorization\Integration\Mappers;
 
 use Cardz\Generic\Authorization\Domain\Resource\ResourceType;
 
-class PlanEventToResourceMapper extends BaseResourceMapper
+class CardEventToResourceMapper extends BaseResourceMapper
 {
-    protected const RESOURCE_TYPE = ResourceType::PLAN;
+    protected const RESOURCE_TYPE = ResourceType::CARD;
 
-    protected const RESOURCE_ID_NAME = 'planId';
+    protected const RESOURCE_ID_NAME = 'cardId';
 
     protected function getAttributes(object $payload): array
     {
         return [
+            'cardId' => $payload->cardId,
             'planId' => $payload->planId,
-            'workspaceId' => $payload->workspaceId,
         ];
     }
 }

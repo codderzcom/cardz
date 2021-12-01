@@ -30,6 +30,7 @@ class ReadWorkspaceStorage implements ReadWorkspaceStorageInterface
         $profile = is_string($eloquentWorkspace->profile) ? json_try_decode($eloquentWorkspace->profile) : $eloquentWorkspace->profile;
         return new ReadWorkspace(
             $eloquentWorkspace->id,
+            $eloquentWorkspace->keeper_id,
             $profile['name'] ?? '',
             $profile['description'] ?? '',
             $profile['address'] ?? '',

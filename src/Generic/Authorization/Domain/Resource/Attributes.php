@@ -6,11 +6,11 @@ use Codderz\Platypus\Infrastructure\Authorization\Abac\Attributes as AbacAttribu
 
 final class Attributes extends AbacAttributes
 {
-    public static function fromData(array $data): self
+    public static function fromData(array $attributeItems): self
     {
         $attributes = [];
-        foreach ($data as $item) {
-            $attributes[] = Attribute::fromArray($item);
+        foreach ($attributeItems as $name => $value) {
+            $attributes[] = Attribute::of($name, $value);
         }
         return self::of($attributes);
     }

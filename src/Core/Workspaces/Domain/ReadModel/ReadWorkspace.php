@@ -11,6 +11,7 @@ final class ReadWorkspace implements JsonSerializable
 
     public function __construct(
         public string $workspaceId,
+        public string $keeperId,
         public string $name,
         public string $description,
         public string $address,
