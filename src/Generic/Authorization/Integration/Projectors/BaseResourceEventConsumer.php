@@ -2,7 +2,6 @@
 
 namespace Cardz\Generic\Authorization\Integration\Projectors;
 
-use Cardz\Generic\Authorization\Domain\Exceptions\ResourceNotFoundExceptionInterface;
 use Cardz\Generic\Authorization\Domain\Resource\Resource;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceRepositoryInterface;
 use Cardz\Generic\Authorization\Integration\Mappers\EventResourceMapperInterface;
@@ -22,12 +21,13 @@ abstract class BaseResourceEventConsumer implements IntegrationEventConsumerInte
         }
 
         $resource = $this->mapper->map($event);
-        try {
-            $this->augmentAttributes($resource);
-        } catch (ResourceNotFoundExceptionInterface) {
-        }
+        $resource->appendAttributes($this->getAdditionalAttributes($resource));
         $this->resourceRepository->persist($resource);
     }
 
-    abstract protected function augmentAttributes(Resource $resource): void;
+    protected function getAdditionalAttributes(Resource $resource): array
+    {
+        // override when needed
+        return [];
+    }
 }

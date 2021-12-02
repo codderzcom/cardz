@@ -2,7 +2,6 @@
 
 namespace Cardz\Generic\Authorization\Integration\Projectors;
 
-use Cardz\Generic\Authorization\Domain\Resource\Resource;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceRepositoryInterface;
 use Cardz\Generic\Authorization\Integration\Mappers\SubjectEventToResourceMapper;
 use Cardz\Generic\Identity\Integration\Events\RegistrationCompleted;
@@ -22,10 +21,6 @@ final class SubjectResourceEventConsumer extends BaseResourceEventConsumer
         return [
             RegistrationCompleted::class,
         ];
-    }
-
-    protected function augmentAttributes(Resource $resource): void
-    {
     }
 
 }

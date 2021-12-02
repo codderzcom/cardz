@@ -11,6 +11,7 @@ use MyCLabs\Enum\Enum;
  * @method static self WORKSPACE()
  * @method static self PLAN()
  * @method static self CARD()
+ * @method static self RELATION()
  *
  * @method static self NULL()
  */
@@ -21,6 +22,7 @@ final class ResourceType extends Enum
     public const WORKSPACE = 'workspace';
     public const PLAN = 'plan';
     public const CARD = 'card';
+    public const RELATION = 'relation';
 
     public const NULL = 'null';
 

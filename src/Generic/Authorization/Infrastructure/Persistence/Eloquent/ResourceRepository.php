@@ -31,6 +31,14 @@ class ResourceRepository implements ResourceRepositoryInterface
         );
     }
 
+    public function remove(string $resourceId, ResourceType $resourceType): void
+    {
+        EloquentResource::query()
+            ->where('resource_id', '=', $resourceId)
+            ->where('resource_type', '=', (string) $resourceType)
+            ->delete();
+    }
+
     private function resourceFromData(EloquentResource $eloquentResource): Resource
     {
         $attributes = is_string($eloquentResource->attributes) ? json_try_decode($eloquentResource->attributes, true) : $eloquentResource->attributes;

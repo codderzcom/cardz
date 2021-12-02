@@ -2,10 +2,9 @@
 
 namespace Cardz\Generic\Authorization\Integration\Projectors;
 
-use Cardz\Generic\Authorization\Domain\Exceptions\ResourceNotFoundExceptionInterface;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceRepositoryInterface;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceType;
-use Cardz\Support\Collaboration\Integration\Events\RelationEstablished;
+use Cardz\Support\Collaboration\Integration\Events\RelationLeft;
 use Codderz\Platypus\Contracts\Messaging\IntegrationEventConsumerInterface;
 
 final class RelationLeftEventConsumer implements IntegrationEventConsumerInterface
@@ -18,7 +17,7 @@ final class RelationLeftEventConsumer implements IntegrationEventConsumerInterfa
     public function consumes(): array
     {
         return [
-            RelationEstablished::class,
+            RelationLeft::class,
         ];
     }
 
@@ -29,17 +28,7 @@ final class RelationLeftEventConsumer implements IntegrationEventConsumerInterfa
             return;
         }
 
-        try {
-            $workspace = $this->resourceRepository->find($payload->workspaceId, ResourceType::WORKSPACE());
-            $memberIds = $workspace->memberIds ?? [];
-            $memberIds = array_diff($memberIds, [$payload->collaboratorId]);
-            $workspace->appendAttributes([
-                'memberIds' => $memberIds,
-            ]);
-            $this->resourceRepository->persist($workspace);
-        } catch (ResourceNotFoundExceptionInterface) {
-            return;
-        }
+        $this->resourceRepository->remove($payload->relationId, ResourceType::RELATION());
     }
 
 }
