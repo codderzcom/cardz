@@ -6,7 +6,6 @@ use App\Models\Resource;
 use Cardz\Generic\Authorization\Domain\Exceptions\ResourceNotFoundExceptionInterface;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceRepositoryInterface;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceType;
-use Cardz\Generic\Authorization\Infrastructure\Exceptions\ResourceNotFoundException;
 use Cardz\Support\Collaboration\Integration\Events\RelationEstablished;
 use Codderz\Platypus\Contracts\Messaging\IntegrationEventConsumerInterface;
 

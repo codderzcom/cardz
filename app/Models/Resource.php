@@ -10,10 +10,6 @@ class Resource extends Model
 
     protected $guarded = [];
 
-    protected $primaryKey = ['resource_id', 'resource_type'];
-
-    public $incrementing = false;
-
     protected $casts = [
         'attributes' => 'array',
     ];

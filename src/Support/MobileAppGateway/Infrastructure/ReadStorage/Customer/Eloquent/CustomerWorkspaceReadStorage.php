@@ -22,7 +22,7 @@ class CustomerWorkspaceReadStorage implements CustomerWorkspaceReadStorageInterf
 
     private function workspaceFromEloquent(EloquentWorkspace $workspace): CustomerWorkspace
     {
-        $profile = is_string($workspace->profile) ? json_try_decode($workspace->profile) : $workspace->profile;
+        $profile = is_string($workspace->profile) ? json_try_decode($workspace->profile, true) : $workspace->profile;
 
         return CustomerWorkspace::make(
             $workspace->id,

@@ -38,7 +38,7 @@ class BusinessWorkspaceReadStorage implements BusinessWorkspaceReadStorageInterf
 
     private function workspaceFromEloquent(EloquentWorkspace $workspace): BusinessWorkspace
     {
-        $profile = is_string($workspace->profile) ? json_try_decode($workspace->profile) : $workspace->profile;
+        $profile = is_string($workspace->profile) ? json_try_decode($workspace->profile, true) : $workspace->profile;
 
         return BusinessWorkspace::make(
             $workspace->id,

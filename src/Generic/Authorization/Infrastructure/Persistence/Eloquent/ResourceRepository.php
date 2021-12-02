@@ -27,13 +27,13 @@ class ResourceRepository implements ResourceRepositoryInterface
     {
         EloquentResource::query()->updateOrCreate(
             ['resource_id' => (string) $resource->resourceId, 'resource_type' => (string) $resource->resourceType],
-            $this->resourceAsData($resource)
+            $this->resourceAsData($resource),
         );
     }
 
     private function resourceFromData(EloquentResource $eloquentResource): Resource
     {
-        $attributes = is_string($eloquentResource->attributes) ? json_try_decode($eloquentResource->attributes) : $eloquentResource->attributes;
+        $attributes = is_string($eloquentResource->attributes) ? json_try_decode($eloquentResource->attributes, true) : $eloquentResource->attributes;
         return Resource::restore(
             $eloquentResource->resource_id,
             $eloquentResource->resource_type,
@@ -46,7 +46,7 @@ class ResourceRepository implements ResourceRepositoryInterface
         return [
             'resource_id' => (string) $resource->resourceId,
             'resource_type' => (string) $resource->resourceType,
-            'attributes' => $resource->attributes->toJson(),
+            'attributes' => $resource->attributes->toArray(),
         ];
     }
 

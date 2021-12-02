@@ -14,4 +14,14 @@ final class Attributes extends AbacAttributes
         }
         return self::of($attributes);
     }
+
+    public function toArray()
+    {
+        $attributes = [];
+        /** @var Attribute $attribute */
+        foreach ($this as $attribute) {
+            $attributes[$attribute->getName()] = $attribute->getValue();
+        }
+        return $attributes;
+    }
 }

@@ -29,7 +29,7 @@ final class WorkspaceResourceEventConsumer extends BaseResourceEventConsumer
     protected function augmentAttributes(Resource $resource): void
     {
         $previous = $this->resourceRepository->find($resource->resourceId, $resource->resourceType);
-        $resource->appendAttributes($previous->attributes->all(), false);
+        $resource->appendAttributes($previous->attributes->toArray(), false);
     }
 
 }

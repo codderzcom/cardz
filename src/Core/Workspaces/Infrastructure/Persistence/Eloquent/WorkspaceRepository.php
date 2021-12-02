@@ -43,7 +43,7 @@ class WorkspaceRepository implements WorkspaceRepositoryInterface
 
     private function workspaceFromData(EloquentWorkspace $eloquentWorkspace): Workspace
     {
-        $profile = is_string($eloquentWorkspace->profile) ? json_try_decode($eloquentWorkspace->profile) : $eloquentWorkspace->profile;
+        $profile = is_string($eloquentWorkspace->profile) ? json_try_decode($eloquentWorkspace->profile, true) : $eloquentWorkspace->profile;
         return Workspace::restore(
             $eloquentWorkspace->id,
             $eloquentWorkspace->keeper_id,

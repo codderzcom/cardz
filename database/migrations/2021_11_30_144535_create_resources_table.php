@@ -14,6 +14,7 @@ class CreateResourcesTable extends Migration
     public function up()
     {
         Schema::create('resources', function (Blueprint $table) {
+            $table->id();
             $table->uuid('resource_id')->index();
             $table->string('resource_type')->index();
 
@@ -22,7 +23,7 @@ class CreateResourcesTable extends Migration
             $table->timestamp('created_at')->useCurrent()->index();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate()->index();
 
-            $table->primary(['resource_id', 'resource_type']);
+            $table->unique(['resource_id', 'resource_type']);
         });
     }
 

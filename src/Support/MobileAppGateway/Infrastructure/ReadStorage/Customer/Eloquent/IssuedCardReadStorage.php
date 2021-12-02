@@ -44,8 +44,8 @@ class IssuedCardReadStorage implements IssuedCardReadStorageInterface
 
     private function issuedCardFromEloquent(EloquentCard $card): IssuedCard
     {
-        $achievements = is_string($card->achievements) ? json_try_decode($card->achievements) : $card->achievements;
-        $requirements = is_string($card->requirements) ? json_try_decode($card->requirements) : $card->requirements;
+        $achievements = is_string($card->achievements) ? json_try_decode($card->achievements, true) : $card->achievements;
+        $requirements = is_string($card->requirements) ? json_try_decode($card->requirements, true) : $card->requirements;
 
         return IssuedCard::make(
             $card->id,

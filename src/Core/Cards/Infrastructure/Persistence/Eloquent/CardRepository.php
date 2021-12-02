@@ -54,8 +54,8 @@ class CardRepository implements CardRepositoryInterface
 
     private function cardFromData(EloquentCard $eloquentCard): Card
     {
-        $achievements = is_string($eloquentCard->achievements) ? json_try_decode($eloquentCard->achievements) : $eloquentCard->achievements;
-        $requirements = is_string($eloquentCard->requirements) ? json_try_decode($eloquentCard->requirements) : $eloquentCard->requirements;
+        $achievements = is_string($eloquentCard->achievements) ? json_try_decode($eloquentCard->achievements, true) : $eloquentCard->achievements;
+        $requirements = is_string($eloquentCard->requirements) ? json_try_decode($eloquentCard->requirements, true) : $eloquentCard->requirements;
 
         $card = Card::restore(
             $eloquentCard->id,

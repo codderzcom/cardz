@@ -16,20 +16,15 @@ final class Resource
         return new self(ResourceId::of($resourceId), ResourceType::of($resourceType), Attributes::fromData($attributes));
     }
 
-    public function appendAttributes(array $attributes, bool $replace = true): void
+    public function appendAttributes(array $newAttributes, bool $replace = true): void
     {
-        if ($replace) {
-            dump($this->attributes, Attributes::fromData($attributes));
-            $this->attributes = $this->attributes->merge(...Attributes::fromData($attributes)->all());
-            dump($this->attributes);
-        } else {
-            $newAttributes = Attributes::fromData($attributes);
-            $this->attributes = $newAttributes->merge(...$this->attributes);
-        }
+        $oldAttributes = $this->attributes->toArray();
+        $attributes = $replace ? array_merge($oldAttributes, $newAttributes) : array_merge($newAttributes, $oldAttributes);
+        $this->attributes = Attributes::fromData($attributes);
     }
 
     public function __get(string $name)
     {
-        $this->attributes->filter(fn(Attribute $item) => $item->getName() === $name)->first()?->getValue();
+        return $this->attributes->filter(fn(Attribute $item) => $item->getName() === $name)->first()?->getValue();
     }
 }
