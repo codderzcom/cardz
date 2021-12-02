@@ -7,7 +7,6 @@ use Cardz\Generic\Authorization\Domain\Resource\Resource;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceRepositoryInterface;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceType;
 use Cardz\Generic\Authorization\Infrastructure\Exceptions\ResourceNotFoundException;
-use Illuminate\Support\Str;
 
 class ResourceRepository implements ResourceRepositoryInterface
 {
@@ -40,13 +39,19 @@ class ResourceRepository implements ResourceRepositoryInterface
             ->delete();
     }
 
+    /** @return Resource[] */
     public function getByAttributes(ResourceType $resourceType, array $attributes): array
     {
         $query = EloquentResource::query()->where('resource_type', '=', (string) $resourceType);
         foreach ($attributes as $name => $value) {
             $query = $query->where("attributes->$name", $value);
         }
-        return $query->get();
+        $eloquentResources = $query->get();
+        $resources = [];
+        foreach ($eloquentResources as $eloquentResource) {
+            $resources[] = $this->resourceFromData($eloquentResource);
+        }
+        return  $resources;
     }
 
     private function resourceFromData(EloquentResource $eloquentResource): Resource

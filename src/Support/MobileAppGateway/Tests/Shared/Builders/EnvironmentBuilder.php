@@ -11,6 +11,9 @@ use Cardz\Core\Plans\Tests\Support\Builders\PlanBuilder;
 use Cardz\Core\Plans\Tests\Support\Builders\RequirementBuilder;
 use Cardz\Core\Workspaces\Domain\Model\Workspace\Workspace;
 use Cardz\Core\Workspaces\Tests\Support\Builders\WorkspaceBuilder;
+use Cardz\Generic\Authorization\Domain\Resource\Resource;
+use Cardz\Generic\Authorization\Domain\Resource\ResourceType;
+use Cardz\Generic\Authorization\Tests\Support\Builders\ResourceBuilder;
 use Cardz\Generic\Identity\Domain\Model\User\User;
 use Cardz\Generic\Identity\Tests\Support\Builders\UserBuilder;
 use Cardz\Support\Collaboration\Domain\Model\Invite\Invite;
@@ -25,8 +28,8 @@ use Faker\Generator;
 
 final class EnvironmentBuilder implements BuilderInterface
 {
-    public const SMALL_SET_SIZE = 3;
-    public const MEDIUM_SET_SIZE = 6;
+    public const SMALL_SET_SIZE = 2;
+    public const MEDIUM_SET_SIZE = 3;
 
     /** @var User[] */
     public array $keepers = [];
@@ -64,6 +67,9 @@ final class EnvironmentBuilder implements BuilderInterface
     /** @var Relation[] */
     public array $relations = [];
 
+    /** @var Resource[] */
+    public array $resources = [];
+
     private function __construct(
         private Generator $faker,
         private UserBuilder $userBuilder,
@@ -73,6 +79,7 @@ final class EnvironmentBuilder implements BuilderInterface
         private CardBuilder $cardBuilder,
         private InviteBuilder $inviteBuilder,
         private RelationBuilder $relationBuilder,
+        private ResourceBuilder $resourceBuilder,
     ) {
     }
 
@@ -87,12 +94,14 @@ final class EnvironmentBuilder implements BuilderInterface
             CardBuilder::make(),
             InviteBuilder::make(),
             RelationBuilder::make(),
+            ResourceBuilder::make(),
         );
         return $builder->generate();
     }
 
     public function build(): Environment
     {
+        $this->resources = $this->generateResources();
         return Environment::of(
             $this->keepers,
             $this->keeperInfos,
@@ -106,6 +115,7 @@ final class EnvironmentBuilder implements BuilderInterface
             $this->cards,
             $this->invites,
             $this->relations,
+            $this->resources,
         );
     }
 
@@ -283,4 +293,47 @@ final class EnvironmentBuilder implements BuilderInterface
         return $requirements;
     }
 
+    private function generateResources(): array
+    {
+        $resources = [];
+        foreach ($this->keepers as $keeper) {
+            $resources[] = Resource::restore($keeper->userId, ResourceType::SUBJECT(), []);
+        }
+        foreach ($this->collaborators as $collaborator) {
+            $resources[] = Resource::restore($collaborator->userId, ResourceType::SUBJECT(), []);
+        }
+        foreach ($this->customers as $customer) {
+            $resources[] = Resource::restore($customer->userId, ResourceType::SUBJECT(), []);
+        }
+
+        foreach ($this->workspaces as $workspace) {
+            $resources[] = Resource::restore($workspace->workspaceId, ResourceType::WORKSPACE(), [
+                'workspaceId' => (string) $workspace->workspaceId,
+                'keeperId' => (string) $workspace->keeperId,
+            ]);
+        }
+
+        foreach ($this->plans as $plan) {
+            $resources[] = Resource::restore($plan->planId, ResourceType::PLAN(), [
+                'planId' => (string) $plan->planId,
+                'workspaceId' => (string) $plan->workspaceId,
+            ]);
+        }
+
+        foreach ($this->cards as $card) {
+            $resources[] = Resource::restore($card->cardId, ResourceType::CARD(), [
+                'cardId' => (string) $card->cardId,
+                'planId' => (string) $card->planId,
+            ]);
+        }
+
+        foreach ($this->relations as $relation) {
+            $resources[] = Resource::restore($relation->relationId, ResourceType::RELATION(), [
+                'collaboratorId' => (string) $relation->relationId,
+                'workspaceId' => (string) $relation->workspaceId,
+                'relationType' => (string) $relation->relationType,
+            ]);
+        }
+        return $resources;
+    }
 }

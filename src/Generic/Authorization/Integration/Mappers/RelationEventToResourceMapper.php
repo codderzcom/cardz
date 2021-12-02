@@ -15,6 +15,7 @@ class RelationEventToResourceMapper extends BaseResourceMapper
         return [
             'collaboratorId' => $payload->collaboratorId,
             'workspaceId' => $payload->workspaceId,
+            'relationType' => $payload->relationType,
         ];
     }
 }

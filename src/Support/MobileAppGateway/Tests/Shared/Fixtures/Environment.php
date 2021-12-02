@@ -6,6 +6,8 @@ use Cardz\Core\Cards\Domain\Model\Card\Card;
 use Cardz\Core\Plans\Domain\Model\Plan\Plan;
 use Cardz\Core\Plans\Domain\Model\Requirement\Requirement;
 use Cardz\Core\Workspaces\Domain\Model\Workspace\Workspace;
+use Cardz\Generic\Authorization\Domain\Resource\Resource;
+use Cardz\Generic\Authorization\Domain\Resource\ResourceType;
 use Cardz\Generic\Identity\Domain\Model\User\User;
 use Cardz\Support\Collaboration\Domain\Model\Invite\Invite;
 use Cardz\Support\Collaboration\Domain\Model\Relation\Relation;
@@ -48,6 +50,9 @@ class Environment
     /** @var Relation[] */
     public array $relations = [];
 
+    /** @var Resource[] */
+    public array $resources = [];
+
     private function __construct(
         array $keepers,
         array $keeperInfos,
@@ -61,6 +66,7 @@ class Environment
         array $cards,
         array $invites,
         array $relations,
+        array $resources,
     ) {
         $this->keepers = $keepers;
         $this->keeperInfos = $keeperInfos;
@@ -74,6 +80,7 @@ class Environment
         $this->cards = $cards;
         $this->invites = $invites;
         $this->relations = $relations;
+        $this->resources = $resources;
     }
 
     public static function of(
@@ -89,6 +96,7 @@ class Environment
         array $cards,
         array $invites,
         array $relations,
+        array $resources,
     ): static {
         return new static(
             $keepers,
@@ -103,6 +111,7 @@ class Environment
             $cards,
             $invites,
             $relations,
+            $resources,
         );
     }
 }

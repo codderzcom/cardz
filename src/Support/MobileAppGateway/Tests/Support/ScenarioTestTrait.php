@@ -6,6 +6,7 @@ use Cardz\Core\Cards\Domain\Persistence\Contracts\CardRepositoryInterface;
 use Cardz\Core\Plans\Domain\Persistence\Contracts\PlanRepositoryInterface;
 use Cardz\Core\Plans\Domain\Persistence\Contracts\RequirementRepositoryInterface;
 use Cardz\Core\Workspaces\Domain\Persistence\Contracts\WorkspaceRepositoryInterface;
+use Cardz\Generic\Authorization\Domain\Resource\ResourceRepositoryInterface;
 use Cardz\Generic\Identity\Domain\Persistence\Contracts\UserRepositoryInterface;
 use Cardz\Support\Collaboration\Domain\Persistence\Contracts\InviteRepositoryInterface;
 use Cardz\Support\Collaboration\Domain\Persistence\Contracts\RelationRepositoryInterface;
@@ -56,6 +57,10 @@ trait ScenarioTestTrait
         foreach ($this->environment->relations as $relation) {
             $this->getRelationRepository()->persist($relation);
         }
+
+        foreach ($this->environment->resources as $resource) {
+            $this->getResourceRepository()->persist($resource);
+        }
     }
 
     public function getUserRepository(): UserRepositoryInterface
@@ -91,5 +96,10 @@ trait ScenarioTestTrait
     public function getRelationRepository(): RelationRepositoryInterface
     {
         return $this->app->make(RelationRepositoryInterface::class);
+    }
+
+    public function getResourceRepository(): ResourceRepositoryInterface
+    {
+        return $this->app->make(ResourceRepositoryInterface::class);
     }
 }

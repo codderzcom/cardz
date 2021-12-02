@@ -3,8 +3,10 @@
 namespace Cardz\Generic\Authorization\Application;
 
 use Cardz\Generic\Authorization\Application\Queries\IsAllowed;
+use Cardz\Generic\Authorization\Domain\Resource\ResourceType;
 use Cardz\Generic\Authorization\Domain\Rules\RuleConfig;
 use Cardz\Generic\Authorization\Infrastructure\ObjectProvider;
+use Cardz\Generic\Authorization\Infrastructure\ResourceProviderInterface;
 use Cardz\Generic\Authorization\Infrastructure\SubjectProvider;
 use Codderz\Platypus\Infrastructure\Authorization\Abac\AbacEngine;
 use Codderz\Platypus\Infrastructure\Authorization\Abac\AbacResolutionStrategy;
@@ -16,6 +18,7 @@ class AuthorizationService
         private ObjectProvider $objectProvider,
         private SubjectProvider $subjectProvider,
         private AbacEngine $abacEngine,
+        private ResourceProviderInterface $resourceProvider,
     ) {
         $this->abacEngine->setup(...RuleConfig::make()->getRules());
     }

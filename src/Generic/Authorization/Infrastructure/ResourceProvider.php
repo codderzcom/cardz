@@ -2,6 +2,7 @@
 
 namespace Cardz\Generic\Authorization\Infrastructure;
 
+use Cardz\Generic\Authorization\Domain\Resource\Attribute;
 use Cardz\Generic\Authorization\Domain\Resource\Attributes;
 use Cardz\Generic\Authorization\Domain\Resource\Resource;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceRepositoryInterface;
@@ -32,7 +33,9 @@ class ResourceProvider implements ResourceProviderInterface
         if (!$resource->workspaceId) {
             return;
         }
-        $relations = $this->resourceRepository->getByAttributes(ResourceType::RELATION(), ['']);
+        $relations = $this->resourceRepository->getByAttributes(ResourceType::RELATION(), [
+            'workspaceId' => $resource->workspaceId,
+        ]);
         $memberIds = [];
         /** @var Resource $relation */
         foreach ($relations as $relation) {
