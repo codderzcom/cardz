@@ -6,7 +6,7 @@ use App\Models\Resource as EloquentResource;
 use Cardz\Generic\Authorization\Domain\Resource\Resource;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceRepositoryInterface;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceType;
-use Cardz\Generic\Authorization\Infrastructure\Exceptions\ResourceNotFoundException;
+use Cardz\Generic\Authorization\Exceptions\ResourceNotFoundException;
 
 class ResourceRepository implements ResourceRepositoryInterface
 {
@@ -51,7 +51,7 @@ class ResourceRepository implements ResourceRepositoryInterface
         foreach ($eloquentResources as $eloquentResource) {
             $resources[] = $this->resourceFromData($eloquentResource);
         }
-        return  $resources;
+        return $resources;
     }
 
     private function resourceFromData(EloquentResource $eloquentResource): Resource

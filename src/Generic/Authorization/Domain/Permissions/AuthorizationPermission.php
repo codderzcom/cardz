@@ -2,7 +2,6 @@
 
 namespace Cardz\Generic\Authorization\Domain\Permissions;
 
-use Cardz\Generic\Authorization\Dictionary\ObjectTypeName;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceType;
 use Codderz\Platypus\Exceptions\AuthorizationFailedException;
 use Codderz\Platypus\Infrastructure\Authorization\Abac\AbacPermission;
@@ -21,7 +20,7 @@ use Codderz\Platypus\Infrastructure\Authorization\Abac\AbacPermission;
  * @method static self COLLABORATION_LEAVE()
  * @method static self NULL_PERMISSION()
  */
-final class AuthorizationPermission extends AbacPermission implements ObjectTypePrescribingPermissionInterface
+final class AuthorizationPermission extends AbacPermission
 {
     public const WORKSPACE_VIEW = 'workspace.view';
     public const WORKSPACE_CHANGE_PROFILE = 'workspace.change_profile';
@@ -42,23 +41,15 @@ final class AuthorizationPermission extends AbacPermission implements ObjectType
 
     public const NULL_PERMISSION = 'null';
 
-    public function getObjectType(): ObjectTypeName
-    {
-        $permissionKey = explode('.', (string) $this)[0];
-        return ObjectTypeName::isValid($permissionKey)
-            ? new ObjectTypeName($permissionKey)
-            : throw new AuthorizationFailedException("Unknown objectType");
-    }
-
     public function getResourceType(): ResourceType
     {
         $permissionKey = explode('.', (string) $this)[0];
-        return ObjectTypeName::isValid($permissionKey)
+        return ResourceType::isValid($permissionKey)
             ? new ResourceType($permissionKey)
-            : throw new AuthorizationFailedException("Unknown resourceType");
+            : throw new AuthorizationFailedException("Unknown resource type");
     }
 
-    public function getObjectIdName(): ?string
+    public function getResourceIdName(): ?string
     {
         if ($this->equals(self::NULL_PERMISSION())) {
             return null;

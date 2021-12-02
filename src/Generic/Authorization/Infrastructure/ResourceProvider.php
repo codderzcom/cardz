@@ -2,8 +2,7 @@
 
 namespace Cardz\Generic\Authorization\Infrastructure;
 
-use Cardz\Generic\Authorization\Domain\Resource\Attribute;
-use Cardz\Generic\Authorization\Domain\Resource\Attributes;
+use Cardz\Generic\Authorization\Domain\Attribute\Attributes;
 use Cardz\Generic\Authorization\Domain\Resource\Resource;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceRepositoryInterface;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceType;

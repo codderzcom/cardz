@@ -4,7 +4,7 @@ namespace Cardz\Generic\Authorization\Integration\Mappers;
 
 use Cardz\Generic\Authorization\Domain\Resource\Resource;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceType;
-use Cardz\Generic\Authorization\Infrastructure\Exceptions\EventReconstructionException;
+use Cardz\Generic\Authorization\Exceptions\EventReconstructionException;
 
 abstract class BaseResourceMapper implements EventResourceMapperInterface
 {

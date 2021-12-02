@@ -10,7 +10,7 @@ use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\TrimStrings;
 use App\Http\Middleware\TrustProxies;
 use App\Http\Middleware\VerifyCsrfToken;
-use Cardz\Support\MobileAppGateway\Config\Authorization\AuthorizationMiddleware;
+use Cardz\Support\MobileAppGateway\Application\Middleware\Authorization\AuthorizationMiddleware;
 use Fruitcake\Cors\HandleCors;
 use Illuminate\Auth\Middleware\AuthenticateWithBasicAuth;
 use Illuminate\Auth\Middleware\Authorize;

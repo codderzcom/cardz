@@ -1,6 +1,6 @@
 <?php
 
-namespace Cardz\Generic\Authorization\Domain\Resource;
+namespace Cardz\Generic\Authorization\Domain\Attribute;
 
 use Codderz\Platypus\Contracts\Authorization\Abac\AttributeInterface;
 use Codderz\Platypus\Infrastructure\Support\ArrayPresenterTrait;

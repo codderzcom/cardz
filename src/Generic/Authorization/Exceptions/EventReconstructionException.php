@@ -1,6 +1,6 @@
 <?php
 
-namespace Cardz\Generic\Authorization\Infrastructure\Exceptions;
+namespace Cardz\Generic\Authorization\Exceptions;
 
 use Exception;
 

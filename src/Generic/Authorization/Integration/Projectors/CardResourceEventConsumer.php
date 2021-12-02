@@ -12,10 +12,10 @@ use Cardz\Core\Cards\Integration\Events\CardSatisfactionWithdrawn;
 use Cardz\Core\Cards\Integration\Events\CardSatisfied;
 use Cardz\Core\Cards\Integration\Events\CardUnblocked;
 use Cardz\Core\Cards\Integration\Events\RequirementsAccepted;
-use Cardz\Generic\Authorization\Domain\Exceptions\ResourceNotFoundExceptionInterface;
 use Cardz\Generic\Authorization\Domain\Resource\Resource;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceRepositoryInterface;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceType;
+use Cardz\Generic\Authorization\Exceptions\ResourceNotFoundException;
 use Cardz\Generic\Authorization\Integration\Mappers\CardEventToResourceMapper;
 
 final class CardResourceEventConsumer extends BaseResourceEventConsumer
@@ -50,7 +50,7 @@ final class CardResourceEventConsumer extends BaseResourceEventConsumer
         try {
             $plan = $this->resourceRepository->find($resource->planId, ResourceType::PLAN());
             $workspaceId = $plan->workspaceId;
-        } catch (ResourceNotFoundExceptionInterface) {
+        } catch (ResourceNotFoundException) {
         }
         return ['workspaceId' => $workspaceId];
     }

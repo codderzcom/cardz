@@ -1,7 +1,8 @@
 <?php
 
-namespace Cardz\Generic\Authorization\Domain\Resource;
+namespace Cardz\Generic\Authorization\Domain\Attribute;
 
+use Codderz\Platypus\Exceptions\AuthorizationFailedException;
 use Codderz\Platypus\Infrastructure\Authorization\Abac\Attributes as AbacAttributes;
 
 final class Attributes extends AbacAttributes
@@ -34,4 +35,14 @@ final class Attributes extends AbacAttributes
         }
         return $attributes;
     }
+
+    public function get($key, $default = null)
+    {
+        $attribute = parent::get($key, null);
+        if ($attribute === null && $default !== 'allowNull') {
+            throw new AuthorizationFailedException("Attribute $key not found");
+        }
+        return $attribute?->getValue();
+    }
+
 }

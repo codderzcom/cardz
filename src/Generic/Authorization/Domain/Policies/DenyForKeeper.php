@@ -13,12 +13,8 @@ class DenyForKeeper implements PolicyInterface
         AttributeCollectionInterface $object,
         AttributeCollectionInterface $config,
     ): AuthorizationResolution {
-        $subjectId = $subject['subjectId'] ?? null;
-        $objectId = $object['id'] ?? null;
-        $keeperId = $object['keeperId'] ?? null;
-        $allow = $objectId !== null
-            && $subjectId !== null
-            && $subjectId !== $keeperId;
-        return AuthorizationResolution::of($allow);
+        $subjectId = $subject->get('subjectId');
+        $keeperId = $object->get('keeperId');
+        return AuthorizationResolution::of($subjectId !== $keeperId);
     }
 }

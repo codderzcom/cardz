@@ -12,6 +12,8 @@ class SubjectEventToResourceMapper extends BaseResourceMapper
 
     protected function getAttributes(object $payload): array
     {
-        return [];
+        return [
+            'subjectId' => $payload->userId,
+        ];
     }
 }

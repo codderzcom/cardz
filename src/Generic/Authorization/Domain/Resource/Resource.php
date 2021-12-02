@@ -2,6 +2,9 @@
 
 namespace Cardz\Generic\Authorization\Domain\Resource;
 
+use Cardz\Generic\Authorization\Domain\Attribute\Attribute;
+use Cardz\Generic\Authorization\Domain\Attribute\Attributes;
+
 final class Resource
 {
     private function __construct(

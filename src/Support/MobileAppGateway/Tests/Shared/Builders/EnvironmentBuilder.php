@@ -297,13 +297,19 @@ final class EnvironmentBuilder implements BuilderInterface
     {
         $resources = [];
         foreach ($this->keepers as $keeper) {
-            $resources[] = Resource::restore($keeper->userId, ResourceType::SUBJECT(), []);
+            $resources[] = Resource::restore($keeper->userId, ResourceType::SUBJECT(), [
+                'subjectId' => (string) $keeper->userId,
+            ]);
         }
         foreach ($this->collaborators as $collaborator) {
-            $resources[] = Resource::restore($collaborator->userId, ResourceType::SUBJECT(), []);
+            $resources[] = Resource::restore($collaborator->userId, ResourceType::SUBJECT(), [
+                'subjectId' => (string) $collaborator->userId,
+            ]);
         }
         foreach ($this->customers as $customer) {
-            $resources[] = Resource::restore($customer->userId, ResourceType::SUBJECT(), []);
+            $resources[] = Resource::restore($customer->userId, ResourceType::SUBJECT(), [
+                'subjectId' => (string) $customer->userId,
+            ]);
         }
 
         foreach ($this->workspaces as $workspace) {
@@ -329,7 +335,7 @@ final class EnvironmentBuilder implements BuilderInterface
 
         foreach ($this->relations as $relation) {
             $resources[] = Resource::restore($relation->relationId, ResourceType::RELATION(), [
-                'collaboratorId' => (string) $relation->relationId,
+                'collaboratorId' => (string) $relation->collaboratorId,
                 'workspaceId' => (string) $relation->workspaceId,
                 'relationType' => (string) $relation->relationType,
             ]);

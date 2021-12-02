@@ -17,7 +17,6 @@ class CardTest extends BaseScenarioTestCase
         $workspaces = $this->routeGet(RouteName::GET_WORKSPACES)->json();
         $workspaceId = $workspaces[0]['workspaceId'];
 
-        $this->withoutExceptionHandling();
         $plans = $this->routeGet(RouteName::GET_PLANS, ['workspaceId' => $workspaceId])->json();
         $planId = $plans[0]['planId'];
 
