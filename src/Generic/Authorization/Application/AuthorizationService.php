@@ -28,12 +28,13 @@ class AuthorizationService
         $objectAttributes = $this->resourceProvider->getResourceAttributes($query->objectId, $query->permission->getResourceType());
         $subjectAttributes = $this->resourceProvider->getResourceAttributes($query->subjectId, ResourceType::SUBJECT());
 
+
         $object = $this->objectProvider->reconstructForPermission($query->objectId, $query->permission);
         $subject = $this->subjectProvider->reconstruct($query->subjectId);
         $resolution = $this->abacEngine->resolve(AuthorizationRequest::of(
             $query->permission,
-            $subject->getAttributes(),
-            $object->getAttributes(),
+            $subjectAttributes,
+            $objectAttributes,
             Attributes::of(['abac.strategy' => AbacResolutionStrategy::RESTRICTIVE])
         ));
         return !$resolution->isRestrictive();
