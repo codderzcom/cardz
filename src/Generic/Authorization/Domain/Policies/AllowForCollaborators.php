@@ -15,7 +15,7 @@ class AllowForCollaborators implements PolicyInterface
     ): AuthorizationResolution {
         $subjectId = $subject->get('subjectId');
         $memberIds = $object->get('memberIds');
-        $keeperId = $object->get('keeperId', 'allowNull');
+        $keeperId = $object->get('keeperId');
         return AuthorizationResolution::of($subjectId === $keeperId || in_array($subjectId, $memberIds, true));
     }
 }

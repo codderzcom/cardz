@@ -21,7 +21,7 @@ class ResourceTest extends BaseTestCase
         $resource->appendAttributes(['memberIds' => [1, 2, 3]]);
         $repo->persist($resource);
         $resource = $repo->find($resource->resourceId, $resource->resourceType);
-        $this->assertCount(2, $resource->attributes);
+        $this->assertEquals(2, $resource->attributes->count());
         $this->assertCount(3, $resource->memberIds);
     }
 }

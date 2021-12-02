@@ -2,10 +2,7 @@
 
 namespace Codderz\Platypus\Contracts\Authorization\Abac;
 
-use ArrayAccess;
-use Illuminate\Support\Enumerable;
-
-interface AttributeCollectionInterface extends ArrayAccess, Enumerable
+interface AttributeCollectionInterface
 {
-
+    public function get(string $attributeName);
 }

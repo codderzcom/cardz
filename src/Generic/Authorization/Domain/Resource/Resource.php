@@ -28,6 +28,6 @@ final class Resource
 
     public function __get(string $name)
     {
-        return $this->attributes->filter(fn(Attribute $item) => $item->getName() === $name)->first()?->getValue();
+        return $this->attributes->getValue($name);
     }
 }

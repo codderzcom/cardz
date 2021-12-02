@@ -15,6 +15,7 @@ class CardEventToResourceMapper extends BaseResourceMapper
         return [
             'cardId' => $payload->cardId,
             'planId' => $payload->planId,
+            'customerId' => $payload->customerId,
         ];
     }
 }

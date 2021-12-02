@@ -3,12 +3,12 @@
 namespace Cardz\Generic\Authorization\Application;
 
 use Cardz\Generic\Authorization\Application\Queries\IsAllowed;
+use Cardz\Generic\Authorization\Domain\Attribute\Attributes;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceType;
 use Cardz\Generic\Authorization\Domain\Rules\RuleConfig;
 use Cardz\Generic\Authorization\Infrastructure\ResourceProviderInterface;
 use Codderz\Platypus\Infrastructure\Authorization\Abac\AbacEngine;
 use Codderz\Platypus\Infrastructure\Authorization\Abac\AbacResolutionStrategy;
-use Codderz\Platypus\Infrastructure\Authorization\Abac\Attributes;
 
 class AuthorizationService
 {
@@ -28,7 +28,7 @@ class AuthorizationService
             $query->permission,
             $subjectAttributes,
             $objectAttributes,
-            Attributes::of(['abac.strategy' => AbacResolutionStrategy::RESTRICTIVE])
+            Attributes::fromData(['abac.strategy' => AbacResolutionStrategy::RESTRICTIVE])
         ));
         return !$resolution->isRestrictive();
     }

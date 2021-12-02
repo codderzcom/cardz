@@ -7,7 +7,10 @@ use Cardz\Core\Plans\Integration\Events\PlanArchived;
 use Cardz\Core\Plans\Integration\Events\PlanLaunched;
 use Cardz\Core\Plans\Integration\Events\PlanRequirementsChanged;
 use Cardz\Core\Plans\Integration\Events\PlanStopped;
+use Cardz\Generic\Authorization\Domain\Resource\Resource;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceRepositoryInterface;
+use Cardz\Generic\Authorization\Domain\Resource\ResourceType;
+use Cardz\Generic\Authorization\Exceptions\ResourceNotFoundException;
 use Cardz\Generic\Authorization\Integration\Mappers\PlanEventToResourceMapper;
 
 final class PlanResourceEventConsumer extends BaseResourceEventConsumer
@@ -29,6 +32,17 @@ final class PlanResourceEventConsumer extends BaseResourceEventConsumer
             PlanRequirementsChanged::class,
             PlanStopped::class,
         ];
+    }
+
+    protected function getAdditionalAttributes(Resource $resource): array
+    {
+        $workspaceId = null;
+        try {
+            $workspace = $this->resourceRepository->find($resource->$workspaceId, ResourceType::WORKSPACE());
+            $keeperId = $workspace->keeperId;
+        } catch (ResourceNotFoundException) {
+        }
+        return ['keeperId' => $keeperId];
     }
 
 }

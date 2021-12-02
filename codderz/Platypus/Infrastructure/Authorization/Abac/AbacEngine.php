@@ -23,13 +23,10 @@ class AbacEngine
         $rule = $this->rules[(string) $authorizationRequest->getPermission()] ?? null;
 
         $strategy = AbacResolutionStrategy::ofConfig($authorizationRequest->getConfig());
-        if ($rule === null && !$strategy->isPermissive()) {
-            return AuthorizationResolution::of(false);
-        }
         return $rule?->applyPolicies(
                 $authorizationRequest->getSubject(),
                 $authorizationRequest->getObject(),
                 $authorizationRequest->getConfig(),
-            ) ?? AuthorizationResolution::of();
+            ) ?? AuthorizationResolution::of($strategy->isPermissive());
     }
 }

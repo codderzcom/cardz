@@ -2,47 +2,63 @@
 
 namespace Cardz\Generic\Authorization\Domain\Attribute;
 
+use Codderz\Platypus\Contracts\Authorization\Abac\AttributeCollectionInterface;
 use Codderz\Platypus\Exceptions\AuthorizationFailedException;
-use Codderz\Platypus\Infrastructure\Authorization\Abac\Attributes as AbacAttributes;
 
-final class Attributes extends AbacAttributes
+final class Attributes implements AttributeCollectionInterface
 {
-    public static function of(array $attributes): static
-    {
-        $collection = new static();
-        /** @var Attribute $attribute */
+    /** @var Attribute[]  */
+    private array $attributes = [];
+
+    public function __construct(
+        Attribute ...$attributes
+    ) {
         foreach ($attributes as $attribute) {
-            $collection[$attribute->getName()] = $attribute;
+            $this->attributes[$attribute->getName()] = $attribute;
         }
-        return $collection;
+    }
+
+    public static function of(Attribute ...$attributes): self
+    {
+        return new self(...$attributes);
     }
 
     public static function fromData(array $attributeItems): self
     {
-        $attributes = [];
+        $collection = new self();
         foreach ($attributeItems as $name => $value) {
-            $attributes[] = Attribute::of($name, $value);
+            $collection->attributes[$name] = Attribute::of($name, $value);
         }
-        return self::of($attributes);
+        return $collection;
     }
 
     public function toArray()
     {
         $attributes = [];
         /** @var Attribute $attribute */
-        foreach ($this as $attribute) {
+        foreach ($this->attributes as $attribute) {
             $attributes[$attribute->getName()] = $attribute->getValue();
         }
         return $attributes;
     }
 
-    public function get($key, $default = null)
+    public function get(string $attributeName)
     {
-        $attribute = parent::get($key, null);
-        if ($attribute === null && $default !== 'allowNull') {
-            throw new AuthorizationFailedException("Attribute $key not found");
+        $attribute = $this->attributes[$attributeName] ?? null;
+        if ($attribute === null) {
+            throw new AuthorizationFailedException("Attribute $attributeName not found");
         }
+        return $attribute->getValue();
+    }
+
+    public function getValue(string $attributeName)
+    {
+        $attribute = $this->attributes[$attributeName] ?? null;
         return $attribute?->getValue();
     }
 
+    public function count()
+    {
+        return count($this->attributes);
+    }
 }

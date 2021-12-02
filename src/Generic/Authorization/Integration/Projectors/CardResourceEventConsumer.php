@@ -50,9 +50,10 @@ final class CardResourceEventConsumer extends BaseResourceEventConsumer
         try {
             $plan = $this->resourceRepository->find($resource->planId, ResourceType::PLAN());
             $workspaceId = $plan->workspaceId;
+            $keeperId = $plan->keeperId;
         } catch (ResourceNotFoundException) {
         }
-        return ['workspaceId' => $workspaceId];
+        return ['workspaceId' => $workspaceId, 'keeperId' => $keeperId];
     }
 
 }

@@ -23,6 +23,7 @@ use Cardz\Support\Collaboration\Tests\Support\Builders\RelationBuilder;
 use Cardz\Support\MobileAppGateway\Tests\Shared\Fixtures\Environment;
 use Cardz\Support\MobileAppGateway\Tests\Shared\Fixtures\UserLoginInfo;
 use Codderz\Platypus\Contracts\Tests\BuilderInterface;
+use Codderz\Platypus\Exceptions\NotFoundException;
 use Faker\Factory;
 use Faker\Generator;
 
@@ -297,40 +298,36 @@ final class EnvironmentBuilder implements BuilderInterface
     {
         $resources = [];
         foreach ($this->keepers as $keeper) {
-            $resources[] = Resource::restore($keeper->userId, ResourceType::SUBJECT(), [
-                'subjectId' => (string) $keeper->userId,
-            ]);
+            $resources[] = $this->resourceBuilder->buildSubject($keeper->userId);
         }
         foreach ($this->collaborators as $collaborator) {
-            $resources[] = Resource::restore($collaborator->userId, ResourceType::SUBJECT(), [
-                'subjectId' => (string) $collaborator->userId,
-            ]);
+            $resources[] = $this->resourceBuilder->buildSubject($collaborator->userId);
         }
         foreach ($this->customers as $customer) {
-            $resources[] = Resource::restore($customer->userId, ResourceType::SUBJECT(), [
-                'subjectId' => (string) $customer->userId,
-            ]);
+            $resources[] = $this->resourceBuilder->buildSubject($customer->userId);
         }
 
         foreach ($this->workspaces as $workspace) {
-            $resources[] = Resource::restore($workspace->workspaceId, ResourceType::WORKSPACE(), [
-                'workspaceId' => (string) $workspace->workspaceId,
-                'keeperId' => (string) $workspace->keeperId,
-            ]);
+            $resources[] = $this->resourceBuilder->buildWorkspace($workspace->workspaceId, $workspace->keeperId);
         }
 
         foreach ($this->plans as $plan) {
-            $resources[] = Resource::restore($plan->planId, ResourceType::PLAN(), [
-                'planId' => (string) $plan->planId,
-                'workspaceId' => (string) $plan->workspaceId,
-            ]);
+            $resources[] = $this->resourceBuilder->buildPlan(
+                $plan->planId,
+                $plan->workspaceId,
+                $this->getWorkspace($plan->workspaceId)->keeperId,
+            );
         }
 
         foreach ($this->cards as $card) {
-            $resources[] = Resource::restore($card->cardId, ResourceType::CARD(), [
-                'cardId' => (string) $card->cardId,
-                'planId' => (string) $card->planId,
-            ]);
+            $plan = $this->getPlan($card->planId);
+            $resources[] = $this->resourceBuilder->buildCard(
+                $card->cardId,
+                $card->customerId,
+                $card->planId,
+                $plan->workspaceId,
+                $this->getWorkspace($plan->workspaceId)->keeperId,
+            );
         }
 
         foreach ($this->relations as $relation) {
@@ -341,5 +338,25 @@ final class EnvironmentBuilder implements BuilderInterface
             ]);
         }
         return $resources;
+    }
+
+    private function getWorkspace(string $workspaceId): Workspace
+    {
+        foreach ($this->workspaces as $workspace) {
+            if ($workspace->workspaceId->is($workspaceId)) {
+                return $workspace;
+            }
+        }
+        throw new NotFoundException();
+    }
+
+    private function getPlan(string $planId): Plan
+    {
+        foreach ($this->plans as $plan) {
+            if ($plan->planId->is($planId)) {
+                return $plan;
+            }
+        }
+        throw new NotFoundException();
     }
 }

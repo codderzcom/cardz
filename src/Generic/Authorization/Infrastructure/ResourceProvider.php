@@ -20,7 +20,7 @@ class ResourceProvider implements ResourceProviderInterface
         ResourceType $resourceType
     ): Attributes {
         if ($resourceId === null) {
-            return Attributes::of([]);
+            return Attributes::fromData([]);
         }
         $resource = $this->resourceRepository->find($resourceId, $resourceType);
         $this->augmentResource($resource);
@@ -29,12 +29,10 @@ class ResourceProvider implements ResourceProviderInterface
 
     private function augmentResource(Resource $resource): void
     {
-        if (!$resource->workspaceId) {
+        if (!$resource->workspaceId || $resource->resourceType->equals(ResourceType::RELATION())) {
             return;
         }
-        $relations = $this->resourceRepository->getByAttributes(ResourceType::RELATION(), [
-            'workspaceId' => $resource->workspaceId,
-        ]);
+        $relations = $this->resourceRepository->getByAttributes(ResourceType::RELATION(), ['workspaceId' => $resource->workspaceId]);
         $memberIds = [];
         /** @var Resource $relation */
         foreach ($relations as $relation) {

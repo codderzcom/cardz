@@ -16,6 +16,11 @@ use Cardz\Core\Workspaces\Tests\Support\Mocks\WorkspaceInMemoryRepository;
 use Cardz\Generic\Authorization\Application\AuthorizationBusInterface;
 use Cardz\Generic\Authorization\Application\Queries\IsAllowed;
 use Cardz\Generic\Authorization\Domain\Permissions\AuthorizationPermission;
+use Cardz\Generic\Authorization\Domain\Resource\Resource;
+use Cardz\Generic\Authorization\Domain\Resource\ResourceRepositoryInterface;
+use Cardz\Generic\Authorization\Domain\Resource\ResourceType;
+use Cardz\Generic\Authorization\Tests\Support\Builders\ResourceBuilder;
+use Cardz\Generic\Authorization\Tests\Support\Mocks\ResourceInMemoryRepository;
 use Cardz\Generic\Identity\Domain\Persistence\Contracts\UserRepositoryInterface;
 use Cardz\Generic\Identity\Tests\Support\Builders\UserBuilder;
 use Cardz\Generic\Identity\Tests\Support\Mocks\UserInMemoryRepository;
@@ -26,6 +31,7 @@ use Cardz\Support\Collaboration\Tests\Support\Builders\RelationBuilder;
 use Cardz\Support\Collaboration\Tests\Support\Mocks\InviteInMemoryRepository;
 use Cardz\Support\Collaboration\Tests\Support\Mocks\RelationInMemoryRepository;
 use Codderz\Platypus\Contracts\GeneralIdInterface;
+use Codderz\Platypus\Infrastructure\Support\GuidBasedImmutableId;
 
 trait AuthTestHelperTrait
 {
@@ -45,48 +51,12 @@ trait AuthTestHelperTrait
 
     protected function setupApplication(): void
     {
-        $this->app->singleton(UserRepositoryInterface::class, UserInMemoryRepository::class);
-        $this->app->singleton(WorkspaceRepositoryInterface::class, WorkspaceInMemoryRepository::class);
-        $this->app->singleton(PlanRepositoryInterface::class, PlanInMemoryRepository::class);
-        $this->app->singleton(RequirementRepositoryInterface::class, RequirementInMemoryRepository::class);
-        $this->app->singleton(CardRepositoryInterface::class, CardInMemoryRepository::class);
-        $this->app->singleton(RelationRepositoryInterface::class, RelationInMemoryRepository::class);
-        $this->app->singleton(InviteRepositoryInterface::class, InviteInMemoryRepository::class);
+        $this->app->singleton(ResourceRepositoryInterface::class, ResourceInMemoryRepository::class);
     }
 
-    protected function getUserRepository(): UserRepositoryInterface
+    protected function getResourceRepository(): ResourceRepositoryInterface
     {
-        return $this->app->make(UserRepositoryInterface::class);
-    }
-
-    protected function getWorkspaceRepository(): WorkspaceRepositoryInterface
-    {
-        return $this->app->make(WorkspaceRepositoryInterface::class);
-    }
-
-    protected function getPlanRepository(): PlanRepositoryInterface
-    {
-        return $this->app->make(PlanRepositoryInterface::class);
-    }
-
-    protected function getRequirementRepository(): RequirementRepositoryInterface
-    {
-        return $this->app->make(RequirementRepositoryInterface::class);
-    }
-
-    protected function getCardRepository(): CardRepositoryInterface
-    {
-        return $this->app->make(CardRepositoryInterface::class);
-    }
-
-    protected function getRelationRepository(): RelationRepositoryInterface
-    {
-        return $this->app->make(RelationRepositoryInterface::class);
-    }
-
-    protected function getInviteRepository(): InviteRepositoryInterface
-    {
-        return $this->app->make(InviteRepositoryInterface::class);
+        return $this->app->make(ResourceRepositoryInterface::class);
     }
 
     protected function authorizationBus(): AuthorizationBusInterface
@@ -108,51 +78,24 @@ trait AuthTestHelperTrait
 
     protected function setupEnvironment(): void
     {
-        $keeper = UserBuilder::make()->build();
-        $this->getUserRepository()->persist($keeper);
-        $this->keeperId = $keeper->userId;
+        $builder = ResourceBuilder::make();
+        $this->keeperId = GuidBasedImmutableId::make();
+        $this->collaboratorId = GuidBasedImmutableId::make();
+        $this->strangerId = GuidBasedImmutableId::make();
+        $this->workspaceId = GuidBasedImmutableId::make();
+        $this->planId = GuidBasedImmutableId::make();
+        $this->cardId = GuidBasedImmutableId::make();
+        $this->inviteId = GuidBasedImmutableId::make();
 
-        $collaborator = UserBuilder::make()->build();
-        $this->getUserRepository()->persist($collaborator);
-        $this->collaboratorId = $collaborator->userId;
+        $this->getResourceRepository()->persist($builder->buildSubject($this->keeperId));
+        $this->getResourceRepository()->persist($builder->buildSubject($this->collaboratorId));
+        $this->getResourceRepository()->persist($builder->buildSubject($this->strangerId));
+        $this->getResourceRepository()->persist($builder->buildWorkspace($this->workspaceId, $this->keeperId));
+        $this->getResourceRepository()->persist($builder->buildPlan($this->planId, $this->workspaceId, $this->keeperId));
+        $this->getResourceRepository()->persist($builder->buildCard($this->cardId, $this->strangerId, $this->planId, $this->workspaceId, $this->keeperId));
 
-        $stranger = UserBuilder::make()->build();
-        $this->getUserRepository()->persist($stranger);
-        $this->strangerId = $stranger->userId;
-
-        $workspace = WorkspaceBuilder::make()->withKeeperId($this->keeperId)->build();
-        $this->getWorkspaceRepository()->persist($workspace);
-        $this->workspaceId = $workspace->workspaceId;
-
-        $plan = PlanBuilder::make()->withWorkspaceId($this->workspaceId)->build();
-        $this->getPlanRepository()->persist($plan);
-        $this->planId = $plan->planId;
-
-        $card = CardBuilder::make()
-            ->withPlanId($this->planId)
-            ->withCustomerId($this->strangerId)
-            ->build();
-        $this->getCardRepository()->persist($card);
-        $this->cardId = $card->cardId;
-
-        $invite = InviteBuilder::make()
-            ->withInviterId($workspace->keeperId)
-            ->withWorkspaceId($this->workspaceId)
-            ->build();
-        $this->getInviteRepository()->persist($invite);
-        $this->inviteId = $invite->inviteId;
-
-        $relation = RelationBuilder::make()
-            ->withKeeperId($this->keeperId)
-            ->withWorkspaceId($this->workspaceId)
-            ->build();
-        $this->getRelationRepository()->persist($relation);
-
-        $relation = RelationBuilder::make()
-            ->withCollaboratorId($this->collaboratorId)
-            ->withWorkspaceId($this->workspaceId)
-            ->build();
-        $this->getRelationRepository()->persist($relation);
+        $this->getResourceRepository()->persist($builder->buildRelation($this->keeperId, $this->workspaceId, 'keeper'));
+        $this->getResourceRepository()->persist($builder->buildRelation($this->collaboratorId, $this->workspaceId, 'member'));
     }
 
 }
