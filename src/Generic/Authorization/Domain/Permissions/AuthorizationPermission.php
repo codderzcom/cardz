@@ -3,6 +3,7 @@
 namespace Cardz\Generic\Authorization\Domain\Permissions;
 
 use Cardz\Generic\Authorization\Dictionary\ObjectTypeName;
+use Cardz\Generic\Authorization\Domain\Resource\ResourceType;
 use Codderz\Platypus\Exceptions\AuthorizationFailedException;
 use Codderz\Platypus\Infrastructure\Authorization\Abac\AbacPermission;
 
@@ -47,6 +48,14 @@ final class AuthorizationPermission extends AbacPermission implements ObjectType
         return ObjectTypeName::isValid($permissionKey)
             ? new ObjectTypeName($permissionKey)
             : throw new AuthorizationFailedException("Unknown objectType");
+    }
+
+    public function getResourceType(): ResourceType
+    {
+        $permissionKey = explode('.', (string) $this)[0];
+        return ObjectTypeName::isValid($permissionKey)
+            ? new ResourceType($permissionKey)
+            : throw new AuthorizationFailedException("Unknown resourceType");
     }
 
     public function getObjectIdName(): ?string
