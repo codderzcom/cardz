@@ -7,6 +7,8 @@ use Cardz\Generic\Authorization\Application\AuthorizationService;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceRepositoryInterface;
 use Cardz\Generic\Authorization\Infrastructure\AuthorizationBus;
 use Cardz\Generic\Authorization\Infrastructure\Persistence\Eloquent\ResourceRepository;
+use Cardz\Generic\Authorization\Infrastructure\ResourceProvider;
+use Cardz\Generic\Authorization\Infrastructure\ResourceProviderInterface;
 use Cardz\Generic\Authorization\Integration\Projectors\CardResourceEventConsumer;
 use Cardz\Generic\Authorization\Integration\Projectors\PlanResourceEventConsumer;
 use Cardz\Generic\Authorization\Integration\Projectors\RelationEstablishedEventConsumer;
@@ -23,6 +25,7 @@ class AuthorizationProvider extends ServiceProvider
     {
         $this->app->singleton(AuthorizationBusInterface::class, AuthorizationBus::class);
         $this->app->singleton(ResourceRepositoryInterface::class, ResourceRepository::class);
+        $this->app->singleton(ResourceProviderInterface::class, ResourceProvider::class);
     }
 
     public function boot(
