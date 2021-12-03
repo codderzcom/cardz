@@ -2,6 +2,7 @@
 
 namespace Cardz\Generic\Authorization\Infrastructure;
 
+use Cardz\Generic\Authorization\Domain\Attribute\Attribute;
 use Cardz\Generic\Authorization\Domain\Attribute\Attributes;
 use Cardz\Generic\Authorization\Domain\Resource\Resource;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceRepositoryInterface;
@@ -29,16 +30,19 @@ class ResourceProvider implements ResourceProviderInterface
 
     private function augmentResource(Resource $resource): void
     {
-        if (!$resource->workspaceId || $resource->resourceType->equals(ResourceType::RELATION())) {
+        if (!$resource->isCollaborative()) {
             return;
         }
-        $relations = $this->resourceRepository->getByAttributes(ResourceType::RELATION(), ['workspaceId' => $resource->workspaceId]);
+        $relations = $this->resourceRepository->getByAttributes(
+            ResourceType::RELATION(),
+            [Attribute::WORKSPACE_ID => $resource(Attribute::WORKSPACE_ID)],
+        );
         $memberIds = [];
         /** @var Resource $relation */
         foreach ($relations as $relation) {
-            $memberIds[] = $relation->collaboratorId;
+            $memberIds[] = $relation(Attribute::COLLABORATOR_ID);
         }
-        $resource->appendAttributes(['memberIds' => $memberIds]);
+        $resource->appendAttributes([Attribute::MEMBER_IDS => $memberIds]);
     }
 
 }

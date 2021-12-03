@@ -7,7 +7,6 @@ use Cardz\Core\Plans\Domain\Model\Plan\Plan;
 use Cardz\Core\Plans\Domain\Model\Requirement\Requirement;
 use Cardz\Core\Workspaces\Domain\Model\Workspace\Workspace;
 use Cardz\Generic\Authorization\Domain\Resource\Resource;
-use Cardz\Generic\Authorization\Domain\Resource\ResourceType;
 use Cardz\Generic\Identity\Domain\Model\User\User;
 use Cardz\Support\Collaboration\Domain\Model\Invite\Invite;
 use Cardz\Support\Collaboration\Domain\Model\Relation\Relation;

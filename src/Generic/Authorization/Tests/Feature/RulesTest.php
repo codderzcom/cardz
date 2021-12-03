@@ -71,6 +71,7 @@ class RulesTest extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->setupApplication();
         $this->setupEnvironment();
     }
 

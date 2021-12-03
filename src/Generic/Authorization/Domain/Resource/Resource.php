@@ -4,6 +4,7 @@ namespace Cardz\Generic\Authorization\Domain\Resource;
 
 use Cardz\Generic\Authorization\Domain\Attribute\Attribute;
 use Cardz\Generic\Authorization\Domain\Attribute\Attributes;
+use Codderz\Platypus\Exceptions\AuthorizationFailedException;
 
 final class Resource
 {
@@ -26,8 +27,19 @@ final class Resource
         $this->attributes = Attributes::fromData($attributes);
     }
 
-    public function __get(string $name)
+    /** @throws AuthorizationFailedException */
+    public function attr(string $attributeName): Attribute
     {
-        return $this->attributes->getValue($name);
+        return $this->attributes->attr($attributeName);
+    }
+
+    public function isCollaborative(): bool
+    {
+        return $this(Attribute::WORKSPACE_ID) && !$this->resourceType->equals(ResourceType::RELATION());
+    }
+
+    public function __invoke(string $attributeName)
+    {
+        return $this->attributes->getValue($attributeName);
     }
 }

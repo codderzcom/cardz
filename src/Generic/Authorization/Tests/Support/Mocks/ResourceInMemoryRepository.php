@@ -18,7 +18,7 @@ class ResourceInMemoryRepository implements ResourceRepositoryInterface
     public function persist(Resource $resource): void
     {
         static::$storage[(string) $resource->resourceType] ??= [];
-        static::$storage[(string) $resource->resourceType][$resource->resourceId] = $resource;
+        static::$storage[(string) $resource->resourceType][(string) $resource->resourceId] = $resource;
     }
 
     public function remove(string $resourceId, ResourceType $resourceType): void
@@ -33,7 +33,7 @@ class ResourceInMemoryRepository implements ResourceRepositoryInterface
         foreach (static::$storage[(string) $resourceType] as $resource) {
             $fits = -count($attributes);
             foreach ($attributes as $name => $value) {
-                if ($resource->attributes->get($name) === $value) {
+                if ($resource->attr($name)->equals($value)) {
                     $fits++;
                 }
             }

@@ -12,6 +12,7 @@ use Cardz\Core\Cards\Integration\Events\CardSatisfactionWithdrawn;
 use Cardz\Core\Cards\Integration\Events\CardSatisfied;
 use Cardz\Core\Cards\Integration\Events\CardUnblocked;
 use Cardz\Core\Cards\Integration\Events\RequirementsAccepted;
+use Cardz\Generic\Authorization\Domain\Attribute\Attribute;
 use Cardz\Generic\Authorization\Domain\Resource\Resource;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceRepositoryInterface;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceType;
@@ -47,13 +48,17 @@ final class CardResourceEventConsumer extends BaseResourceEventConsumer
     protected function getAdditionalAttributes(Resource $resource): array
     {
         $workspaceId = null;
+        $keeperId = null;
         try {
-            $plan = $this->resourceRepository->find($resource->planId, ResourceType::PLAN());
-            $workspaceId = $plan->workspaceId;
-            $keeperId = $plan->keeperId;
+            $plan = $this->resourceRepository->find($resource(Attribute::PLAN_ID), ResourceType::PLAN());
+            $workspaceId = $plan(Attribute::WORKSPACE_ID);
+            $keeperId = $plan(Attribute::KEEPER_ID);
         } catch (ResourceNotFoundException) {
         }
-        return ['workspaceId' => $workspaceId, 'keeperId' => $keeperId];
+        return [
+            Attribute::WORKSPACE_ID => $workspaceId,
+            Attribute::KEEPER_ID => $keeperId,
+        ];
     }
 
 }

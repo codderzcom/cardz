@@ -21,7 +21,7 @@ class AbacResolutionStrategy extends Enum
 
     public static function ofConfig(AttributeCollectionInterface $config): static
     {
-        $strategy = $config->get('abac.strategy');
+        $strategy = $config->getValue('abac.strategy');
         return static::isValid($strategy) ? new static($strategy) : static::RESTRICTIVE();
     }
 }

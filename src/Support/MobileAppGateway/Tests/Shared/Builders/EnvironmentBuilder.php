@@ -12,7 +12,6 @@ use Cardz\Core\Plans\Tests\Support\Builders\RequirementBuilder;
 use Cardz\Core\Workspaces\Domain\Model\Workspace\Workspace;
 use Cardz\Core\Workspaces\Tests\Support\Builders\WorkspaceBuilder;
 use Cardz\Generic\Authorization\Domain\Resource\Resource;
-use Cardz\Generic\Authorization\Domain\Resource\ResourceType;
 use Cardz\Generic\Authorization\Tests\Support\Builders\ResourceBuilder;
 use Cardz\Generic\Identity\Domain\Model\User\User;
 use Cardz\Generic\Identity\Tests\Support\Builders\UserBuilder;
@@ -331,11 +330,11 @@ final class EnvironmentBuilder implements BuilderInterface
         }
 
         foreach ($this->relations as $relation) {
-            $resources[] = Resource::restore($relation->relationId, ResourceType::RELATION(), [
-                'collaboratorId' => (string) $relation->collaboratorId,
-                'workspaceId' => (string) $relation->workspaceId,
-                'relationType' => (string) $relation->relationType,
-            ]);
+            $resources[] = $this->resourceBuilder->withResourceId($relation->relationId)->buildRelation(
+                $relation->collaboratorId,
+                $relation->workspaceId,
+                $relation->relationType,
+            );
         }
         return $resources;
     }

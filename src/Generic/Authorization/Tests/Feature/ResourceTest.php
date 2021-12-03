@@ -2,6 +2,7 @@
 
 namespace Cardz\Generic\Authorization\Tests\Feature;
 
+use Cardz\Generic\Authorization\Domain\Attribute\Attribute;
 use Cardz\Generic\Authorization\Domain\Resource\Resource;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceId;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceRepositoryInterface;
@@ -22,6 +23,6 @@ class ResourceTest extends BaseTestCase
         $repo->persist($resource);
         $resource = $repo->find($resource->resourceId, $resource->resourceType);
         $this->assertEquals(2, $resource->attributes->count());
-        $this->assertCount(3, $resource->memberIds);
+        $this->assertCount(3, $resource(Attribute::MEMBER_IDS));
     }
 }

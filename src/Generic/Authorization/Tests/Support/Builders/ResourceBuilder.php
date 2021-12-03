@@ -2,6 +2,7 @@
 
 namespace Cardz\Generic\Authorization\Tests\Support\Builders;
 
+use Cardz\Generic\Authorization\Domain\Attribute\Attribute;
 use Cardz\Generic\Authorization\Domain\Resource\Resource;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceType;
 use Codderz\Platypus\Infrastructure\Support\GuidBasedImmutableId;
@@ -28,7 +29,7 @@ final class ResourceBuilder extends BaseBuilder
     {
         $this->resourceId = $subjectId;
         $this->resourceType = ResourceType::SUBJECT;
-        $this->attributes = ['subjectId' => $subjectId];
+        $this->attributes = [Attribute::SUBJECT_ID => $subjectId];
         return $this->build();
     }
 
@@ -36,7 +37,10 @@ final class ResourceBuilder extends BaseBuilder
     {
         $this->resourceId = $workspaceId;
         $this->resourceType = ResourceType::WORKSPACE;
-        $this->attributes = ['workspaceId' => $workspaceId, 'keeperId' => $keeperId];
+        $this->attributes = [
+            Attribute::WORKSPACE_ID => $workspaceId,
+            Attribute::KEEPER_ID => $keeperId,
+        ];
         return $this->build();
     }
 
@@ -44,7 +48,11 @@ final class ResourceBuilder extends BaseBuilder
     {
         $this->resourceId = $planId;
         $this->resourceType = ResourceType::PLAN;
-        $this->attributes = ['planId' => $planId, 'workspaceId' => $workspaceId, 'keeperId' => $keeperId];
+        $this->attributes = [
+            Attribute::PLAN_ID => $planId,
+            Attribute::WORKSPACE_ID => $workspaceId,
+            Attribute::KEEPER_ID => $keeperId,
+        ];
         return $this->build();
     }
 
@@ -53,11 +61,11 @@ final class ResourceBuilder extends BaseBuilder
         $this->resourceId = $cardId;
         $this->resourceType = ResourceType::CARD;
         $this->attributes = [
-            'cardId' => $cardId,
-            'customerId' => $customerId,
-            'planId' => $planId,
-            'workspaceId' => $workspaceId,
-            'keeperId' => $keeperId,
+            Attribute::CARD_ID => $cardId,
+            Attribute::CUSTOMER_ID => $customerId,
+            Attribute::PLAN_ID => $planId,
+            Attribute::WORKSPACE_ID => $workspaceId,
+            Attribute::KEEPER_ID => $keeperId,
         ];
         return $this->build();
     }
@@ -66,7 +74,11 @@ final class ResourceBuilder extends BaseBuilder
     {
         $this->resourceId = GuidBasedImmutableId::makeValue();
         $this->resourceType = ResourceType::RELATION;
-        $this->attributes = ['collaboratorId' => $collaboratorId, 'workspaceId' => $workspaceId, 'relationType' => $relationType];
+        $this->attributes = [
+            Attribute::COLLABORATOR_ID => $collaboratorId,
+            Attribute::WORKSPACE_ID => $workspaceId,
+            Attribute::RELATION_TYPE => $relationType,
+        ];
         return $this->build();
     }
 

@@ -4,7 +4,11 @@ namespace Codderz\Platypus\Contracts\Authorization\Abac;
 
 interface AttributeInterface
 {
-    public function getName(): string;
+    public function name(): string;
 
-    public function getValue();
+    public function value();
+
+    public function equals($value): bool;
+
+    public function contains($value): bool;
 }
