@@ -19,12 +19,7 @@ final class Attributes implements AttributeCollectionInterface
         }
     }
 
-    public static function of(Attribute ...$attributes): self
-    {
-        return new self(...$attributes);
-    }
-
-    public static function fromData(array $attributeItems): self
+    public static function of(array $attributeItems = []): self
     {
         $collection = new self();
         foreach ($attributeItems as $name => $value) {
@@ -36,7 +31,6 @@ final class Attributes implements AttributeCollectionInterface
     public function toArray()
     {
         $attributes = [];
-        /** @var Attribute $attribute */
         foreach ($this->attributes as $attribute) {
             $attributes[$attribute->name()] = $attribute->value();
         }

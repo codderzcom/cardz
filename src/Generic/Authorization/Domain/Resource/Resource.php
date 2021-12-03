@@ -17,14 +17,14 @@ final class Resource
 
     public static function restore(string $resourceId, string $resourceType, array $attributes): self
     {
-        return new self(ResourceId::of($resourceId), ResourceType::of($resourceType), Attributes::fromData($attributes));
+        return new self(ResourceId::of($resourceId), ResourceType::of($resourceType), Attributes::of($attributes));
     }
 
     public function appendAttributes(array $newAttributes, bool $replace = true): void
     {
         $oldAttributes = $this->attributes->toArray();
         $attributes = $replace ? array_merge($oldAttributes, $newAttributes) : array_merge($newAttributes, $oldAttributes);
-        $this->attributes = Attributes::fromData($attributes);
+        $this->attributes = Attributes::of($attributes);
     }
 
     /** @throws AuthorizationFailedException */

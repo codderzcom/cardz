@@ -21,7 +21,7 @@ class ResourceProvider implements ResourceProviderInterface
         ResourceType $resourceType
     ): Attributes {
         if ($resourceId === null) {
-            return Attributes::fromData([]);
+            return Attributes::of();
         }
         $resource = $this->resourceRepository->find($resourceId, $resourceType);
         $this->augmentResource($resource);
