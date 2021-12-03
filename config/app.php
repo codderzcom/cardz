@@ -1,5 +1,7 @@
 <?php
 
+use Cardz\CardzServiceProvider;
+
 return [
 
     /*
@@ -175,15 +177,16 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        App\Shared\SharedProvider::class,
-        App\Contexts\Identity\IdentityProvider::class,
-        App\Contexts\Authorization\AuthorizationProvider::class,
-        App\Contexts\Cards\CardsProvider::class,
-        App\Contexts\Collaboration\CollaborationProvider::class,
-        App\Contexts\MobileAppBack\MobileAppBackProvider::class,
-        App\Contexts\Plans\PlansProvider::class,
-        App\Contexts\Personal\PersonalProvider::class,
-        App\Contexts\Workspaces\WorkspacesProvider::class,
+        ...CardzServiceProvider::providers(),
+
+        //Cardz\Generic\Identity\IdentityProvider::class,
+        //Cardz\Generic\Authorization\AuthorizationProvider::class,
+        Cardz\Core\Cards\CardsProvider::class,
+        //Cardz\Support\Collaboration\CollaborationProvider::class,
+        //Cardz\Support\MobileAppGateway\MobileAppBackProvider::class,
+        Cardz\Core\Plans\PlansProvider::class,
+        Cardz\Core\Personal\PersonalProvider::class,
+        Cardz\Core\Workspaces\WorkspacesProvider::class,
     ],
 
     /*

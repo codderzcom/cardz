@@ -2,10 +2,10 @@
 
 namespace App\Exceptions;
 
-use App\Contexts\Identity\Infrastructure\Exceptions\UserNotFoundException;
-use App\Contexts\MobileAppBack\Application\Exceptions\AccessDeniedException;
-use App\Shared\Exceptions\AuthorizationFailedException;
-use App\Shared\Exceptions\NotFoundException;
+use Cardz\Generic\Identity\Infrastructure\Exceptions\UserNotFoundException;
+use Cardz\Support\MobileAppGateway\Application\Exceptions\AccessDeniedException;
+use Codderz\Platypus\Exceptions\AuthorizationFailedException;
+use Codderz\Platypus\Exceptions\NotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
