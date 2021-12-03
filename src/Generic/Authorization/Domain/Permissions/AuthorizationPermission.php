@@ -3,7 +3,6 @@
 namespace Cardz\Generic\Authorization\Domain\Permissions;
 
 use Cardz\Generic\Authorization\Domain\Resource\ResourceType;
-use Codderz\Platypus\Exceptions\AuthorizationFailedException;
 use Codderz\Platypus\Infrastructure\Authorization\Abac\AbacPermission;
 
 /**
@@ -22,40 +21,28 @@ use Codderz\Platypus\Infrastructure\Authorization\Abac\AbacPermission;
  */
 final class AuthorizationPermission extends AbacPermission
 {
-    public const WORKSPACE_VIEW = 'workspace.view';
-    public const WORKSPACE_CHANGE_PROFILE = 'workspace.change_profile';
+    public const WORKSPACE_VIEW = ResourceType::WORKSPACE . '.view';
+    public const WORKSPACE_CHANGE_PROFILE = ResourceType::WORKSPACE . '.change_profile';
 
-    public const PLAN_ADD = 'workspace.plan.add';
-    public const PLAN_VIEW = 'workspace.plan.view';
+    public const PLAN_ADD = ResourceType::WORKSPACE . '.plan.add';
+    public const PLAN_VIEW = ResourceType::WORKSPACE . '.plan.view';
 
-    public const PLAN_CHANGE = 'plan.change';
-    public const PLAN_CARD_ADD = 'plan.card.add';
+    public const PLAN_CHANGE = ResourceType::PLAN . '.change';
+    public const PLAN_CARD_ADD = ResourceType::PLAN . '.card.add';
 
-    public const CARD_VIEW = 'card.view';
-    public const CARD_CHANGE = 'card.change';
+    public const CARD_VIEW = ResourceType::CARD . '.view';
+    public const CARD_CHANGE = ResourceType::CARD . '.change';
 
-    public const INVITE_PROPOSE = 'workspace.invite.propose';
-    public const INVITE_DISCARD = 'workspace.invite.discard';
+    public const INVITE_PROPOSE = ResourceType::WORKSPACE . '.invite.propose';
+    public const INVITE_DISCARD = ResourceType::WORKSPACE . '.invite.discard';
 
-    public const COLLABORATION_LEAVE = 'workspace.collaboration.leave';
+    public const COLLABORATION_LEAVE = ResourceType::WORKSPACE . '.collaboration.leave';
 
-    public const NULL_PERMISSION = 'null';
+    public const NULL_PERMISSION = ResourceType::NULL;
 
-    public function getResourceType(): ResourceType
+    public function resourceType(): ResourceType
     {
         $permissionKey = explode('.', (string) $this)[0];
-        return ResourceType::isValid($permissionKey)
-            ? new ResourceType($permissionKey)
-            : throw new AuthorizationFailedException("Unknown resource type");
-    }
-
-    public function getResourceIdName(): ?string
-    {
-        if ($this->equals(self::NULL_PERMISSION())) {
-            return null;
-        }
-
-        $permissionKey = explode('.', (string) $this)[0];
-        return $permissionKey . 'Id';
+        return new ResourceType($permissionKey);
     }
 }

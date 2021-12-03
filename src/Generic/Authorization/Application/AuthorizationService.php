@@ -21,7 +21,7 @@ class AuthorizationService
 
     public function isAllowed(IsAllowed $query): bool
     {
-        $objectAttributes = $this->resourceProvider->getResourceAttributes($query->objectId, $query->permission->getResourceType());
+        $objectAttributes = $this->resourceProvider->getResourceAttributes($query->objectId, $query->permission->resourceType());
         $subjectAttributes = $this->resourceProvider->getResourceAttributes($query->subjectId, ResourceType::SUBJECT());
 
         $resolution = $this->abacEngine->resolve(AuthorizationRequest::of(

@@ -48,11 +48,16 @@ final class Attribute implements AttributeInterface
         return $this->value === $value;
     }
 
-    public function contains($value): bool
+    public function contains(...$values): bool
     {
-        if (is_array($this->value)) {
-            return in_array($value, $this->value);
+        if (!is_array($this->value)) {
+            return false;
         }
-        return false;
+        foreach ($values as $value) {
+            if (!in_array($value, $this->value, true)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

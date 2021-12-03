@@ -30,4 +30,9 @@ final class ResourceType extends Enum
     {
         return self::isValid($type) ? new self($type) : throw new ParameterAssertionException("Resource type $type unknown");
     }
+
+    public function idField(): ?string
+    {
+        return $this->equals(self::NULL()) ? null : $this->getValue() . 'Id';
+    }
 }

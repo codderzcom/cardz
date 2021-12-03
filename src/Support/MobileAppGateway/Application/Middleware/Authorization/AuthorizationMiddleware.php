@@ -35,7 +35,7 @@ class AuthorizationMiddleware
             $message = sprintf(
                 "Subject %s is not authorized for %s %s",
                 $isAllowedQuery->subjectId,
-                $isAllowedQuery->permission->getResourceType(),
+                $isAllowedQuery->permission->resourceType(),
                 $isAllowedQuery->objectId,
             );
             throw new AccessDeniedException($message);
@@ -47,7 +47,7 @@ class AuthorizationMiddleware
         $routeName = $request->route()?->getName();
         $permission = RouteNameToPermissionMap::map($routeName);
 
-        $objectIdName = $permission->getResourceIdName();
+        $objectIdName = $permission->resourceType()->idField();
         $objectId = $objectIdName !== null ? GuidBasedImmutableId::of($request->$objectIdName) : null;
 
         return IsAllowed::of(
