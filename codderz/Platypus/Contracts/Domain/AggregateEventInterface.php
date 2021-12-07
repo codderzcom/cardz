@@ -7,20 +7,14 @@ use Codderz\Platypus\Contracts\GenericIdInterface;
 
 interface AggregateEventInterface
 {
-    public function context(): string;
-
-    public function channel(): string;
+    public static function shortName(): string;
 
     public function stream(): GenericIdInterface;
 
-    public function version(): int;
+    public function at(): Carbon;
 
     public function changeset(): array;
 
-    public function at(): Carbon;
-
-    public static function shortName(): string;
-
-    public function in(AggregateRootInterface $aggregateRoot): static;
+    public function in(EventAwareAggregateRootInterface $aggregateRoot): static;
 
 }

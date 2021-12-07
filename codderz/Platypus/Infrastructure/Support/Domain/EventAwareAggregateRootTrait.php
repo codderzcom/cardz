@@ -3,6 +3,7 @@
 namespace Codderz\Platypus\Infrastructure\Support\Domain;
 
 use Codderz\Platypus\Contracts\Domain\AggregateEventInterface;
+use Codderz\Platypus\Contracts\GenericIdInterface;
 use Codderz\Platypus\Infrastructure\Support\JsonPresenterTrait;
 
 trait EventAwareAggregateRootTrait

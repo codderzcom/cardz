@@ -18,6 +18,7 @@ class CreateEsStorage extends Migration
 
             $table->string('context')->index();
             $table->string('channel')->index();
+            $table->string('name')->index();
             $table->uuid('stream')->index();
             $table->integer('version')->index();
             $table->dateTime('recorded_at')->index();

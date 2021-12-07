@@ -3,61 +3,26 @@
 namespace Codderz\Platypus\Infrastructure\Support\Domain;
 
 use Carbon\Carbon;
-use Codderz\Platypus\Contracts\Domain\AggregateRootInterface;
+use Codderz\Platypus\Contracts\Domain\EventAwareAggregateRootInterface;
 use Codderz\Platypus\Contracts\GenericIdInterface;
-use Codderz\Platypus\Infrastructure\Support\ShortClassNameTrait;
 use ReflectionClass;
+use ReflectionProperty;
 
 trait AggregateEventTrait
 {
-    use ShortClassNameTrait;
+    protected Carbon $at;
 
-    protected  string $context;
+    protected EventAwareAggregateRootInterface $aggregateRoot;
 
-    protected  string $channel;
+    protected GenericIdInterface $aggregateRootId;
 
-    protected  GenericIdInterface $stream;
-
-    protected  int $version = 1;
-
-    protected  Carbon $at;
-
-    protected AggregateRootInterface $aggregateRoot;
-
-    private array $exclude = [
-        'context',
-        'channel',
-        'stream',
-        'version',
-        'at',
-        'aggregateRoot',
-    ];
-
-    public function context(): string
-    {
-        return $this->context;
-    }
-
-    public function channel(): string
-    {
-        return $this->channel;
-    }
-
-    public function stream(): GenericIdInterface
-    {
-        return $this->stream;
-    }
-
-    public function version(): int
-    {
-        return $this->version;
-    }
+    private array $exclude = [];
 
     public function changeset(): array
     {
         $changeset = [];
         $class = new ReflectionClass($this);
-        $properties = $class->getProperties();
+        $properties = $class->getProperties(ReflectionProperty::IS_PUBLIC);
         $excluded = $this->getExcludedPropertyNames();
         foreach ($properties as $property) {
             $name = $property->getName();
@@ -69,15 +34,26 @@ trait AggregateEventTrait
         return $changeset;
     }
 
+    public function stream(): GenericIdInterface
+    {
+        return $this->aggregateRootId;
+    }
+
     public function at(): Carbon
     {
         return $this->at;
     }
 
-    public function in(AggregateRootInterface $aggregateRoot): static
+    public function with(): EventAwareAggregateRootInterface
+    {
+        return $this->aggregateRoot;
+    }
+
+    public function in(EventAwareAggregateRootInterface $aggregateRoot): static
     {
         $this->at ??= Carbon::now();
         $this->aggregateRoot = $aggregateRoot;
+        $this->aggregateRootId = $aggregateRoot->id();
         return $this;
     }
 

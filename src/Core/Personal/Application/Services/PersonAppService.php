@@ -8,29 +8,33 @@ use Cardz\Core\Personal\Domain\Model\Person\Person;
 use Cardz\Core\Personal\Domain\Model\Person\PersonId;
 use Cardz\Core\Personal\Domain\Persistence\Contracts\PersonRepositoryInterface;
 use Cardz\Core\Personal\Infrastructure\Messaging\DomainEventBusInterface;
+use Cardz\Core\Personal\Infrastructure\Persistence\Eloquent\PersonStore;
 
 class PersonAppService
 {
     public function __construct(
         private PersonRepositoryInterface $personRepository,
         private DomainEventBusInterface $domainEventBus,
+        private PersonStore $personStore,
     ) {
     }
 
     public function join(JoinPerson $command): PersonId
     {
         $person = Person::join($command->getPersonId(), $command->getName());
-        $this->personRepository->persist($person);
-        $this->domainEventBus->publish(...$person->releaseEvents());
+        $events = $person->releaseEvents();
+        $this->personStore->store(...$events);
+        $this->domainEventBus->publish(...$events);
         return $person->personId;
     }
 
     public function changeName(ChangePersonName $command): PersonId
     {
-        $person = $this->personRepository->take($command->getPersonId());
+        $person = $this->personStore->restore($command->getPersonId());
         $person->changeName($command->getName());
-        $this->personRepository->persist($person);
-        $this->domainEventBus->publish(...$person->releaseEvents());
+        $events = $person->releaseEvents();
+        $this->personStore->store(...$events);
+        $this->domainEventBus->publish(...$events);
         return $person->personId;
     }
 }

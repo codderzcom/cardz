@@ -2,24 +2,13 @@
 
 namespace Codderz\Platypus\Infrastructure\Support\Domain;
 
-use Carbon\Carbon;
 use Codderz\Platypus\Contracts\Domain\AggregateEventInterface;
-use Codderz\Platypus\Contracts\Domain\AggregateRootInterface;
 use Codderz\Platypus\Contracts\Messaging\EventInterface;
+use Codderz\Platypus\Infrastructure\Support\ShortClassNameTrait;
 
 abstract class AggregateEvent implements EventInterface, AggregateEventInterface
 {
-    use AggregateEventTrait;
-
-    public function at(): Carbon
-    {
-        return $this->at;
-    }
-
-    public function with(): AggregateRootInterface
-    {
-        return $this->aggregateRoot;
-    }
+    use AggregateEventTrait, ShortClassNameTrait;
 
     public function __toString(): string
     {

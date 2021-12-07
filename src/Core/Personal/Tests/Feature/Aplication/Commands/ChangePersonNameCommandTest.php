@@ -16,12 +16,12 @@ class ChangePersonNameCommandTest extends BaseTestCase
     public function test_person_can_change_name()
     {
         $person = PersonBuilder::make()->build();
-        $this->getPersonRepository()->persist($person);
+        $this->getPersonStore()->store(...$person->releaseEvents());
 
         $command = ChangePersonName::of($person->personId, 'Changed');
         $this->commandBus()->dispatch($command);
 
-        $person = $this->getPersonRepository()->take($command->getPersonId());
+        $person = $this->getPersonStore()->restore($command->getPersonId());
 
         $this->assertEquals('Changed', $person->name);
         $this->assertEvent(PersonNameChanged::class);
