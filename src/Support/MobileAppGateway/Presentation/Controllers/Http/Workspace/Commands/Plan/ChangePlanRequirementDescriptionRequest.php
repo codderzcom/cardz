@@ -2,7 +2,7 @@
 
 namespace Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\Plan;
 
-use Codderz\Platypus\Contracts\GeneralIdInterface;
+use Codderz\Platypus\Contracts\GenericIdInterface;
 use Codderz\Platypus\Infrastructure\Support\GuidBasedImmutableId;
 
 final class ChangePlanRequirementDescriptionRequest extends PlanCommandRequest
@@ -17,7 +17,7 @@ final class ChangePlanRequirementDescriptionRequest extends PlanCommandRequest
         'description.required' => 'description required',
     ];
 
-    public GeneralIdInterface $requirementId;
+    public GenericIdInterface $requirementId;
 
     public string $description;
 

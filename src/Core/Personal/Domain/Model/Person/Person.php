@@ -6,11 +6,12 @@ use Carbon\Carbon;
 use Cardz\Core\Personal\Domain\Events\Person\PersonJoined;
 use Cardz\Core\Personal\Domain\Events\Person\PersonNameChanged;
 use Codderz\Platypus\Contracts\Domain\AggregateRootInterface;
-use Codderz\Platypus\Infrastructure\Support\Domain\AggregateRootTrait;
+use Codderz\Platypus\Infrastructure\Support\Domain\EventAwareAggregateRootTrait;
+use Codderz\Platypus\Infrastructure\Support\Domain\EventDrivenTrait;
 
 final class Person implements AggregateRootInterface
 {
-    use AggregateRootTrait;
+    use EventAwareAggregateRootTrait, EventDrivenTrait;
 
     private ?Carbon $joined = null;
 
@@ -22,9 +23,7 @@ final class Person implements AggregateRootInterface
 
     public static function join(PersonId $personId, Name $name): self
     {
-        $person = new self($personId, $name);
-        $person->joined = Carbon::now();
-        return $person->withEvents(PersonJoined::of($person));
+        return (new self($personId, $name))->recordThat(PersonJoined::of(Carbon::now()));
     }
 
     public static function restore(string $personId, string $name, ?Carbon $joined): self
@@ -36,8 +35,7 @@ final class Person implements AggregateRootInterface
 
     public function changeName(Name $name): self
     {
-        $this->name = $name;
-        return $this->withEvents(PersonNameChanged::of($this));
+        return $this->recordThat(PersonNameChanged::of($name));
     }
 
     public function isJoined(): bool

@@ -3,7 +3,7 @@
 namespace Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\Collaboration;
 
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\BaseCommandRequest;
-use Codderz\Platypus\Contracts\GeneralIdInterface;
+use Codderz\Platypus\Contracts\GenericIdInterface;
 use Codderz\Platypus\Infrastructure\Support\GuidBasedImmutableId;
 
 final class InviteRequest extends BaseCommandRequest
@@ -16,7 +16,7 @@ final class InviteRequest extends BaseCommandRequest
         'inviteId.required' => 'inviteId required',
     ];
 
-    public GeneralIdInterface $inviteId;
+    public GenericIdInterface $inviteId;
 
     public function passedValidation(): void
     {

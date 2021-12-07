@@ -2,13 +2,13 @@
 
 namespace Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands;
 
-use Codderz\Platypus\Contracts\GeneralIdInterface;
+use Codderz\Platypus\Contracts\GenericIdInterface;
 use Codderz\Platypus\Infrastructure\Support\GuidBasedImmutableId;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class AddWorkspaceRequest extends FormRequest
 {
-    public GeneralIdInterface $keeperId;
+    public GenericIdInterface $keeperId;
 
     public string $name;
 

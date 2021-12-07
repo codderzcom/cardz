@@ -3,7 +3,7 @@
 namespace Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\Card;
 
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\BaseCommandRequest;
-use Codderz\Platypus\Contracts\GeneralIdInterface;
+use Codderz\Platypus\Contracts\GenericIdInterface;
 use Codderz\Platypus\Infrastructure\Support\GuidBasedImmutableId;
 
 final class IssueCardRequest extends BaseCommandRequest
@@ -18,9 +18,9 @@ final class IssueCardRequest extends BaseCommandRequest
         'customerId.required' => 'customerId required',
     ];
 
-    public GeneralIdInterface $customerId;
+    public GenericIdInterface $customerId;
 
-    public GeneralIdInterface $planId;
+    public GenericIdInterface $planId;
 
     public function passedValidation(): void
     {

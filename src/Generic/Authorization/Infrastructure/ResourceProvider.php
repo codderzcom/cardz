@@ -7,7 +7,7 @@ use Cardz\Generic\Authorization\Domain\Attribute\Attributes;
 use Cardz\Generic\Authorization\Domain\Resource\Resource;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceRepositoryInterface;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceType;
-use Codderz\Platypus\Contracts\GeneralIdInterface;
+use Codderz\Platypus\Contracts\GenericIdInterface;
 
 class ResourceProvider implements ResourceProviderInterface
 {
@@ -17,7 +17,7 @@ class ResourceProvider implements ResourceProviderInterface
     }
 
     public function getResourceAttributes(
-        ?GeneralIdInterface $resourceId,
+        ?GenericIdInterface $resourceId,
         ResourceType $resourceType
     ): Attributes {
         if ($resourceId === null) {

@@ -3,7 +3,7 @@
 namespace Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\Plan;
 
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\BaseCommandRequest;
-use Codderz\Platypus\Contracts\GeneralIdInterface;
+use Codderz\Platypus\Contracts\GenericIdInterface;
 use Codderz\Platypus\Infrastructure\Support\GuidBasedImmutableId;
 
 class PlanCommandRequest extends BaseCommandRequest
@@ -16,7 +16,7 @@ class PlanCommandRequest extends BaseCommandRequest
         'planId.required' => 'planId required',
     ];
 
-    public GeneralIdInterface $planId;
+    public GenericIdInterface $planId;
 
     public function rules(): array
     {

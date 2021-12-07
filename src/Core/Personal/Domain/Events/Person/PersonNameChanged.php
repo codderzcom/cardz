@@ -2,9 +2,17 @@
 
 namespace Cardz\Core\Personal\Domain\Events\Person;
 
-use JetBrains\PhpStorm\Immutable;
+use Cardz\Core\Personal\Domain\Model\Person\Name;
 
-#[Immutable]
 final class PersonNameChanged extends BasePersonDomainEvent
 {
+    private function __construct(
+        private Name $name,
+    ) {
+    }
+
+    public static function of(Name $name): self
+    {
+        return new self($name);
+    }
 }
