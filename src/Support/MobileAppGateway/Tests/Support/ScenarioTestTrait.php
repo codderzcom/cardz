@@ -5,6 +5,9 @@ namespace Cardz\Support\MobileAppGateway\Tests\Support;
 use Cardz\Core\Cards\Domain\Persistence\Contracts\CardRepositoryInterface;
 use Cardz\Core\Plans\Domain\Persistence\Contracts\PlanRepositoryInterface;
 use Cardz\Core\Plans\Domain\Persistence\Contracts\RequirementRepositoryInterface;
+use Cardz\Core\Workspaces\Domain\Model\Workspace\Keeper;
+use Cardz\Core\Workspaces\Domain\Model\Workspace\KeeperId;
+use Cardz\Core\Workspaces\Domain\Persistence\Contracts\KeeperRepositoryInterface;
 use Cardz\Core\Workspaces\Domain\Persistence\Contracts\WorkspaceRepositoryInterface;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceRepositoryInterface;
 use Cardz\Generic\Identity\Domain\Persistence\Contracts\UserRepositoryInterface;
@@ -26,12 +29,15 @@ trait ScenarioTestTrait
     {
         foreach ($this->environment->keepers as $keeper) {
             $this->getUserRepository()->persist($keeper);
+            $this->getKeeperRepository()->store(Keeper::register(KeeperId::of($keeper->userId)));
         }
         foreach ($this->environment->collaborators as $collaborator) {
             $this->getUserRepository()->persist($collaborator);
+            $this->getKeeperRepository()->store(Keeper::register(KeeperId::of($collaborator->userId)));
         }
         foreach ($this->environment->customers as $customer) {
             $this->getUserRepository()->persist($customer);
+            $this->getKeeperRepository()->store(Keeper::register(KeeperId::of($customer->userId)));
         }
 
         foreach ($this->environment->workspaces as $workspace) {
@@ -66,6 +72,11 @@ trait ScenarioTestTrait
     public function getUserRepository(): UserRepositoryInterface
     {
         return $this->app->make(UserRepositoryInterface::class);
+    }
+
+    public function getKeeperRepository(): KeeperRepositoryInterface
+    {
+        return $this->app->make(KeeperRepositoryInterface::class);
     }
 
     public function getWorkspaceRepository(): WorkspaceRepositoryInterface

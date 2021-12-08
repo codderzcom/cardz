@@ -12,11 +12,6 @@ use Codderz\Platypus\Contracts\Domain\AggregateEventInterface;
 
 class PersonRepository implements PersonRepositoryInterface
 {
-    protected const CONTEXT = 'personal';
-    protected const CHANNEL = 'person';
-    protected const VERSION = 1;
-    protected const EVENT_NAMESPACE = 'Cardz\\Core\\Personal\\Domain\\Events\\Person\\';
-
     public function store(Person $person): array
     {
         $events = $person->releaseEvents();
@@ -49,10 +44,9 @@ class PersonRepository implements PersonRepositoryInterface
     protected function getESEvents(string $personId): array
     {
         $esEvents = ESStorage::query()
-            ->where('context', '=', $this::CONTEXT)
-            ->where('channel', '=', $this::CHANNEL)
+            ->where('channel', '=', Person::class)
             ->where('stream', '=', $personId)
-            ->orderBy('recorded_at')
+            ->orderBy('at')
             ->get();
         if ($esEvents->isEmpty()) {
             throw new PersonNotFoundException("Person $personId not found");
@@ -62,7 +56,7 @@ class PersonRepository implements PersonRepositoryInterface
 
     protected function restoreEvent(ESStorage $esEvent): AggregateEventInterface
     {
-        $eventClass = $this::EVENT_NAMESPACE . $esEvent->name;
+        $eventClass = $esEvent->name;
         $changeset = json_decode($esEvent->changeset, true);
         return [$eventClass, 'from']($changeset);
     }

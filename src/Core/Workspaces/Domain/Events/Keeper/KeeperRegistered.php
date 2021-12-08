@@ -24,4 +24,9 @@ final class KeeperRegistered implements AggregateEventInterface
     {
         return new self();
     }
+
+    public static function from(): self
+    {
+        return new self();
+    }
 }

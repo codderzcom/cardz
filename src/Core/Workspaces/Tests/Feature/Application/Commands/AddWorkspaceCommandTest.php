@@ -3,6 +3,7 @@
 namespace Cardz\Core\Workspaces\Tests\Feature\Application\Commands;
 
 use Cardz\Core\Workspaces\Application\Commands\AddWorkspace;
+use Cardz\Core\Workspaces\Application\Commands\RegisterKeeper;
 use Cardz\Core\Workspaces\Domain\Events\Workspace\WorkspaceAdded;
 use Cardz\Core\Workspaces\Domain\Model\Workspace\KeeperId;
 use Cardz\Core\Workspaces\Tests\Feature\WorkspacesTestHelperTrait;
@@ -16,14 +17,19 @@ final class AddWorkspaceCommandTest extends BaseTestCase
 
     public function test_workspace_can_be_added()
     {
-        $profileTemplate = WorkspaceBuilder::make()->build()->profile;
+        $keeperId = KeeperId::make();
 
-        $command = AddWorkspace::of(KeeperId::makeValue(), ...$profileTemplate->toArray());
+        $command = RegisterKeeper::of($keeperId);
+        $this->commandBus()->dispatch($command);
+
+        $profileTemplate = WorkspaceBuilder::make()->build()->profile;
+        $command = AddWorkspace::of($keeperId, ...$profileTemplate->toArray());
         $this->commandBus()->dispatch($command);
 
         $workspace = $this->getWorkspaceRepository()->take($command->getWorkspaceId());
 
         $this->assertEquals($command->getWorkspaceId(), $workspace->workspaceId);
+        $this->assertEquals($command->getKeeperId(), $workspace->keeperId);
         $this->assertEvent(WorkspaceAdded::class);
     }
 

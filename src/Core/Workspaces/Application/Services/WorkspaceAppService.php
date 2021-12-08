@@ -4,6 +4,9 @@ namespace Cardz\Core\Workspaces\Application\Services;
 
 use Cardz\Core\Workspaces\Application\Commands\AddWorkspace;
 use Cardz\Core\Workspaces\Application\Commands\ChangeWorkspaceProfile;
+use Cardz\Core\Workspaces\Application\Commands\RegisterKeeper;
+use Cardz\Core\Workspaces\Domain\Model\Workspace\Keeper;
+use Cardz\Core\Workspaces\Domain\Model\Workspace\KeeperId;
 use Cardz\Core\Workspaces\Domain\Model\Workspace\Workspace;
 use Cardz\Core\Workspaces\Domain\Model\Workspace\WorkspaceId;
 use Cardz\Core\Workspaces\Domain\Persistence\Contracts\KeeperRepositoryInterface;
@@ -19,9 +22,17 @@ class WorkspaceAppService
     ) {
     }
 
+    public function registerKeeper(RegisterKeeper $command): KeeperId
+    {
+        $keeper = Keeper::register($command->getKeeperId());
+        $events = $this->keeperRepository->store($keeper);
+        $this->domainEventBus->publish(...$events);
+        return $command->getKeeperId();
+    }
+
     public function add(AddWorkspace $command): WorkspaceId
     {
-        $keeper = $this->keeperRepository->take($command->getKeeperId());
+        $keeper = $this->keeperRepository->restore($command->getKeeperId());
         return $this->release($keeper->keepWorkspace($command->getWorkspaceId(), $command->getProfile()));
     }
 

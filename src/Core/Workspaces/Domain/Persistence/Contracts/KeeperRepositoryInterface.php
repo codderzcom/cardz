@@ -2,14 +2,17 @@
 
 namespace Cardz\Core\Workspaces\Domain\Persistence\Contracts;
 
-use Cardz\Core\Workspaces\Domain\Exceptions\KeeperNotFoundExceptionInterface;
 use Cardz\Core\Workspaces\Domain\Model\Workspace\Keeper;
 use Cardz\Core\Workspaces\Domain\Model\Workspace\KeeperId;
+use Codderz\Platypus\Contracts\Domain\AggregateEventInterface;
 
 interface KeeperRepositoryInterface
 {
     /**
-     * @throws KeeperNotFoundExceptionInterface
+     * @return AggregateEventInterface[]
      */
-    public function take(KeeperId $keeperId): Keeper;
+    public function store(Keeper $keeper): array;
+
+    public function restore(KeeperId $keeperId): Keeper;
+
 }

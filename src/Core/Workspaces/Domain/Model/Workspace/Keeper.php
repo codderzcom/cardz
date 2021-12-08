@@ -2,16 +2,17 @@
 
 namespace Cardz\Core\Workspaces\Domain\Model\Workspace;
 
-use Codderz\Platypus\Contracts\Domain\AggregateRootInterface;
-use Codderz\Platypus\Infrastructure\Support\Domain\AggregateRootTrait;
+use Cardz\Core\Workspaces\Domain\Events\Keeper\KeeperRegistered;
+use Codderz\Platypus\Contracts\Domain\EventDrivenAggregateRootInterface;
+use Codderz\Platypus\Infrastructure\Support\Domain\EventDrivenAggregateRootTrait;
 use JetBrains\PhpStorm\Pure;
 
-final class Keeper implements AggregateRootInterface
+final class Keeper implements EventDrivenAggregateRootInterface
 {
-    use AggregateRootTrait;
+    use EventDrivenAggregateRootTrait;
 
     #[Pure]
-    private function __construct(
+    public function __construct(
         public KeeperId $keeperId,
     ) {
     }
@@ -20,6 +21,16 @@ final class Keeper implements AggregateRootInterface
     public static function restore(KeeperId $keeperId): self
     {
         return new self($keeperId);
+    }
+
+    public static function register(KeeperId $keeperId): self
+    {
+        return (new self($keeperId))->recordThat(KeeperRegistered::of());
+    }
+
+    public function id(): KeeperId
+    {
+        return $this->keeperId;
     }
 
     public function keepWorkspace(WorkspaceId $workspaceId, Profile $profile): Workspace
