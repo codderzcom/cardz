@@ -6,7 +6,7 @@ use Cardz\Core\Personal\Domain\Model\Person\Person;
 use Cardz\Core\Personal\Domain\Model\Person\PersonId;
 use Codderz\Platypus\Contracts\Domain\AggregateEventInterface;
 
-interface PersonStoreInterface
+interface PersonRepositoryInterface
 {
     /**
      * @return AggregateEventInterface

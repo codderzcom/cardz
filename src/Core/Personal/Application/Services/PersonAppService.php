@@ -6,14 +6,14 @@ use Cardz\Core\Personal\Application\Commands\ChangePersonName;
 use Cardz\Core\Personal\Application\Commands\JoinPerson;
 use Cardz\Core\Personal\Domain\Model\Person\Person;
 use Cardz\Core\Personal\Domain\Model\Person\PersonId;
-use Cardz\Core\Personal\Domain\Persistence\Contracts\PersonStoreInterface;
+use Cardz\Core\Personal\Domain\Persistence\Contracts\PersonRepositoryInterface;
 use Cardz\Core\Personal\Infrastructure\Messaging\DomainEventBusInterface;
 
 class PersonAppService
 {
     public function __construct(
         private DomainEventBusInterface $domainEventBus,
-        private PersonStoreInterface $personStore,
+        private PersonRepositoryInterface $personRepository,
     ) {
     }
 
@@ -26,7 +26,7 @@ class PersonAppService
 
     public function changeName(ChangePersonName $command): PersonId
     {
-        $person = $this->personStore->restore($command->getPersonId());
+        $person = $this->personRepository->restore($command->getPersonId());
         $person->changeName($command->getName());
         $this->release($person);
         return $person->personId;
@@ -34,7 +34,7 @@ class PersonAppService
 
     private function release(Person $person)
     {
-        $events = $this->personStore->store($person);
+        $events = $this->personRepository->store($person);
         $this->domainEventBus->publish(...$events);
     }
 }

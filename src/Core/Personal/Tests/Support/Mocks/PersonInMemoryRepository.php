@@ -4,9 +4,9 @@ namespace Cardz\Core\Personal\Tests\Support\Mocks;
 
 use Cardz\Core\Personal\Domain\Model\Person\Person;
 use Cardz\Core\Personal\Domain\Model\Person\PersonId;
-use Cardz\Core\Personal\Domain\Persistence\Contracts\PersonStoreInterface;
+use Cardz\Core\Personal\Domain\Persistence\Contracts\PersonRepositoryInterface;
 
-class PersonInMemoryStore implements PersonStoreInterface
+class PersonInMemoryRepository implements PersonRepositoryInterface
 {
     protected static array $events = [];
 

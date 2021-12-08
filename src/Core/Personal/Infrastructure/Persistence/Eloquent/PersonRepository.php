@@ -5,10 +5,10 @@ namespace Cardz\Core\Personal\Infrastructure\Persistence\Eloquent;
 use App\Models\ESStorage;
 use Cardz\Core\Personal\Domain\Model\Person\Person;
 use Cardz\Core\Personal\Domain\Model\Person\PersonId;
-use Cardz\Core\Personal\Domain\Persistence\Contracts\PersonStoreInterface;
+use Cardz\Core\Personal\Domain\Persistence\Contracts\PersonRepositoryInterface;
 use Codderz\Platypus\Contracts\Domain\AggregateEventInterface;
 
-class PersonStore implements PersonStoreInterface
+class PersonRepository implements PersonRepositoryInterface
 {
     protected const CONTEXT = 'personal';
     protected const CHANNEL = 'person';

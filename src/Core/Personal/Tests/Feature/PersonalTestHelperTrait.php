@@ -2,20 +2,20 @@
 
 namespace Cardz\Core\Personal\Tests\Feature;
 
-use Cardz\Core\Personal\Domain\Persistence\Contracts\PersonStoreInterface;
+use Cardz\Core\Personal\Domain\Persistence\Contracts\PersonRepositoryInterface;
 use Cardz\Core\Personal\Infrastructure\ReadStorage\Contracts\JoinedPersonStorageInterface;
-use Cardz\Core\Personal\Tests\Support\Mocks\PersonInMemoryStore;
+use Cardz\Core\Personal\Tests\Support\Mocks\PersonInMemoryRepository;
 
 trait PersonalTestHelperTrait
 {
     protected function setupApplication(): void
     {
-        $this->app->singleton(PersonStoreInterface::class, PersonInMemoryStore::class);
+        $this->app->singleton(PersonRepositoryInterface::class, PersonInMemoryRepository::class);
     }
 
-    protected function getPersonStore(): PersonStoreInterface
+    protected function getPersonStore(): PersonRepositoryInterface
     {
-        return $this->app->make(PersonStoreInterface::class);
+        return $this->app->make(PersonRepositoryInterface::class);
     }
 
     protected function getJoinedPersonStorage(): JoinedPersonStorageInterface
