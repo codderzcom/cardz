@@ -9,7 +9,7 @@ use Codderz\Platypus\Contracts\Domain\AggregateEventInterface;
 interface PersonRepositoryInterface
 {
     /**
-     * @return AggregateEventInterface
+     * @return AggregateEventInterface[]
      */
     public function store(Person $person): array;
 

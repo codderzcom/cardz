@@ -1,19 +1,17 @@
 <?php
 
-namespace Cardz\Core\Personal\Infrastructure\Persistence\Eloquent;
+namespace Cardz\Core\Workspaces\Infrastructure\Persistence\Eloquent;
 
 use App\Models\ESStorage;
-use Cardz\Core\Personal\Domain\Exception\PersonNotFoundExceptionInterface;
 use Cardz\Core\Personal\Domain\Model\Person\Person;
 use Cardz\Core\Personal\Domain\Model\Person\PersonId;
 use Cardz\Core\Personal\Domain\Persistence\Contracts\PersonRepositoryInterface;
-use Cardz\Core\Personal\Infrastructure\Exceptions\PersonNotFoundException;
 use Codderz\Platypus\Contracts\Domain\AggregateEventInterface;
 
-class PersonRepository implements PersonRepositoryInterface
+class KeeperStore implements PersonRepositoryInterface
 {
-    protected const CONTEXT = 'personal';
-    protected const CHANNEL = 'person';
+    protected const CONTEXT = 'workspaces';
+    protected const CHANNEL = 'keeper';
     protected const VERSION = 1;
     protected const EVENT_NAMESPACE = 'Cardz\\Core\\Personal\\Domain\\Events\\Person\\';
 
@@ -22,7 +20,15 @@ class PersonRepository implements PersonRepositoryInterface
         $events = $person->releaseEvents();
         $data = [];
         foreach ($events as $event) {
-            $data[] = $event->toArray();
+            $data[] = [
+                'context' => $this::CONTEXT,
+                'channel' => $this::CHANNEL,
+                'name' => $event::shortName(),
+                'stream' => (string) $event->stream(),
+                'recorded_at' => $event->at(),
+                'version' => $this::VERSION,
+                'changeset' => json_encode($event->changeset()),
+            ];
         }
         ESStorage::query()->insert($data);
         return $events;

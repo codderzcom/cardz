@@ -5,7 +5,7 @@ namespace Codderz\Platypus\Contracts\Domain;
 use Codderz\Platypus\Contracts\GenericIdInterface;
 use JsonSerializable;
 
-interface EventAwareAggregateRootInterface extends JsonSerializable
+interface EventDrivenAggregateRootInterface extends JsonSerializable
 {
     /**
      * @return AggregateEventInterface[]
@@ -18,4 +18,9 @@ interface EventAwareAggregateRootInterface extends JsonSerializable
     public function tapEvents(): array;
 
     public function id(): GenericIdInterface;
+
+    public function recordThat(AggregateEventInterface ...$aggregateEvents): static;
+
+    public function apply(AggregateEventInterface ...$aggregateEvents): static;
+
 }

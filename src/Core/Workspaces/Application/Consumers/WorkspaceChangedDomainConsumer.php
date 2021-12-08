@@ -3,7 +3,7 @@
 namespace Cardz\Core\Workspaces\Application\Consumers;
 
 use Cardz\Core\Workspaces\Domain\Events\Workspace\WorkspaceProfileChanged;
-use Cardz\Core\Workspaces\Infrastructure\ReadStorage\Contracts\ReadWorkspaceStorageInterface;
+use Cardz\Core\Workspaces\Domain\ReadModel\Contracts\ReadWorkspaceStorageInterface;
 use Cardz\Core\Workspaces\Integration\Events\WorkspaceChanged;
 use Codderz\Platypus\Contracts\Messaging\EventConsumerInterface;
 use Codderz\Platypus\Contracts\Messaging\EventInterface;

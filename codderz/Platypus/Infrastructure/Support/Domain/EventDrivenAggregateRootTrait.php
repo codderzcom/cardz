@@ -3,10 +3,43 @@
 namespace Codderz\Platypus\Infrastructure\Support\Domain;
 
 use Codderz\Platypus\Contracts\Domain\AggregateEventInterface;
+use Codderz\Platypus\Infrastructure\Support\JsonPresenterTrait;
 
-trait EventDrivenTrait
+trait EventDrivenAggregateRootTrait
 {
+    use JsonPresenterTrait;
+
     protected string $methodPrefix = 'apply';
+
+    /**
+     * @var AggregateEventInterface[]
+     */
+    protected array $events = [];
+
+    /**
+     * @return AggregateEventInterface[]
+     */
+    public function releaseEvents(): array
+    {
+        $events = $this->events;
+        $this->events = [];
+        return $events;
+    }
+
+    /**
+     * @return AggregateEventInterface[]
+     */
+    public function tapEvents(): array
+    {
+        return $this->events;
+    }
+
+    public function recordThat(AggregateEventInterface ...$aggregateEvents): static
+    {
+        $this->events = [...$this->events, ...$aggregateEvents];
+        $this->apply(...$aggregateEvents);
+        return $this;
+    }
 
     public function apply(AggregateEventInterface ...$aggregateEvents): static
     {
@@ -18,6 +51,8 @@ trait EventDrivenTrait
 
     protected function applyEvent(AggregateEventInterface $aggregateEvent): void
     {
+        $aggregateEvent->in($this);
+
         $method = $this->getApplyingMethodName($aggregateEvent);
         if ($method) {
             $this->$method($aggregateEvent);
@@ -34,8 +69,7 @@ trait EventDrivenTrait
 
     protected function getApplyingMethodName(AggregateEventInterface $aggregateEvent): ?string
     {
-        $eventName = $aggregateEvent::shortName();
-        $methodName = $this->methodPrefix . $eventName;
+        $methodName = $this->methodPrefix . $aggregateEvent::shortName();
         return method_exists($this, $methodName) ? $methodName : null;
     }
 }

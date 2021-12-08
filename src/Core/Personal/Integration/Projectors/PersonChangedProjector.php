@@ -2,7 +2,7 @@
 
 namespace Cardz\Core\Personal\Integration\Projectors;
 
-use Cardz\Core\Personal\Infrastructure\ReadStorage\Contracts\JoinedPersonStorageInterface;
+use Cardz\Core\Personal\Domain\ReadModel\Contracts\JoinedPersonStorageInterface;
 use Cardz\Core\Personal\Integration\Events\PersonJoined;
 use Cardz\Core\Personal\Integration\Events\PersonNameChanged;
 use Codderz\Platypus\Contracts\Messaging\IntegrationEventConsumerInterface;

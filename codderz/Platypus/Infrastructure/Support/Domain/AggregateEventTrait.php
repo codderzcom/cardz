@@ -3,40 +3,35 @@
 namespace Codderz\Platypus\Infrastructure\Support\Domain;
 
 use Carbon\Carbon;
-use Codderz\Platypus\Contracts\Domain\EventAwareAggregateRootInterface;
+use Codderz\Platypus\Contracts\Domain\EventDrivenAggregateRootInterface;
 use Codderz\Platypus\Contracts\GenericIdInterface;
+use Codderz\Platypus\Infrastructure\Support\ShortClassNameTrait;
 use ReflectionClass;
 use ReflectionProperty;
 
 trait AggregateEventTrait
 {
+    use ShortClassNameTrait;
+
     protected Carbon $at;
 
-    protected EventAwareAggregateRootInterface $aggregateRoot;
+    protected EventDrivenAggregateRootInterface $aggregateRoot;
 
-    protected GenericIdInterface $aggregateRootId;
+    abstract public function version(): int;
 
-    private array $exclude = [];
-
-    public function changeset(): array
+    public function channel(): string
     {
-        $changeset = [];
-        $class = new ReflectionClass($this);
-        $properties = $class->getProperties(ReflectionProperty::IS_PUBLIC);
-        $excluded = $this->getExcludedPropertyNames();
-        foreach ($properties as $property) {
-            $name = $property->getName();
-            $property->setAccessible(true);
-            if (!in_array($name, $excluded, true)) {
-                $changeset[$property->getName()] = $property->getValue($this);
-            }
-        }
-        return $changeset;
+        return $this->aggregateRoot::class;
+    }
+
+    public function name(): string
+    {
+        return $this::class;
     }
 
     public function stream(): GenericIdInterface
     {
-        return $this->aggregateRootId;
+        return $this->aggregateRoot->id();
     }
 
     public function at(): Carbon
@@ -44,22 +39,48 @@ trait AggregateEventTrait
         return $this->at;
     }
 
-    public function with(): EventAwareAggregateRootInterface
+    public function changeset(): array
+    {
+        $changeset = [];
+        $class = new ReflectionClass($this);
+        $properties = $class->getProperties(ReflectionProperty::IS_PUBLIC);
+        foreach ($properties as $property) {
+            $changeset[$property->getName()] = $property->getValue($this);
+        }
+        return $changeset;
+    }
+
+    public function in(EventDrivenAggregateRootInterface $aggregateRoot): static
+    {
+        $this->at ??= Carbon::now();
+        $this->aggregateRoot = $aggregateRoot;
+        return $this;
+    }
+
+    public function with(): EventDrivenAggregateRootInterface
     {
         return $this->aggregateRoot;
     }
 
-    public function in(EventAwareAggregateRootInterface $aggregateRoot): static
+    public function toArray(): array
     {
-        $this->at ??= Carbon::now();
-        $this->aggregateRoot = $aggregateRoot;
-        $this->aggregateRootId = $aggregateRoot->id();
-        return $this;
+        return [
+            'channel' => $this->channel(),
+            'name' => $this->name(),
+            'stream' => (string) $this->stream(),
+            'at' => $this->at(),
+            'version' => $this->version(),
+            'changeset' => json_encode($this->changeset()),
+        ];
     }
 
-    protected function getExcludedPropertyNames(): array
+    public function __toString(): string
     {
-        return $this->exclude;
+        return $this->name();
     }
 
+    public function jsonSerialize()
+    {
+        return $this->toArray();
+    }
 }

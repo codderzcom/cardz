@@ -3,8 +3,8 @@
 namespace Cardz\Core\Workspaces\Infrastructure\ReadStorage\Eloquent;
 
 use App\Models\Workspace as EloquentWorkspace;
+use Cardz\Core\Workspaces\Domain\ReadModel\Contracts\ReadWorkspaceStorageInterface;
 use Cardz\Core\Workspaces\Domain\ReadModel\ReadWorkspace;
-use Cardz\Core\Workspaces\Infrastructure\ReadStorage\Contracts\ReadWorkspaceStorageInterface;
 use JetBrains\PhpStorm\Pure;
 
 class ReadWorkspaceStorage implements ReadWorkspaceStorageInterface

@@ -1,6 +1,6 @@
 <?php
 
-namespace Cardz\Core\Workspaces\Infrastructure\ReadStorage\Contracts;
+namespace Cardz\Core\Workspaces\Domain\ReadModel\Contracts;
 
 use Cardz\Core\Workspaces\Domain\ReadModel\ReadWorkspace;
 

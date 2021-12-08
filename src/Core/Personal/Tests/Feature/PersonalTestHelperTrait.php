@@ -3,7 +3,7 @@
 namespace Cardz\Core\Personal\Tests\Feature;
 
 use Cardz\Core\Personal\Domain\Persistence\Contracts\PersonRepositoryInterface;
-use Cardz\Core\Personal\Infrastructure\ReadStorage\Contracts\JoinedPersonStorageInterface;
+use Cardz\Core\Personal\Domain\ReadModel\Contracts\JoinedPersonStorageInterface;
 use Cardz\Core\Personal\Tests\Support\Mocks\PersonInMemoryRepository;
 
 trait PersonalTestHelperTrait

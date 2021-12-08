@@ -1,15 +1,11 @@
 <?php
 
-namespace Cardz\Core\Personal\Domain\Events\Person;
+namespace Cardz\Core\Workspaces\Domain\Events\Keeper;
 
-use Cardz\Core\Personal\Domain\Model\Person\Person;
 use Codderz\Platypus\Contracts\Domain\AggregateEventInterface;
 use Codderz\Platypus\Infrastructure\Support\Domain\AggregateEventTrait;
 
-/**
- * @method Person with()
- */
-abstract class BasePersonDomainEvent implements AggregateEventInterface
+final class KeeperRegistered implements AggregateEventInterface
 {
     use AggregateEventTrait;
 
@@ -18,5 +14,14 @@ abstract class BasePersonDomainEvent implements AggregateEventInterface
     public function version(): int
     {
         return $this->version;
+    }
+
+    private function __construct()
+    {
+    }
+
+    public static function of(): self
+    {
+        return new self();
     }
 }

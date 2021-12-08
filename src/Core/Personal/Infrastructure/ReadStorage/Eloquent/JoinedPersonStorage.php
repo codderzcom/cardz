@@ -3,9 +3,9 @@
 namespace Cardz\Core\Personal\Infrastructure\ReadStorage\Eloquent;
 
 use App\Models\Person as EloquentPerson;
+use Cardz\Core\Personal\Domain\ReadModel\Contracts\JoinedPersonStorageInterface;
 use Cardz\Core\Personal\Domain\ReadModel\JoinedPerson;
 use Cardz\Core\Personal\Infrastructure\Exceptions\PersonNotFoundException;
-use Cardz\Core\Personal\Infrastructure\ReadStorage\Contracts\JoinedPersonStorageInterface;
 use Codderz\Platypus\Infrastructure\Support\PropertiesExtractorTrait;
 
 class JoinedPersonStorage implements JoinedPersonStorageInterface

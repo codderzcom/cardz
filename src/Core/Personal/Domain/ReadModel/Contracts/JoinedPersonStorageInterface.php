@@ -1,6 +1,6 @@
 <?php
 
-namespace Cardz\Core\Personal\Infrastructure\ReadStorage\Contracts;
+namespace Cardz\Core\Personal\Domain\ReadModel\Contracts;
 
 use Cardz\Core\Personal\Domain\Exception\PersonNotFoundExceptionInterface;
 use Cardz\Core\Personal\Domain\ReadModel\JoinedPerson;
