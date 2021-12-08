@@ -5,17 +5,19 @@ namespace Cardz\Core\Personal\Infrastructure\Persistence\Eloquent;
 use App\Models\ESStorage;
 use Cardz\Core\Personal\Domain\Model\Person\Person;
 use Cardz\Core\Personal\Domain\Model\Person\PersonId;
+use Cardz\Core\Personal\Domain\Persistence\Contracts\PersonStoreInterface;
 use Codderz\Platypus\Contracts\Domain\AggregateEventInterface;
 
-class PersonStore
+class PersonStore implements PersonStoreInterface
 {
     protected const CONTEXT = 'personal';
     protected const CHANNEL = 'person';
     protected const VERSION = 1;
     protected const EVENT_NAMESPACE = 'Cardz\\Core\\Personal\\Domain\\Events\\Person\\';
 
-    public function store(AggregateEventInterface ...$events): void
+    public function store(Person $person): array
     {
+        $events = $person->releaseEvents();
         $data = [];
         foreach ($events as $event) {
             $data[] = [
@@ -29,6 +31,7 @@ class PersonStore
             ];
         }
         ESStorage::query()->insert($data);
+        return $events;
     }
 
     public function restore(PersonId $personId): Person

@@ -3,10 +3,9 @@
 namespace Codderz\Platypus\Infrastructure\Support\Domain;
 
 use Codderz\Platypus\Contracts\Domain\AggregateEventInterface;
-use Codderz\Platypus\Contracts\Messaging\EventInterface;
 use Codderz\Platypus\Infrastructure\Support\ShortClassNameTrait;
 
-abstract class AggregateEvent implements EventInterface, AggregateEventInterface
+abstract class AggregateEvent implements AggregateEventInterface
 {
     use AggregateEventTrait, ShortClassNameTrait;
 

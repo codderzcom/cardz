@@ -1,27 +1,26 @@
 <?php
 
-namespace Cardz\Core\Personal\Infrastructure\Persistence\Eloquent;
+namespace Cardz\Core\Personal\Infrastructure\ReadStorage\Eloquent;
 
 use App\Models\Person as EloquentPerson;
-use Cardz\Core\Personal\Domain\Model\Person\Person;
-use Cardz\Core\Personal\Domain\Model\Person\PersonId;
-use Cardz\Core\Personal\Domain\Persistence\Contracts\PersonRepositoryInterface;
+use Cardz\Core\Personal\Domain\ReadModel\JoinedPerson;
 use Cardz\Core\Personal\Infrastructure\Exceptions\PersonNotFoundException;
+use Cardz\Core\Personal\Infrastructure\ReadStorage\Contracts\JoinedPersonStorageInterface;
 use Codderz\Platypus\Infrastructure\Support\PropertiesExtractorTrait;
 
-class PersonRepository implements PersonRepositoryInterface
+class JoinedPersonStorage implements JoinedPersonStorageInterface
 {
     use PropertiesExtractorTrait;
 
-    public function persist(Person $person): void
+    public function persist(JoinedPerson $joinedPerson): void
     {
         EloquentPerson::query()->updateOrCreate(
-            ['id' => $person->personId],
-            $this->personAsData($person)
+            ['id' => $joinedPerson->personId],
+            $this->personAsData($joinedPerson)
         );
     }
 
-    public function take(PersonId $personId = null): Person
+    public function take(string $personId = null): JoinedPerson
     {
         /** @var EloquentPerson $eloquentPerson */
         $eloquentPerson = EloquentPerson::query()->find((string) $personId);
@@ -31,20 +30,20 @@ class PersonRepository implements PersonRepositoryInterface
         return $this->personFromData($eloquentPerson);
     }
 
-    private function personAsData(Person $person): array
+    private function personAsData(JoinedPerson $joinedPerson): array
     {
         $data = [
-            'id' => (string) $person->personId,
-            'name' => (string) $person->name,
-            'joined_at' => $this->extractProperty($person, 'joined'),
+            'id' => $joinedPerson->personId,
+            'name' => $joinedPerson->name,
+            'joined_at' => $joinedPerson->joined,
         ];
 
         return $data;
     }
 
-    private function personFromData(EloquentPerson $eloquentPerson): Person
+    private function personFromData(EloquentPerson $eloquentPerson): JoinedPerson
     {
-        $person = Person::restore(
+        $person = new JoinedPerson(
             $eloquentPerson->id,
             $eloquentPerson->name,
             $eloquentPerson->joined_at,

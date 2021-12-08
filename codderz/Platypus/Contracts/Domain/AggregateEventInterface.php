@@ -4,8 +4,9 @@ namespace Codderz\Platypus\Contracts\Domain;
 
 use Carbon\Carbon;
 use Codderz\Platypus\Contracts\GenericIdInterface;
+use Codderz\Platypus\Contracts\Messaging\EventInterface;
 
-interface AggregateEventInterface
+interface AggregateEventInterface extends EventInterface
 {
     public static function shortName(): string;
 
