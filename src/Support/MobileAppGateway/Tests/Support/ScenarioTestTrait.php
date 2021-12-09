@@ -9,6 +9,8 @@ use Cardz\Core\Workspaces\Domain\Model\Workspace\Keeper;
 use Cardz\Core\Workspaces\Domain\Model\Workspace\KeeperId;
 use Cardz\Core\Workspaces\Domain\Persistence\Contracts\KeeperRepositoryInterface;
 use Cardz\Core\Workspaces\Domain\Persistence\Contracts\WorkspaceRepositoryInterface;
+use Cardz\Core\Workspaces\Domain\ReadModel\AddedWorkspace;
+use Cardz\Core\Workspaces\Domain\ReadModel\Contracts\AddedWorkspaceStorageInterface;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceRepositoryInterface;
 use Cardz\Generic\Identity\Domain\Persistence\Contracts\UserRepositoryInterface;
 use Cardz\Support\Collaboration\Domain\Persistence\Contracts\InviteRepositoryInterface;
@@ -42,6 +44,7 @@ trait ScenarioTestTrait
 
         foreach ($this->environment->workspaces as $workspace) {
             $this->getWorkspaceRepository()->store($workspace);
+            $this->getWorkspaceReadStore()->persist(AddedWorkspace::of($workspace));
         }
 
         foreach ($this->environment->plans as $plan) {
@@ -77,6 +80,11 @@ trait ScenarioTestTrait
     public function getKeeperRepository(): KeeperRepositoryInterface
     {
         return $this->app->make(KeeperRepositoryInterface::class);
+    }
+
+    public function getWorkspaceReadStore(): AddedWorkspaceStorageInterface
+    {
+        return $this->app->make(AddedWorkspaceStorageInterface::class);
     }
 
     public function getWorkspaceRepository(): WorkspaceRepositoryInterface
