@@ -2,6 +2,7 @@
 
 namespace Cardz\Core\Workspaces\Domain\Model\Workspace;
 
+use Carbon\Carbon;
 use Cardz\Core\Workspaces\Domain\Events\Keeper\KeeperRegistered;
 use Codderz\Platypus\Contracts\Domain\EventDrivenAggregateRootInterface;
 use Codderz\Platypus\Infrastructure\Support\Domain\EventDrivenAggregateRootTrait;
@@ -35,10 +36,6 @@ final class Keeper implements EventDrivenAggregateRootInterface
 
     public function keepWorkspace(WorkspaceId $workspaceId, Profile $profile): Workspace
     {
-        return Workspace::add(
-            $workspaceId,
-            $this->keeperId,
-            $profile,
-        );
+        return (new Workspace($workspaceId))->add($this->keeperId, $profile, Carbon::now());
     }
 }

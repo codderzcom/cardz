@@ -2,9 +2,23 @@
 
 namespace Cardz\Core\Workspaces\Domain\Events\Workspace;
 
-use JetBrains\PhpStorm\Immutable;
+use Cardz\Core\Workspaces\Domain\Model\Workspace\Profile;
 
-#[Immutable]
 final class WorkspaceProfileChanged extends BaseWorkspaceDomainEvent
 {
+    private function __construct(
+        public Profile $profile,
+    ) {
+    }
+
+    public static function of(Profile $profile): self
+    {
+        return new self($profile);
+    }
+
+    public static function from(array $data): self
+    {
+        return new self(Profile::of($data['profile']['name'], $data['profile']['description'], $data['profile']['address']));
+    }
+
 }

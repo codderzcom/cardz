@@ -3,7 +3,9 @@
 namespace Cardz\Core\Workspaces\Tests\Support\Builders;
 
 use Carbon\Carbon;
+use Cardz\Core\Workspaces\Domain\Events\Workspace\WorkspaceAdded;
 use Cardz\Core\Workspaces\Domain\Model\Workspace\KeeperId;
+use Cardz\Core\Workspaces\Domain\Model\Workspace\Profile;
 use Cardz\Core\Workspaces\Domain\Model\Workspace\Workspace;
 use Cardz\Core\Workspaces\Domain\Model\Workspace\WorkspaceId;
 use Codderz\Platypus\Infrastructure\Tests\BaseBuilder;
@@ -24,15 +26,8 @@ final class WorkspaceBuilder extends BaseBuilder
 
     public function build(): Workspace
     {
-        return Workspace::restore(
-            $this->workspaceId,
-            $this->keeperId,
-            $this->added,
-            [
-                'name' => $this->name,
-                'description' => $this->description,
-                'address' => $this->address,
-            ],
+        return (new Workspace(WorkspaceId::of($this->workspaceId)))->recordThat(
+            WorkspaceAdded::of(KeeperId::of($this->keeperId), $this->profile(), $this->added)
         );
     }
 
@@ -53,4 +48,8 @@ final class WorkspaceBuilder extends BaseBuilder
         return $this;
     }
 
+    public function profile(): Profile
+    {
+        return Profile::of($this->name, $this->description, $this->address);
+    }
 }

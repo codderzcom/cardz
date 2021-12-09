@@ -38,14 +38,14 @@ class WorkspaceAppService
 
     public function changeProfile(ChangeWorkspaceProfile $command): WorkspaceId
     {
-        $workspace = $this->workspaceRepository->take($command->getWorkspaceId());
+        $workspace = $this->workspaceRepository->restore($command->getWorkspaceId());
         return $this->release($workspace->changeProfile($command->getProfile()));
     }
 
     private function release(Workspace $workspace): WorkspaceId
     {
-        $this->workspaceRepository->persist($workspace);
-        $this->domainEventBus->publish(...$workspace->releaseEvents());
+        $events = $this->workspaceRepository->store($workspace);
+        $this->domainEventBus->publish(...$events);
         return $workspace->workspaceId;
     }
 }

@@ -1,34 +1,34 @@
 <?php
 
-namespace Cardz\Core\Workspaces\Application\Consumers;
+namespace Cardz\Core\Workspaces\Application\Projectors;
 
+use Cardz\Core\Workspaces\Domain\Events\Workspace\BaseWorkspaceDomainEvent;
+use Cardz\Core\Workspaces\Domain\Events\Workspace\WorkspaceAdded;
 use Cardz\Core\Workspaces\Domain\Events\Workspace\WorkspaceProfileChanged;
 use Cardz\Core\Workspaces\Domain\ReadModel\AddedWorkspace;
 use Cardz\Core\Workspaces\Domain\ReadModel\Contracts\AddedWorkspaceStorageInterface;
-use Cardz\Core\Workspaces\Integration\Events\WorkspaceChanged;
 use Codderz\Platypus\Contracts\Messaging\EventConsumerInterface;
 use Codderz\Platypus\Contracts\Messaging\EventInterface;
-use Codderz\Platypus\Contracts\Messaging\IntegrationEventBusInterface;
 
-class WorkspaceChangedDomainConsumer implements EventConsumerInterface
+final class WorkspaceChangedProjector implements EventConsumerInterface
 {
     public function __construct(
-        private IntegrationEventBusInterface $integrationEventBus,
-        protected AddedWorkspaceStorageInterface $readWorkspaceStorage,
+        private AddedWorkspaceStorageInterface $addedWorkspaceStorage,
     ) {
     }
 
     public function consumes(): array
     {
         return [
+            WorkspaceAdded::class,
             WorkspaceProfileChanged::class,
         ];
     }
 
     public function handle(EventInterface $event): void
     {
-        /** @var WorkspaceProfileChanged $event */
-        $this->integrationEventBus->publish(WorkspaceChanged::of(AddedWorkspace::of($event->with())));
+        /** @var BaseWorkspaceDomainEvent $event */
+        $this->addedWorkspaceStorage->persist(AddedWorkspace::of($event->with()));
     }
 
 }

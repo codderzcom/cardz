@@ -20,9 +20,4 @@ trait WorkspacesTestHelperTrait
         return $this->app->make(WorkspaceRepositoryInterface::class);
     }
 
-    protected function getKeeperRepository(): KeeperRepositoryInterface
-    {
-        return $this->app->make(KeeperRepositoryInterface::class);
-    }
-
 }

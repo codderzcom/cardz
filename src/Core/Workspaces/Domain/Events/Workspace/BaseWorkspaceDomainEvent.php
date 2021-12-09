@@ -3,12 +3,22 @@
 namespace Cardz\Core\Workspaces\Domain\Events\Workspace;
 
 use Cardz\Core\Workspaces\Domain\Model\Workspace\Workspace;
+use Codderz\Platypus\Contracts\Domain\AggregateEventInterface;
+use Codderz\Platypus\Infrastructure\Support\Domain\AggregateEventTrait;
 use Codderz\Platypus\Infrastructure\Support\Domain\DomainEvent;
 
-abstract class BaseWorkspaceDomainEvent extends DomainEvent
+/**
+ * @method Workspace with()
+ */
+abstract class BaseWorkspaceDomainEvent implements AggregateEventInterface
 {
-    public function with(): Workspace
+    use AggregateEventTrait;
+
+    protected int $version = 1;
+
+    public function version(): int
     {
-        return $this->aggregateRoot;
+        return $this->version;
     }
+
 }

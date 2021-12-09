@@ -3,7 +3,7 @@
 namespace Cardz\Core\Workspaces\Application\Consumers;
 
 use Cardz\Core\Workspaces\Domain\Events\Workspace\WorkspaceAdded;
-use Cardz\Core\Workspaces\Domain\ReadModel\Contracts\ReadWorkspaceStorageInterface;
+use Cardz\Core\Workspaces\Domain\ReadModel\AddedWorkspace;
 use Cardz\Core\Workspaces\Integration\Events\NewWorkspaceRegistered;
 use Codderz\Platypus\Contracts\Messaging\EventConsumerInterface;
 use Codderz\Platypus\Contracts\Messaging\EventInterface;
@@ -13,7 +13,6 @@ class WorkspaceAddedDomainConsumer implements EventConsumerInterface
 {
     public function __construct(
         private IntegrationEventBusInterface $integrationEventBus,
-        private ReadWorkspaceStorageInterface $readWorkspaceStorage,
     ) {
     }
 
@@ -26,12 +25,8 @@ class WorkspaceAddedDomainConsumer implements EventConsumerInterface
 
     public function handle(EventInterface $event): void
     {
-        $workspace = $this->readWorkspaceStorage->take((string) $event->with()?->workspaceId);
-        if ($workspace === null) {
-            return;
-        }
-
-        $this->integrationEventBus->publish(NewWorkspaceRegistered::of($workspace));
+        /** @var WorkspaceAdded $event */
+        $this->integrationEventBus->publish(NewWorkspaceRegistered::of(AddedWorkspace::of($event->with())));
     }
 
 }

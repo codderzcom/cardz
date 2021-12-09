@@ -41,7 +41,7 @@ trait ScenarioTestTrait
         }
 
         foreach ($this->environment->workspaces as $workspace) {
-            $this->getWorkspaceRepository()->persist($workspace);
+            $this->getWorkspaceRepository()->store($workspace);
         }
 
         foreach ($this->environment->plans as $plan) {

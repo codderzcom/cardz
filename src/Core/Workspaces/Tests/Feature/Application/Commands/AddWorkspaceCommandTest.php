@@ -26,7 +26,7 @@ final class AddWorkspaceCommandTest extends BaseTestCase
         $command = AddWorkspace::of($keeperId, ...$profileTemplate->toArray());
         $this->commandBus()->dispatch($command);
 
-        $workspace = $this->getWorkspaceRepository()->take($command->getWorkspaceId());
+        $workspace = $this->getWorkspaceRepository()->restore($command->getWorkspaceId());
 
         $this->assertEquals($command->getWorkspaceId(), $workspace->workspaceId);
         $this->assertEquals($command->getKeeperId(), $workspace->keeperId);
