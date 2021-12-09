@@ -7,4 +7,6 @@ use Cardz\Core\Plans\Domain\ReadModel\ReadPlan;
 interface ReadPlanStorageInterface
 {
     public function take(?string $planId): ?ReadPlan;
+
+    public function getExpiredIds(): array;
 }

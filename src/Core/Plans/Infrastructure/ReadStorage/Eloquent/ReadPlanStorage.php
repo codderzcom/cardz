@@ -4,6 +4,7 @@ namespace Cardz\Core\Plans\Infrastructure\ReadStorage\Eloquent;
 
 use App\Models\Plan as EloquentPlan;
 use App\Models\Requirement as EloquentRequirement;
+use Carbon\Carbon;
 use Cardz\Core\Plans\Domain\ReadModel\ReadPlan;
 use Cardz\Core\Plans\Domain\ReadModel\ReadRequirement;
 use Cardz\Core\Plans\Infrastructure\ReadStorage\Contracts\ReadPlanStorageInterface;
@@ -29,6 +30,15 @@ class ReadPlanStorage implements ReadPlanStorageInterface
                 ->get() ?? [];
 
         return $this->readPlanFromData($eloquentPlan, ...$eloquentRequirements);
+    }
+
+    public function getExpiredIds(): array
+    {
+        /** @var EloquentPlan $eloquentPlan */
+        return EloquentPlan::query()
+            ->select('id')
+            ->where('expiration_date', '<=', Carbon::now())
+            ->get()->toArray();
     }
 
     #[Pure]

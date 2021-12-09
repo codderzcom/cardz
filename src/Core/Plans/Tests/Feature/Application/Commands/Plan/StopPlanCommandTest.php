@@ -15,7 +15,7 @@ final class StopPlanCommandTest extends BaseTestCase
 
     public function test_plan_can_be_stopped()
     {
-        $plan = PlanBuilder::make()->buildLaunched();
+        $plan = PlanBuilder::make()->withLaunched()->build();
         $this->getPlanRepository()->persist($plan);
         $this->assertFalse($plan->isStopped());
 
