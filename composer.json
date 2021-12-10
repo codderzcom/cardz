@@ -13,7 +13,8 @@
         "laravel/framework": "^8.54",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "myclabs/php-enum": "^1.8"
+        "myclabs/php-enum": "^1.8",
+        "vyuldashev/laravel-openapi": "^1.4"
     },
     "require-dev": {
         "brianium/paratest": "^6.3",

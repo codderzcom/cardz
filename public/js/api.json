@@ -1,0 +1,78 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "Cardz",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http:\/\/localhost"
+        }
+    ],
+    "paths": {
+        "\/mab\/v1\/customer\/get-token": {
+            "post": {
+                "tags": [
+                    "customer"
+                ],
+                "summary": "Get user token",
+                "description": "Returns new API user token (for basic bearer auth). Requires identity, password and device name."
+            }
+        },
+        "\/mab\/v1\/customer\/register": {
+            "post": {
+                "tags": [
+                    "customer"
+                ],
+                "summary": "Register user",
+                "description": "Registers new user with email OR phone, password, device name (for token). Returns new auth token."
+            }
+        },
+        "\/mab\/v1\/customer\/workspaces": {
+            "get": {
+                "tags": [
+                    "customer"
+                ],
+                "summary": "Workspaces",
+                "description": "Returns all workspaces"
+            }
+        },
+        "\/mab\/v1\/customer\/id": {
+            "get": {
+                "tags": [
+                    "customer"
+                ],
+                "summary": "Get authorized user id",
+                "description": "Returns id of the authenticated user."
+            }
+        },
+        "\/mab\/v1\/customer\/card": {
+            "get": {
+                "tags": [
+                    "customer"
+                ],
+                "summary": "User cards",
+                "description": "Returns all active cards for the current user."
+            }
+        },
+        "\/mab\/v1\/customer\/card\/{cardId}": {
+            "get": {
+                "tags": [
+                    "customer"
+                ],
+                "summary": "User card",
+                "description": "Returns an active card, owned by the current user, by its id.",
+                "parameters": [
+                    {
+                        "name": "cardId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}
