@@ -8,15 +8,22 @@ use Cardz\Core\Workspaces\Domain\Persistence\Contracts\WorkspaceRepositoryInterf
 
 class WorkspaceInMemoryRepository implements WorkspaceRepositoryInterface
 {
-    protected static array $storage = [];
+    protected static array $events = [];
 
-    public function persist(Workspace $workspace): void
+    public function store(Workspace $workspace): array
     {
-        static::$storage[(string) $workspace->workspaceId] = $workspace;
+        $id = (string) $workspace->workspaceId;
+        $events = $workspace->releaseEvents();
+        static::$events[$id] ??= [];
+        static::$events[$id] = [...static::$events[$id], ...$events];
+        return $events;
     }
 
-    public function take(WorkspaceId $workspaceId): Workspace
+    public function restore(WorkspaceId $workspaceId): Workspace
     {
-        return static::$storage[(string) $workspaceId];
+        $events = collect(static::$events[(string) $workspaceId] ??= [])->sortByDesc(function ($event, $key) {
+            return $event->at()->timestamp;
+        });
+        return (new Workspace($workspaceId))->apply(...$events->all());
     }
 }

@@ -33,7 +33,7 @@ class PlanAppService
     public function launch(LaunchPlan $command): PlanId
     {
         $plan = $this->getPlan($command);
-        return $this->release($plan->launch());
+        return $this->release($plan->launch($command->getExpirationDate()));
     }
 
     public function stop(StopPlan $command): PlanId

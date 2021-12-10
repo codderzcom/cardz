@@ -12,25 +12,29 @@ use Cardz\Core\Personal\Infrastructure\Messaging\DomainEventBusInterface;
 class PersonAppService
 {
     public function __construct(
-        private PersonRepositoryInterface $personRepository,
         private DomainEventBusInterface $domainEventBus,
+        private PersonRepositoryInterface $personRepository,
     ) {
     }
 
     public function join(JoinPerson $command): PersonId
     {
         $person = Person::join($command->getPersonId(), $command->getName());
-        $this->personRepository->persist($person);
-        $this->domainEventBus->publish(...$person->releaseEvents());
+        $this->release($person);
         return $person->personId;
     }
 
     public function changeName(ChangePersonName $command): PersonId
     {
-        $person = $this->personRepository->take($command->getPersonId());
+        $person = $this->personRepository->restore($command->getPersonId());
         $person->changeName($command->getName());
-        $this->personRepository->persist($person);
-        $this->domainEventBus->publish(...$person->releaseEvents());
+        $this->release($person);
         return $person->personId;
+    }
+
+    private function release(Person $person)
+    {
+        $events = $this->personRepository->store($person);
+        $this->domainEventBus->publish(...$events);
     }
 }

@@ -41,9 +41,9 @@ class MonolithPlansAdapter implements PlansContextInterface
         return $command->getPlanId();
     }
 
-    public function launch(string $planId): string
+    public function launch(string $planId, string $expirationDate): string
     {
-        $command = LaunchPlan::of($planId);
+        $command = LaunchPlan::of($planId, $expirationDate);
         $this->commandBus->dispatch($command);
         return $command->getPlanId();
     }

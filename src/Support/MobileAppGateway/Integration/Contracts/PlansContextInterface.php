@@ -10,7 +10,7 @@ interface PlansContextInterface
 
     public function changeDescription(string $planId, string $description): string;
 
-    public function launch(string $planId): string;
+    public function launch(string $planId, string $expirationDate): string;
 
     public function stop(string $planId): string;
 

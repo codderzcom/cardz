@@ -38,7 +38,7 @@ class PlanRepository implements PlanRepositoryInterface
 
     private function planAsData(Plan $plan): array
     {
-        $properties = $this->extractProperties($plan, 'added', 'launched', 'stopped', 'archived');
+        $properties = $this->extractProperties($plan, 'added', 'launched', 'stopped', 'archived', 'expirationDate');
         $data = [
             'id' => (string) $plan->planId,
             'workspace_id' => (string) $plan->workspaceId,
@@ -47,6 +47,7 @@ class PlanRepository implements PlanRepositoryInterface
             'launched_at' => $properties['launched'],
             'stopped_at' => $properties['stopped'],
             'archived_at' => $properties['archived'],
+            'expiration_date' => $properties['expirationDate'],
         ];
         return $data;
     }
@@ -61,6 +62,7 @@ class PlanRepository implements PlanRepositoryInterface
             $eloquentPlan->launched_at,
             $eloquentPlan->stopped_at,
             $eloquentPlan->archived_at,
+            $eloquentPlan->expiration_date,
         );
     }
 }

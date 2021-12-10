@@ -16,12 +16,12 @@ final class ChangeWorkspaceProfileCommandTest extends BaseTestCase
     public function test_workspace_profile_can_be_changed()
     {
         $workspace = WorkspaceBuilder::make()->build();
-        $this->getWorkspaceRepository()->persist($workspace);
+        $this->getWorkspaceRepository()->store($workspace);
 
         $command = ChangeWorkspaceProfile::of($workspace->workspaceId, 'Changed', 'Changed', 'Changed');
         $this->commandBus()->dispatch($command);
 
-        $workspace = $this->getWorkspaceRepository()->take($command->getWorkspaceId());
+        $workspace = $this->getWorkspaceRepository()->restore($command->getWorkspaceId());
 
         $this->assertEquals(
             ['name' => 'Changed', 'description' => 'Changed', 'address' => 'Changed'],

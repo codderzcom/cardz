@@ -5,7 +5,7 @@ namespace Codderz\Platypus\Contracts;
 use JsonSerializable;
 use Stringable;
 
-interface GeneralIdInterface extends JsonSerializable, Stringable
+interface GenericIdInterface extends JsonSerializable, Stringable
 {
     public static function make(): static;
 
@@ -13,7 +13,7 @@ interface GeneralIdInterface extends JsonSerializable, Stringable
 
     public static function of(string $id): static;
 
-    public function equals(GeneralIdInterface $id): bool;
+    public function equals(GenericIdInterface $id): bool;
 
     public function is(string $id): bool;
 

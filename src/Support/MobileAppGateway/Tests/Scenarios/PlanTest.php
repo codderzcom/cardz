@@ -2,6 +2,7 @@
 
 namespace Cardz\Support\MobileAppGateway\Tests\Scenarios;
 
+use Carbon\Carbon;
 use Cardz\Core\Cards\Tests\Support\Builders\PlanBuilder;
 use Cardz\Support\MobileAppGateway\Config\Routes\RouteName;
 
@@ -66,8 +67,9 @@ class PlanTest extends BaseScenarioTestCase
         $this->assertFalse($plan['isArchived']);
 
         $routeArgs = ['workspaceId' => $workspaceId, 'planId' => $planId];
+        $routeParams = ['expirationDate' => (string) Carbon::now()->addDay()];
 
-        $plan = $this->routePut(RouteName::LAUNCH_PLAN, $routeArgs)->json();
+        $plan = $this->routePut(RouteName::LAUNCH_PLAN, $routeArgs, $routeParams)->json();
 
         $this->assertNotEquals($changed, $plan['description']);
         $this->assertTrue($plan['isLaunched']);
@@ -102,8 +104,9 @@ class PlanTest extends BaseScenarioTestCase
         $planId = $this->environment->plans[0]->planId;
 
         $routeArgs = ['workspaceId' => $workspaceId, 'planId' => $planId];
+        $routeParams = ['expirationDate' => (string) Carbon::now()->addDay()];
 
-        $response = $this->routePut(RouteName::LAUNCH_PLAN, $routeArgs);
+        $response = $this->routePut(RouteName::LAUNCH_PLAN, $routeArgs, $routeParams);
         $response->assertForbidden();
 
         $response = $this->routePut(RouteName::STOP_PLAN, $routeArgs);
@@ -113,7 +116,7 @@ class PlanTest extends BaseScenarioTestCase
         $response->assertForbidden();
     }
 
-    public function test_plan_cannot_be_lanunched_or_stopped_twice()
+    public function test_plan_can_be_relanunched()
     {
         $this->persistEnvironment();
         $collaboratorInfo = $this->environment->collaboratorInfos[0];
@@ -127,12 +130,35 @@ class PlanTest extends BaseScenarioTestCase
         $planId = $plan['planId'];
 
         $routeArgs = ['workspaceId' => $workspaceId, 'planId' => $planId];
+        $routeParams = ['expirationDate' => (string) Carbon::now()->addDay()];
 
-        $plan = $this->routePut(RouteName::LAUNCH_PLAN, $routeArgs)->json();
+        $plan = $this->routePut(RouteName::LAUNCH_PLAN,$routeArgs,$routeParams)->json();
         $this->assertTrue($plan['isLaunched']);
 
-        $response = $this->routePut(RouteName::LAUNCH_PLAN, $routeArgs);
-        $response->assertStatus(500);
+        $routeParams = ['expirationDate' => (string) Carbon::now()->addCentury()];
+
+        $plan = $this->routePut(RouteName::LAUNCH_PLAN,$routeArgs,$routeParams)->json();
+        $this->assertTrue($plan['isLaunched']);
+    }
+
+    public function test_plan_canot_be_stopped_twice()
+    {
+        $this->persistEnvironment();
+        $collaboratorInfo = $this->environment->collaboratorInfos[0];
+        $this->setAuthTokenFor($collaboratorInfo);
+
+        $workspaces = $this->routeGet(RouteName::GET_WORKSPACES)->json();
+        $workspaceId = $workspaces[0]['workspaceId'];
+
+        $plans = $this->routeGet(RouteName::GET_PLANS, ['workspaceId' => $workspaceId])->json();
+        $plan = $plans[0];
+        $planId = $plan['planId'];
+
+        $routeArgs = ['workspaceId' => $workspaceId, 'planId' => $planId];
+        $routeParams = ['expirationDate' => (string) Carbon::now()->addDay()];
+
+        $plan = $this->routePut(RouteName::LAUNCH_PLAN,$routeArgs,$routeParams)->json();
+        $this->assertTrue($plan['isLaunched']);
 
         $plan = $this->routePut(RouteName::STOP_PLAN, $routeArgs)->json();
         $this->assertTrue($plan['isStopped']);

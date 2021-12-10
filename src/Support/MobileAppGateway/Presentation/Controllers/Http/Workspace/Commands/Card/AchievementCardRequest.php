@@ -3,7 +3,7 @@
 namespace Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\Card;
 
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\BaseCommandRequest;
-use Codderz\Platypus\Contracts\GeneralIdInterface;
+use Codderz\Platypus\Contracts\GenericIdInterface;
 use Codderz\Platypus\Infrastructure\Support\GuidBasedImmutableId;
 
 final class AchievementCardRequest extends BaseCommandRequest
@@ -20,9 +20,9 @@ final class AchievementCardRequest extends BaseCommandRequest
         'description.required' => 'description required',
     ];
 
-    public GeneralIdInterface $cardId;
+    public GenericIdInterface $cardId;
 
-    public GeneralIdInterface $achievementId;
+    public GenericIdInterface $achievementId;
 
     public string $description;
 

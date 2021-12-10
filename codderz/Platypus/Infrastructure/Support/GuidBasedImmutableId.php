@@ -2,13 +2,13 @@
 
 namespace Codderz\Platypus\Infrastructure\Support;
 
-use Codderz\Platypus\Contracts\GeneralIdInterface;
+use Codderz\Platypus\Contracts\GenericIdInterface;
 use Codderz\Platypus\Exceptions\ParameterAssertionException;
 use JetBrains\PhpStorm\Immutable;
 use Ramsey\Uuid\Guid\Guid;
 
 #[Immutable]
-class GuidBasedImmutableId implements GeneralIdInterface
+class GuidBasedImmutableId implements GenericIdInterface
 {
     use ShortClassNameTrait;
 
@@ -39,7 +39,7 @@ class GuidBasedImmutableId implements GeneralIdInterface
         return $this->id;
     }
 
-    public function equals(GeneralIdInterface $id): bool
+    public function equals(GenericIdInterface $id): bool
     {
         return $this->is((string) $id);
     }

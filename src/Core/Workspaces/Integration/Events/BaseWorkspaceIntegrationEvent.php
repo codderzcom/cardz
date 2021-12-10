@@ -2,7 +2,7 @@
 
 namespace Cardz\Core\Workspaces\Integration\Events;
 
-use Cardz\Core\Workspaces\Domain\ReadModel\ReadWorkspace;
+use Cardz\Core\Workspaces\Domain\ReadModel\AddedWorkspace;
 use Codderz\Platypus\Contracts\Messaging\IntegrationEventInterface;
 use Codderz\Platypus\Infrastructure\Messaging\IntegrationEventTrait;
 use JetBrains\PhpStorm\ArrayShape;
@@ -13,12 +13,12 @@ abstract class BaseWorkspaceIntegrationEvent implements IntegrationEventInterfac
     use IntegrationEventTrait;
 
     protected function __construct(
-        protected ReadWorkspace $workspace,
+        protected AddedWorkspace $workspace,
     ) {
     }
 
     #[Pure]
-    public static function of(ReadWorkspace $workspace): static
+    public static function of(AddedWorkspace $workspace): static
     {
         return new static($workspace);
     }

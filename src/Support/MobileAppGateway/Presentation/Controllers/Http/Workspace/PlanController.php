@@ -8,9 +8,9 @@ use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Comma
     Plan\AddPlanRequirementRequest,
     Plan\ChangePlanDescriptionRequest,
     Plan\ChangePlanRequirementDescriptionRequest,
+    Plan\LaunchPlanCommandRequest,
     Plan\PlanCommandRequest,
-    Plan\RemovePlanRequirementRequest
-};
+    Plan\RemovePlanRequirementRequest};
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Queries\GetPlanRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Queries\GetWorkspaceRequest;
 use Illuminate\Http\JsonResponse;
@@ -37,9 +37,9 @@ class PlanController extends BaseController
         return $this->response($this->planService->add($request->workspaceId, $request->description));
     }
 
-    public function launch(PlanCommandRequest $request): JsonResponse
+    public function launch(LaunchPlanCommandRequest $request): JsonResponse
     {
-        return $this->response($this->planService->launch($request->planId));
+        return $this->response($this->planService->launch($request->planId, $request->expirationDate));
     }
 
     public function stop(PlanCommandRequest $request): JsonResponse

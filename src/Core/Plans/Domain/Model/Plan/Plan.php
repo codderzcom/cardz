@@ -27,6 +27,8 @@ final class Plan implements AggregateRootInterface
 
     private ?Carbon $archived = null;
 
+    private ?Carbon $expirationDate = null;
+
     #[Pure]
     private function __construct(
         public PlanId $planId,
@@ -50,12 +52,14 @@ final class Plan implements AggregateRootInterface
         ?Carbon $launched = null,
         ?Carbon $stopped = null,
         ?Carbon $archived = null,
+        ?Carbon $expirationDate = null,
     ): self {
         $plan = new self(PlanId::of($planId), WorkspaceId::of($workspaceId), Description::of($description));
         $plan->added = $added;
         $plan->launched = $launched;
         $plan->stopped = $stopped;
         $plan->archived = $archived;
+        $plan->expirationDate = $expirationDate;
         return $plan;
     }
 
@@ -67,12 +71,19 @@ final class Plan implements AggregateRootInterface
         return Requirement::add($requirementId, $this->planId, $description);
     }
 
-    public function launch(): self
+    public function launch(Carbon $expirationDate): self
     {
-        if ($this->isLaunched() || $this->isArchived()) {
+        if ($this->isArchived()) {
             throw new InvalidPlanStateException();
         }
+
         $this->launched = Carbon::now();
+        $this->expirationDate = $expirationDate;
+
+        if ($this->expirationDate->lessThan($this->launched)) {
+            throw new InvalidPlanStateException();
+        }
+
         $this->stopped = null;
         return $this->withEvents(PlanLaunched::of($this));
     }

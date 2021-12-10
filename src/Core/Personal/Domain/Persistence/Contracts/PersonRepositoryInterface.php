@@ -2,16 +2,16 @@
 
 namespace Cardz\Core\Personal\Domain\Persistence\Contracts;
 
-use Cardz\Core\Personal\Domain\Exception\PersonNotFoundExceptionInterface;
 use Cardz\Core\Personal\Domain\Model\Person\Person;
 use Cardz\Core\Personal\Domain\Model\Person\PersonId;
+use Codderz\Platypus\Contracts\Domain\AggregateEventInterface;
 
 interface PersonRepositoryInterface
 {
-    public function persist(Person $person): void;
-
     /**
-     * @throws PersonNotFoundExceptionInterface
+     * @return AggregateEventInterface[]
      */
-    public function take(PersonId $personId): Person;
+    public function store(Person $person): array;
+
+    public function restore(PersonId $personId): Person;
 }

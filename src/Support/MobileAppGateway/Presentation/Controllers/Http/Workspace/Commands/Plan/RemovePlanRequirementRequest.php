@@ -2,7 +2,7 @@
 
 namespace Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\Plan;
 
-use Codderz\Platypus\Contracts\GeneralIdInterface;
+use Codderz\Platypus\Contracts\GenericIdInterface;
 use Codderz\Platypus\Infrastructure\Support\GuidBasedImmutableId;
 
 final class RemovePlanRequirementRequest extends PlanCommandRequest
@@ -15,7 +15,7 @@ final class RemovePlanRequirementRequest extends PlanCommandRequest
         'requirementId.required' => 'requirementId required',
     ];
 
-    public GeneralIdInterface $requirementId;
+    public GenericIdInterface $requirementId;
 
     public function passedValidation(): void
     {

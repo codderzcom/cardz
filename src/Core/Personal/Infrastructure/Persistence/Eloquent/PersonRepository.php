@@ -2,53 +2,62 @@
 
 namespace Cardz\Core\Personal\Infrastructure\Persistence\Eloquent;
 
-use App\Models\Person as EloquentPerson;
+use App\Models\ESStorage;
+use Cardz\Core\Personal\Domain\Exception\PersonNotFoundExceptionInterface;
 use Cardz\Core\Personal\Domain\Model\Person\Person;
 use Cardz\Core\Personal\Domain\Model\Person\PersonId;
 use Cardz\Core\Personal\Domain\Persistence\Contracts\PersonRepositoryInterface;
 use Cardz\Core\Personal\Infrastructure\Exceptions\PersonNotFoundException;
-use Codderz\Platypus\Infrastructure\Support\PropertiesExtractorTrait;
+use Codderz\Platypus\Contracts\Domain\AggregateEventInterface;
 
 class PersonRepository implements PersonRepositoryInterface
 {
-    use PropertiesExtractorTrait;
-
-    public function persist(Person $person): void
+    public function store(Person $person): array
     {
-        EloquentPerson::query()->updateOrCreate(
-            ['id' => $person->personId],
-            $this->personAsData($person)
-        );
-    }
-
-    public function take(PersonId $personId = null): Person
-    {
-        /** @var EloquentPerson $eloquentPerson */
-        $eloquentPerson = EloquentPerson::query()->find((string) $personId);
-        if ($eloquentPerson === null) {
-            throw new PersonNotFoundException((string) $personId);
+        $events = $person->releaseEvents();
+        $data = [];
+        foreach ($events as $event) {
+            $data[] = $event->toArray();
         }
-        return $this->personFromData($eloquentPerson);
+        ESStorage::query()->insert($data);
+        return $events;
     }
 
-    private function personAsData(Person $person): array
+    /**
+     * @throws PersonNotFoundExceptionInterface
+     */
+    public function restore(PersonId $personId): Person
     {
-        $data = [
-            'id' => (string) $person->personId,
-            'name' => (string) $person->name,
-            'joined_at' => $this->extractProperty($person, 'joined'),
-        ];
+        $esEvents = $this->getESEvents($personId);
 
-        return $data;
+        $events = [];
+        foreach ($esEvents as $esEvent) {
+            $events[] = $this->restoreEvent($esEvent);
+        }
+        return (new Person($personId))->apply(...$events);
     }
 
-    private function personFromData(EloquentPerson $eloquentPerson): Person
+    /**
+     * @return ESStorage[]
+     * @throws PersonNotFoundExceptionInterface
+     */
+    protected function getESEvents(string $personId): array
     {
-        $person = Person::restore(
-            $eloquentPerson->id,
-            $eloquentPerson->name,
-            $eloquentPerson->joined_at,
-        );
-        return $person;
+        $esEvents = ESStorage::query()
+            ->where('channel', '=', Person::class)
+            ->where('stream', '=', $personId)
+            ->orderBy('at')
+            ->get();
+        if ($esEvents->isEmpty()) {
+            throw new PersonNotFoundException("Person $personId not found");
+        }
+        return $esEvents->all();
+    }
+
+    protected function restoreEvent(ESStorage $esEvent): AggregateEventInterface
+    {
+        $eventClass = $esEvent->name;
+        $changeset = json_decode($esEvent->changeset, true);
+        return [$eventClass, 'from']($changeset);
     }
 }

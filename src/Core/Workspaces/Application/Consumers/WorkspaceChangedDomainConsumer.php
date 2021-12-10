@@ -3,7 +3,8 @@
 namespace Cardz\Core\Workspaces\Application\Consumers;
 
 use Cardz\Core\Workspaces\Domain\Events\Workspace\WorkspaceProfileChanged;
-use Cardz\Core\Workspaces\Infrastructure\ReadStorage\Contracts\ReadWorkspaceStorageInterface;
+use Cardz\Core\Workspaces\Domain\ReadModel\AddedWorkspace;
+use Cardz\Core\Workspaces\Domain\ReadModel\Contracts\AddedWorkspaceStorageInterface;
 use Cardz\Core\Workspaces\Integration\Events\WorkspaceChanged;
 use Codderz\Platypus\Contracts\Messaging\EventConsumerInterface;
 use Codderz\Platypus\Contracts\Messaging\EventInterface;
@@ -13,7 +14,7 @@ class WorkspaceChangedDomainConsumer implements EventConsumerInterface
 {
     public function __construct(
         private IntegrationEventBusInterface $integrationEventBus,
-        protected ReadWorkspaceStorageInterface $readWorkspaceStorage,
+        protected AddedWorkspaceStorageInterface $readWorkspaceStorage,
     ) {
     }
 
@@ -26,12 +27,8 @@ class WorkspaceChangedDomainConsumer implements EventConsumerInterface
 
     public function handle(EventInterface $event): void
     {
-        $workspace = $this->readWorkspaceStorage->take((string) $event->with()?->workspaceId);
-        if ($workspace === null) {
-            return;
-        }
-
-        $this->integrationEventBus->publish(WorkspaceChanged::of($workspace));
+        /** @var WorkspaceProfileChanged $event */
+        $this->integrationEventBus->publish(WorkspaceChanged::of(AddedWorkspace::of($event->with())));
     }
 
 }

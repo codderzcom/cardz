@@ -20,7 +20,7 @@ class JoinPersonCommandTest extends BaseTestCase
         $command = JoinPerson::of($personTemplate->personId, $personTemplate->name);
         $this->commandBus()->dispatch($command);
 
-        $person = $this->getPersonRepository()->take($command->getPersonId());
+        $person = $this->getPersonStore()->restore($command->getPersonId());
 
         $this->assertEquals($command->getPersonId(), $person->personId);
         $this->assertTrue($person->isJoined());

@@ -24,6 +24,8 @@ final class PlanBuilder extends BaseBuilder
 
     public ?Carbon $archived;
 
+    public ?Carbon $expirationDate;
+
     public function build(): Plan
     {
         return Plan::restore(
@@ -34,18 +36,14 @@ final class PlanBuilder extends BaseBuilder
             $this->launched,
             $this->stopped,
             $this->archived,
+            $this->expirationDate,
         );
     }
 
-    public function buildLaunched(): Plan
-    {
-        $this->launched = Carbon::now();
-        return $this->build();
-    }
-
-    public function withLaunched(?Carbon $launched = null): self
+    public function withLaunched(?Carbon $launched = null, ?Carbon $expirationDate = null): self
     {
         $this->launched = $launched ?? Carbon::now();
+        $this->expirationDate = $expirationDate ?? Carbon::now()->addDay();
         $this->stopped = null;
         return $this;
     }
@@ -78,6 +76,7 @@ final class PlanBuilder extends BaseBuilder
         $this->launched = null;
         $this->stopped = null;
         $this->archived = null;
+        $this->expirationDate = null;
         return $this;
     }
 }

@@ -2,53 +2,62 @@
 
 namespace Cardz\Core\Workspaces\Infrastructure\Persistence\Eloquent;
 
-use App\Models\Workspace as EloquentWorkspace;
+use App\Models\ESStorage;
+use Cardz\Core\Workspaces\Domain\Exceptions\WorkspaceNotFoundExceptionInterface;
 use Cardz\Core\Workspaces\Domain\Model\Workspace\Workspace;
 use Cardz\Core\Workspaces\Domain\Model\Workspace\WorkspaceId;
 use Cardz\Core\Workspaces\Domain\Persistence\Contracts\WorkspaceRepositoryInterface;
 use Cardz\Core\Workspaces\Infrastructure\Exceptions\WorkspaceNotFoundException;
-use Codderz\Platypus\Infrastructure\Support\PropertiesExtractorTrait;
+use Codderz\Platypus\Contracts\Domain\AggregateEventInterface;
 
 class WorkspaceRepository implements WorkspaceRepositoryInterface
 {
-    use PropertiesExtractorTrait;
-
-    public function persist(Workspace $workspace): void
+    public function store(Workspace $workspace): array
     {
-        EloquentWorkspace::query()->updateOrCreate(
-            ['id' => $workspace->workspaceId],
-            $this->workspaceAsData($workspace)
-        );
-    }
-
-    public function take(WorkspaceId $workspaceId): Workspace
-    {
-        /** @var EloquentWorkspace $eloquentWorkspace */
-        $eloquentWorkspace = EloquentWorkspace::query()->find((string) $workspaceId);
-        if ($eloquentWorkspace === null) {
-            throw new WorkspaceNotFoundException((string) $workspaceId);
+        $events = $workspace->releaseEvents();
+        $data = [];
+        foreach ($events as $event) {
+            $data[] = $event->toArray();
         }
-        return $this->workspaceFromData($eloquentWorkspace);
+        ESStorage::query()->insert($data);
+        return $events;
     }
 
-    private function workspaceAsData(Workspace $workspace): array
+    /**
+     * @throws WorkspaceNotFoundExceptionInterface
+     */
+    public function restore(WorkspaceId $workspaceId): Workspace
     {
-        return [
-            'id' => (string) $workspace->workspaceId,
-            'keeper_id' => (string) $workspace->keeperId,
-            'added_at' => $this->extractProperty($workspace, 'added'),
-            'profile' => $workspace->profile->toArray(),
-        ];
+        $esEvents = $this->getESEvents($workspaceId);
+
+        $events = [];
+        foreach ($esEvents as $esEvent) {
+            $events[] = $this->restoreEvent($esEvent);
+        }
+        return (new Workspace($workspaceId))->apply(...$events);
     }
 
-    private function workspaceFromData(EloquentWorkspace $eloquentWorkspace): Workspace
+    /**
+     * @return ESStorage[]
+     * @throws WorkspaceNotFoundExceptionInterface
+     */
+    protected function getESEvents(string $workspaceId): array
     {
-        $profile = is_string($eloquentWorkspace->profile) ? json_try_decode($eloquentWorkspace->profile, true) : $eloquentWorkspace->profile;
-        return Workspace::restore(
-            $eloquentWorkspace->id,
-            $eloquentWorkspace->keeper_id,
-            $eloquentWorkspace->added_at,
-            $profile,
-        );
+        $esEvents = ESStorage::query()
+            ->where('channel', '=', Workspace::class)
+            ->where('stream', '=', $workspaceId)
+            ->orderBy('at')
+            ->get();
+        if ($esEvents->isEmpty()) {
+            throw new WorkspaceNotFoundException("Workspace $workspaceId not found");
+        }
+        return $esEvents->all();
+    }
+
+    protected function restoreEvent(ESStorage $esEvent): AggregateEventInterface
+    {
+        $eventClass = $esEvent->name;
+        $changeset = json_decode($esEvent->changeset, true);
+        return [$eventClass, 'from']($changeset);
     }
 }

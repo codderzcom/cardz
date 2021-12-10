@@ -8,15 +8,23 @@ use Cardz\Core\Personal\Domain\Persistence\Contracts\PersonRepositoryInterface;
 
 class PersonInMemoryRepository implements PersonRepositoryInterface
 {
-    protected static array $storage = [];
+    protected static array $events = [];
 
-    public function persist(Person $person): void
+    public function store(Person $person): array
     {
-        static::$storage[(string) $person->personId] = $person;
+        $events = $person->releaseEvents();
+        $id = (string) $person->personId;
+        static::$events[$id] ??= [];
+        static::$events[$id] = [...static::$events[$id], ... $events];
+        return $events;
     }
 
-    public function take(PersonId $personId): Person
+    public function restore(PersonId $personId): Person
     {
-        return static::$storage[(string) $personId];
+        $events = collect(static::$events[(string) $personId] ??= [])->sortByDesc(function ($event, $key) {
+            return $event->at()->timestamp;
+        });
+        return (new Person($personId))->apply(...$events->all());
     }
+
 }

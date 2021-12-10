@@ -14,8 +14,6 @@ use Cardz\Support\Collaboration\Infrastructure\Messaging\DomainEventBusInterface
 use Cardz\Support\Collaboration\Infrastructure\Persistence\Eloquent\InviteRepository;
 use Cardz\Support\Collaboration\Infrastructure\Persistence\Eloquent\RelationRepository;
 use Cardz\Support\Collaboration\Infrastructure\Persistence\Virtual\KeeperRepository;
-use Cardz\Support\Collaboration\Infrastructure\ReadStorage\Contracts\AddedWorkspaceReadStorageInterface;
-use Cardz\Support\Collaboration\Infrastructure\ReadStorage\Eloquent\AddedWorkspaceReadStorage;
 use Cardz\Support\Collaboration\Integration\Consumers\DomainEventConsumer;
 use Cardz\Support\Collaboration\Integration\Consumers\WorkspacesNewWorkspaceRegisteredConsumer;
 use Codderz\Platypus\Contracts\Commands\CommandBusInterface;
@@ -32,8 +30,6 @@ class CollaborationProvider extends ServiceProvider
         $this->app->singleton(InviteRepositoryInterface::class, InviteRepository::class);
         $this->app->singleton(RelationRepositoryInterface::class, RelationRepository::class);
         $this->app->singleton(KeeperRepositoryInterface::class, KeeperRepository::class);
-
-        $this->app->singleton(AddedWorkspaceReadStorageInterface::class, AddedWorkspaceReadStorage::class);
     }
 
     public function boot(

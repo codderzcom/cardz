@@ -2,7 +2,7 @@
 
 namespace Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Queries;
 
-use Codderz\Platypus\Contracts\GeneralIdInterface;
+use Codderz\Platypus\Contracts\GenericIdInterface;
 use Codderz\Platypus\Infrastructure\Support\GuidBasedImmutableId;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -18,9 +18,9 @@ class BaseWorkspaceQueryRequest extends FormRequest
         'collaboratorId.required' => 'collaboratorId required',
     ];
 
-    public GeneralIdInterface $workspaceId;
+    public GenericIdInterface $workspaceId;
 
-    public GeneralIdInterface $collaboratorId;
+    public GenericIdInterface $collaboratorId;
 
     public function rules(): array
     {

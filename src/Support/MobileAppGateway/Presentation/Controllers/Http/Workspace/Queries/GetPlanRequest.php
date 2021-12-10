@@ -2,7 +2,7 @@
 
 namespace Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Queries;
 
-use Codderz\Platypus\Contracts\GeneralIdInterface;
+use Codderz\Platypus\Contracts\GenericIdInterface;
 use Codderz\Platypus\Infrastructure\Support\GuidBasedImmutableId;
 
 class GetPlanRequest extends BaseWorkspaceQueryRequest
@@ -15,7 +15,7 @@ class GetPlanRequest extends BaseWorkspaceQueryRequest
         'planId.required' => 'planId required',
     ];
 
-    public GeneralIdInterface $planId;
+    public GenericIdInterface $planId;
 
     public function passedValidation(): void
     {

@@ -33,9 +33,9 @@ class PlanAppService
         return $this->businessPlanReadStorage->find($planId);
     }
 
-    public function launch(string $planId): BusinessPlan
+    public function launch(string $planId, string $expirationDate): BusinessPlan
     {
-        $this->plansContext->launch($planId);
+        $this->plansContext->launch($planId, $expirationDate);
         return $this->businessPlanReadStorage->find($planId);
     }
 
