@@ -2,7 +2,6 @@
 
 namespace Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Queries;
 
-use Cardz\Support\MobileAppGateway\Application\Queries\Workspace\GetCard;
 use Codderz\Platypus\Contracts\GenericIdInterface;
 use Codderz\Platypus\Infrastructure\Support\GuidBasedImmutableId;
 
@@ -22,11 +21,6 @@ class GetCardRequest extends BaseWorkspaceQueryRequest
     {
         parent::passedValidation();
         $this->cardId = GuidBasedImmutableId::of($this->input('cardId'));
-    }
-
-    public function toQuery(): GetCard
-    {
-        return GetCard::of($this->collaboratorId, $this->workspaceId, $this->cardId);
     }
 
     protected function prepareForValidation(): void
