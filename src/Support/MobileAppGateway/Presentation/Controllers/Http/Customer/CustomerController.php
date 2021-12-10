@@ -9,7 +9,9 @@ use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer\Reques
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer\Requests\GetTokenRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer\Requests\RegisterRequest;
 use Illuminate\Http\JsonResponse;
+use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
+#[OpenApi\PathItem]
 class CustomerController extends BaseController
 {
     public function __construct(
@@ -17,11 +19,23 @@ class CustomerController extends BaseController
     ) {
     }
 
+    /**
+     * Get authorized user id
+     *
+     * Returns id of the authenticated user.
+     */
+    #[OpenApi\Operation(tags: ['customer'])]
     public function getId(): JsonResponse
     {
         return $this->response($this->customerAppService->getCustomerId());
     }
 
+    /**
+     * Get user token
+     *
+     * Returns new API user token (for basic bearer auth). Requires identity, password and device name.
+     */
+    #[OpenApi\Operation(tags: ['customer'])]
     public function getToken(GetTokenRequest $request): JsonResponse
     {
         return $this->response($this->customerAppService->getToken(
@@ -31,6 +45,12 @@ class CustomerController extends BaseController
         ));
     }
 
+    /**
+     * Register user
+     *
+     * Registers new user with email OR phone, password, device name (for token). Returns new auth token.
+     */
+    #[OpenApi\Operation(tags: ['customer'])]
     public function register(RegisterRequest $request): JsonResponse
     {
         return $this->response($this->customerAppService->register(
@@ -42,16 +62,39 @@ class CustomerController extends BaseController
         ));
     }
 
+    public function uno(GetIssuedCardRequest $request)
+    {
+        dd(2);
+    }
+
+    /**
+     * User cards
+     *
+     * Returns all active cards for the current user.
+     */
+    #[OpenApi\Operation(tags: ['customer'])]
     public function getCards(GetIssuedCardsRequest $request): JsonResponse
     {
         return $this->response($this->customerAppService->getIssuedCards($request->customerId));
     }
 
+    /**
+     * User card
+     *
+     * Returns an active card, owned by the current user, by its id.
+     */
+    #[OpenApi\Operation(tags: ['customer'])]
     public function getCard(GetIssuedCardRequest $request): JsonResponse
     {
         return $this->response($this->customerAppService->getIssuedCard($request->customerId, $request->cardId));
     }
 
+    /**
+     * Workspaces
+     *
+     * Returns all workspaces
+     */
+    #[OpenApi\Operation(tags: ['customer'])]
     public function getWorkspaces(): JsonResponse
     {
         return $this->response($this->customerAppService->getCustomerWorkspaces());

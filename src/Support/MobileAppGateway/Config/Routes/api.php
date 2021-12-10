@@ -8,18 +8,7 @@ use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\PlanC
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\WorkspaceController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-
-Route::group(['prefix' => '/mab/v1'], function () {
+Route::group(['prefix' => '/api/v1', 'middleware' => 'api'], function () {
     Route::post('/customer/get-token', [CustomerController::class, 'getToken'])->name(RouteName::GET_TOKEN);
     Route::post('/customer/register', [CustomerController::class, 'register'])->name(RouteName::REGISTER);
 

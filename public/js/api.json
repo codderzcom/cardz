@@ -1,0 +1,635 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "Laravel",
+        "version": "2.0.0"
+    },
+    "servers": [
+        {
+            "url": "http:\/\/localhost",
+            "description": "App Environment"
+        },
+        {
+            "url": "http:\/\/localhost:8000",
+            "description": "Default"
+        }
+    ],
+    "paths": {
+        "\/api\/v1\/customer\/get-token": {
+            "post": {
+                "tags": [
+                    "customer"
+                ],
+                "summary": "Get user token",
+                "description": "Returns new API user token (for basic bearer auth). Requires identity, password and device name."
+            }
+        },
+        "\/api\/v1\/customer\/register": {
+            "post": {
+                "tags": [
+                    "customer"
+                ],
+                "summary": "Register user",
+                "description": "Registers new user with email OR phone, password, device name (for token). Returns new auth token."
+            }
+        },
+        "\/api\/v1\/customer\/workspaces": {
+            "get": {
+                "tags": [
+                    "customer"
+                ],
+                "summary": "Workspaces",
+                "description": "Returns all workspaces"
+            }
+        },
+        "\/api\/v1\/customer\/id": {
+            "get": {
+                "tags": [
+                    "customer"
+                ],
+                "summary": "Get authorized user id",
+                "description": "Returns id of the authenticated user."
+            }
+        },
+        "\/api\/v1\/customer\/card": {
+            "get": {
+                "tags": [
+                    "customer"
+                ],
+                "summary": "User cards",
+                "description": "Returns all active cards for the current user."
+            }
+        },
+        "\/api\/v1\/customer\/card\/{cardId}": {
+            "get": {
+                "tags": [
+                    "customer"
+                ],
+                "summary": "User card",
+                "description": "Returns an active card, owned by the current user, by its id.",
+                "parameters": [
+                    {
+                        "name": "cardId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "\/api\/v1\/workspace": {
+            "get": {
+                "tags": [
+                    "business",
+                    "workspace"
+                ],
+                "summary": "Get workspaces",
+                "description": "Returns all workspaces where the current user is a collaborator."
+            },
+            "post": {
+                "tags": [
+                    "business",
+                    "workspace"
+                ],
+                "summary": "Add a new workspace",
+                "description": "Returns the newly created workspace where the current user is an owner."
+            }
+        },
+        "\/api\/v1\/workspace\/{workspaceId}": {
+            "get": {
+                "tags": [
+                    "business",
+                    "workspace"
+                ],
+                "summary": "Get a workspace",
+                "description": "Returns workspace where the current user is a collaborator.\nRequires user to be authorized to work in this workspace.",
+                "parameters": [
+                    {
+                        "name": "workspaceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "\/api\/v1\/workspace\/{workspaceId}\/profile": {
+            "put": {
+                "tags": [
+                    "business",
+                    "workspace"
+                ],
+                "summary": "Change workspace description",
+                "description": "Changes the current workspace description.\nRequires user to be the owner of the current workspace.",
+                "parameters": [
+                    {
+                        "name": "workspaceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "\/api\/v1\/workspace\/{workspaceId}\/card": {
+            "post": {
+                "tags": [
+                    "business",
+                    "card"
+                ],
+                "summary": "Issue card",
+                "description": "Issues card for a plan to a customer.\nRequires user to be authorized to work in the current workspace.",
+                "parameters": [
+                    {
+                        "name": "workspaceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "\/api\/v1\/workspace\/{workspaceId}\/collaboration\/invite": {
+            "post": {
+                "tags": [
+                    "business",
+                    "collaboration"
+                ],
+                "summary": "Propose invite",
+                "description": "Returns id of the new invite to collaborate on the workspace.\nRequires user to be the owner of the current workspace.",
+                "parameters": [
+                    {
+                        "name": "workspaceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "\/api\/v1\/workspace\/{workspaceId}\/collaboration\/invite\/{inviteId}\/accept": {
+            "put": {
+                "tags": [
+                    "business",
+                    "collaboration"
+                ],
+                "summary": "Accept invite",
+                "description": "Accepts an invitation to collaborate. Authorizes user to work in the current workspace.",
+                "parameters": [
+                    {
+                        "name": "workspaceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "inviteId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "\/api\/v1\/workspace\/{workspaceId}\/collaboration\/invite\/{inviteId}\/discard": {
+            "delete": {
+                "tags": [
+                    "business",
+                    "collaboration"
+                ],
+                "summary": "Discard invite",
+                "description": "Returns id of the new invite to collaborate on the workspace.\nRequires user to be the owner of the current workspace.",
+                "parameters": [
+                    {
+                        "name": "workspaceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "inviteId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "\/api\/v1\/workspace\/{workspaceId}\/plan": {
+            "get": {
+                "tags": [
+                    "business",
+                    "plan"
+                ],
+                "summary": "Get plans",
+                "description": "Returns all plans in the current workspace.\nRequires user to be authorized to work in the current workspace.",
+                "parameters": [
+                    {
+                        "name": "workspaceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "business",
+                    "plan"
+                ],
+                "summary": "Add a new plan",
+                "description": "Adds a new plan to the current workspace.\nRequires user to be authorized to work in the current workspace.",
+                "parameters": [
+                    {
+                        "name": "workspaceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}": {
+            "get": {
+                "tags": [
+                    "business",
+                    "plan"
+                ],
+                "summary": "Get plan",
+                "description": "Returns a plans in the current workspace by id.\nRequires user to be authorized to work in the current workspace.",
+                "parameters": [
+                    {
+                        "name": "workspaceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "planId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/description": {
+            "put": {
+                "tags": [
+                    "business",
+                    "plan"
+                ],
+                "summary": "Change plan description",
+                "description": "Changes plan description.\nRequires user to be authorized to work in the current workspace.",
+                "parameters": [
+                    {
+                        "name": "workspaceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "planId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/launch": {
+            "put": {
+                "tags": [
+                    "business",
+                    "plan"
+                ],
+                "summary": "Launch a plan",
+                "description": "Launches a plan to activity. Requires an expiration date for aut expiration. Can be relaunched with a new date.\nRequires user to be authorized to work in the current workspace.",
+                "parameters": [
+                    {
+                        "name": "workspaceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "planId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/stop": {
+            "put": {
+                "tags": [
+                    "business",
+                    "plan"
+                ],
+                "summary": "Stop a plan",
+                "description": "Stops a plan from active state.\nRequires user to be authorized to work in the current workspace.",
+                "parameters": [
+                    {
+                        "name": "workspaceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "planId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/archive": {
+            "put": {
+                "tags": [
+                    "business",
+                    "plan"
+                ],
+                "summary": "Archive a plan",
+                "description": "Archives plan. Archived plans are invisible by normal means. Plans are archived automatically on their expiration date.\nRequires user to be authorized to work in the current workspace.",
+                "parameters": [
+                    {
+                        "name": "workspaceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "planId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}": {
+            "get": {
+                "tags": [
+                    "business",
+                    "card"
+                ],
+                "summary": "Get card",
+                "description": "Returns card by card id if it is issued in the current workspace.\nRequires user to be authorized to work in the current workspace.",
+                "parameters": [
+                    {
+                        "name": "workspaceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "cardId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/complete": {
+            "put": {
+                "tags": [
+                    "business",
+                    "card"
+                ],
+                "summary": "Complete card",
+                "description": "Marks card as completed, meaning the owner has received their bonus.\nRequires user to be authorized to work in the current workspace.",
+                "parameters": [
+                    {
+                        "name": "workspaceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "cardId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/revoke": {
+            "put": {
+                "tags": [
+                    "business",
+                    "card"
+                ],
+                "summary": "Revoke card",
+                "description": "Marks card as revoked, meaning the owner cannot use and even see it anymore.\nRequires user to be authorized to work in the current workspace.",
+                "parameters": [
+                    {
+                        "name": "workspaceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "cardId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/block": {
+            "put": {
+                "tags": [
+                    "business",
+                    "card"
+                ],
+                "summary": "Block card",
+                "description": "Marks card as blocked, meaning the owner cannot use it temporarily until it's unblocked.\nRequires user to be authorized to work in the current workspace.",
+                "parameters": [
+                    {
+                        "name": "workspaceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "cardId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/unblock": {
+            "put": {
+                "tags": [
+                    "business",
+                    "card"
+                ],
+                "summary": "Unblock card",
+                "description": "Marks card as unblocked, meaning the owner can interact with it again.\nRequires user to be authorized to work in the current workspace.",
+                "parameters": [
+                    {
+                        "name": "workspaceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "cardId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/achievement": {
+            "post": {
+                "tags": [
+                    "business",
+                    "card"
+                ],
+                "summary": "Note achievement to the card",
+                "description": "Marks one of the Plan requirements as achieved in the customer card.\nCard will be marked as satisfied shortly after the last requirement is marked.\nMeaning the card owner is now legible for the bonus.\nRequires user to be authorized to work in the current workspace.",
+                "parameters": [
+                    {
+                        "name": "workspaceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "cardId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "business",
+                    "card"
+                ],
+                "summary": "Dismiss achievement from the card",
+                "description": "Removes achievement and removes satisfaction mark from the card if necessary.\nCan only be done until the card owner received their bonus.\nRequires user to be authorized to work in the current workspace.",
+                "parameters": [
+                    {
+                        "name": "workspaceId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "cardId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "customer",
+            "description": "Pertains to customer operations"
+        },
+        {
+            "name": "business",
+            "description": "Pertains to all workspace operations"
+        },
+        {
+            "name": "card",
+            "description": "Pertains to workspace operations with cards"
+        },
+        {
+            "name": "collaboration",
+            "description": "Pertains to workspace operations with collaboration"
+        },
+        {
+            "name": "plan",
+            "description": "Pertains to workspace operations with plans"
+        },
+        {
+            "name": "workspace",
+            "description": "Pertains to workspace-specific operations"
+        }
+    ]
+}
