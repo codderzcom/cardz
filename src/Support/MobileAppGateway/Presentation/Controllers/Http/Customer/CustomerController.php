@@ -62,6 +62,11 @@ class CustomerController extends BaseController
         ));
     }
 
+    public function uno(GetIssuedCardRequest $request)
+    {
+        dd(2);
+    }
+
     /**
      * User cards
      *

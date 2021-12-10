@@ -88,5 +88,6 @@ class Kernel extends HttpKernel
         'throttle' => ThrottleRequests::class,
         'verified' => EnsureEmailIsVerified::class,
         'authorization.mag' => AuthorizationMiddleware::class,
+        'force.xhr' => ForceXmlHttpRequest::class,
     ];
 }

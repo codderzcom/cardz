@@ -1,22 +1,21 @@
 {
     "openapi": "3.0.2",
     "info": {
-        "title": "Cardz",
+        "title": "Laravel",
         "version": "2.0.0"
     },
     "servers": [
         {
-            "url": "http:\/\/127.0.0.1:8000"
+            "url": "http:\/\/localhost",
+            "description": "App Environment"
         },
         {
-            "url": "http:\/\/localhost"
-        },
-        {
-            "url": "http:\/\/localhost:8000"
+            "url": "http:\/\/localhost:8000",
+            "description": "Default"
         }
     ],
     "paths": {
-        "\/api\/mab\/v1\/customer\/get-token": {
+        "\/api\/v1\/customer\/get-token": {
             "post": {
                 "tags": [
                     "customer"
@@ -25,7 +24,7 @@
                 "description": "Returns new API user token (for basic bearer auth). Requires identity, password and device name."
             }
         },
-        "\/api\/mab\/v1\/customer\/register": {
+        "\/api\/v1\/customer\/register": {
             "post": {
                 "tags": [
                     "customer"
@@ -34,7 +33,7 @@
                 "description": "Registers new user with email OR phone, password, device name (for token). Returns new auth token."
             }
         },
-        "\/api\/mab\/v1\/customer\/workspaces": {
+        "\/api\/v1\/customer\/workspaces": {
             "get": {
                 "tags": [
                     "customer"
@@ -43,7 +42,7 @@
                 "description": "Returns all workspaces"
             }
         },
-        "\/api\/mab\/v1\/customer\/id": {
+        "\/api\/v1\/customer\/id": {
             "get": {
                 "tags": [
                     "customer"
@@ -52,7 +51,7 @@
                 "description": "Returns id of the authenticated user."
             }
         },
-        "\/api\/mab\/v1\/customer\/card": {
+        "\/api\/v1\/customer\/card": {
             "get": {
                 "tags": [
                     "customer"
@@ -61,7 +60,7 @@
                 "description": "Returns all active cards for the current user."
             }
         },
-        "\/api\/mab\/v1\/customer\/card\/{cardId}": {
+        "\/api\/v1\/customer\/card\/{cardId}": {
             "get": {
                 "tags": [
                     "customer"
@@ -80,7 +79,7 @@
                 ]
             }
         },
-        "\/api\/mab\/v1\/workspace": {
+        "\/api\/v1\/workspace": {
             "get": {
                 "tags": [
                     "business",
@@ -98,7 +97,7 @@
                 "description": "Returns the newly created workspace where the current user is an owner."
             }
         },
-        "\/api\/mab\/v1\/workspace\/{workspaceId}": {
+        "\/api\/v1\/workspace\/{workspaceId}": {
             "get": {
                 "tags": [
                     "business",
@@ -118,7 +117,7 @@
                 ]
             }
         },
-        "\/api\/mab\/v1\/workspace\/{workspaceId}\/profile": {
+        "\/api\/v1\/workspace\/{workspaceId}\/profile": {
             "put": {
                 "tags": [
                     "business",
@@ -138,7 +137,7 @@
                 ]
             }
         },
-        "\/api\/mab\/v1\/workspace\/{workspaceId}\/card": {
+        "\/api\/v1\/workspace\/{workspaceId}\/card": {
             "post": {
                 "tags": [
                     "business",
@@ -158,7 +157,7 @@
                 ]
             }
         },
-        "\/api\/mab\/v1\/workspace\/{workspaceId}\/collaboration\/invite": {
+        "\/api\/v1\/workspace\/{workspaceId}\/collaboration\/invite": {
             "post": {
                 "tags": [
                     "business",
@@ -178,7 +177,7 @@
                 ]
             }
         },
-        "\/api\/mab\/v1\/workspace\/{workspaceId}\/collaboration\/invite\/{inviteId}\/accept": {
+        "\/api\/v1\/workspace\/{workspaceId}\/collaboration\/invite\/{inviteId}\/accept": {
             "put": {
                 "tags": [
                     "business",
@@ -206,7 +205,7 @@
                 ]
             }
         },
-        "\/api\/mab\/v1\/workspace\/{workspaceId}\/collaboration\/invite\/{inviteId}\/discard": {
+        "\/api\/v1\/workspace\/{workspaceId}\/collaboration\/invite\/{inviteId}\/discard": {
             "delete": {
                 "tags": [
                     "business",
@@ -234,7 +233,7 @@
                 ]
             }
         },
-        "\/api\/mab\/v1\/workspace\/{workspaceId}\/plan": {
+        "\/api\/v1\/workspace\/{workspaceId}\/plan": {
             "get": {
                 "tags": [
                     "business",
@@ -272,7 +271,7 @@
                 ]
             }
         },
-        "\/api\/mab\/v1\/workspace\/{workspaceId}\/plan\/{planId}": {
+        "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}": {
             "get": {
                 "tags": [
                     "business",
@@ -300,7 +299,7 @@
                 ]
             }
         },
-        "\/api\/mab\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/description": {
+        "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/description": {
             "put": {
                 "tags": [
                     "business",
@@ -328,7 +327,7 @@
                 ]
             }
         },
-        "\/api\/mab\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/launch": {
+        "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/launch": {
             "put": {
                 "tags": [
                     "business",
@@ -356,7 +355,7 @@
                 ]
             }
         },
-        "\/api\/mab\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/stop": {
+        "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/stop": {
             "put": {
                 "tags": [
                     "business",
@@ -384,7 +383,7 @@
                 ]
             }
         },
-        "\/api\/mab\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/archive": {
+        "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/archive": {
             "put": {
                 "tags": [
                     "business",
@@ -412,7 +411,7 @@
                 ]
             }
         },
-        "\/api\/mab\/v1\/workspace\/{workspaceId}\/card\/{cardId}": {
+        "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}": {
             "get": {
                 "tags": [
                     "business",
@@ -440,7 +439,7 @@
                 ]
             }
         },
-        "\/api\/mab\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/complete": {
+        "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/complete": {
             "put": {
                 "tags": [
                     "business",
@@ -468,7 +467,7 @@
                 ]
             }
         },
-        "\/api\/mab\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/revoke": {
+        "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/revoke": {
             "put": {
                 "tags": [
                     "business",
@@ -496,7 +495,7 @@
                 ]
             }
         },
-        "\/api\/mab\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/block": {
+        "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/block": {
             "put": {
                 "tags": [
                     "business",
@@ -524,7 +523,7 @@
                 ]
             }
         },
-        "\/api\/mab\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/unblock": {
+        "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/unblock": {
             "put": {
                 "tags": [
                     "business",
@@ -552,7 +551,7 @@
                 ]
             }
         },
-        "\/api\/mab\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/achievement": {
+        "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/achievement": {
             "post": {
                 "tags": [
                     "business",

@@ -8,8 +8,7 @@ use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\PlanC
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\WorkspaceController;
 use Illuminate\Support\Facades\Route;
 
-
-Route::group(['prefix' => 'api/mab/v1'], function () {
+Route::group(['prefix' => '/api/v1', 'middleware' => 'api'], function () {
     Route::post('/customer/get-token', [CustomerController::class, 'getToken'])->name(RouteName::GET_TOKEN);
     Route::post('/customer/register', [CustomerController::class, 'register'])->name(RouteName::REGISTER);
 

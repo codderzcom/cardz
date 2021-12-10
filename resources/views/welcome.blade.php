@@ -8,7 +8,7 @@
 <body>
 <rapi-doc spec-url="/js/api.json"
           header-color="#2d87e2"
-          theme = "dark"
+          theme = "light"
           schema-style="table"
 
 ></rapi-doc>

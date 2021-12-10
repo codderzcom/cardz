@@ -14,17 +14,12 @@ return [
             'servers' => [
                 [
                     'url' => env('APP_URL'),
-                    'description' => null,
-                    'variables' => [],
-                ],
-                [
-                    'url' => 'http://localhost',
-                    'description' => null,
+                    'description' => 'App Environment',
                     'variables' => [],
                 ],
                 [
                     'url' => 'http://localhost:8000',
-                    'description' => null,
+                    'description' => 'Default',
                     'variables' => [],
                 ],
             ],
