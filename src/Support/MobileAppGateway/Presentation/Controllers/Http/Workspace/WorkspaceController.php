@@ -9,7 +9,9 @@ use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Comma
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Queries\CollaboratorQueryRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Queries\GetWorkspaceRequest;
 use Illuminate\Http\JsonResponse;
+use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
+#[OpenApi\PathItem]
 class WorkspaceController extends BaseController
 {
     public function __construct(
@@ -17,16 +19,35 @@ class WorkspaceController extends BaseController
     ) {
     }
 
+    /**
+     * Get workspaces
+     *
+     * Returns all workspaces where the current user is a collaborator.
+     */
+    #[OpenApi\Operation(tags: ['business', 'workspace'])]
     public function getWorkspaces(CollaboratorQueryRequest $request): JsonResponse
     {
         return $this->response($this->workspaceService->getBusinessWorkspaces($request->collaboratorId));
     }
 
+    /**
+     * Get a workspace
+     *
+     * Returns workspace where the current user is a collaborator.
+     * Requires user to be authorized to work in this workspace.
+     */
+    #[OpenApi\Operation(tags: ['business', 'workspace'])]
     public function getWorkspace(GetWorkspaceRequest $request): JsonResponse
     {
         return $this->response($this->workspaceService->getBusinessWorkspace($request->workspaceId));
     }
 
+    /**
+     * Add a new workspace
+     *
+     * Returns the newly created workspace where the current user is an owner.
+     */
+    #[OpenApi\Operation(tags: ['business', 'workspace'])]
     public function addWorkspace(AddWorkspaceRequest $request): JsonResponse
     {
         return $this->response($this->workspaceService->addWorkspace(
@@ -37,6 +58,13 @@ class WorkspaceController extends BaseController
         ));
     }
 
+    /**
+     * Change workspace description
+     *
+     * Changes the current workspace description.
+     * Requires user to be the owner of the current workspace.
+     */
+    #[OpenApi\Operation(tags: ['business', 'workspace'])]
     public function changeWorkspaceProfile(ChangeWorkspaceProfileRequest $request): JsonResponse
     {
         return $this->response($this->workspaceService->changeProfile(
