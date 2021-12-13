@@ -9,6 +9,7 @@ use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Comma
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Queries\CollaboratorQueryRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Queries\GetWorkspaceRequest;
 use Illuminate\Http\JsonResponse;
+use Ramsey\Uuid\Guid\Guid;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
 #[OpenApi\PathItem]
@@ -35,6 +36,7 @@ class WorkspaceController extends BaseController
      *
      * Returns workspace where the current user is a collaborator.
      * Requires user to be authorized to work in this workspace.
+     * @param Guid $workspaceId Workspace GUID
      */
     #[OpenApi\Operation(tags: ['business', 'workspace'])]
     public function getWorkspace(GetWorkspaceRequest $request): JsonResponse
@@ -63,6 +65,7 @@ class WorkspaceController extends BaseController
      *
      * Changes the current workspace description.
      * Requires user to be the owner of the current workspace.
+     * @param Guid $workspaceId Workspace GUID
      */
     #[OpenApi\Operation(tags: ['business', 'workspace'])]
     public function changeWorkspaceProfile(ChangeWorkspaceProfileRequest $request): JsonResponse

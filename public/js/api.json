@@ -1,12 +1,12 @@
 {
     "openapi": "3.0.2",
     "info": {
-        "title": "Laravel",
+        "title": "Cardz",
         "version": "2.0.0"
     },
     "servers": [
         {
-            "url": "http:\/\/localhost",
+            "url": "http:\/\/127.0.0.1:8000",
             "description": "App Environment"
         },
         {
@@ -30,7 +30,17 @@
                     "customer"
                 ],
                 "summary": "Register user",
-                "description": "Registers new user with email OR phone, password, device name (for token). Returns new auth token."
+                "description": "Registers new user with email OR phone, password, device name (for token). Returns new auth token.",
+                "requestBody": {
+                    "description": "Register new customer",
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/RegisterRequest"
+                            }
+                        }
+                    }
+                }
             }
         },
         "\/api\/v1\/customer\/workspaces": {
@@ -71,6 +81,7 @@
                     {
                         "name": "cardId",
                         "in": "path",
+                        "description": "Card GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -109,6 +120,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -129,6 +141,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -149,6 +162,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -169,6 +183,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -189,6 +204,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -197,6 +213,7 @@
                     {
                         "name": "inviteId",
                         "in": "path",
+                        "description": "Invite GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -217,6 +234,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -225,6 +243,7 @@
                     {
                         "name": "inviteId",
                         "in": "path",
+                        "description": "Invite GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -245,6 +264,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -263,6 +283,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -283,6 +304,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -291,6 +313,7 @@
                     {
                         "name": "planId",
                         "in": "path",
+                        "description": "Plan GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -311,6 +334,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -319,6 +343,7 @@
                     {
                         "name": "planId",
                         "in": "path",
+                        "description": "Plan GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -339,6 +364,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -347,6 +373,7 @@
                     {
                         "name": "planId",
                         "in": "path",
+                        "description": "Plan GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -367,6 +394,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -375,6 +403,7 @@
                     {
                         "name": "planId",
                         "in": "path",
+                        "description": "Plan GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -395,6 +424,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -403,6 +433,85 @@
                     {
                         "name": "planId",
                         "in": "path",
+                        "description": "Plan GUID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            }
+        },
+        "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/requirement\/{requirementId}": {
+            "delete": {
+                "tags": [
+                    "business",
+                    "plan",
+                    "requirement"
+                ],
+                "summary": "Remove plan requirement",
+                "description": "Removes the requirement from the plan. Requirement changes are propagated to the relevant cards.\nRequires user to be authorized to work in the current workspace.",
+                "parameters": [
+                    {
+                        "name": "workspaceId",
+                        "in": "path",
+                        "description": "Workspace GUID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "planId",
+                        "in": "path",
+                        "description": "Plan GUID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "requirementId",
+                        "in": "path",
+                        "description": "Requirement GUID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "business",
+                    "plan",
+                    "requirement"
+                ],
+                "summary": "Change plan requirement description.",
+                "description": "Changes the requirement description. Description changes are propagated to the relevant cards.\nRequires user to be authorized to work in the current workspace.",
+                "parameters": [
+                    {
+                        "name": "workspaceId",
+                        "in": "path",
+                        "description": "Workspace GUID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "planId",
+                        "in": "path",
+                        "description": "Plan GUID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "requirementId",
+                        "in": "path",
+                        "description": "Requirement GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -423,6 +532,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -431,6 +541,7 @@
                     {
                         "name": "cardId",
                         "in": "path",
+                        "description": "Card GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -451,6 +562,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -459,6 +571,7 @@
                     {
                         "name": "cardId",
                         "in": "path",
+                        "description": "Card GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -479,6 +592,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -487,6 +601,7 @@
                     {
                         "name": "cardId",
                         "in": "path",
+                        "description": "Card GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -507,6 +622,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -515,6 +631,7 @@
                     {
                         "name": "cardId",
                         "in": "path",
+                        "description": "Card GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -535,6 +652,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -543,6 +661,7 @@
                     {
                         "name": "cardId",
                         "in": "path",
+                        "description": "Card GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -563,6 +682,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -571,6 +691,7 @@
                     {
                         "name": "cardId",
                         "in": "path",
+                        "description": "Card GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -589,6 +710,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -597,9 +719,72 @@
                     {
                         "name": "cardId",
                         "in": "path",
+                        "description": "Card GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "RegisterRequest": {
+                "anyOf": [
+                    {
+                        "description": "Phone Required",
+                        "type": "object",
+                        "required": [
+                            "phone",
+                            "name",
+                            "pasword",
+                            "deviceName"
+                        ],
+                        "properties": {
+                            "phone": {
+                                "type": "string"
+                            },
+                            "email": {
+                                "type": "string"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "pasword": {
+                                "type": "string"
+                            },
+                            "deviceName": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
+                        "description": "Email Required",
+                        "type": "object",
+                        "required": [
+                            "email",
+                            "name",
+                            "pasword",
+                            "deviceName"
+                        ],
+                        "properties": {
+                            "phone": {
+                                "type": "string"
+                            },
+                            "email": {
+                                "type": "string"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "pasword": {
+                                "type": "string"
+                            },
+                            "deviceName": {
+                                "type": "string"
+                            }
                         }
                     }
                 ]
@@ -626,6 +811,10 @@
         {
             "name": "plan",
             "description": "Pertains to workspace operations with plans"
+        },
+        {
+            "name": "requirement",
+            "description": "Pertains to workspace operations with requirements in a plan"
         },
         {
             "name": "workspace",

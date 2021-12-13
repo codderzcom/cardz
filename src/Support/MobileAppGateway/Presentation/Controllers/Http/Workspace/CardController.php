@@ -9,6 +9,7 @@ use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Comma
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\Card\IssueCardRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Queries\GetCardRequest;
 use Illuminate\Http\JsonResponse;
+use Ramsey\Uuid\Guid\Guid;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
 #[OpenApi\PathItem]
@@ -24,6 +25,9 @@ class CardController extends BaseController
      *
      * Returns card by card id if it is issued in the current workspace.
      * Requires user to be authorized to work in the current workspace.
+     *
+     * @param Guid $workspaceId Workspace GUID
+     * @param Guid $cardId Card GUID
      */
     #[OpenApi\Operation(tags: ['business', 'card'])]
     public function getCard(GetCardRequest $request): JsonResponse
@@ -36,6 +40,7 @@ class CardController extends BaseController
      *
      * Issues card for a plan to a customer.
      * Requires user to be authorized to work in the current workspace.
+     * @param Guid $workspaceId Workspace GUID
      */
     #[OpenApi\Operation(tags: ['business', 'card'])]
     public function issue(IssueCardRequest $request): JsonResponse
@@ -48,6 +53,8 @@ class CardController extends BaseController
      *
      * Marks card as completed, meaning the owner has received their bonus.
      * Requires user to be authorized to work in the current workspace.
+     * @param Guid $workspaceId Workspace GUID
+     * @param Guid $cardId Card GUID
      */
     #[OpenApi\Operation(tags: ['business', 'card'])]
     public function complete(CardCommandRequest $request): JsonResponse
@@ -60,6 +67,8 @@ class CardController extends BaseController
      *
      * Marks card as revoked, meaning the owner cannot use and even see it anymore.
      * Requires user to be authorized to work in the current workspace.
+     * @param Guid $workspaceId Workspace GUID
+     * @param Guid $cardId Card GUID
      */
     #[OpenApi\Operation(tags: ['business', 'card'])]
     public function revoke(CardCommandRequest $request): JsonResponse
@@ -72,6 +81,8 @@ class CardController extends BaseController
      *
      * Marks card as blocked, meaning the owner cannot use it temporarily until it's unblocked.
      * Requires user to be authorized to work in the current workspace.
+     * @param Guid $workspaceId Workspace GUID
+     * @param Guid $cardId Card GUID
      */
     #[OpenApi\Operation(tags: ['business', 'card'])]
     public function block(CardCommandRequest $request): JsonResponse
@@ -84,6 +95,8 @@ class CardController extends BaseController
      *
      * Marks card as unblocked, meaning the owner can interact with it again.
      * Requires user to be authorized to work in the current workspace.
+     * @param Guid $workspaceId Workspace GUID
+     * @param Guid $cardId Card GUID
      */
     #[OpenApi\Operation(tags: ['business', 'card'])]
     public function unblock(CardCommandRequest $request): JsonResponse
@@ -98,6 +111,8 @@ class CardController extends BaseController
      * Card will be marked as satisfied shortly after the last requirement is marked.
      * Meaning the card owner is now legible for the bonus.
      * Requires user to be authorized to work in the current workspace.
+     * @param Guid $workspaceId Workspace GUID
+     * @param Guid $cardId Card GUID
      */
     #[OpenApi\Operation(tags: ['business', 'card'])]
     public function noteAchievement(AchievementCardRequest $request): JsonResponse
@@ -111,6 +126,8 @@ class CardController extends BaseController
      * Removes achievement and removes satisfaction mark from the card if necessary.
      * Can only be done until the card owner received their bonus.
      * Requires user to be authorized to work in the current workspace.
+     * @param Guid $workspaceId Workspace GUID
+     * @param Guid $cardId Card GUID
      */
     #[OpenApi\Operation(tags: ['business', 'card'])]
     public function dismissAchievement(AchievementCardRequest $request): JsonResponse

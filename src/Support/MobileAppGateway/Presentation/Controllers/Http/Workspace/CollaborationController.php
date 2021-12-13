@@ -8,6 +8,7 @@ use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Comma
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\Collaboration\LeaveCollaborationRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\Collaboration\ProposeInviteRequest;
 use Illuminate\Http\JsonResponse;
+use Ramsey\Uuid\Guid\Guid;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
 #[OpenApi\PathItem]
@@ -23,6 +24,7 @@ class CollaborationController extends BaseController
      *
      * Returns id of the new invite to collaborate on the workspace.
      * Requires user to be the owner of the current workspace.
+     * @param Guid $workspaceId Workspace GUID
      */
     #[OpenApi\Operation(tags: ['business', 'collaboration'])]
     public function propose(ProposeInviteRequest $request): JsonResponse
@@ -34,6 +36,8 @@ class CollaborationController extends BaseController
      * Accept invite
      *
      * Accepts an invitation to collaborate. Authorizes user to work in the current workspace.
+     * @param Guid $workspaceId Workspace GUID
+     * @param Guid $inviteId Invite GUID
      */
     #[OpenApi\Operation(tags: ['business', 'collaboration'])]
     public function accept(InviteRequest $request): JsonResponse
@@ -46,6 +50,8 @@ class CollaborationController extends BaseController
      *
      * Returns id of the new invite to collaborate on the workspace.
      * Requires user to be the owner of the current workspace.
+     * @param Guid $workspaceId Workspace GUID
+     * @param Guid $inviteId Invite GUID
      */
     #[OpenApi\Operation(tags: ['business', 'collaboration'])]
     public function discard(InviteRequest $request): JsonResponse
@@ -58,6 +64,7 @@ class CollaborationController extends BaseController
      *
      * Rescinds the user ability collaborate in the current workspace.
      * Requires user to be authorized to work in the current workspace. Requires user to NOT be the owner of it.
+     * @param Guid $workspaceId Workspace GUID
      */
     public function leave(LeaveCollaborationRequest $request): JsonResponse
     {

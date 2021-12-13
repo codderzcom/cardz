@@ -51,6 +51,11 @@ return [
                 ],
 
                 [
+                    'name' => 'requirement',
+                    'description' => 'Pertains to workspace operations with requirements in a plan',
+                ],
+
+                [
                     'name' => 'workspace',
                     'description' => 'Pertains to workspace-specific operations',
                 ],

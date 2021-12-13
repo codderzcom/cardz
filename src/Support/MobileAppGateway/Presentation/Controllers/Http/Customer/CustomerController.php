@@ -8,7 +8,9 @@ use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer\Reques
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer\Requests\GetIssuedCardsRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer\Requests\GetTokenRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer\Requests\RegisterRequest;
+use Cardz\Support\MobileAppGateway\Presentation\Documentation\Customer\Requests\RegisterRequestBody;
 use Illuminate\Http\JsonResponse;
+use Ramsey\Uuid\Guid\Guid;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
 #[OpenApi\PathItem]
@@ -51,6 +53,7 @@ class CustomerController extends BaseController
      * Registers new user with email OR phone, password, device name (for token). Returns new auth token.
      */
     #[OpenApi\Operation(tags: ['customer'])]
+    #[OpenApi\RequestBody(factory: RegisterRequestBody::class)]
     public function register(RegisterRequest $request): JsonResponse
     {
         return $this->response($this->customerAppService->register(
@@ -77,6 +80,7 @@ class CustomerController extends BaseController
      * User card
      *
      * Returns an active card, owned by the current user, by its id.
+     * @param Guid $cardId Card GUID
      */
     #[OpenApi\Operation(tags: ['customer'])]
     public function getCard(GetIssuedCardRequest $request): JsonResponse
