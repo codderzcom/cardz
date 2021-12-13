@@ -2,13 +2,15 @@
 
 namespace Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer;
 
+use App\OpenApi\Requests\Customer\GetTokenRequestBody;
+use App\OpenApi\Requests\Customer\RegisterRequestBody;
+use App\OpenApi\SecuritySchemes\BearerTokenSecurityScheme;
 use Cardz\Support\MobileAppGateway\Application\Services\Customer\CustomerAppService;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\BaseController;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer\Requests\GetIssuedCardRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer\Requests\GetIssuedCardsRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer\Requests\GetTokenRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer\Requests\RegisterRequest;
-use Cardz\Support\MobileAppGateway\Presentation\Documentation\Customer\Requests\RegisterRequestBody;
 use Illuminate\Http\JsonResponse;
 use Ramsey\Uuid\Guid\Guid;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
@@ -26,7 +28,7 @@ class CustomerController extends BaseController
      *
      * Returns id of the authenticated user.
      */
-    #[OpenApi\Operation(tags: ['customer'])]
+    #[OpenApi\Operation(tags: ['customer'], security: BearerTokenSecurityScheme::class)]
     public function getId(): JsonResponse
     {
         return $this->response($this->customerAppService->getCustomerId());
@@ -38,6 +40,7 @@ class CustomerController extends BaseController
      * Returns new API user token (for basic bearer auth). Requires identity, password and device name.
      */
     #[OpenApi\Operation(tags: ['customer'])]
+    #[OpenApi\RequestBody(factory: GetTokenRequestBody::class)]
     public function getToken(GetTokenRequest $request): JsonResponse
     {
         return $this->response($this->customerAppService->getToken(
@@ -70,7 +73,7 @@ class CustomerController extends BaseController
      *
      * Returns all active cards for the current user.
      */
-    #[OpenApi\Operation(tags: ['customer'])]
+    #[OpenApi\Operation(tags: ['customer'], security: BearerTokenSecurityScheme::class)]
     public function getCards(GetIssuedCardsRequest $request): JsonResponse
     {
         return $this->response($this->customerAppService->getIssuedCards($request->customerId));
@@ -82,7 +85,7 @@ class CustomerController extends BaseController
      * Returns an active card, owned by the current user, by its id.
      * @param Guid $cardId Card GUID
      */
-    #[OpenApi\Operation(tags: ['customer'])]
+    #[OpenApi\Operation(tags: ['customer'], security: BearerTokenSecurityScheme::class)]
     public function getCard(GetIssuedCardRequest $request): JsonResponse
     {
         return $this->response($this->customerAppService->getIssuedCard($request->customerId, $request->cardId));

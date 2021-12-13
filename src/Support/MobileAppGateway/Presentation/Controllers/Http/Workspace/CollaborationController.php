@@ -66,6 +66,7 @@ class CollaborationController extends BaseController
      * Requires user to be authorized to work in the current workspace. Requires user to NOT be the owner of it.
      * @param Guid $workspaceId Workspace GUID
      */
+    #[OpenApi\Operation(tags: ['business', 'collaboration'])]
     public function leave(LeaveCollaborationRequest $request): JsonResponse
     {
         return $this->response($this->collaborationAppService->leave($request->collaboratorId, $request->workspaceId));

@@ -1,12 +1,12 @@
 {
     "openapi": "3.0.2",
     "info": {
-        "title": "Cardz",
+        "title": "Laravel",
         "version": "2.0.0"
     },
     "servers": [
         {
-            "url": "http:\/\/127.0.0.1:8000",
+            "url": "http:\/\/localhost:8000",
             "description": "App Environment"
         },
         {
@@ -21,7 +21,17 @@
                     "customer"
                 ],
                 "summary": "Get user token",
-                "description": "Returns new API user token (for basic bearer auth). Requires identity, password and device name."
+                "description": "Returns new API user token (for basic bearer auth). Requires identity, password and device name.",
+                "requestBody": {
+                    "description": "Get customer API access token for the specific device. <br>\n                          With each request new token is generated. Old ones are invalidated shortly after. <br>\n                          *Tokens on other customer devices remain unaffected.\n            ",
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/GetTokenRequest"
+                            }
+                        }
+                    }
+                }
             }
         },
         "\/api\/v1\/customer\/register": {
@@ -58,7 +68,12 @@
                     "customer"
                 ],
                 "summary": "Get authorized user id",
-                "description": "Returns id of the authenticated user."
+                "description": "Returns id of the authenticated user.",
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ]
             }
         },
         "\/api\/v1\/customer\/card": {
@@ -67,7 +82,12 @@
                     "customer"
                 ],
                 "summary": "User cards",
-                "description": "Returns all active cards for the current user."
+                "description": "Returns all active cards for the current user.",
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ]
             }
         },
         "\/api\/v1\/customer\/card\/{cardId}": {
@@ -87,6 +107,11 @@
                             "type": "string"
                         }
                     }
+                ],
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
                 ]
             }
         },
@@ -97,7 +122,12 @@
                     "workspace"
                 ],
                 "summary": "Get workspaces",
-                "description": "Returns all workspaces where the current user is a collaborator."
+                "description": "Returns all workspaces where the current user is a collaborator.",
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -105,7 +135,22 @@
                     "workspace"
                 ],
                 "summary": "Add a new workspace",
-                "description": "Returns the newly created workspace where the current user is an owner."
+                "description": "Returns the newly created workspace where the current user is an owner.",
+                "requestBody": {
+                    "description": "Add workspace request",
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/WorkspaceProfile"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ]
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}": {
@@ -125,6 +170,11 @@
                         "schema": {
                             "type": "string"
                         }
+                    }
+                ],
+                "security": [
+                    {
+                        "BearerToken": []
                     }
                 ]
             }
@@ -147,17 +197,32 @@
                             "type": "string"
                         }
                     }
+                ],
+                "requestBody": {
+                    "description": "Change workspace profile request",
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/WorkspaceProfile"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
                 ]
             }
         },
-        "\/api\/v1\/workspace\/{workspaceId}\/card": {
+        "\/api\/v1\/workspace\/{workspaceId}\/collaboration\/leave": {
             "post": {
                 "tags": [
                     "business",
-                    "card"
+                    "collaboration"
                 ],
-                "summary": "Issue card",
-                "description": "Issues card for a plan to a customer.\nRequires user to be authorized to work in the current workspace.",
+                "summary": "Leave collaboration",
+                "description": "Rescinds the user ability collaborate in the current workspace.\nRequires user to be authorized to work in the current workspace. Requires user to NOT be the owner of it.",
                 "parameters": [
                     {
                         "name": "workspaceId",
@@ -289,7 +354,17 @@
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "requestBody": {
+                    "description": "Add plan request",
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/PlanProfile"
+                            }
+                        }
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}": {
@@ -349,7 +424,17 @@
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "requestBody": {
+                    "description": "Change plan description request",
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/PlanProfile"
+                            }
+                        }
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/launch": {
@@ -379,7 +464,17 @@
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "requestBody": {
+                    "description": "Launch plan request",
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/PlanExpiration"
+                            }
+                        }
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/stop": {
@@ -442,6 +537,47 @@
                 ]
             }
         },
+        "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/requirement": {
+            "post": {
+                "tags": [
+                    "business",
+                    "plan",
+                    "requirement"
+                ],
+                "summary": "Add plan requirement",
+                "description": "Adds a new requirement to the plan. Requirement changes are propagated to the relevant cards.\nRequires user to be authorized to work in the current workspace.",
+                "parameters": [
+                    {
+                        "name": "workspaceId",
+                        "in": "path",
+                        "description": "Workspace GUID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "planId",
+                        "in": "path",
+                        "description": "Plan GUID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Add requirement request",
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/RequirementProfile"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/requirement\/{requirementId}": {
             "delete": {
                 "tags": [
@@ -487,7 +623,7 @@
                     "plan",
                     "requirement"
                 ],
-                "summary": "Change plan requirement description.",
+                "summary": "Change plan requirement description",
                 "description": "Changes the requirement description. Description changes are propagated to the relevant cards.\nRequires user to be authorized to work in the current workspace.",
                 "parameters": [
                     {
@@ -517,7 +653,48 @@
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "requestBody": {
+                    "description": "Change requirement description request",
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/RequirementProfile"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "\/api\/v1\/workspace\/{workspaceId}\/card": {
+            "post": {
+                "tags": [
+                    "business",
+                    "card"
+                ],
+                "summary": "Issue card",
+                "description": "Issues card for a plan to a customer.\nRequires user to be authorized to work in the current workspace.",
+                "parameters": [
+                    {
+                        "name": "workspaceId",
+                        "in": "path",
+                        "description": "Workspace GUID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Issue card request",
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/NewCard"
+                            }
+                        }
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}": {
@@ -697,8 +874,20 @@
                             "type": "string"
                         }
                     }
-                ]
-            },
+                ],
+                "requestBody": {
+                    "description": "Note card achievement request",
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/Achievement"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/achievement\/{achievementId}": {
             "delete": {
                 "tags": [
                     "business",
@@ -724,6 +913,15 @@
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "name": "achievementId",
+                        "in": "path",
+                        "description": "Achievement GUID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ]
             }
@@ -731,66 +929,217 @@
     },
     "components": {
         "schemas": {
+            "WorkspaceProfile": {
+                "description": "Workspace profile request",
+                "type": "object",
+                "required": [
+                    "name",
+                    "description",
+                    "address"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Workspace (business) title",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "Workspace (business) description",
+                        "type": "string"
+                    },
+                    "address": {
+                        "description": "Workspace (business) address",
+                        "type": "string"
+                    }
+                }
+            },
+            "PlanProfile": {
+                "description": "Plan profile request",
+                "type": "object",
+                "required": [
+                    "description"
+                ],
+                "properties": {
+                    "description": {
+                        "description": "Plan description",
+                        "type": "string"
+                    }
+                }
+            },
+            "RequirementProfile": {
+                "description": "Requirement profile request",
+                "type": "object",
+                "required": [
+                    "description"
+                ],
+                "properties": {
+                    "description": {
+                        "description": "Requirement description",
+                        "type": "string"
+                    }
+                }
+            },
+            "PlanExpiration": {
+                "description": "Plan expiration request",
+                "type": "object",
+                "required": [
+                    "expires"
+                ],
+                "properties": {
+                    "expires": {
+                        "description": "Plan expiration date",
+                        "format": "date-time",
+                        "type": "string"
+                    }
+                }
+            },
+            "Achievement": {
+                "description": "Achievement request",
+                "type": "object",
+                "required": [
+                    "achievementId",
+                    "description"
+                ],
+                "properties": {
+                    "achievementId": {
+                        "description": "Achievement (requirement) id",
+                        "format": "uuid",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "Achievement (requirement) description",
+                        "type": "string"
+                    }
+                }
+            },
+            "GetTokenRequest": {
+                "description": "New API access token for the specific device request",
+                "type": "object",
+                "required": [
+                    "identity",
+                    "password",
+                    "deviceName"
+                ],
+                "properties": {
+                    "identity": {
+                        "description": "Identity is either phone or email",
+                        "type": "string"
+                    },
+                    "password": {
+                        "description": "Password",
+                        "format": "password",
+                        "type": "string"
+                    },
+                    "deviceName": {
+                        "description": "Device name is required to distinguish between different access tokens",
+                        "type": "string"
+                    }
+                }
+            },
             "RegisterRequest": {
                 "anyOf": [
                     {
-                        "description": "Phone Required",
+                        "description": "Phone required",
                         "type": "object",
                         "required": [
                             "phone",
                             "name",
-                            "pasword",
+                            "password",
                             "deviceName"
                         ],
                         "properties": {
                             "phone": {
+                                "description": "Phone",
                                 "type": "string"
                             },
                             "email": {
+                                "description": "Email is required if phone is not provided",
                                 "type": "string"
                             },
                             "name": {
+                                "description": "Customer name",
                                 "type": "string"
                             },
-                            "pasword": {
+                            "password": {
+                                "description": "Password",
+                                "format": "password",
                                 "type": "string"
                             },
                             "deviceName": {
+                                "description": "Device name is required to distinguish between different access tokens",
                                 "type": "string"
                             }
                         }
                     },
                     {
-                        "description": "Email Required",
+                        "description": "Email required",
                         "type": "object",
                         "required": [
                             "email",
                             "name",
-                            "pasword",
+                            "password",
                             "deviceName"
                         ],
                         "properties": {
                             "phone": {
+                                "description": "Phone",
                                 "type": "string"
                             },
                             "email": {
+                                "description": "Email is required if phone is not provided",
                                 "type": "string"
                             },
                             "name": {
+                                "description": "Customer name",
                                 "type": "string"
                             },
-                            "pasword": {
+                            "password": {
+                                "description": "Password",
+                                "format": "password",
                                 "type": "string"
                             },
                             "deviceName": {
+                                "description": "Device name is required to distinguish between different access tokens",
                                 "type": "string"
                             }
                         }
                     }
                 ]
+            },
+            "NewCard": {
+                "description": "New card request",
+                "type": "object",
+                "required": [
+                    "planId",
+                    "customerId"
+                ],
+                "properties": {
+                    "planId": {
+                        "description": "Plan id",
+                        "format": "uuid",
+                        "type": "string"
+                    },
+                    "customerId": {
+                        "description": "Customer id",
+                        "format": "uuid",
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "BearerToken": {
+                "type": "apiKey",
+                "in": "header",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
             }
         }
     },
+    "security": [
+        {
+            "BearerToken": []
+        }
+    ],
     "tags": [
         {
             "name": "customer",

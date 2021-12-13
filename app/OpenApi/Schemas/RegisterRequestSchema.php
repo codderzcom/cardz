@@ -17,21 +17,23 @@ class RegisterRequestSchema extends SchemaFactory implements Reusable
      */
     public function build(): SchemaContract
     {
-        $phone = Schema::string('phone');
-        $email = Schema::string('email');
-        $name = Schema::string('name');
-        $password = Schema::string('pasword');
-        $deviceName = Schema::string('deviceName');
-        $phoneRequired = Schema::object()
-            ->description('Phone Required')
+        $phone = Schema::string('phone')->description('Phone');
+        $email = Schema::string('email')->description('Email is required if phone is not provided');
+        $name = Schema::string('name')->description('Customer name');
+        $password = Schema::string('password')->format(Schema::FORMAT_PASSWORD)->description('Password');
+        $deviceName = Schema::string('deviceName')->description('Device name is required to distinguish between different access tokens');
+
+        $phoneRequired = Schema::object('Phone identity')
+            ->description('Phone required')
             ->required($phone, $name, $password, $deviceName)
             ->properties($phone, $email, $name, $password, $deviceName);
-        $emailRequired = Schema::object()
-            ->description('Email Required')
+        $emailRequired = Schema::object('Email identity')
+            ->description('Email required')
             ->required($email, $name, $password, $deviceName)
             ->properties($phone, $email, $name, $password, $deviceName);
 
-        return AnyOf::create('RegisterRequest')->schemas($phoneRequired, $emailRequired);
+        return AnyOf::create('RegisterRequest')
+            ->schemas($phoneRequired, $emailRequired);
     }
 
 }

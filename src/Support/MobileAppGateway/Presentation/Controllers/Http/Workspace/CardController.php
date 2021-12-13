@@ -2,10 +2,13 @@
 
 namespace Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace;
 
+use App\OpenApi\Requests\Customer\IssueCardRequestBody;
+use App\OpenApi\Requests\Customer\NoteCardAchievementRequestBody;
 use Cardz\Support\MobileAppGateway\Application\Services\Workspace\CardAppService;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\BaseController;
-use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\Card\AchievementCardRequest;
+use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\Card\NoteAchievementCardRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\Card\CardCommandRequest;
+use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\Card\DismissAchievementCardRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\Card\IssueCardRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Queries\GetCardRequest;
 use Illuminate\Http\JsonResponse;
@@ -43,6 +46,7 @@ class CardController extends BaseController
      * @param Guid $workspaceId Workspace GUID
      */
     #[OpenApi\Operation(tags: ['business', 'card'])]
+    #[OpenApi\RequestBody(factory: IssueCardRequestBody::class)]
     public function issue(IssueCardRequest $request): JsonResponse
     {
         return $this->response($this->cardService->issue($request->planId, $request->customerId));
@@ -115,7 +119,8 @@ class CardController extends BaseController
      * @param Guid $cardId Card GUID
      */
     #[OpenApi\Operation(tags: ['business', 'card'])]
-    public function noteAchievement(AchievementCardRequest $request): JsonResponse
+    #[OpenApi\RequestBody(factory: NoteCardAchievementRequestBody::class)]
+    public function noteAchievement(NoteAchievementCardRequest $request): JsonResponse
     {
         return $this->response($this->cardService->noteAchievement($request->cardId, $request->achievementId, $request->description));
     }
@@ -128,9 +133,10 @@ class CardController extends BaseController
      * Requires user to be authorized to work in the current workspace.
      * @param Guid $workspaceId Workspace GUID
      * @param Guid $cardId Card GUID
+     * @param Guid $achievementId Achievement GUID
      */
     #[OpenApi\Operation(tags: ['business', 'card'])]
-    public function dismissAchievement(AchievementCardRequest $request): JsonResponse
+    public function dismissAchievement(DismissAchievementCardRequest $request): JsonResponse
     {
         return $this->response($this->cardService->dismissAchievement($request->cardId, $request->achievementId));
     }

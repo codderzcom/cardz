@@ -2,6 +2,11 @@
 
 namespace Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace;
 
+use App\OpenApi\Requests\Customer\AddPlanRequestBody;
+use App\OpenApi\Requests\Customer\AddRequirementRequestBody;
+use App\OpenApi\Requests\Customer\ChangePlanDescriptionRequestBody;
+use App\OpenApi\Requests\Customer\ChangeRequirementDescriptionRequestBody;
+use App\OpenApi\Requests\Customer\LaunchPlanRequestBody;
 use Cardz\Support\MobileAppGateway\Application\Services\Workspace\PlanAppService;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\BaseController;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\{Plan\AddPlanRequest,
@@ -61,6 +66,7 @@ class PlanController extends BaseController
      * @param Guid $workspaceId Workspace GUID
      */
     #[OpenApi\Operation(tags: ['business', 'plan'])]
+    #[OpenApi\RequestBody(factory: AddPlanRequestBody::class)]
     public function add(AddPlanRequest $request): JsonResponse
     {
         return $this->response($this->planService->add($request->workspaceId, $request->description));
@@ -75,6 +81,7 @@ class PlanController extends BaseController
      * @param Guid $planId Plan GUID
      */
     #[OpenApi\Operation(tags: ['business', 'plan'])]
+    #[OpenApi\RequestBody(factory: LaunchPlanRequestBody::class)]
     public function launch(LaunchPlanCommandRequest $request): JsonResponse
     {
         return $this->response($this->planService->launch($request->planId, $request->expirationDate));
@@ -117,6 +124,7 @@ class PlanController extends BaseController
      * @param Guid $planId Plan GUID
      */
     #[OpenApi\Operation(tags: ['business', 'plan'])]
+    #[OpenApi\RequestBody(factory: ChangePlanDescriptionRequestBody::class)]
     public function changeDescription(ChangePlanDescriptionRequest $request): JsonResponse
     {
         return $this->response($this->planService->changeDescription($request->planId, $request->description));
@@ -130,6 +138,8 @@ class PlanController extends BaseController
      * @param Guid $workspaceId Workspace GUID
      * @param Guid $planId Plan GUID
      */
+    #[OpenApi\Operation(tags: ['business', 'plan', 'requirement'])]
+    #[OpenApi\RequestBody(factory: AddRequirementRequestBody::class)]
     public function addRequirement(AddPlanRequirementRequest $request): JsonResponse
     {
         return $this->response($this->planService->addRequirement($request->planId, $request->description));
@@ -151,7 +161,7 @@ class PlanController extends BaseController
     }
 
     /**
-     * Change plan requirement description.
+     * Change plan requirement description
      *
      * Changes the requirement description. Description changes are propagated to the relevant cards.
      * Requires user to be authorized to work in the current workspace.
@@ -160,6 +170,7 @@ class PlanController extends BaseController
      * @param Guid $requirementId Requirement GUID
      */
     #[OpenApi\Operation(tags: ['business', 'plan', 'requirement'])]
+    #[OpenApi\RequestBody(factory: ChangeRequirementDescriptionRequestBody::class)]
     public function changeRequirement(ChangePlanRequirementDescriptionRequest $request): JsonResponse
     {
         return $this->response($this->planService->changeRequirement(

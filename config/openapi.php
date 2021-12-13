@@ -24,6 +24,10 @@ return [
                 ],
             ],
 
+            'security' => [
+                GoldSpecDigital\ObjectOrientedOAS\Objects\SecurityRequirement::create()->securityScheme('BearerToken'),
+            ],
+
             'tags' => [
                 [
                     'name' => 'customer',

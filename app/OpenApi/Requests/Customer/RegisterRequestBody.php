@@ -1,6 +1,6 @@
 <?php
 
-namespace Cardz\Support\MobileAppGateway\Presentation\Documentation\Customer\Requests;
+namespace App\OpenApi\Requests\Customer;
 
 use App\OpenApi\Schemas\RegisterRequestSchema;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\MediaType;

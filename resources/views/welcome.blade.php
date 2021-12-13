@@ -8,9 +8,19 @@
 <body>
 <rapi-doc spec-url="/js/api.json"
           header-color="#2d87e2"
-          theme = "light"
+          theme = "dark"
           schema-style="table"
-
+          show-header="false"
+{{--          regular-font="Open Sans"--}}
+{{--          mono-font="Roboto Mono"--}}
+          bg-color="#14191f"
+          text-color="#aec2e0"
+          nav-bg-color=""
+          nav-text-color=""
+          nav-hover-bg-color=""
+          nav-hover-text-color=""
+          nav-accent-color=""
+          primary-color=""
 ></rapi-doc>
 </body>
 </html>

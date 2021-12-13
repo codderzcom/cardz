@@ -2,6 +2,9 @@
 
 namespace Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace;
 
+use App\OpenApi\Requests\Customer\AddWorkspaceRequestBody;
+use App\OpenApi\Requests\Customer\ChangeWorkspaceProfileRequestBody;
+use App\OpenApi\SecuritySchemes\BearerTokenSecurityScheme;
 use Cardz\Support\MobileAppGateway\Application\Services\Workspace\WorkspaceAppService;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\BaseController;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\AddWorkspaceRequest;
@@ -25,7 +28,7 @@ class WorkspaceController extends BaseController
      *
      * Returns all workspaces where the current user is a collaborator.
      */
-    #[OpenApi\Operation(tags: ['business', 'workspace'])]
+    #[OpenApi\Operation(tags: ['business', 'workspace'], security: BearerTokenSecurityScheme::class)]
     public function getWorkspaces(CollaboratorQueryRequest $request): JsonResponse
     {
         return $this->response($this->workspaceService->getBusinessWorkspaces($request->collaboratorId));
@@ -38,7 +41,7 @@ class WorkspaceController extends BaseController
      * Requires user to be authorized to work in this workspace.
      * @param Guid $workspaceId Workspace GUID
      */
-    #[OpenApi\Operation(tags: ['business', 'workspace'])]
+    #[OpenApi\Operation(tags: ['business', 'workspace'], security: BearerTokenSecurityScheme::class)]
     public function getWorkspace(GetWorkspaceRequest $request): JsonResponse
     {
         return $this->response($this->workspaceService->getBusinessWorkspace($request->workspaceId));
@@ -49,7 +52,8 @@ class WorkspaceController extends BaseController
      *
      * Returns the newly created workspace where the current user is an owner.
      */
-    #[OpenApi\Operation(tags: ['business', 'workspace'])]
+    #[OpenApi\Operation(tags: ['business', 'workspace'], security: BearerTokenSecurityScheme::class)]
+    #[OpenApi\RequestBody(factory: AddWorkspaceRequestBody::class)]
     public function addWorkspace(AddWorkspaceRequest $request): JsonResponse
     {
         return $this->response($this->workspaceService->addWorkspace(
@@ -67,7 +71,8 @@ class WorkspaceController extends BaseController
      * Requires user to be the owner of the current workspace.
      * @param Guid $workspaceId Workspace GUID
      */
-    #[OpenApi\Operation(tags: ['business', 'workspace'])]
+    #[OpenApi\Operation(tags: ['business', 'workspace'], security: BearerTokenSecurityScheme::class)]
+    #[OpenApi\RequestBody(factory: ChangeWorkspaceProfileRequestBody::class)]
     public function changeWorkspaceProfile(ChangeWorkspaceProfileRequest $request): JsonResponse
     {
         return $this->response($this->workspaceService->changeProfile(
