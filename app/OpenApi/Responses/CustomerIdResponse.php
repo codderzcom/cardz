@@ -7,14 +7,14 @@ use GoldSpecDigital\ObjectOrientedOAS\Objects\Response;
 use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 use Vyuldashev\LaravelOpenApi\Factories\ResponseFactory;
 
-class ApiAccessTokenResponse extends ResponseFactory
+class CustomerIdResponse extends ResponseFactory
 {
     public function build(): Response
     {
         return Response::ok()
             ->content(MediaType::json()->schema(
-                Schema::string()->description('API Access Bearer Token')->example('9|eigK2WNOHtJEOKtgcXD6m2NIaDFVcIMDfCMrsKii')
+                Schema::string()->format(Schema::FORMAT_UUID)->description('Current customer Id')
             ))
-            ->description('Access token');
+            ->description('Customer Id');
     }
 }

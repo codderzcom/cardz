@@ -11,22 +11,22 @@ class CollaborationAppService
     ) {
     }
 
-    public function propose(string $collaboratorId, string $workspaceId)
+    public function propose(string $collaboratorId, string $workspaceId): string
     {
         return $this->collaborationContext->propose($collaboratorId, $workspaceId);
     }
 
-    public function accept(string $collaboratorId, string $inviteId)
+    public function accept(string $collaboratorId, string $inviteId): string
     {
         return $this->collaborationContext->accept($inviteId, $collaboratorId);
     }
 
-    public function discard(string $inviteId)
+    public function discard(string $inviteId): string
     {
         return $this->collaborationContext->discard($inviteId);
     }
 
-    public function leave(string $collaboratorId, string $workspaceId)
+    public function leave(string $collaboratorId, string $workspaceId): string
     {
         return $this->collaborationContext->leave($collaboratorId, $workspaceId);
     }

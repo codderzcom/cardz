@@ -4,6 +4,8 @@ namespace Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace
 
 use App\OpenApi\Requests\Customer\AddWorkspaceRequestBody;
 use App\OpenApi\Requests\Customer\ChangeWorkspaceProfileRequestBody;
+use App\OpenApi\Responses\BusinessWorkspaceResponse;
+use App\OpenApi\Responses\BusinessWorkspacesResponse;
 use App\OpenApi\SecuritySchemes\BearerTokenSecurityScheme;
 use Cardz\Support\MobileAppGateway\Application\Services\Workspace\WorkspaceAppService;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\BaseController;
@@ -29,6 +31,7 @@ class WorkspaceController extends BaseController
      * Returns all workspaces where the current user is a collaborator.
      */
     #[OpenApi\Operation(tags: ['business', 'workspace'], security: BearerTokenSecurityScheme::class)]
+    #[OpenApi\Response(factory: BusinessWorkspacesResponse::class, statusCode: 200)]
     public function getWorkspaces(CollaboratorQueryRequest $request): JsonResponse
     {
         return $this->response($this->workspaceService->getBusinessWorkspaces($request->collaboratorId));
@@ -42,6 +45,7 @@ class WorkspaceController extends BaseController
      * @param Guid $workspaceId Workspace GUID
      */
     #[OpenApi\Operation(tags: ['business', 'workspace'], security: BearerTokenSecurityScheme::class)]
+    #[OpenApi\Response(factory: BusinessWorkspaceResponse::class, statusCode: 200)]
     public function getWorkspace(GetWorkspaceRequest $request): JsonResponse
     {
         return $this->response($this->workspaceService->getBusinessWorkspace($request->workspaceId));
@@ -54,6 +58,7 @@ class WorkspaceController extends BaseController
      */
     #[OpenApi\Operation(tags: ['business', 'workspace'], security: BearerTokenSecurityScheme::class)]
     #[OpenApi\RequestBody(factory: AddWorkspaceRequestBody::class)]
+    #[OpenApi\Response(factory: BusinessWorkspaceResponse::class, statusCode: 200)]
     public function addWorkspace(AddWorkspaceRequest $request): JsonResponse
     {
         return $this->response($this->workspaceService->addWorkspace(
@@ -73,6 +78,7 @@ class WorkspaceController extends BaseController
      */
     #[OpenApi\Operation(tags: ['business', 'workspace'], security: BearerTokenSecurityScheme::class)]
     #[OpenApi\RequestBody(factory: ChangeWorkspaceProfileRequestBody::class)]
+    #[OpenApi\Response(factory: BusinessWorkspaceResponse::class, statusCode: 200)]
     public function changeWorkspaceProfile(ChangeWorkspaceProfileRequest $request): JsonResponse
     {
         return $this->response($this->workspaceService->changeProfile(

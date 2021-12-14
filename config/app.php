@@ -15,7 +15,10 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Cardz'),
+    'author' => env('APP_AUTHOR', 'Codderz'),
+    'description' => env('APP_DESCRIPTION', 'Bonus cards server-side application'),
+    'version' => env('APP_VERSION', '0.0.13.1567'),
 
     /*
     |--------------------------------------------------------------------------

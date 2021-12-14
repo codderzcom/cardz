@@ -4,12 +4,13 @@ namespace Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace
 
 use App\OpenApi\Requests\Customer\IssueCardRequestBody;
 use App\OpenApi\Requests\Customer\NoteCardAchievementRequestBody;
+use App\OpenApi\Responses\BusinessCardResponse;
 use Cardz\Support\MobileAppGateway\Application\Services\Workspace\CardAppService;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\BaseController;
-use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\Card\NoteAchievementCardRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\Card\CardCommandRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\Card\DismissAchievementCardRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\Card\IssueCardRequest;
+use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\Card\NoteAchievementCardRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Queries\GetCardRequest;
 use Illuminate\Http\JsonResponse;
 use Ramsey\Uuid\Guid\Guid;
@@ -33,6 +34,7 @@ class CardController extends BaseController
      * @param Guid $cardId Card GUID
      */
     #[OpenApi\Operation(tags: ['business', 'card'])]
+    #[OpenApi\Response(factory: BusinessCardResponse::class, statusCode: 200)]
     public function getCard(GetCardRequest $request): JsonResponse
     {
         return $this->response($this->cardService->getCard($request->cardId));
@@ -47,6 +49,7 @@ class CardController extends BaseController
      */
     #[OpenApi\Operation(tags: ['business', 'card'])]
     #[OpenApi\RequestBody(factory: IssueCardRequestBody::class)]
+    #[OpenApi\Response(factory: BusinessCardResponse::class, statusCode: 200)]
     public function issue(IssueCardRequest $request): JsonResponse
     {
         return $this->response($this->cardService->issue($request->planId, $request->customerId));
@@ -61,6 +64,7 @@ class CardController extends BaseController
      * @param Guid $cardId Card GUID
      */
     #[OpenApi\Operation(tags: ['business', 'card'])]
+    #[OpenApi\Response(factory: BusinessCardResponse::class, statusCode: 200)]
     public function complete(CardCommandRequest $request): JsonResponse
     {
         return $this->response($this->cardService->complete($request->cardId));
@@ -75,6 +79,7 @@ class CardController extends BaseController
      * @param Guid $cardId Card GUID
      */
     #[OpenApi\Operation(tags: ['business', 'card'])]
+    #[OpenApi\Response(factory: BusinessCardResponse::class, statusCode: 200)]
     public function revoke(CardCommandRequest $request): JsonResponse
     {
         return $this->response($this->cardService->revoke($request->cardId));
@@ -89,6 +94,7 @@ class CardController extends BaseController
      * @param Guid $cardId Card GUID
      */
     #[OpenApi\Operation(tags: ['business', 'card'])]
+    #[OpenApi\Response(factory: BusinessCardResponse::class, statusCode: 200)]
     public function block(CardCommandRequest $request): JsonResponse
     {
         return $this->response($this->cardService->block($request->cardId));
@@ -103,6 +109,7 @@ class CardController extends BaseController
      * @param Guid $cardId Card GUID
      */
     #[OpenApi\Operation(tags: ['business', 'card'])]
+    #[OpenApi\Response(factory: BusinessCardResponse::class, statusCode: 200)]
     public function unblock(CardCommandRequest $request): JsonResponse
     {
         return $this->response($this->cardService->unblock($request->cardId));
@@ -120,6 +127,7 @@ class CardController extends BaseController
      */
     #[OpenApi\Operation(tags: ['business', 'card'])]
     #[OpenApi\RequestBody(factory: NoteCardAchievementRequestBody::class)]
+    #[OpenApi\Response(factory: BusinessCardResponse::class, statusCode: 200)]
     public function noteAchievement(NoteAchievementCardRequest $request): JsonResponse
     {
         return $this->response($this->cardService->noteAchievement($request->cardId, $request->achievementId, $request->description));
@@ -136,6 +144,7 @@ class CardController extends BaseController
      * @param Guid $achievementId Achievement GUID
      */
     #[OpenApi\Operation(tags: ['business', 'card'])]
+    #[OpenApi\Response(factory: BusinessCardResponse::class, statusCode: 200)]
     public function dismissAchievement(DismissAchievementCardRequest $request): JsonResponse
     {
         return $this->response($this->cardService->dismissAchievement($request->cardId, $request->achievementId));

@@ -5,6 +5,8 @@ namespace Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer;
 use App\OpenApi\Requests\Customer\GetTokenRequestBody;
 use App\OpenApi\Requests\Customer\RegisterRequestBody;
 use App\OpenApi\Responses\ApiAccessTokenResponse;
+use App\OpenApi\Responses\CustomerIdResponse;
+use App\OpenApi\Responses\CustomerWorkspacesResponse;
 use App\OpenApi\Responses\IssuedCardResponse;
 use App\OpenApi\Responses\IssuedCardsResponse;
 use App\OpenApi\SecuritySchemes\BearerTokenSecurityScheme;
@@ -32,6 +34,7 @@ class CustomerController extends BaseController
      * Returns id of the authenticated user.
      */
     #[OpenApi\Operation(tags: ['customer'], security: BearerTokenSecurityScheme::class)]
+    #[OpenApi\Response(factory: CustomerIdResponse::class, statusCode: 200)]
     public function getId(): JsonResponse
     {
         return $this->response($this->customerAppService->getCustomerId());
@@ -104,6 +107,7 @@ class CustomerController extends BaseController
      * Returns all workspaces
      */
     #[OpenApi\Operation(tags: ['customer'])]
+    #[OpenApi\Response(factory: CustomerWorkspacesResponse::class, statusCode: 200)]
     public function getWorkspaces(): JsonResponse
     {
         return $this->response($this->customerAppService->getCustomerWorkspaces());

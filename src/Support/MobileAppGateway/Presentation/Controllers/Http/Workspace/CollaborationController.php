@@ -2,6 +2,7 @@
 
 namespace Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace;
 
+use App\OpenApi\Responses\CollaboratorIdResponse;
 use Cardz\Support\MobileAppGateway\Application\Services\Workspace\CollaborationAppService;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\BaseController;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\Collaboration\InviteRequest;
@@ -27,6 +28,7 @@ class CollaborationController extends BaseController
      * @param Guid $workspaceId Workspace GUID
      */
     #[OpenApi\Operation(tags: ['business', 'collaboration'])]
+    #[OpenApi\Response(factory: CollaboratorIdResponse::class, statusCode: 200)]
     public function propose(ProposeInviteRequest $request): JsonResponse
     {
         return $this->response($this->collaborationAppService->propose($request->collaboratorId, $request->workspaceId));
@@ -40,6 +42,7 @@ class CollaborationController extends BaseController
      * @param Guid $inviteId Invite GUID
      */
     #[OpenApi\Operation(tags: ['business', 'collaboration'])]
+    #[OpenApi\Response(factory: CollaboratorIdResponse::class, statusCode: 200)]
     public function accept(InviteRequest $request): JsonResponse
     {
         return $this->response($this->collaborationAppService->accept($request->collaboratorId, $request->inviteId));
@@ -54,6 +57,7 @@ class CollaborationController extends BaseController
      * @param Guid $inviteId Invite GUID
      */
     #[OpenApi\Operation(tags: ['business', 'collaboration'])]
+    #[OpenApi\Response(factory: CollaboratorIdResponse::class, statusCode: 200)]
     public function discard(InviteRequest $request): JsonResponse
     {
         return $this->response($this->collaborationAppService->discard($request->inviteId));
@@ -67,6 +71,7 @@ class CollaborationController extends BaseController
      * @param Guid $workspaceId Workspace GUID
      */
     #[OpenApi\Operation(tags: ['business', 'collaboration'])]
+    #[OpenApi\Response(factory: CollaboratorIdResponse::class, statusCode: 200)]
     public function leave(LeaveCollaborationRequest $request): JsonResponse
     {
         return $this->response($this->collaborationAppService->leave($request->collaboratorId, $request->workspaceId));

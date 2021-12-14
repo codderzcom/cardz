@@ -7,6 +7,8 @@ use App\OpenApi\Requests\Customer\AddRequirementRequestBody;
 use App\OpenApi\Requests\Customer\ChangePlanDescriptionRequestBody;
 use App\OpenApi\Requests\Customer\ChangeRequirementDescriptionRequestBody;
 use App\OpenApi\Requests\Customer\LaunchPlanRequestBody;
+use App\OpenApi\Responses\BusinessPlanResponse;
+use App\OpenApi\Responses\BusinessPlansResponse;
 use Cardz\Support\MobileAppGateway\Application\Services\Workspace\PlanAppService;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\BaseController;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\{Plan\AddPlanRequest,
@@ -39,6 +41,7 @@ class PlanController extends BaseController
      * @param Guid $workspaceId Workspace GUID
      */
     #[OpenApi\Operation(tags: ['business', 'plan'])]
+    #[OpenApi\Response(factory: BusinessPlansResponse::class, statusCode: 200)]
     public function getWorkspaceBusinessPlans(GetWorkspaceRequest $request): JsonResponse
     {
         return $this->response($this->planService->getWorkspaceBusinessPlans($request->workspaceId));
@@ -53,6 +56,7 @@ class PlanController extends BaseController
      * @param Guid $planId Plan GUID
      */
     #[OpenApi\Operation(tags: ['business', 'plan'])]
+    #[OpenApi\Response(factory: BusinessPlanResponse::class, statusCode: 200)]
     public function getPlan(GetPlanRequest $request): JsonResponse
     {
         return $this->response($this->planService->getBusinessPlan($request->planId));
@@ -67,6 +71,7 @@ class PlanController extends BaseController
      */
     #[OpenApi\Operation(tags: ['business', 'plan'])]
     #[OpenApi\RequestBody(factory: AddPlanRequestBody::class)]
+    #[OpenApi\Response(factory: BusinessPlanResponse::class, statusCode: 200)]
     public function add(AddPlanRequest $request): JsonResponse
     {
         return $this->response($this->planService->add($request->workspaceId, $request->description));
@@ -82,6 +87,7 @@ class PlanController extends BaseController
      */
     #[OpenApi\Operation(tags: ['business', 'plan'])]
     #[OpenApi\RequestBody(factory: LaunchPlanRequestBody::class)]
+    #[OpenApi\Response(factory: BusinessPlanResponse::class, statusCode: 200)]
     public function launch(LaunchPlanCommandRequest $request): JsonResponse
     {
         return $this->response($this->planService->launch($request->planId, $request->expirationDate));
@@ -96,6 +102,7 @@ class PlanController extends BaseController
      * @param Guid $planId Plan GUID
      */
     #[OpenApi\Operation(tags: ['business', 'plan'])]
+    #[OpenApi\Response(factory: BusinessPlanResponse::class, statusCode: 200)]
     public function stop(PlanCommandRequest $request): JsonResponse
     {
         return $this->response($this->planService->stop($request->planId));
@@ -110,6 +117,7 @@ class PlanController extends BaseController
      * @param Guid $planId Plan GUID
      */
     #[OpenApi\Operation(tags: ['business', 'plan'])]
+    #[OpenApi\Response(factory: BusinessPlanResponse::class, statusCode: 200)]
     public function archive(PlanCommandRequest $request): JsonResponse
     {
         return $this->response($this->planService->archive($request->planId));
@@ -125,6 +133,7 @@ class PlanController extends BaseController
      */
     #[OpenApi\Operation(tags: ['business', 'plan'])]
     #[OpenApi\RequestBody(factory: ChangePlanDescriptionRequestBody::class)]
+    #[OpenApi\Response(factory: BusinessPlanResponse::class, statusCode: 200)]
     public function changeDescription(ChangePlanDescriptionRequest $request): JsonResponse
     {
         return $this->response($this->planService->changeDescription($request->planId, $request->description));
@@ -140,6 +149,7 @@ class PlanController extends BaseController
      */
     #[OpenApi\Operation(tags: ['business', 'plan', 'requirement'])]
     #[OpenApi\RequestBody(factory: AddRequirementRequestBody::class)]
+    #[OpenApi\Response(factory: BusinessPlanResponse::class, statusCode: 200)]
     public function addRequirement(AddPlanRequirementRequest $request): JsonResponse
     {
         return $this->response($this->planService->addRequirement($request->planId, $request->description));
@@ -155,6 +165,7 @@ class PlanController extends BaseController
      * @param Guid $requirementId Requirement GUID
      */
     #[OpenApi\Operation(tags: ['business', 'plan', 'requirement'])]
+    #[OpenApi\Response(factory: BusinessPlanResponse::class, statusCode: 200)]
     public function removeRequirement(RemovePlanRequirementRequest $request): JsonResponse
     {
         return $this->response($this->planService->removeRequirement($request->planId, $request->requirementId));
@@ -171,6 +182,7 @@ class PlanController extends BaseController
      */
     #[OpenApi\Operation(tags: ['business', 'plan', 'requirement'])]
     #[OpenApi\RequestBody(factory: ChangeRequirementDescriptionRequestBody::class)]
+    #[OpenApi\Response(factory: BusinessPlanResponse::class, statusCode: 200)]
     public function changeRequirement(ChangePlanRequirementDescriptionRequest $request): JsonResponse
     {
         return $this->response($this->planService->changeRequirement(

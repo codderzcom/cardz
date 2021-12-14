@@ -2,7 +2,8 @@
     "openapi": "3.0.2",
     "info": {
         "title": "Cardz",
-        "version": "2.0.0"
+        "description": "Bonus cards server-side application",
+        "version": "0.0.13.1567"
     },
     "servers": [
         {
@@ -39,7 +40,8 @@
                             "application\/json": {
                                 "schema": {
                                     "description": "API Access Bearer Token",
-                                    "type": "string"
+                                    "type": "string",
+                                    "example": "9|eigK2WNOHtJEOKtgcXD6m2NIaDFVcIMDfCMrsKii"
                                 }
                             }
                         }
@@ -71,7 +73,8 @@
                             "application\/json": {
                                 "schema": {
                                     "description": "API Access Bearer Token",
-                                    "type": "string"
+                                    "type": "string",
+                                    "example": "9|eigK2WNOHtJEOKtgcXD6m2NIaDFVcIMDfCMrsKii"
                                 }
                             }
                         }
@@ -85,7 +88,23 @@
                     "customer"
                 ],
                 "summary": "Workspaces",
-                "description": "Returns all workspaces"
+                "description": "Returns all workspaces",
+                "responses": {
+                    "200": {
+                        "description": "Customer Workspace",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "description": "List of all workspaces",
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#\/components\/schemas\/CustomerWorkspace"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "\/api\/v1\/customer\/id": {
@@ -95,6 +114,20 @@
                 ],
                 "summary": "Get authorized user id",
                 "description": "Returns id of the authenticated user.",
+                "responses": {
+                    "200": {
+                        "description": "Customer Id",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "description": "Current customer Id",
+                                    "format": "uuid",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
                 "security": [
                     {
                         "BearerToken": []
@@ -176,6 +209,22 @@
                 ],
                 "summary": "Get workspaces",
                 "description": "Returns all workspaces where the current user is a collaborator.",
+                "responses": {
+                    "200": {
+                        "description": "List all workspaces of the current collaborator",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "description": "Workspace (business) for the collaborator",
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#\/components\/schemas\/BusinessWorkspace"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
                 "security": [
                     {
                         "BearerToken": []
@@ -195,6 +244,18 @@
                         "application\/json": {
                             "schema": {
                                 "$ref": "#\/components\/schemas\/WorkspaceProfile"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Business Workspace",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessWorkspace"
+                                }
                             }
                         }
                     }
@@ -225,6 +286,18 @@
                         }
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "Business Workspace",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessWorkspace"
+                                }
+                            }
+                        }
+                    }
+                },
                 "security": [
                     {
                         "BearerToken": []
@@ -261,6 +334,18 @@
                         }
                     }
                 },
+                "responses": {
+                    "200": {
+                        "description": "Business Workspace",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessWorkspace"
+                                }
+                            }
+                        }
+                    }
+                },
                 "security": [
                     {
                         "BearerToken": []
@@ -286,7 +371,21 @@
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Collaborator Id",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "description": "Collaborator Id",
+                                    "format": "uuid",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/collaboration\/invite": {
@@ -307,7 +406,21 @@
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Collaborator Id",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "description": "Collaborator Id",
+                                    "format": "uuid",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/collaboration\/invite\/{inviteId}\/accept": {
@@ -337,7 +450,21 @@
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Collaborator Id",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "description": "Collaborator Id",
+                                    "format": "uuid",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/collaboration\/invite\/{inviteId}\/discard": {
@@ -367,7 +494,21 @@
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Collaborator Id",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "description": "Collaborator Id",
+                                    "format": "uuid",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/plan": {
@@ -388,7 +529,23 @@
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List all plans for the workspace",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "description": "Plans for the collaborator",
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#\/components\/schemas\/BusinessPlan"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             },
             "post": {
                 "tags": [
@@ -414,6 +571,18 @@
                         "application\/json": {
                             "schema": {
                                 "$ref": "#\/components\/schemas\/PlanProfile"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Business plan",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessPlan"
+                                }
                             }
                         }
                     }
@@ -447,7 +616,19 @@
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Business plan",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessPlan"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/description": {
@@ -484,6 +665,18 @@
                         "application\/json": {
                             "schema": {
                                 "$ref": "#\/components\/schemas\/PlanProfile"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Business plan",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessPlan"
+                                }
                             }
                         }
                     }
@@ -527,6 +720,18 @@
                             }
                         }
                     }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Business plan",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessPlan"
+                                }
+                            }
+                        }
+                    }
                 }
             }
         },
@@ -557,7 +762,19 @@
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Business plan",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessPlan"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/archive": {
@@ -587,7 +804,19 @@
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Business plan",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessPlan"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/requirement": {
@@ -625,6 +854,18 @@
                         "application\/json": {
                             "schema": {
                                 "$ref": "#\/components\/schemas\/RequirementProfile"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Business plan",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessPlan"
+                                }
                             }
                         }
                     }
@@ -668,7 +909,19 @@
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Business plan",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessPlan"
+                                }
+                            }
+                        }
+                    }
+                }
             },
             "put": {
                 "tags": [
@@ -716,6 +969,18 @@
                             }
                         }
                     }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Business plan",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessPlan"
+                                }
+                            }
+                        }
+                    }
                 }
             }
         },
@@ -744,6 +1009,18 @@
                         "application\/json": {
                             "schema": {
                                 "$ref": "#\/components\/schemas\/NewCard"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Business card",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessCard"
+                                }
                             }
                         }
                     }
@@ -777,7 +1054,19 @@
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Business card",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessCard"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/complete": {
@@ -807,7 +1096,19 @@
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Business card",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessCard"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/revoke": {
@@ -837,7 +1138,19 @@
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Business card",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessCard"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/block": {
@@ -867,7 +1180,19 @@
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Business card",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessCard"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/unblock": {
@@ -897,7 +1222,19 @@
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Business card",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessCard"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/achievement": {
@@ -934,6 +1271,18 @@
                         "application\/json": {
                             "schema": {
                                 "$ref": "#\/components\/schemas\/Achievement"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Business card",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessCard"
+                                }
                             }
                         }
                     }
@@ -976,12 +1325,127 @@
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Business card",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessCard"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     },
     "components": {
         "schemas": {
+            "BusinessWorkspace": {
+                "type": "object",
+                "properties": {
+                    "workspaceId": {
+                        "description": "Workspace Id",
+                        "format": "uuid",
+                        "type": "string"
+                    },
+                    "keeperId": {
+                        "description": "Keeper Id",
+                        "format": "uuid",
+                        "type": "string"
+                    },
+                    "name": {
+                        "description": "Workspace (business) name",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "Workspace (business) description",
+                        "type": "string"
+                    },
+                    "address": {
+                        "description": "Workspace (business) address",
+                        "type": "string"
+                    }
+                }
+            },
+            "BusinessCard": {
+                "type": "object",
+                "properties": {
+                    "cardId": {
+                        "description": "Card Id",
+                        "format": "uuid",
+                        "type": "string"
+                    },
+                    "planId": {
+                        "description": "Plan Id",
+                        "format": "uuid",
+                        "type": "string"
+                    },
+                    "customerId": {
+                        "description": "Customer Id",
+                        "format": "uuid",
+                        "type": "string"
+                    },
+                    "isIssued": {
+                        "description": "Whether the card is issued",
+                        "type": "boolean"
+                    },
+                    "isSatisfied": {
+                        "description": "Whether all the requirements to receive a bonus are satisfied",
+                        "type": "boolean"
+                    },
+                    "isCompleted": {
+                        "description": "Whether the customer has received the bonus for this card",
+                        "type": "boolean"
+                    },
+                    "isRevoked": {
+                        "description": "Whether the card has been revoked",
+                        "type": "boolean"
+                    },
+                    "isBlocked": {
+                        "description": "Whether the card has been blocked",
+                        "type": "boolean"
+                    },
+                    "achievements": {
+                        "description": "Achieved requirements",
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "achievementId": {
+                                    "description": "Achievement Id = corresponding requirement id",
+                                    "format": "uuid",
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "description": "Achievement description = corresponding requirement description",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "requirements": {
+                        "description": "All requirements",
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "requirementId": {
+                                    "description": "Requirement id",
+                                    "format": "uuid",
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "description": "Requirement description",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             "WorkspaceProfile": {
                 "description": "Workspace profile request",
                 "type": "object",
@@ -1221,6 +1685,77 @@
                                 }
                             }
                         }
+                    },
+                    "requirements": {
+                        "description": "All requirements",
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "requirementId": {
+                                    "description": "Requirement id",
+                                    "format": "uuid",
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "description": "Requirement description",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "CustomerWorkspace": {
+                "type": "object",
+                "properties": {
+                    "workspaceId": {
+                        "description": "Workspace Id",
+                        "format": "uuid",
+                        "type": "string"
+                    },
+                    "name": {
+                        "description": "Workspace (business) name",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "Workspace (business) description",
+                        "type": "string"
+                    },
+                    "address": {
+                        "description": "Workspace (business) address",
+                        "type": "string"
+                    }
+                }
+            },
+            "BusinessPlan": {
+                "type": "object",
+                "properties": {
+                    "planId": {
+                        "description": "Plan Id",
+                        "format": "uuid",
+                        "type": "string"
+                    },
+                    "workspaceId": {
+                        "description": "Workspace Id",
+                        "format": "uuid",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "Plan description",
+                        "type": "string"
+                    },
+                    "isLaunched": {
+                        "description": "Whether the plan is launched",
+                        "type": "boolean"
+                    },
+                    "isStopped": {
+                        "description": "Whether the plan is stopped",
+                        "type": "boolean"
+                    },
+                    "isArchived": {
+                        "description": "Whether the plan is archived",
+                        "type": "boolean"
                     },
                     "requirements": {
                         "description": "All requirements",
