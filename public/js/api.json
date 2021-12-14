@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.2",
     "info": {
-        "title": "Laravel",
+        "title": "Cardz",
         "version": "2.0.0"
     },
     "servers": [
@@ -108,6 +108,11 @@
                         }
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "$ref": "#\/components\/responses\/"
+                    }
+                },
                 "security": [
                     {
                         "BearerToken": []
@@ -1122,6 +1127,82 @@
                         "description": "Customer id",
                         "format": "uuid",
                         "type": "string"
+                    }
+                }
+            },
+            "": {
+                "type": "object",
+                "properties": {
+                    "cardId": {
+                        "description": "Card Id",
+                        "format": "uuid",
+                        "type": "string"
+                    },
+                    "planId": {
+                        "description": "Plan Id",
+                        "format": "uuid",
+                        "type": "string"
+                    },
+                    "customerId": {
+                        "description": "Customer Id",
+                        "format": "uuid",
+                        "type": "string"
+                    },
+                    "satisfied": {
+                        "description": "Whether all requirements to receive a bonus are satisfied",
+                        "type": "boolean"
+                    },
+                    "completed": {
+                        "description": "Whether customer has received the bonus for this card",
+                        "type": "boolean"
+                    },
+                    "achievements": {
+                        "description": "Achieved requirements",
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "achievementId": {
+                                    "description": "Achievement Id = corresponding requirement id",
+                                    "format": "uuid",
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "description": "Achievement description = corresponding requirement description",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "requirements": {
+                        "description": "All requirements",
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "requirementId": {
+                                    "description": "Requirement id",
+                                    "format": "uuid",
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "description": "Requirement description",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "responses": {
+            "": {
+                "description": "Successful response",
+                "content": {
+                    "application\/json": {
+                        "schema": {
+                            "$ref": "#\/components\/schemas\/"
+                        }
                     }
                 }
             }

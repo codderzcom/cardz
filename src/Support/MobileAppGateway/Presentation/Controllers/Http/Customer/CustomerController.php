@@ -4,6 +4,7 @@ namespace Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer;
 
 use App\OpenApi\Requests\Customer\GetTokenRequestBody;
 use App\OpenApi\Requests\Customer\RegisterRequestBody;
+use App\OpenApi\Responses\IssuedCardResponse;
 use App\OpenApi\SecuritySchemes\BearerTokenSecurityScheme;
 use Cardz\Support\MobileAppGateway\Application\Services\Customer\CustomerAppService;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\BaseController;
@@ -86,6 +87,7 @@ class CustomerController extends BaseController
      * @param Guid $cardId Card GUID
      */
     #[OpenApi\Operation(tags: ['customer'], security: BearerTokenSecurityScheme::class)]
+    #[OpenApi\Response(factory: IssuedCardResponse::class, statusCode: 200)]
     public function getCard(GetIssuedCardRequest $request): JsonResponse
     {
         return $this->response($this->customerAppService->getIssuedCard($request->customerId, $request->cardId));
