@@ -31,6 +31,19 @@
                             }
                         }
                     }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Access token",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "description": "API Access Bearer Token",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
                 }
             }
         },
@@ -47,6 +60,19 @@
                         "application\/json": {
                             "schema": {
                                 "$ref": "#\/components\/schemas\/RegisterRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Access token",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "description": "API Access Bearer Token",
+                                    "type": "string"
+                                }
                             }
                         }
                     }
@@ -83,6 +109,21 @@
                 ],
                 "summary": "User cards",
                 "description": "Returns all active cards for the current user.",
+                "responses": {
+                    "200": {
+                        "description": "All of the customer's issued cards",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#\/components\/schemas\/"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
                 "security": [
                     {
                         "BearerToken": []
@@ -110,7 +151,14 @@
                 ],
                 "responses": {
                     "200": {
-                        "$ref": "#\/components\/responses\/"
+                        "description": "Issued card",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -1190,18 +1238,6 @@
                                     "type": "string"
                                 }
                             }
-                        }
-                    }
-                }
-            }
-        },
-        "responses": {
-            "": {
-                "description": "Successful response",
-                "content": {
-                    "application\/json": {
-                        "schema": {
-                            "$ref": "#\/components\/schemas\/"
                         }
                     }
                 }

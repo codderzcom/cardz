@@ -4,7 +4,9 @@ namespace Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer;
 
 use App\OpenApi\Requests\Customer\GetTokenRequestBody;
 use App\OpenApi\Requests\Customer\RegisterRequestBody;
+use App\OpenApi\Responses\ApiAccessTokenResponse;
 use App\OpenApi\Responses\IssuedCardResponse;
+use App\OpenApi\Responses\IssuedCardsResponse;
 use App\OpenApi\SecuritySchemes\BearerTokenSecurityScheme;
 use Cardz\Support\MobileAppGateway\Application\Services\Customer\CustomerAppService;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\BaseController;
@@ -42,6 +44,7 @@ class CustomerController extends BaseController
      */
     #[OpenApi\Operation(tags: ['customer'])]
     #[OpenApi\RequestBody(factory: GetTokenRequestBody::class)]
+    #[OpenApi\Response(factory: ApiAccessTokenResponse::class, statusCode: 200)]
     public function getToken(GetTokenRequest $request): JsonResponse
     {
         return $this->response($this->customerAppService->getToken(
@@ -58,6 +61,7 @@ class CustomerController extends BaseController
      */
     #[OpenApi\Operation(tags: ['customer'])]
     #[OpenApi\RequestBody(factory: RegisterRequestBody::class)]
+    #[OpenApi\Response(factory: ApiAccessTokenResponse::class, statusCode: 200)]
     public function register(RegisterRequest $request): JsonResponse
     {
         return $this->response($this->customerAppService->register(
@@ -75,6 +79,7 @@ class CustomerController extends BaseController
      * Returns all active cards for the current user.
      */
     #[OpenApi\Operation(tags: ['customer'], security: BearerTokenSecurityScheme::class)]
+    #[OpenApi\Response(factory: IssuedCardsResponse::class, statusCode: 200)]
     public function getCards(GetIssuedCardsRequest $request): JsonResponse
     {
         return $this->response($this->customerAppService->getIssuedCards($request->customerId));
