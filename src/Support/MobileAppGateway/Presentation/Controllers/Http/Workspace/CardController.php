@@ -5,6 +5,12 @@ namespace Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace
 use App\OpenApi\Requests\Customer\IssueCardRequestBody;
 use App\OpenApi\Requests\Customer\NoteCardAchievementRequestBody;
 use App\OpenApi\Responses\BusinessCardResponse;
+use App\OpenApi\Responses\Errors\AuthenticationExceptionResponse;
+use App\OpenApi\Responses\Errors\AuthorizationExceptionResponse;
+use App\OpenApi\Responses\Errors\DomainExceptionResponse;
+use App\OpenApi\Responses\Errors\NotFoundResponse;
+use App\OpenApi\Responses\Errors\UnexpectedExceptionResponse;
+use App\OpenApi\Responses\Errors\ValidationErrorResponse;
 use Cardz\Support\MobileAppGateway\Application\Services\Workspace\CardAppService;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\BaseController;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\Card\CardCommandRequest;
@@ -35,6 +41,10 @@ class CardController extends BaseController
      */
     #[OpenApi\Operation(tags: ['business', 'card'])]
     #[OpenApi\Response(factory: BusinessCardResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
+    #[OpenApi\Response(factory: AuthorizationExceptionResponse::class, statusCode: 403)]
+    #[OpenApi\Response(factory: NotFoundResponse::class, statusCode: 404)]
+    #[OpenApi\Response(factory: UnexpectedExceptionResponse::class, statusCode: 500)]
     public function getCard(GetCardRequest $request): JsonResponse
     {
         return $this->response($this->cardService->getCard($request->cardId));
@@ -50,6 +60,12 @@ class CardController extends BaseController
     #[OpenApi\Operation(tags: ['business', 'card'])]
     #[OpenApi\RequestBody(factory: IssueCardRequestBody::class)]
     #[OpenApi\Response(factory: BusinessCardResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: DomainExceptionResponse::class, statusCode: 400)]
+    #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
+    #[OpenApi\Response(factory: AuthorizationExceptionResponse::class, statusCode: 403)]
+    #[OpenApi\Response(factory: NotFoundResponse::class, statusCode: 404)]
+    #[OpenApi\Response(factory: ValidationErrorResponse::class, statusCode: 422)]
+    #[OpenApi\Response(factory: UnexpectedExceptionResponse::class, statusCode: 500)]
     public function issue(IssueCardRequest $request): JsonResponse
     {
         return $this->response($this->cardService->issue($request->planId, $request->customerId));
@@ -65,6 +81,11 @@ class CardController extends BaseController
      */
     #[OpenApi\Operation(tags: ['business', 'card'])]
     #[OpenApi\Response(factory: BusinessCardResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: DomainExceptionResponse::class, statusCode: 400)]
+    #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
+    #[OpenApi\Response(factory: AuthorizationExceptionResponse::class, statusCode: 403)]
+    #[OpenApi\Response(factory: NotFoundResponse::class, statusCode: 404)]
+    #[OpenApi\Response(factory: UnexpectedExceptionResponse::class, statusCode: 500)]
     public function complete(CardCommandRequest $request): JsonResponse
     {
         return $this->response($this->cardService->complete($request->cardId));
@@ -80,6 +101,11 @@ class CardController extends BaseController
      */
     #[OpenApi\Operation(tags: ['business', 'card'])]
     #[OpenApi\Response(factory: BusinessCardResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: DomainExceptionResponse::class, statusCode: 400)]
+    #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
+    #[OpenApi\Response(factory: AuthorizationExceptionResponse::class, statusCode: 403)]
+    #[OpenApi\Response(factory: NotFoundResponse::class, statusCode: 404)]
+    #[OpenApi\Response(factory: UnexpectedExceptionResponse::class, statusCode: 500)]
     public function revoke(CardCommandRequest $request): JsonResponse
     {
         return $this->response($this->cardService->revoke($request->cardId));
@@ -95,6 +121,11 @@ class CardController extends BaseController
      */
     #[OpenApi\Operation(tags: ['business', 'card'])]
     #[OpenApi\Response(factory: BusinessCardResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: DomainExceptionResponse::class, statusCode: 400)]
+    #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
+    #[OpenApi\Response(factory: AuthorizationExceptionResponse::class, statusCode: 403)]
+    #[OpenApi\Response(factory: NotFoundResponse::class, statusCode: 404)]
+    #[OpenApi\Response(factory: UnexpectedExceptionResponse::class, statusCode: 500)]
     public function block(CardCommandRequest $request): JsonResponse
     {
         return $this->response($this->cardService->block($request->cardId));
@@ -110,6 +141,11 @@ class CardController extends BaseController
      */
     #[OpenApi\Operation(tags: ['business', 'card'])]
     #[OpenApi\Response(factory: BusinessCardResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: DomainExceptionResponse::class, statusCode: 400)]
+    #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
+    #[OpenApi\Response(factory: AuthorizationExceptionResponse::class, statusCode: 403)]
+    #[OpenApi\Response(factory: NotFoundResponse::class, statusCode: 404)]
+    #[OpenApi\Response(factory: UnexpectedExceptionResponse::class, statusCode: 500)]
     public function unblock(CardCommandRequest $request): JsonResponse
     {
         return $this->response($this->cardService->unblock($request->cardId));
@@ -128,6 +164,12 @@ class CardController extends BaseController
     #[OpenApi\Operation(tags: ['business', 'card'])]
     #[OpenApi\RequestBody(factory: NoteCardAchievementRequestBody::class)]
     #[OpenApi\Response(factory: BusinessCardResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: DomainExceptionResponse::class, statusCode: 400)]
+    #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
+    #[OpenApi\Response(factory: AuthorizationExceptionResponse::class, statusCode: 403)]
+    #[OpenApi\Response(factory: NotFoundResponse::class, statusCode: 404)]
+    #[OpenApi\Response(factory: ValidationErrorResponse::class, statusCode: 422)]
+    #[OpenApi\Response(factory: UnexpectedExceptionResponse::class, statusCode: 500)]
     public function noteAchievement(NoteAchievementCardRequest $request): JsonResponse
     {
         return $this->response($this->cardService->noteAchievement($request->cardId, $request->achievementId, $request->description));
@@ -145,6 +187,11 @@ class CardController extends BaseController
      */
     #[OpenApi\Operation(tags: ['business', 'card'])]
     #[OpenApi\Response(factory: BusinessCardResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: DomainExceptionResponse::class, statusCode: 400)]
+    #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
+    #[OpenApi\Response(factory: AuthorizationExceptionResponse::class, statusCode: 403)]
+    #[OpenApi\Response(factory: NotFoundResponse::class, statusCode: 404)]
+    #[OpenApi\Response(factory: UnexpectedExceptionResponse::class, statusCode: 500)]
     public function dismissAchievement(DismissAchievementCardRequest $request): JsonResponse
     {
         return $this->response($this->cardService->dismissAchievement($request->cardId, $request->achievementId));

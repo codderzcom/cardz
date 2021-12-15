@@ -14,7 +14,9 @@ class AuthenticationExceptionResponse extends ResponseFactory implements Reusabl
     {
         return Response::unauthorized('AuthenticationException')
             ->content(MediaType::json()->schema(
-                Schema::string()->description('Authentication Exception')->example('Invalid access token')
+                Schema::string()
+                    ->description('Authentication Exception')
+                    ->example('Invalid access token')
             ));
     }
 

@@ -2,7 +2,14 @@
 
 namespace Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace;
 
+use App\OpenApi\Responses\BusinessPlanResponse;
 use App\OpenApi\Responses\CollaboratorIdResponse;
+use App\OpenApi\Responses\Errors\AuthenticationExceptionResponse;
+use App\OpenApi\Responses\Errors\AuthorizationExceptionResponse;
+use App\OpenApi\Responses\Errors\DomainExceptionResponse;
+use App\OpenApi\Responses\Errors\NotFoundResponse;
+use App\OpenApi\Responses\Errors\UnexpectedExceptionResponse;
+use App\OpenApi\Responses\Errors\ValidationErrorResponse;
 use Cardz\Support\MobileAppGateway\Application\Services\Workspace\CollaborationAppService;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\BaseController;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\Collaboration\InviteRequest;
@@ -29,6 +36,10 @@ class CollaborationController extends BaseController
      */
     #[OpenApi\Operation(tags: ['business', 'collaboration'])]
     #[OpenApi\Response(factory: CollaboratorIdResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
+    #[OpenApi\Response(factory: AuthorizationExceptionResponse::class, statusCode: 403)]
+    #[OpenApi\Response(factory: NotFoundResponse::class, statusCode: 404)]
+    #[OpenApi\Response(factory: UnexpectedExceptionResponse::class, statusCode: 500)]
     public function propose(ProposeInviteRequest $request): JsonResponse
     {
         return $this->response($this->collaborationAppService->propose($request->collaboratorId, $request->workspaceId));
@@ -43,6 +54,11 @@ class CollaborationController extends BaseController
      */
     #[OpenApi\Operation(tags: ['business', 'collaboration'])]
     #[OpenApi\Response(factory: CollaboratorIdResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: BusinessPlanResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: DomainExceptionResponse::class, statusCode: 400)]
+    #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
+    #[OpenApi\Response(factory: NotFoundResponse::class, statusCode: 404)]
+    #[OpenApi\Response(factory: UnexpectedExceptionResponse::class, statusCode: 500)]
     public function accept(InviteRequest $request): JsonResponse
     {
         return $this->response($this->collaborationAppService->accept($request->collaboratorId, $request->inviteId));
@@ -58,6 +74,10 @@ class CollaborationController extends BaseController
      */
     #[OpenApi\Operation(tags: ['business', 'collaboration'])]
     #[OpenApi\Response(factory: CollaboratorIdResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
+    #[OpenApi\Response(factory: AuthorizationExceptionResponse::class, statusCode: 403)]
+    #[OpenApi\Response(factory: NotFoundResponse::class, statusCode: 404)]
+    #[OpenApi\Response(factory: UnexpectedExceptionResponse::class, statusCode: 500)]
     public function discard(InviteRequest $request): JsonResponse
     {
         return $this->response($this->collaborationAppService->discard($request->inviteId));
@@ -72,6 +92,11 @@ class CollaborationController extends BaseController
      */
     #[OpenApi\Operation(tags: ['business', 'collaboration'])]
     #[OpenApi\Response(factory: CollaboratorIdResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: DomainExceptionResponse::class, statusCode: 400)]
+    #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
+    #[OpenApi\Response(factory: AuthorizationExceptionResponse::class, statusCode: 403)]
+    #[OpenApi\Response(factory: NotFoundResponse::class, statusCode: 404)]
+    #[OpenApi\Response(factory: UnexpectedExceptionResponse::class, statusCode: 500)]
     public function leave(LeaveCollaborationRequest $request): JsonResponse
     {
         return $this->response($this->collaborationAppService->leave($request->collaboratorId, $request->workspaceId));

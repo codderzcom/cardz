@@ -13,7 +13,13 @@ class AuthorizationExceptionResponse extends ResponseFactory implements Reusable
     public function build(): Response
     {
         return Response::forbidden('AuthorizationException')
-            ->content(MediaType::json()->schema(Schema::string()->description('Authorization Exception')));
+            ->content(
+                MediaType::json()->schema(
+                    Schema::string()
+                        ->description('Authorization Exception')
+                        ->example('Subject <Subject Id> is not authorized for <Resource Type> <Resource Id>')
+                )
+            );
     }
 
 }

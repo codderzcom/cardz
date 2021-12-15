@@ -13,7 +13,11 @@ class ParametersAssertionExceptionResponse extends ResponseFactory implements Re
     public function build(): Response
     {
         return Response::badRequest('ParametersAssertionException')
-            ->content(MediaType::json()->schema(Schema::string()->description('Parameters Assertion Exception')));
+            ->content(MediaType::json()->schema(
+                Schema::string()
+                    ->description('Parameters Assertion Exception')
+                    ->example('Wrong string format for UUID')
+            ));
     }
 
 }

@@ -468,6 +468,21 @@
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "$ref": "#\/components\/responses\/DomainException"
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
                     }
                 }
             }
@@ -503,6 +518,18 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
                     }
                 }
             }
@@ -537,16 +564,26 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Collaborator Id",
+                        "description": "Business plan",
                         "content": {
                             "application\/json": {
                                 "schema": {
-                                    "description": "Collaborator Id",
-                                    "format": "uuid",
-                                    "type": "string"
+                                    "$ref": "#\/components\/schemas\/BusinessPlan"
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "$ref": "#\/components\/responses\/DomainException"
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
                     }
                 }
             }
@@ -591,6 +628,18 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
                     }
                 }
             }
@@ -1245,6 +1294,24 @@
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "$ref": "#\/components\/responses\/DomainException"
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "422": {
+                        "$ref": "#\/components\/responses\/ValidationError"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
                     }
                 }
             }
@@ -1287,6 +1354,18 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
                     }
                 }
             }
@@ -1329,6 +1408,21 @@
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "$ref": "#\/components\/responses\/DomainException"
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
                     }
                 }
             }
@@ -1371,6 +1465,21 @@
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "$ref": "#\/components\/responses\/DomainException"
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
                     }
                 }
             }
@@ -1413,6 +1522,21 @@
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "$ref": "#\/components\/responses\/DomainException"
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
                     }
                 }
             }
@@ -1455,6 +1579,21 @@
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "$ref": "#\/components\/responses\/DomainException"
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
                     }
                 }
             }
@@ -1507,6 +1646,24 @@
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "$ref": "#\/components\/responses\/DomainException"
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "422": {
+                        "$ref": "#\/components\/responses\/ValidationError"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
                     }
                 }
             }
@@ -1558,6 +1715,21 @@
                                 }
                             }
                         }
+                    },
+                    "400": {
+                        "$ref": "#\/components\/responses\/DomainException"
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
                     }
                 }
             }
@@ -2007,7 +2179,8 @@
                     "application\/json": {
                         "schema": {
                             "description": "Parameters Assertion Exception",
-                            "type": "string"
+                            "type": "string",
+                            "example": "Wrong string format for UUID"
                         }
                     }
                 }
@@ -2048,7 +2221,8 @@
                     "application\/json": {
                         "schema": {
                             "description": "Authorization Exception",
-                            "type": "string"
+                            "type": "string",
+                            "example": "Subject <Subject Id> is not authorized for <Resource Type> <Resource Id>"
                         }
                     }
                 }
@@ -2059,7 +2233,8 @@
                     "application\/json": {
                         "schema": {
                             "description": "User Already Registered Exception",
-                            "type": "string"
+                            "type": "string",
+                            "example": "User with given identity already registered"
                         }
                     }
                 }
@@ -2070,7 +2245,8 @@
                     "application\/json": {
                         "schema": {
                             "description": "Unexpected Exception",
-                            "type": "string"
+                            "type": "string",
+                            "example": "Unexpected exception"
                         }
                     }
                 }
@@ -2092,7 +2268,7 @@
                 "content": {
                     "application\/json": {
                         "schema": {
-                            "description": "Authorization Exception",
+                            "description": "Authentication Exception",
                             "type": "string",
                             "example": "Invalid access token"
                         }

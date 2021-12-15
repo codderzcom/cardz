@@ -14,7 +14,9 @@ class DomainExceptionResponse extends ResponseFactory implements Reusable
     {
         return Response::badRequest('DomainException')
             ->content(MediaType::json()->schema(
-                Schema::string()->description('Domain Exception')->example('Domain logic forbids requested operation')
+                Schema::string()
+                    ->description('Domain Exception')
+                    ->example('Domain logic forbids requested operation')
             ));
     }
 

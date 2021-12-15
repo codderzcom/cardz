@@ -10,7 +10,6 @@ use App\OpenApi\Responses\Errors\AuthenticationExceptionResponse;
 use App\OpenApi\Responses\Errors\AuthorizationExceptionResponse;
 use App\OpenApi\Responses\Errors\NotFoundResponse;
 use App\OpenApi\Responses\Errors\UnexpectedExceptionResponse;
-use App\OpenApi\Responses\Errors\UserAlreadyRegisteredExceptionResponse;
 use App\OpenApi\Responses\Errors\ValidationErrorResponse;
 use App\OpenApi\SecuritySchemes\BearerTokenSecurityScheme;
 use Cardz\Support\MobileAppGateway\Application\Services\Workspace\WorkspaceAppService;
