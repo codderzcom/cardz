@@ -6,6 +6,12 @@ use App\OpenApi\Requests\Customer\AddWorkspaceRequestBody;
 use App\OpenApi\Requests\Customer\ChangeWorkspaceProfileRequestBody;
 use App\OpenApi\Responses\BusinessWorkspaceResponse;
 use App\OpenApi\Responses\BusinessWorkspacesResponse;
+use App\OpenApi\Responses\Errors\AuthenticationExceptionResponse;
+use App\OpenApi\Responses\Errors\AuthorizationExceptionResponse;
+use App\OpenApi\Responses\Errors\NotFoundResponse;
+use App\OpenApi\Responses\Errors\UnexpectedExceptionResponse;
+use App\OpenApi\Responses\Errors\UserAlreadyRegisteredExceptionResponse;
+use App\OpenApi\Responses\Errors\ValidationErrorResponse;
 use App\OpenApi\SecuritySchemes\BearerTokenSecurityScheme;
 use Cardz\Support\MobileAppGateway\Application\Services\Workspace\WorkspaceAppService;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\BaseController;
@@ -32,6 +38,8 @@ class WorkspaceController extends BaseController
      */
     #[OpenApi\Operation(tags: ['business', 'workspace'], security: BearerTokenSecurityScheme::class)]
     #[OpenApi\Response(factory: BusinessWorkspacesResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
+    #[OpenApi\Response(factory: UnexpectedExceptionResponse::class, statusCode: 500)]
     public function getWorkspaces(CollaboratorQueryRequest $request): JsonResponse
     {
         return $this->response($this->workspaceService->getBusinessWorkspaces($request->collaboratorId));
@@ -46,6 +54,10 @@ class WorkspaceController extends BaseController
      */
     #[OpenApi\Operation(tags: ['business', 'workspace'], security: BearerTokenSecurityScheme::class)]
     #[OpenApi\Response(factory: BusinessWorkspaceResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
+    #[OpenApi\Response(factory: AuthorizationExceptionResponse::class, statusCode: 403)]
+    #[OpenApi\Response(factory: NotFoundResponse::class, statusCode: 404)]
+    #[OpenApi\Response(factory: UnexpectedExceptionResponse::class, statusCode: 500)]
     public function getWorkspace(GetWorkspaceRequest $request): JsonResponse
     {
         return $this->response($this->workspaceService->getBusinessWorkspace($request->workspaceId));
@@ -59,6 +71,9 @@ class WorkspaceController extends BaseController
     #[OpenApi\Operation(tags: ['business', 'workspace'], security: BearerTokenSecurityScheme::class)]
     #[OpenApi\RequestBody(factory: AddWorkspaceRequestBody::class)]
     #[OpenApi\Response(factory: BusinessWorkspaceResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
+    #[OpenApi\Response(factory: ValidationErrorResponse::class, statusCode: 422)]
+    #[OpenApi\Response(factory: UnexpectedExceptionResponse::class, statusCode: 500)]
     public function addWorkspace(AddWorkspaceRequest $request): JsonResponse
     {
         return $this->response($this->workspaceService->addWorkspace(
@@ -79,6 +94,10 @@ class WorkspaceController extends BaseController
     #[OpenApi\Operation(tags: ['business', 'workspace'], security: BearerTokenSecurityScheme::class)]
     #[OpenApi\RequestBody(factory: ChangeWorkspaceProfileRequestBody::class)]
     #[OpenApi\Response(factory: BusinessWorkspaceResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
+    #[OpenApi\Response(factory: AuthorizationExceptionResponse::class, statusCode: 403)]
+    #[OpenApi\Response(factory: ValidationErrorResponse::class, statusCode: 422)]
+    #[OpenApi\Response(factory: UnexpectedExceptionResponse::class, statusCode: 500)]
     public function changeWorkspaceProfile(ChangeWorkspaceProfileRequest $request): JsonResponse
     {
         return $this->response($this->workspaceService->changeProfile(

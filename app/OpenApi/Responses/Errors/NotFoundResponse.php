@@ -8,15 +8,15 @@ use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 use Vyuldashev\LaravelOpenApi\Contracts\Reusable;
 use Vyuldashev\LaravelOpenApi\Factories\ResponseFactory;
 
-class AuthenticationExceptionResponse extends ResponseFactory implements Reusable
+class NotFoundResponse extends ResponseFactory implements Reusable
 {
     public function build(): Response
     {
-        return Response::internalServerError('AuthenticationException')
+        return Response::notFound('NotFound')
             ->content(MediaType::json()->schema(
-                Schema::string()->description('Authorization Exception')->example('Invalid access token')
-            ))
-            ->statusCode(401);
+                Schema::string()->description('Requested resource not found')
+                    ->example('Not found exception: <Resource Name>: <Resource Id>')
+            ));
     }
 
 }

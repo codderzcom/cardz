@@ -8,12 +8,12 @@ use GoldSpecDigital\ObjectOrientedOAS\Objects\Schema;
 use Vyuldashev\LaravelOpenApi\Contracts\Reusable;
 use Vyuldashev\LaravelOpenApi\Factories\ResponseFactory;
 
-class ParametersAssertionExceptionResponse extends ResponseFactory implements Reusable
+class UserAlreadyRegisteredExceptionResponse extends ResponseFactory implements Reusable
 {
     public function build(): Response
     {
-        return Response::badRequest('ParametersAssertionException')
-            ->content(MediaType::json()->schema(Schema::string()->description('Parameters Assertion Exception')));
+        return Response::badRequest('UserAlreadyRegisteredException')
+            ->content(MediaType::json()->schema(Schema::string()->description('User Already Registered Exception')));
     }
 
 }
