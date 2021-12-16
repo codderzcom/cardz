@@ -1,12 +1,13 @@
 {
     "openapi": "3.0.2",
     "info": {
-        "title": "Laravel",
-        "version": "2.0.0"
+        "title": "Cardz",
+        "description": "Bonus cards server-side application",
+        "version": "0.0.13.1567"
     },
     "servers": [
         {
-            "url": "http:\/\/localhost",
+            "url": "http:\/\/localhost:8000",
             "description": "App Environment"
         },
         {
@@ -21,7 +22,40 @@
                     "customer"
                 ],
                 "summary": "Get user token",
-                "description": "Returns new API user token (for basic bearer auth). Requires identity, password and device name."
+                "description": "Returns new API user token (for basic bearer auth). Requires identity, password and device name.",
+                "requestBody": {
+                    "description": "Get customer API access token for the specific device. <br>\n                          With each request new token is generated. Old ones are invalidated shortly after. <br>\n                          *Tokens on other customer devices remain unaffected.\n            ",
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/GetTokenRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Access token",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "description": "API Access Bearer Token",
+                                    "type": "string",
+                                    "example": "9|eigK2WNOHtJEOKtgcXD6m2NIaDFVcIMDfCMrsKii"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "422": {
+                        "$ref": "#\/components\/responses\/ValidationError"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                }
             }
         },
         "\/api\/v1\/customer\/register": {
@@ -30,7 +64,40 @@
                     "customer"
                 ],
                 "summary": "Register user",
-                "description": "Registers new user with email OR phone, password, device name (for token). Returns new auth token."
+                "description": "Registers new user with email OR phone, password, device name (for token). Returns new auth token.",
+                "requestBody": {
+                    "description": "Register new customer",
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/RegisterRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Access token",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "description": "API Access Bearer Token",
+                                    "type": "string",
+                                    "example": "9|eigK2WNOHtJEOKtgcXD6m2NIaDFVcIMDfCMrsKii"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#\/components\/responses\/UserAlreadyRegisteredException"
+                    },
+                    "422": {
+                        "$ref": "#\/components\/responses\/ValidationError"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                }
             }
         },
         "\/api\/v1\/customer\/workspaces": {
@@ -39,7 +106,26 @@
                     "customer"
                 ],
                 "summary": "Workspaces",
-                "description": "Returns all workspaces"
+                "description": "Returns all workspaces",
+                "responses": {
+                    "200": {
+                        "description": "Customer Workspace",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "description": "List of all workspaces",
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#\/components\/schemas\/CustomerWorkspace"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                }
             }
         },
         "\/api\/v1\/customer\/id": {
@@ -48,7 +134,35 @@
                     "customer"
                 ],
                 "summary": "Get authorized user id",
-                "description": "Returns id of the authenticated user."
+                "description": "Returns id of the authenticated user.",
+                "responses": {
+                    "200": {
+                        "description": "Customer Id",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "description": "Current customer Id",
+                                    "format": "uuid",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ]
             }
         },
         "\/api\/v1\/customer\/card": {
@@ -57,7 +171,33 @@
                     "customer"
                 ],
                 "summary": "User cards",
-                "description": "Returns all active cards for the current user."
+                "description": "Returns all active cards for the current user.",
+                "responses": {
+                    "200": {
+                        "description": "All of the customer's issued cards",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#\/components\/schemas\/"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ]
             }
         },
         "\/api\/v1\/customer\/card\/{cardId}": {
@@ -71,10 +211,37 @@
                     {
                         "name": "cardId",
                         "in": "path",
+                        "description": "Card GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Issued card",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerToken": []
                     }
                 ]
             }
@@ -86,7 +253,34 @@
                     "workspace"
                 ],
                 "summary": "Get workspaces",
-                "description": "Returns all workspaces where the current user is a collaborator."
+                "description": "Returns all workspaces where the current user is a collaborator.",
+                "responses": {
+                    "200": {
+                        "description": "List all workspaces of the current collaborator",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "description": "Workspace (business) for the collaborator",
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#\/components\/schemas\/BusinessWorkspace"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -94,7 +288,43 @@
                     "workspace"
                 ],
                 "summary": "Add a new workspace",
-                "description": "Returns the newly created workspace where the current user is an owner."
+                "description": "Returns the newly created workspace where the current user is an owner.",
+                "requestBody": {
+                    "description": "Add workspace request",
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/WorkspaceProfile"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Business Workspace",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessWorkspace"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "422": {
+                        "$ref": "#\/components\/responses\/ValidationError"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ]
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}": {
@@ -109,10 +339,40 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Business Workspace",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessWorkspace"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerToken": []
                     }
                 ]
             }
@@ -129,32 +389,102 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Change workspace profile request",
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/WorkspaceProfile"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Business Workspace",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessWorkspace"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "422": {
+                        "$ref": "#\/components\/responses\/ValidationError"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                },
+                "security": [
+                    {
+                        "BearerToken": []
                     }
                 ]
             }
         },
-        "\/api\/v1\/workspace\/{workspaceId}\/card": {
+        "\/api\/v1\/workspace\/{workspaceId}\/collaboration\/leave": {
             "post": {
                 "tags": [
                     "business",
-                    "card"
+                    "collaboration"
                 ],
-                "summary": "Issue card",
-                "description": "Issues card for a plan to a customer.\nRequires user to be authorized to work in the current workspace.",
+                "summary": "Leave collaboration",
+                "description": "Rescinds the user ability collaborate in the current workspace.\nRequires user to be authorized to work in the current workspace. Requires user to NOT be the owner of it.",
                 "parameters": [
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Collaborator Id",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "description": "Collaborator Id",
+                                    "format": "uuid",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#\/components\/responses\/DomainException"
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/collaboration\/invite": {
@@ -169,12 +499,39 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Collaborator Id",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "description": "Collaborator Id",
+                                    "format": "uuid",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/collaboration\/invite\/{inviteId}\/accept": {
@@ -189,6 +546,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -197,12 +555,37 @@
                     {
                         "name": "inviteId",
                         "in": "path",
+                        "description": "Invite GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Business plan",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessPlan"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#\/components\/responses\/DomainException"
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/collaboration\/invite\/{inviteId}\/discard": {
@@ -217,6 +600,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -225,12 +609,39 @@
                     {
                         "name": "inviteId",
                         "in": "path",
+                        "description": "Invite GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Collaborator Id",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "description": "Collaborator Id",
+                                    "format": "uuid",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/plan": {
@@ -245,12 +656,38 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List all plans for the workspace",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "description": "Plans for the collaborator",
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#\/components\/schemas\/BusinessPlan"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                }
             },
             "post": {
                 "tags": [
@@ -263,12 +700,47 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "requestBody": {
+                    "description": "Add plan request",
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/PlanProfile"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Business plan",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessPlan"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "422": {
+                        "$ref": "#\/components\/responses\/ValidationError"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}": {
@@ -283,6 +755,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -291,12 +764,37 @@
                     {
                         "name": "planId",
                         "in": "path",
+                        "description": "Plan GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Business plan",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessPlan"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/description": {
@@ -311,6 +809,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -319,12 +818,50 @@
                     {
                         "name": "planId",
                         "in": "path",
+                        "description": "Plan GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "requestBody": {
+                    "description": "Change plan description request",
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/PlanProfile"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Business plan",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessPlan"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "422": {
+                        "$ref": "#\/components\/responses\/ValidationError"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/launch": {
@@ -339,6 +876,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -347,12 +885,53 @@
                     {
                         "name": "planId",
                         "in": "path",
+                        "description": "Plan GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "requestBody": {
+                    "description": "Launch plan request",
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/PlanExpiration"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Business plan",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessPlan"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#\/components\/responses\/DomainException"
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "422": {
+                        "$ref": "#\/components\/responses\/ValidationError"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/stop": {
@@ -367,6 +946,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -375,12 +955,40 @@
                     {
                         "name": "planId",
                         "in": "path",
+                        "description": "Plan GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Business plan",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessPlan"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#\/components\/responses\/DomainException"
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/archive": {
@@ -395,6 +1003,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -403,12 +1012,308 @@
                     {
                         "name": "planId",
                         "in": "path",
+                        "description": "Plan GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Business plan",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessPlan"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                }
+            }
+        },
+        "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/requirement": {
+            "post": {
+                "tags": [
+                    "business",
+                    "plan",
+                    "requirement"
+                ],
+                "summary": "Add plan requirement",
+                "description": "Adds a new requirement to the plan. Requirement changes are propagated to the relevant cards.\nRequires user to be authorized to work in the current workspace.",
+                "parameters": [
+                    {
+                        "name": "workspaceId",
+                        "in": "path",
+                        "description": "Workspace GUID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "planId",
+                        "in": "path",
+                        "description": "Plan GUID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Add requirement request",
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/RequirementProfile"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Business plan",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessPlan"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#\/components\/responses\/DomainException"
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "422": {
+                        "$ref": "#\/components\/responses\/ValidationError"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                }
+            }
+        },
+        "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/requirement\/{requirementId}": {
+            "delete": {
+                "tags": [
+                    "business",
+                    "plan",
+                    "requirement"
+                ],
+                "summary": "Remove plan requirement",
+                "description": "Removes the requirement from the plan. Requirement changes are propagated to the relevant cards.\nRequires user to be authorized to work in the current workspace.",
+                "parameters": [
+                    {
+                        "name": "workspaceId",
+                        "in": "path",
+                        "description": "Workspace GUID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "planId",
+                        "in": "path",
+                        "description": "Plan GUID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "requirementId",
+                        "in": "path",
+                        "description": "Requirement GUID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Business plan",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessPlan"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "business",
+                    "plan",
+                    "requirement"
+                ],
+                "summary": "Change plan requirement description",
+                "description": "Changes the requirement description. Description changes are propagated to the relevant cards.\nRequires user to be authorized to work in the current workspace.",
+                "parameters": [
+                    {
+                        "name": "workspaceId",
+                        "in": "path",
+                        "description": "Workspace GUID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "planId",
+                        "in": "path",
+                        "description": "Plan GUID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "requirementId",
+                        "in": "path",
+                        "description": "Requirement GUID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Change requirement description request",
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/RequirementProfile"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Business plan",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessPlan"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "422": {
+                        "$ref": "#\/components\/responses\/ValidationError"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                }
+            }
+        },
+        "\/api\/v1\/workspace\/{workspaceId}\/card": {
+            "post": {
+                "tags": [
+                    "business",
+                    "card"
+                ],
+                "summary": "Issue card",
+                "description": "Issues card for a plan to a customer.\nRequires user to be authorized to work in the current workspace.",
+                "parameters": [
+                    {
+                        "name": "workspaceId",
+                        "in": "path",
+                        "description": "Workspace GUID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Issue card request",
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/NewCard"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Business card",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessCard"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#\/components\/responses\/DomainException"
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "422": {
+                        "$ref": "#\/components\/responses\/ValidationError"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}": {
@@ -423,6 +1328,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -431,12 +1337,37 @@
                     {
                         "name": "cardId",
                         "in": "path",
+                        "description": "Card GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Business card",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessCard"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/complete": {
@@ -451,6 +1382,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -459,12 +1391,40 @@
                     {
                         "name": "cardId",
                         "in": "path",
+                        "description": "Card GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Business card",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessCard"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#\/components\/responses\/DomainException"
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/revoke": {
@@ -479,6 +1439,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -487,12 +1448,40 @@
                     {
                         "name": "cardId",
                         "in": "path",
+                        "description": "Card GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Business card",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessCard"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#\/components\/responses\/DomainException"
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/block": {
@@ -507,6 +1496,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -515,12 +1505,40 @@
                     {
                         "name": "cardId",
                         "in": "path",
+                        "description": "Card GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Business card",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessCard"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#\/components\/responses\/DomainException"
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/unblock": {
@@ -535,6 +1553,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -543,12 +1562,40 @@
                     {
                         "name": "cardId",
                         "in": "path",
+                        "description": "Card GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Business card",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessCard"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#\/components\/responses\/DomainException"
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                }
             }
         },
         "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/achievement": {
@@ -563,6 +1610,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -571,13 +1619,56 @@
                     {
                         "name": "cardId",
                         "in": "path",
+                        "description": "Card GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
                     }
-                ]
-            },
+                ],
+                "requestBody": {
+                    "description": "Note card achievement request",
+                    "content": {
+                        "application\/json": {
+                            "schema": {
+                                "$ref": "#\/components\/schemas\/Achievement"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Business card",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessCard"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#\/components\/responses\/DomainException"
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "422": {
+                        "$ref": "#\/components\/responses\/ValidationError"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                }
+            }
+        },
+        "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/achievement\/{achievementId}": {
             "delete": {
                 "tags": [
                     "business",
@@ -589,6 +1680,7 @@
                     {
                         "name": "workspaceId",
                         "in": "path",
+                        "description": "Workspace GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
@@ -597,15 +1689,619 @@
                     {
                         "name": "cardId",
                         "in": "path",
+                        "description": "Card GUID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "achievementId",
+                        "in": "path",
+                        "description": "Achievement GUID",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
                     }
-                ]
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Business card",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "$ref": "#\/components\/schemas\/BusinessCard"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#\/components\/responses\/DomainException"
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                }
             }
         }
     },
+    "components": {
+        "schemas": {
+            "BusinessWorkspace": {
+                "type": "object",
+                "properties": {
+                    "workspaceId": {
+                        "description": "Workspace Id",
+                        "format": "uuid",
+                        "type": "string"
+                    },
+                    "keeperId": {
+                        "description": "Keeper Id",
+                        "format": "uuid",
+                        "type": "string"
+                    },
+                    "name": {
+                        "description": "Workspace (business) name",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "Workspace (business) description",
+                        "type": "string"
+                    },
+                    "address": {
+                        "description": "Workspace (business) address",
+                        "type": "string"
+                    }
+                }
+            },
+            "BusinessCard": {
+                "type": "object",
+                "properties": {
+                    "cardId": {
+                        "description": "Card Id",
+                        "format": "uuid",
+                        "type": "string"
+                    },
+                    "planId": {
+                        "description": "Plan Id",
+                        "format": "uuid",
+                        "type": "string"
+                    },
+                    "customerId": {
+                        "description": "Customer Id",
+                        "format": "uuid",
+                        "type": "string"
+                    },
+                    "isIssued": {
+                        "description": "Whether the card is issued",
+                        "type": "boolean"
+                    },
+                    "isSatisfied": {
+                        "description": "Whether all the requirements to receive a bonus are satisfied",
+                        "type": "boolean"
+                    },
+                    "isCompleted": {
+                        "description": "Whether the customer has received the bonus for this card",
+                        "type": "boolean"
+                    },
+                    "isRevoked": {
+                        "description": "Whether the card has been revoked",
+                        "type": "boolean"
+                    },
+                    "isBlocked": {
+                        "description": "Whether the card has been blocked",
+                        "type": "boolean"
+                    },
+                    "achievements": {
+                        "description": "Achieved requirements",
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "achievementId": {
+                                    "description": "Achievement Id = corresponding requirement id",
+                                    "format": "uuid",
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "description": "Achievement description = corresponding requirement description",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "requirements": {
+                        "description": "All requirements",
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "requirementId": {
+                                    "description": "Requirement id",
+                                    "format": "uuid",
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "description": "Requirement description",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "WorkspaceProfile": {
+                "description": "Workspace profile request",
+                "type": "object",
+                "required": [
+                    "name",
+                    "description",
+                    "address"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Workspace (business) title",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "Workspace (business) description",
+                        "type": "string"
+                    },
+                    "address": {
+                        "description": "Workspace (business) address",
+                        "type": "string"
+                    }
+                }
+            },
+            "PlanProfile": {
+                "description": "Plan profile request",
+                "type": "object",
+                "required": [
+                    "description"
+                ],
+                "properties": {
+                    "description": {
+                        "description": "Plan description",
+                        "type": "string"
+                    }
+                }
+            },
+            "RequirementProfile": {
+                "description": "Requirement profile request",
+                "type": "object",
+                "required": [
+                    "description"
+                ],
+                "properties": {
+                    "description": {
+                        "description": "Requirement description",
+                        "type": "string"
+                    }
+                }
+            },
+            "PlanExpiration": {
+                "description": "Plan expiration request",
+                "type": "object",
+                "required": [
+                    "expires"
+                ],
+                "properties": {
+                    "expires": {
+                        "description": "Plan expiration date",
+                        "format": "date-time",
+                        "type": "string"
+                    }
+                }
+            },
+            "Achievement": {
+                "description": "Achievement request",
+                "type": "object",
+                "required": [
+                    "achievementId",
+                    "description"
+                ],
+                "properties": {
+                    "achievementId": {
+                        "description": "Achievement (requirement) id",
+                        "format": "uuid",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "Achievement (requirement) description",
+                        "type": "string"
+                    }
+                }
+            },
+            "GetTokenRequest": {
+                "description": "New API access token for the specific device request",
+                "type": "object",
+                "required": [
+                    "identity",
+                    "password",
+                    "deviceName"
+                ],
+                "properties": {
+                    "identity": {
+                        "description": "Identity is either phone or email",
+                        "type": "string"
+                    },
+                    "password": {
+                        "description": "Password",
+                        "format": "password",
+                        "type": "string"
+                    },
+                    "deviceName": {
+                        "description": "Device name is required to distinguish between different access tokens",
+                        "type": "string"
+                    }
+                }
+            },
+            "RegisterRequest": {
+                "anyOf": [
+                    {
+                        "description": "Phone required",
+                        "type": "object",
+                        "required": [
+                            "phone",
+                            "name",
+                            "password",
+                            "deviceName"
+                        ],
+                        "properties": {
+                            "phone": {
+                                "description": "Phone",
+                                "type": "string"
+                            },
+                            "email": {
+                                "description": "Email is required if phone is not provided",
+                                "type": "string"
+                            },
+                            "name": {
+                                "description": "Customer name",
+                                "type": "string"
+                            },
+                            "password": {
+                                "description": "Password",
+                                "format": "password",
+                                "type": "string"
+                            },
+                            "deviceName": {
+                                "description": "Device name is required to distinguish between different access tokens",
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
+                        "description": "Email required",
+                        "type": "object",
+                        "required": [
+                            "email",
+                            "name",
+                            "password",
+                            "deviceName"
+                        ],
+                        "properties": {
+                            "phone": {
+                                "description": "Phone",
+                                "type": "string"
+                            },
+                            "email": {
+                                "description": "Email is required if phone is not provided",
+                                "type": "string"
+                            },
+                            "name": {
+                                "description": "Customer name",
+                                "type": "string"
+                            },
+                            "password": {
+                                "description": "Password",
+                                "format": "password",
+                                "type": "string"
+                            },
+                            "deviceName": {
+                                "description": "Device name is required to distinguish between different access tokens",
+                                "type": "string"
+                            }
+                        }
+                    }
+                ]
+            },
+            "NewCard": {
+                "description": "New card request",
+                "type": "object",
+                "required": [
+                    "planId",
+                    "customerId"
+                ],
+                "properties": {
+                    "planId": {
+                        "description": "Plan id",
+                        "format": "uuid",
+                        "type": "string"
+                    },
+                    "customerId": {
+                        "description": "Customer id",
+                        "format": "uuid",
+                        "type": "string"
+                    }
+                }
+            },
+            "": {
+                "type": "object",
+                "properties": {
+                    "cardId": {
+                        "description": "Card Id",
+                        "format": "uuid",
+                        "type": "string"
+                    },
+                    "planId": {
+                        "description": "Plan Id",
+                        "format": "uuid",
+                        "type": "string"
+                    },
+                    "customerId": {
+                        "description": "Customer Id",
+                        "format": "uuid",
+                        "type": "string"
+                    },
+                    "satisfied": {
+                        "description": "Whether all requirements to receive a bonus are satisfied",
+                        "type": "boolean"
+                    },
+                    "completed": {
+                        "description": "Whether customer has received the bonus for this card",
+                        "type": "boolean"
+                    },
+                    "achievements": {
+                        "description": "Achieved requirements",
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "achievementId": {
+                                    "description": "Achievement Id = corresponding requirement id",
+                                    "format": "uuid",
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "description": "Achievement description = corresponding requirement description",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "requirements": {
+                        "description": "All requirements",
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "requirementId": {
+                                    "description": "Requirement id",
+                                    "format": "uuid",
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "description": "Requirement description",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "CustomerWorkspace": {
+                "type": "object",
+                "properties": {
+                    "workspaceId": {
+                        "description": "Workspace Id",
+                        "format": "uuid",
+                        "type": "string"
+                    },
+                    "name": {
+                        "description": "Workspace (business) name",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "Workspace (business) description",
+                        "type": "string"
+                    },
+                    "address": {
+                        "description": "Workspace (business) address",
+                        "type": "string"
+                    }
+                }
+            },
+            "BusinessPlan": {
+                "type": "object",
+                "properties": {
+                    "planId": {
+                        "description": "Plan Id",
+                        "format": "uuid",
+                        "type": "string"
+                    },
+                    "workspaceId": {
+                        "description": "Workspace Id",
+                        "format": "uuid",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "Plan description",
+                        "type": "string"
+                    },
+                    "isLaunched": {
+                        "description": "Whether the plan is launched",
+                        "type": "boolean"
+                    },
+                    "isStopped": {
+                        "description": "Whether the plan is stopped",
+                        "type": "boolean"
+                    },
+                    "isArchived": {
+                        "description": "Whether the plan is archived",
+                        "type": "boolean"
+                    },
+                    "requirements": {
+                        "description": "All requirements",
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "requirementId": {
+                                    "description": "Requirement id",
+                                    "format": "uuid",
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "description": "Requirement description",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "responses": {
+            "ParametersAssertionException": {
+                "description": "Bad Request",
+                "content": {
+                    "application\/json": {
+                        "schema": {
+                            "description": "Parameters Assertion Exception",
+                            "type": "string",
+                            "example": "Wrong string format for UUID"
+                        }
+                    }
+                }
+            },
+            "ValidationError": {
+                "description": "Validation errors",
+                "content": {
+                    "application\/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "The given data was invalid."
+                                },
+                                "errors": {
+                                    "type": "object",
+                                    "additionalProperties": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "example": {
+                                        "field": [
+                                            "Something is wrong with this field!"
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "AuthorizationException": {
+                "description": "Forbidden",
+                "content": {
+                    "application\/json": {
+                        "schema": {
+                            "description": "Authorization Exception",
+                            "type": "string",
+                            "example": "Subject <Subject Id> is not authorized for <Resource Type> <Resource Id>"
+                        }
+                    }
+                }
+            },
+            "UserAlreadyRegisteredException": {
+                "description": "Bad Request",
+                "content": {
+                    "application\/json": {
+                        "schema": {
+                            "description": "User Already Registered Exception",
+                            "type": "string",
+                            "example": "User with given identity already registered"
+                        }
+                    }
+                }
+            },
+            "UnexpectedException": {
+                "description": "Internal Server Error",
+                "content": {
+                    "application\/json": {
+                        "schema": {
+                            "description": "Unexpected Exception",
+                            "type": "string",
+                            "example": "Unexpected exception"
+                        }
+                    }
+                }
+            },
+            "NotFound": {
+                "description": "Not Found",
+                "content": {
+                    "application\/json": {
+                        "schema": {
+                            "description": "Requested resource not found",
+                            "type": "string",
+                            "example": "Not found exception: <Resource Name>: <Resource Id>"
+                        }
+                    }
+                }
+            },
+            "AuthenticationException": {
+                "description": "Unauthorized",
+                "content": {
+                    "application\/json": {
+                        "schema": {
+                            "description": "Authentication Exception",
+                            "type": "string",
+                            "example": "Invalid access token"
+                        }
+                    }
+                }
+            },
+            "DomainException": {
+                "description": "Bad Request",
+                "content": {
+                    "application\/json": {
+                        "schema": {
+                            "description": "Domain Exception",
+                            "type": "string",
+                            "example": "Domain logic forbids requested operation"
+                        }
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "BearerToken": {
+                "type": "apiKey",
+                "in": "header",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    },
+    "security": [
+        {
+            "BearerToken": []
+        }
+    ],
     "tags": [
         {
             "name": "customer",
@@ -626,6 +2322,10 @@
         {
             "name": "plan",
             "description": "Pertains to workspace operations with plans"
+        },
+        {
+            "name": "requirement",
+            "description": "Pertains to workspace operations with requirements in a plan"
         },
         {
             "name": "workspace",

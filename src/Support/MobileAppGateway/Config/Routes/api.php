@@ -28,8 +28,6 @@ Route::group(['prefix' => '/api/v1', 'middleware' => 'api'], function () {
             Route::get('/', [WorkspaceController::class, 'getWorkspace'])->name(RouteName::GET_WORKSPACE);
             Route::put('/profile', [WorkspaceController::class, 'changeWorkspaceProfile'])->name(RouteName::CHANGE_PROFILE);
 
-            Route::post('/card', [CardController::class, 'issue'])->name(RouteName::ISSUE_CARD);
-
             Route::group(['prefix' => '/collaboration'], function () {
                 Route::post('/leave', [CollaborationController::class, 'leave'])->name(RouteName::LEAVE_RELATION);
 
@@ -56,6 +54,8 @@ Route::group(['prefix' => '/api/v1', 'middleware' => 'api'], function () {
                 Route::put('/requirement/{requirementId}', [PlanController::class, 'changeRequirement'])->name(RouteName::CHANGE_PLAN_REQUIREMENT);
             });
 
+            Route::post('/card', [CardController::class, 'issue'])->name(RouteName::ISSUE_CARD);
+
             Route::group(['prefix' => '/card/{cardId}'], function () {
                 Route::get('/', [CardController::class, 'getCard'])->name(RouteName::GET_CARD);
 
@@ -65,7 +65,7 @@ Route::group(['prefix' => '/api/v1', 'middleware' => 'api'], function () {
                 Route::put('/unblock', [CardController::class, 'unblock'])->name(RouteName::UNBLOCK_CARD);
 
                 Route::post('/achievement', [CardController::class, 'noteAchievement'])->name(RouteName::NOTE_ACHIEVEMENT);
-                Route::delete('/achievement', [CardController::class, 'dismissAchievement'])->name(RouteName::DISMISS_ACHIEVEMENT);
+                Route::delete('/achievement/{achievementId}', [CardController::class, 'dismissAchievement'])->name(RouteName::DISMISS_ACHIEVEMENT);
             });
 
         });

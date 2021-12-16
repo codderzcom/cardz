@@ -21,7 +21,7 @@ class UserAppService
     {
         //ToDo: здесь?
         if ($this->userRepository->isExistingIdentity($command->getUserIdentity())) {
-            throw new UserExistsException("User already registered");
+            throw new UserExistsException("User with given identity already registered");
         }
 
         $user = User::register($command->getUserId(), $command->getUserIdentity(), $command->getPassword(), $command->getProfile());

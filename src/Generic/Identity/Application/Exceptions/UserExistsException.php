@@ -2,9 +2,9 @@
 
 namespace Cardz\Generic\Identity\Application\Exceptions;
 
-use Codderz\Platypus\Exceptions\NotFoundException;
+use Codderz\Platypus\Exceptions\ParameterAssertionException;
 
-class UserExistsException extends NotFoundException
+class UserExistsException extends ParameterAssertionException
 {
 
 }

@@ -2,13 +2,30 @@
 
 namespace Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer;
 
+use App\OpenApi\Requests\Customer\GetTokenRequestBody;
+use App\OpenApi\Requests\Customer\RegisterRequestBody;
+use App\OpenApi\Responses\ApiAccessTokenResponse;
+use App\OpenApi\Responses\CustomerIdResponse;
+use App\OpenApi\Responses\CustomerWorkspacesResponse;
+use App\OpenApi\Responses\Errors\AuthenticationExceptionResponse;
+use App\OpenApi\Responses\Errors\AuthorizationExceptionResponse;
+use App\OpenApi\Responses\Errors\NotFoundResponse;
+use App\OpenApi\Responses\Errors\ParametersAssertionExceptionResponse;
+use App\OpenApi\Responses\Errors\UnexpectedExceptionResponse;
+use App\OpenApi\Responses\Errors\UserAlreadyRegisteredExceptionResponse;
+use App\OpenApi\Responses\Errors\ValidationErrorResponse;
+use App\OpenApi\Responses\IssuedCardResponse;
+use App\OpenApi\Responses\IssuedCardsResponse;
+use App\OpenApi\SecuritySchemes\BearerTokenSecurityScheme;
 use Cardz\Support\MobileAppGateway\Application\Services\Customer\CustomerAppService;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\BaseController;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer\Requests\GetIssuedCardRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer\Requests\GetIssuedCardsRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer\Requests\GetTokenRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer\Requests\RegisterRequest;
+use Codderz\Platypus\Exceptions\ParameterAssertionException;
 use Illuminate\Http\JsonResponse;
+use Ramsey\Uuid\Guid\Guid;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
 #[OpenApi\PathItem]
@@ -24,7 +41,11 @@ class CustomerController extends BaseController
      *
      * Returns id of the authenticated user.
      */
-    #[OpenApi\Operation(tags: ['customer'])]
+    #[OpenApi\Operation(tags: ['customer'], security: BearerTokenSecurityScheme::class)]
+    #[OpenApi\Response(factory: CustomerIdResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
+    #[OpenApi\Response(factory: AuthorizationExceptionResponse::class, statusCode: 403)]
+    #[OpenApi\Response(factory: UnexpectedExceptionResponse::class, statusCode: 500)]
     public function getId(): JsonResponse
     {
         return $this->response($this->customerAppService->getCustomerId());
@@ -36,6 +57,11 @@ class CustomerController extends BaseController
      * Returns new API user token (for basic bearer auth). Requires identity, password and device name.
      */
     #[OpenApi\Operation(tags: ['customer'])]
+    #[OpenApi\RequestBody(factory: GetTokenRequestBody::class)]
+    #[OpenApi\Response(factory: ApiAccessTokenResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
+    #[OpenApi\Response(factory: ValidationErrorResponse::class, statusCode: 422)]
+    #[OpenApi\Response(factory: UnexpectedExceptionResponse::class, statusCode: 500)]
     public function getToken(GetTokenRequest $request): JsonResponse
     {
         return $this->response($this->customerAppService->getToken(
@@ -51,6 +77,11 @@ class CustomerController extends BaseController
      * Registers new user with email OR phone, password, device name (for token). Returns new auth token.
      */
     #[OpenApi\Operation(tags: ['customer'])]
+    #[OpenApi\RequestBody(factory: RegisterRequestBody::class)]
+    #[OpenApi\Response(factory: ApiAccessTokenResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: UserAlreadyRegisteredExceptionResponse::class, statusCode: 400)]
+    #[OpenApi\Response(factory: ValidationErrorResponse::class, statusCode: 422)]
+    #[OpenApi\Response(factory: UnexpectedExceptionResponse::class, statusCode: 500)]
     public function register(RegisterRequest $request): JsonResponse
     {
         return $this->response($this->customerAppService->register(
@@ -62,17 +93,15 @@ class CustomerController extends BaseController
         ));
     }
 
-    public function uno(GetIssuedCardRequest $request)
-    {
-        dd(2);
-    }
-
     /**
      * User cards
      *
      * Returns all active cards for the current user.
      */
-    #[OpenApi\Operation(tags: ['customer'])]
+    #[OpenApi\Operation(tags: ['customer'], security: BearerTokenSecurityScheme::class)]
+    #[OpenApi\Response(factory: IssuedCardsResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
+    #[OpenApi\Response(factory: UnexpectedExceptionResponse::class, statusCode: 500)]
     public function getCards(GetIssuedCardsRequest $request): JsonResponse
     {
         return $this->response($this->customerAppService->getIssuedCards($request->customerId));
@@ -82,8 +111,13 @@ class CustomerController extends BaseController
      * User card
      *
      * Returns an active card, owned by the current user, by its id.
+     * @param Guid $cardId Card GUID
      */
-    #[OpenApi\Operation(tags: ['customer'])]
+    #[OpenApi\Operation(tags: ['customer'], security: BearerTokenSecurityScheme::class)]
+    #[OpenApi\Response(factory: IssuedCardResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
+    #[OpenApi\Response(factory: NotFoundResponse::class, statusCode: 404)]
+    #[OpenApi\Response(factory: UnexpectedExceptionResponse::class, statusCode: 500)]
     public function getCard(GetIssuedCardRequest $request): JsonResponse
     {
         return $this->response($this->customerAppService->getIssuedCard($request->customerId, $request->cardId));
@@ -95,6 +129,8 @@ class CustomerController extends BaseController
      * Returns all workspaces
      */
     #[OpenApi\Operation(tags: ['customer'])]
+    #[OpenApi\Response(factory: CustomerWorkspacesResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: UnexpectedExceptionResponse::class, statusCode: 500)]
     public function getWorkspaces(): JsonResponse
     {
         return $this->response($this->customerAppService->getCustomerWorkspaces());

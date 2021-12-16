@@ -23,12 +23,12 @@ class UserRepository implements UserRepositoryInterface
 
     public function isExistingIdentity(UserIdentity $userIdentity): bool
     {
-        $query = EloquentUser::query();
+        $query = EloquentUser::query()->whereNull('id');
         if ($userIdentity->getEmail() !== null) {
-            $query->where('email', '=', $userIdentity->getEmail());
+            $query->orWhere('email', '=', $userIdentity->getEmail());
         }
         if ($userIdentity->getPhone() !== null) {
-            $query->where('phone', '=', $userIdentity->getPhone());
+            $query->orWhere('phone', '=', $userIdentity->getPhone());
         }
 
         $eloquentUser = $query->first();

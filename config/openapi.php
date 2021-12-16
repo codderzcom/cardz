@@ -6,8 +6,9 @@ return [
 
             'info' => [
                 'title' => config('app.name'),
-                'description' => null,
-                'version' => '2.0.0',
+                'author' => config('app.author'),
+                'description' => config('app.description'),
+                'version' => config('app.version'),
                 'contact' => [],
             ],
 
@@ -22,6 +23,10 @@ return [
                     'description' => 'Default',
                     'variables' => [],
                 ],
+            ],
+
+            'security' => [
+                GoldSpecDigital\ObjectOrientedOAS\Objects\SecurityRequirement::create()->securityScheme('BearerToken'),
             ],
 
             'tags' => [
@@ -48,6 +53,11 @@ return [
                 [
                     'name' => 'plan',
                     'description' => 'Pertains to workspace operations with plans',
+                ],
+
+                [
+                    'name' => 'requirement',
+                    'description' => 'Pertains to workspace operations with requirements in a plan',
                 ],
 
                 [

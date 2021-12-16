@@ -6,7 +6,7 @@ use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Comma
 use Codderz\Platypus\Contracts\GenericIdInterface;
 use Codderz\Platypus\Infrastructure\Support\GuidBasedImmutableId;
 
-final class AchievementCardRequest extends BaseCommandRequest
+final class NoteAchievementCardRequest extends BaseCommandRequest
 {
     protected const RULES = [
         'cardId' => 'required',
