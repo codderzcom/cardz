@@ -41,6 +41,7 @@ final class RuleConfig
             Rule::of(Permission::INVITE_PROPOSE(), $allowForKeeper),
             Rule::of(Permission::INVITE_DISCARD(), $allowForKeeper),
             Rule::of(Permission::COLLABORATION_LEAVE(), $allowForCollaborators, $denyForKeeper),
+            Rule::of(Permission::FIRE_COLLABORATOR(), $allowForKeeper),
             Rule::of(Permission::NULL_PERMISSION(), $allow),
         ];
         return new self(...$rules);

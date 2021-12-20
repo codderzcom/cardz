@@ -17,6 +17,7 @@ use Codderz\Platypus\Infrastructure\Authorization\Abac\AbacPermission;
  * @method static self INVITE_PROPOSE()
  * @method static self INVITE_DISCARD()
  * @method static self COLLABORATION_LEAVE()
+ * @method static self FIRE_COLLABORATOR()
  * @method static self NULL_PERMISSION()
  */
 final class AuthorizationPermission extends AbacPermission
@@ -37,6 +38,7 @@ final class AuthorizationPermission extends AbacPermission
     public const INVITE_DISCARD = ResourceType::WORKSPACE . '.invite.discard';
 
     public const COLLABORATION_LEAVE = ResourceType::WORKSPACE . '.collaboration.leave';
+    public const FIRE_COLLABORATOR = ResourceType::WORKSPACE . '.collaboration.fire';
 
     public const NULL_PERMISSION = ResourceType::NULL;
 

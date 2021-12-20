@@ -25,6 +25,10 @@ class IssuedCardResponseSchema extends SchemaFactory implements Reusable
             ->format(Schema::FORMAT_UUID)
             ->description('Customer Id');
 
+        $description = Schema::string('description')
+            ->description('Card (plan) description')
+            ->example($this->faker()->text());
+
         $satisfied = Schema::boolean('satisfied')
             ->description('Whether all requirements to receive a bonus are satisfied');
 
@@ -58,7 +62,7 @@ class IssuedCardResponseSchema extends SchemaFactory implements Reusable
             ->description('All requirements');
 
         return Schema::object()
-            ->properties($cardId, $planId, $customerId, $satisfied, $completed, $achievements, $requirements);
+            ->properties($cardId, $planId, $customerId, $description, $satisfied, $completed, $achievements, $requirements);
     }
 
 }

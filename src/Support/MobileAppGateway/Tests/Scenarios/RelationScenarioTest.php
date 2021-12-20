@@ -61,4 +61,32 @@ class RelationScenarioTest extends BaseScenarioTestCase
         $response = $this->routePost(RouteName::LEAVE_RELATION, ['workspaceId' => $workspaceId, 'collaboratorId' => $keeper->id]);
         $response->assertForbidden();
     }
+
+    public function test_keeper_can_fire_collaborator()
+    {
+        $this->persistEnvironment();
+        $keeper = $this->environment->keeperInfos[0];
+        $this->setAuthTokenFor($keeper);
+        $collaborator = $this->environment->collaboratorInfos[0];
+
+        $workspaces = $this->routeGet(RouteName::GET_WORKSPACES)->json();
+        $workspaceId = $workspaces[0]['workspaceId'];
+
+        $response = $this->routePost(RouteName::FIRE_COLLABORATOR, ['workspaceId' => $workspaceId, 'collaboratorId' => $collaborator->id]);
+        $response->assertSuccessful();
+    }
+
+    public function test_collaborator_cannot_fire_collaborator()
+    {
+        $this->persistEnvironment();
+        $collaborator = $this->environment->collaboratorInfos[0];
+        $this->setAuthTokenFor($collaborator);
+        $secondCollaborator = $this->environment->collaboratorInfos[1];
+
+        $workspaces = $this->routeGet(RouteName::GET_WORKSPACES)->json();
+        $workspaceId = $workspaces[0]['workspaceId'];
+
+        $response = $this->routePost(RouteName::FIRE_COLLABORATOR, ['workspaceId' => $workspaceId, 'collaboratorId' => $secondCollaborator->id]);
+        $response->assertForbidden();
+    }
 }

@@ -11,4 +11,6 @@ interface CollaborationContextInterface
     public function discard(string $inviteId): string;
 
     public function leave(string $collaboratorId, string $workspaceId): string;
+
+    public function fire(string $collaboratorId, string $workspaceId): string;
 }

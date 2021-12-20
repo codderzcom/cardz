@@ -6,12 +6,12 @@ use Cardz\Support\Collaboration\Domain\Events\Invite\InviteAccepted as DomainInv
 use Cardz\Support\Collaboration\Domain\Events\Invite\InviteDiscarded as DomainInviteDiscarded;
 use Cardz\Support\Collaboration\Domain\Events\Invite\InviteProposed as DomainInviteProposed;
 use Cardz\Support\Collaboration\Domain\Events\Relation\RelationEstablished as DomainRelationEstablished;
-use Cardz\Support\Collaboration\Domain\Events\Relation\RelationLeft as DomainRelationLeft;
+use Cardz\Support\Collaboration\Domain\Events\Relation\RelationRemoved as DomainRelationRemoved;
 use Cardz\Support\Collaboration\Integration\Events\InviteAccepted;
 use Cardz\Support\Collaboration\Integration\Events\InviteDiscarded;
 use Cardz\Support\Collaboration\Integration\Events\InviteProposed;
 use Cardz\Support\Collaboration\Integration\Events\RelationEstablished;
-use Cardz\Support\Collaboration\Integration\Events\RelationLeft;
+use Cardz\Support\Collaboration\Integration\Events\RelationRemoved;
 use Codderz\Platypus\Contracts\Messaging\EventConsumerInterface;
 use Codderz\Platypus\Contracts\Messaging\EventInterface;
 use Codderz\Platypus\Contracts\Messaging\IntegrationEventBusInterface;
@@ -31,7 +31,7 @@ final class DomainEventConsumer implements EventConsumerInterface
             DomainInviteProposed::class,
 
             DomainRelationEstablished::class,
-            DomainRelationLeft::class,
+            DomainRelationRemoved::class,
         ];
     }
 
@@ -43,7 +43,7 @@ final class DomainEventConsumer implements EventConsumerInterface
             DomainInviteProposed::class => InviteProposed::of($event->with()),
 
             DomainRelationEstablished::class => RelationEstablished::of($event->with()),
-            DomainRelationLeft::class => RelationLeft::of($event->with()),
+            DomainRelationRemoved::class => RelationRemoved::of($event->with()),
             default => null,
         };
         if ($integrationEvent !== null) {

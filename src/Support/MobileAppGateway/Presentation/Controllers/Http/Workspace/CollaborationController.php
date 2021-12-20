@@ -9,9 +9,9 @@ use App\OpenApi\Responses\Errors\AuthorizationExceptionResponse;
 use App\OpenApi\Responses\Errors\DomainExceptionResponse;
 use App\OpenApi\Responses\Errors\NotFoundResponse;
 use App\OpenApi\Responses\Errors\UnexpectedExceptionResponse;
-use App\OpenApi\Responses\Errors\ValidationErrorResponse;
 use Cardz\Support\MobileAppGateway\Application\Services\Workspace\CollaborationAppService;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\BaseController;
+use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\Collaboration\FireCollaboratorRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\Collaboration\InviteRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\Collaboration\LeaveCollaborationRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\Collaboration\ProposeInviteRequest;
@@ -100,5 +100,25 @@ class CollaborationController extends BaseController
     public function leave(LeaveCollaborationRequest $request): JsonResponse
     {
         return $this->response($this->collaborationAppService->leave($request->collaboratorId, $request->workspaceId));
+    }
+
+    /**
+     * Remove collaborator
+     *
+     * Fires the collaborator from the team. User with the given id will no longer be able to work in the workspace.
+     * Requires the current user to be the owner of the workspace.
+     * @param Guid $workspaceId Workspace GUID
+     * @param Guid $collaboratorId Collaborator GUID
+     */
+    #[OpenApi\Operation(tags: ['business', 'collaboration'])]
+    #[OpenApi\Response(factory: CollaboratorIdResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: DomainExceptionResponse::class, statusCode: 400)]
+    #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
+    #[OpenApi\Response(factory: AuthorizationExceptionResponse::class, statusCode: 403)]
+    #[OpenApi\Response(factory: NotFoundResponse::class, statusCode: 404)]
+    #[OpenApi\Response(factory: UnexpectedExceptionResponse::class, statusCode: 500)]
+    public function fire(FireCollaboratorRequest $request): JsonResponse
+    {
+        return $this->response($this->collaborationAppService->fire($request->collaboratorId, $request->workspaceId));
     }
 }

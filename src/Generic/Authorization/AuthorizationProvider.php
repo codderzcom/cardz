@@ -12,7 +12,7 @@ use Cardz\Generic\Authorization\Infrastructure\ResourceProviderInterface;
 use Cardz\Generic\Authorization\Integration\Projectors\CardResourceEventConsumer;
 use Cardz\Generic\Authorization\Integration\Projectors\PlanResourceEventConsumer;
 use Cardz\Generic\Authorization\Integration\Projectors\RelationEstablishedEventConsumer;
-use Cardz\Generic\Authorization\Integration\Projectors\RelationLeftEventConsumer;
+use Cardz\Generic\Authorization\Integration\Projectors\RelationRemovedEventConsumer;
 use Cardz\Generic\Authorization\Integration\Projectors\SubjectResourceEventConsumer;
 use Cardz\Generic\Authorization\Integration\Projectors\WorkspaceResourceEventConsumer;
 use Codderz\Platypus\Contracts\Messaging\IntegrationEventBusInterface;
@@ -38,6 +38,6 @@ class AuthorizationProvider extends ServiceProvider
         $integrationEventBus->subscribe($this->app->make(PlanResourceEventConsumer::class));
         $integrationEventBus->subscribe($this->app->make(CardResourceEventConsumer::class));
         $integrationEventBus->subscribe($this->app->make(RelationEstablishedEventConsumer::class));
-        $integrationEventBus->subscribe($this->app->make(RelationLeftEventConsumer::class));
+        $integrationEventBus->subscribe($this->app->make(RelationRemovedEventConsumer::class));
     }
 }

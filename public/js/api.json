@@ -487,6 +487,65 @@
                 }
             }
         },
+        "\/api\/v1\/workspace\/{workspaceId}\/collaboration\/fire\/{collaboratorId}": {
+            "post": {
+                "tags": [
+                    "business",
+                    "collaboration"
+                ],
+                "summary": "Remove collaborator",
+                "description": "Fires the collaborator from the team. User with the given id will no longer be able to work in the workspace.\nRequires the current user to be the owner of the workspace.",
+                "parameters": [
+                    {
+                        "name": "workspaceId",
+                        "in": "path",
+                        "description": "Workspace GUID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "collaboratorId",
+                        "in": "path",
+                        "description": "Collaborator GUID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Collaborator Id",
+                        "content": {
+                            "application\/json": {
+                                "schema": {
+                                    "description": "Collaborator Id",
+                                    "format": "uuid",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#\/components\/responses\/DomainException"
+                    },
+                    "401": {
+                        "$ref": "#\/components\/responses\/AuthenticationException"
+                    },
+                    "403": {
+                        "$ref": "#\/components\/responses\/AuthorizationException"
+                    },
+                    "404": {
+                        "$ref": "#\/components\/responses\/NotFound"
+                    },
+                    "500": {
+                        "$ref": "#\/components\/responses\/UnexpectedException"
+                    }
+                }
+            }
+        },
         "\/api\/v1\/workspace\/{workspaceId}\/collaboration\/invite": {
             "post": {
                 "tags": [
@@ -1753,17 +1812,17 @@
                     "name": {
                         "description": "Workspace (business) name",
                         "type": "string",
-                        "example": "Herzog Ltd"
+                        "example": "Crona Ltd"
                     },
                     "description": {
                         "description": "Workspace (business) description",
                         "type": "string",
-                        "example": "Commodi sunt et sit harum sit amet asperiores. Reprehenderit est quo consequatur sequi. Voluptatem aut aut voluptas est repellendus. Animi dicta ut et alias molestiae."
+                        "example": "Quidem qui est impedit voluptas. Ipsum soluta autem atque vero expedita voluptatem. Atque nihil blanditiis culpa ea ipsum earum."
                     },
                     "address": {
                         "description": "Workspace (business) address",
                         "type": "string",
-                        "example": "216 Hane Spur\nEast Marilyne, OK 58572"
+                        "example": "35151 Ezra Loop Suite 120\nKshlerinview, MT 73719"
                     }
                 }
             },
@@ -1819,7 +1878,7 @@
                                 "description": {
                                     "description": "Achievement description = corresponding requirement description",
                                     "type": "string",
-                                    "example": "Adipisci aliquid molestiae non aut id id. Unde possimus voluptas et et illum placeat sit. Eligendi quasi aut odit."
+                                    "example": "In reprehenderit corrupti aliquam. Iste corrupti reiciendis at et. Officia explicabo expedita cupiditate. Dolores esse quod non qui. Sint sit delectus autem."
                                 }
                             }
                         }
@@ -1838,7 +1897,7 @@
                                 "description": {
                                     "description": "Requirement description",
                                     "type": "string",
-                                    "example": "Repellat ut harum iste omnis magni. Officiis excepturi recusandae nam quos quasi."
+                                    "example": "Ut magni error delectus. Aliquam explicabo repellendus libero corporis tenetur. Corrupti velit excepturi adipisci ut dolorem."
                                 }
                             }
                         }
@@ -1857,17 +1916,17 @@
                     "name": {
                         "description": "Workspace (business) title",
                         "type": "string",
-                        "example": "Hyatt-Stroman"
+                        "example": "Powlowski, Heller and Pagac"
                     },
                     "description": {
                         "description": "Workspace (business) description",
                         "type": "string",
-                        "example": "Eaque voluptas id ea. Quis corporis nostrum quia cupiditate."
+                        "example": "Doloremque et rerum ratione voluptatem. Asperiores molestiae et ut et omnis sapiente architecto repellat. Ipsam est occaecati voluptatem nesciunt id voluptatem sint."
                     },
                     "address": {
                         "description": "Workspace (business) address",
                         "type": "string",
-                        "example": "1618 Davis Island Suite 135\nWest Ivaview, ID 41704"
+                        "example": "29146 Javonte Highway\nPort Elisabeth, VA 88800"
                     }
                 }
             },
@@ -1894,7 +1953,7 @@
                     "description": {
                         "description": "Requirement description",
                         "type": "string",
-                        "example": "Possimus molestias consequatur veritatis et. Voluptatem id omnis dolorem et eius debitis ut. Ad sed deserunt sunt tempore aut. Nulla architecto dolorem similique."
+                        "example": "Tempora eos excepturi fugit non aperiam suscipit amet. Eos voluptas perferendis iste aut amet laborum. Corporis facere eos ducimus magni odio. Sit dignissimos voluptatum reiciendis pariatur et."
                     }
                 }
             },
@@ -1928,7 +1987,7 @@
                     "description": {
                         "description": "Achievement (requirement) description",
                         "type": "string",
-                        "example": "Iusto optio sint quibusdam consequuntur. Explicabo dolor porro officiis repellendus quibusdam. Velit minus repellendus est et."
+                        "example": "Earum deserunt corporis sit non assumenda animi tenetur. Porro ad cumque consectetur. Deserunt rerum nobis illum laudantium. In odio quis veritatis et quo corporis."
                     }
                 }
             },
@@ -1944,18 +2003,18 @@
                     "identity": {
                         "description": "Identity is either phone or email",
                         "type": "string",
-                        "example": "lawson.dickinson@wilderman.com"
+                        "example": "thomas.haag@yahoo.com"
                     },
                     "password": {
                         "description": "Password",
                         "format": "password",
                         "type": "string",
-                        "example": "g|:v<uj\/P|<"
+                        "example": "TZnlz7"
                     },
                     "deviceName": {
                         "description": "Device name is required to distinguish between different access tokens",
                         "type": "string",
-                        "example": "consequatur"
+                        "example": "perferendis"
                     }
                 }
             },
@@ -1974,28 +2033,28 @@
                             "phone": {
                                 "description": "Phone",
                                 "type": "string",
-                                "example": "(661) 423-0461"
+                                "example": "(220) 875-0722"
                             },
                             "email": {
                                 "description": "Email is required if phone is not provided",
                                 "type": "string",
-                                "example": "camden22@funk.com"
+                                "example": "chaim.bechtelar@gmail.com"
                             },
                             "name": {
                                 "description": "Customer name",
                                 "type": "string",
-                                "example": "Edison Conn II"
+                                "example": "Prof. Cyrus Hauck MD"
                             },
                             "password": {
                                 "description": "Password",
                                 "format": "password",
                                 "type": "string",
-                                "example": "Q&f+X'h\\\/k|{0Uj"
+                                "example": "2&|S|v0L"
                             },
                             "deviceName": {
                                 "description": "Device name is required to distinguish between different access tokens",
                                 "type": "string",
-                                "example": "aut"
+                                "example": "qui"
                             }
                         }
                     },
@@ -2012,28 +2071,28 @@
                             "phone": {
                                 "description": "Phone",
                                 "type": "string",
-                                "example": "(661) 423-0461"
+                                "example": "(220) 875-0722"
                             },
                             "email": {
                                 "description": "Email is required if phone is not provided",
                                 "type": "string",
-                                "example": "camden22@funk.com"
+                                "example": "chaim.bechtelar@gmail.com"
                             },
                             "name": {
                                 "description": "Customer name",
                                 "type": "string",
-                                "example": "Edison Conn II"
+                                "example": "Prof. Cyrus Hauck MD"
                             },
                             "password": {
                                 "description": "Password",
                                 "format": "password",
                                 "type": "string",
-                                "example": "Q&f+X'h\\\/k|{0Uj"
+                                "example": "2&|S|v0L"
                             },
                             "deviceName": {
                                 "description": "Device name is required to distinguish between different access tokens",
                                 "type": "string",
-                                "example": "aut"
+                                "example": "qui"
                             }
                         }
                     }
@@ -2077,6 +2136,11 @@
                         "format": "uuid",
                         "type": "string"
                     },
+                    "description": {
+                        "description": "Card (plan) description",
+                        "type": "string",
+                        "example": "Ducimus ut nihil fuga illo. Aliquam soluta deserunt omnis nulla. Dolor voluptatem impedit provident doloribus dolorem nihil iusto."
+                    },
                     "satisfied": {
                         "description": "Whether all requirements to receive a bonus are satisfied",
                         "type": "boolean"
@@ -2099,11 +2163,11 @@
                                 "description": {
                                     "description": "Achievement description = corresponding requirement description",
                                     "type": "string",
-                                    "example": "Sapiente et voluptatibus ad ipsam omnis autem. Voluptates sit inventore facere culpa sed cupiditate. Quasi mollitia ut doloribus aspernatur in vel."
+                                    "example": "Et voluptatem nam voluptates rerum inventore cum doloremque. Aspernatur quas fugiat doloremque consectetur error porro. Possimus ea ipsum tenetur quia. Ab ipsa aut a totam asperiores quibusdam ut."
                                 }
                             }
                         },
-                        "example": "Quo quibusdam ut et provident illo. Optio aliquid sequi omnis architecto omnis. Odio veritatis nulla nobis quasi quaerat distinctio quod. Minima cupiditate ut et ea."
+                        "example": "Fugiat voluptas omnis qui. Dolorem mollitia modi qui molestiae rerum. Assumenda quae autem voluptatem sed non fugit adipisci."
                     },
                     "requirements": {
                         "description": "All requirements",
@@ -2119,7 +2183,7 @@
                                 "description": {
                                     "description": "Requirement description",
                                     "type": "string",
-                                    "example": "Eveniet exercitationem maiores nihil et sint. Mollitia nisi consequatur eius perferendis ea libero vitae. Illum mollitia eos aut eum quis cum. Ut ut et temporibus laboriosam quis a laborum."
+                                    "example": "Praesentium voluptatum eaque est quis molestiae. Temporibus earum doloribus quaerat voluptatem placeat maiores dignissimos quae. Ut impedit in ullam dolorem libero eveniet."
                                 }
                             }
                         }
@@ -2137,17 +2201,17 @@
                     "name": {
                         "description": "Workspace (business) name",
                         "type": "string",
-                        "example": "West PLC"
+                        "example": "Hirthe Inc"
                     },
                     "description": {
                         "description": "Workspace (business) description",
                         "type": "string",
-                        "example": "Possimus quod dolorum tenetur quo occaecati. Est est architecto est vel reprehenderit non in. Voluptatem ad minima facilis et officiis."
+                        "example": "Non ipsam eos tempore quisquam. Odit velit vero aliquam qui consequatur facilis id et. Dolores quidem rem ut voluptatem."
                     },
                     "address": {
                         "description": "Workspace (business) address",
                         "type": "string",
-                        "example": "300 Keshaun Ford Suite 286\nBrookshaven, KS 24614"
+                        "example": "5797 Cronin Flats\nPort Lilianafort, MD 93772-7366"
                     }
                 }
             },
@@ -2167,7 +2231,7 @@
                     "description": {
                         "description": "Plan description",
                         "type": "string",
-                        "example": "Voluptatem repellat id corporis dolorum corporis consectetur. Dignissimos quod in ea earum. Quia rem et rem amet est."
+                        "example": "Et et facere voluptas soluta qui. Doloribus culpa molestias est dolorum. Ducimus corrupti dolores fugit explicabo fugiat."
                     },
                     "isLaunched": {
                         "description": "Whether the plan is launched",
@@ -2195,7 +2259,7 @@
                                 "description": {
                                     "description": "Requirement description",
                                     "type": "string",
-                                    "example": "Qui perferendis sit aut ipsam dolores optio. Eveniet quisquam similique sit et repudiandae. Ad fuga distinctio illo inventore iusto voluptatem ut velit."
+                                    "example": "Dolor necessitatibus doloremque quidem impedit. Provident ducimus rem ratione ratione. Suscipit soluta rerum qui est libero. Expedita ut aspernatur dolorum voluptatem molestias veritatis et."
                                 }
                             }
                         }

@@ -3,7 +3,7 @@
 namespace Cardz\Support\Collaboration\Application\Services;
 
 use Cardz\Support\Collaboration\Application\Commands\Relation\EstablishRelation;
-use Cardz\Support\Collaboration\Application\Commands\Relation\LeaveRelation;
+use Cardz\Support\Collaboration\Application\Commands\Relation\RemoveRelation;
 use Cardz\Support\Collaboration\Domain\Model\Relation\Relation;
 use Cardz\Support\Collaboration\Domain\Model\Relation\RelationId;
 use Cardz\Support\Collaboration\Domain\Persistence\Contracts\RelationRepositoryInterface;
@@ -30,10 +30,10 @@ class RelationAppService
         return $command->getRelationId();
     }
 
-    public function leave(LeaveRelation $command): RelationId
+    public function remove(RemoveRelation $command): RelationId
     {
         $relation = $this->relationRepository->find($command->getCollaboratorId(), $command->getWorkspaceId());
-        $relation->leave();
+        $relation->remove();
         $this->relationRepository->persist($relation);
         $this->domainEventBus->publish(...$relation->releaseEvents());
         return $relation->relationId;

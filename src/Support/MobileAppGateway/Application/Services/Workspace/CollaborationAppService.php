@@ -31,4 +31,9 @@ class CollaborationAppService
         return $this->collaborationContext->leave($collaboratorId, $workspaceId);
     }
 
+    public function fire(string $collaboratorId, string $workspaceId): string
+    {
+        return $this->collaborationContext->fire($collaboratorId, $workspaceId);
+    }
+
 }

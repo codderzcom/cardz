@@ -39,6 +39,7 @@ final class RouteNameToPermissionMap
         RouteName::GET_WORKSPACE => AuthorizationPermission::WORKSPACE_VIEW,
         RouteName::CHANGE_PROFILE => AuthorizationPermission::WORKSPACE_CHANGE_PROFILE,
         RouteName::LEAVE_RELATION => AuthorizationPermission::COLLABORATION_LEAVE,
+        RouteName::FIRE_COLLABORATOR => AuthorizationPermission::FIRE_COLLABORATOR,
         RouteName::GET_PLAN => AuthorizationPermission::PLAN_VIEW,
 
         RouteName::CUSTOMER_WORKSPACES => AuthorizationPermission::NULL_PERMISSION,

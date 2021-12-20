@@ -34,6 +34,7 @@ final class RouteName extends Enum
     public const DISCARD_INVITE = 'MAG.Business.DiscardInvite';
 
     public const LEAVE_RELATION = 'MAG.Business.Leave';
+    public const FIRE_COLLABORATOR = 'MAG.Business.Fire';
 
     /* begin untested */
     public const GET_WORKSPACE = 'MAG.Business.GetWorkspace';

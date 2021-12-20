@@ -4,7 +4,7 @@ namespace Cardz\Support\Collaboration\Domain\Model\Relation;
 
 use Carbon\Carbon;
 use Cardz\Support\Collaboration\Domain\Events\Relation\RelationEstablished;
-use Cardz\Support\Collaboration\Domain\Events\Relation\RelationLeft;
+use Cardz\Support\Collaboration\Domain\Events\Relation\RelationRemoved;
 use Cardz\Support\Collaboration\Domain\Exceptions\InvalidOperationException;
 use Cardz\Support\Collaboration\Domain\Model\Workspace\WorkspaceId;
 use Codderz\Platypus\Contracts\Domain\AggregateRootInterface;
@@ -47,13 +47,13 @@ final class Relation implements AggregateRootInterface
         return $relation;
     }
 
-    public function leave(): self
+    public function remove(): self
     {
         if ($this->relationType->equals(RelationType::KEEPER())) {
             throw new InvalidOperationException("Keeper is not allowed to leave");
         }
         $this->left = Carbon::now();
-        return $this->withEvents(RelationLeft::of($this));
+        return $this->withEvents(RelationRemoved::of($this));
     }
 
     public function isLeft(): bool

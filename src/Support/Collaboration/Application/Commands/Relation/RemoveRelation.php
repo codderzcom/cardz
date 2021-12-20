@@ -6,7 +6,7 @@ use Cardz\Support\Collaboration\Domain\Model\Relation\CollaboratorId;
 use Cardz\Support\Collaboration\Domain\Model\Workspace\WorkspaceId;
 use Codderz\Platypus\Contracts\Commands\CommandInterface;
 
-final class LeaveRelation implements CommandInterface
+final class RemoveRelation implements CommandInterface
 {
     private function __construct(
         private string $collaboratorId,

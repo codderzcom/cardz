@@ -5,7 +5,7 @@ namespace Cardz\Support\MobileAppGateway\Infrastructure\ACL\Collaboration;
 use Cardz\Support\Collaboration\Application\Commands\Invite\AcceptInvite;
 use Cardz\Support\Collaboration\Application\Commands\Invite\DiscardInvite;
 use Cardz\Support\Collaboration\Application\Commands\Invite\ProposeInvite;
-use Cardz\Support\Collaboration\Application\Commands\Relation\LeaveRelation;
+use Cardz\Support\Collaboration\Application\Commands\Relation\RemoveRelation;
 use Cardz\Support\MobileAppGateway\Integration\Contracts\CollaborationContextInterface;
 use Codderz\Platypus\Contracts\Commands\CommandBusInterface;
 
@@ -39,7 +39,14 @@ class MonolithCollaborationAdapter implements CollaborationContextInterface
 
     public function leave(string $collaboratorId, string $workspaceId): string
     {
-        $command = LeaveRelation::of($collaboratorId, $workspaceId);
+        $command = RemoveRelation::of($collaboratorId, $workspaceId);
+        $this->commandBus->dispatch($command);
+        return $command->getCollaboratorId();
+    }
+
+    public function fire(string $collaboratorId, string $workspaceId): string
+    {
+        $command = RemoveRelation::of($collaboratorId, $workspaceId);
         $this->commandBus->dispatch($command);
         return $command->getCollaboratorId();
     }

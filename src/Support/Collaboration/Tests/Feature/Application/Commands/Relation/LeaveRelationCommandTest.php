@@ -2,8 +2,8 @@
 
 namespace Cardz\Support\Collaboration\Tests\Feature\Application\Commands\Relation;
 
-use Cardz\Support\Collaboration\Application\Commands\Relation\LeaveRelation;
-use Cardz\Support\Collaboration\Domain\Events\Relation\RelationLeft;
+use Cardz\Support\Collaboration\Application\Commands\Relation\RemoveRelation;
+use Cardz\Support\Collaboration\Domain\Events\Relation\RelationRemoved;
 use Cardz\Support\Collaboration\Domain\Exceptions\InvalidOperationException;
 use Cardz\Support\Collaboration\Infrastructure\Exceptions\RelationNotFoundException;
 use Cardz\Support\Collaboration\Tests\Feature\CollaborationTestHelperTrait;
@@ -20,11 +20,11 @@ class LeaveRelationCommandTest extends BaseTestCase
         $relation = RelationBuilder::make()->build();
         $this->getRelationRepository()->persist($relation);
 
-        $command = LeaveRelation::of($relation->collaboratorId, $relation->workspaceId);
+        $command = RemoveRelation::of($relation->collaboratorId, $relation->workspaceId);
         $this->commandBus()->dispatch($command);
 
         $this->assertTrue($relation->isLeft());
-        $this->assertEvent(RelationLeft::class);
+        $this->assertEvent(RelationRemoved::class);
         $this->expectException(RelationNotFoundException::class);
 
         $this->getRelationRepository()->find($relation->collaboratorId, $relation->workspaceId);
@@ -37,7 +37,7 @@ class LeaveRelationCommandTest extends BaseTestCase
 
         $this->expectException(InvalidOperationException::class);
 
-        $command = LeaveRelation::of($relation->collaboratorId, $relation->workspaceId);
+        $command = RemoveRelation::of($relation->collaboratorId, $relation->workspaceId);
         $this->commandBus()->dispatch($command);
     }
 

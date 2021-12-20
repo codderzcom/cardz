@@ -30,6 +30,7 @@ Route::group(['prefix' => '/api/v1', 'middleware' => 'api'], function () {
 
             Route::group(['prefix' => '/collaboration'], function () {
                 Route::post('/leave', [CollaborationController::class, 'leave'])->name(RouteName::LEAVE_RELATION);
+                Route::post('/fire/{collaboratorId}', [CollaborationController::class, 'fire'])->name(RouteName::FIRE_COLLABORATOR);
 
                 Route::post('/invite', [CollaborationController::class, 'propose'])->name(RouteName::PROPOSE_INVITE);
                 Route::put('/invite/{inviteId}/accept', [CollaborationController::class, 'accept'])->name(RouteName::ACCEPT_INVITE);

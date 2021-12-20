@@ -4,10 +4,10 @@ namespace Cardz\Generic\Authorization\Integration\Projectors;
 
 use Cardz\Generic\Authorization\Domain\Resource\ResourceRepositoryInterface;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceType;
-use Cardz\Support\Collaboration\Integration\Events\RelationLeft;
+use Cardz\Support\Collaboration\Integration\Events\RelationRemoved;
 use Codderz\Platypus\Contracts\Messaging\IntegrationEventConsumerInterface;
 
-final class RelationLeftEventConsumer implements IntegrationEventConsumerInterface
+final class RelationRemovedEventConsumer implements IntegrationEventConsumerInterface
 {
     public function __construct(
         private ResourceRepositoryInterface $resourceRepository,
@@ -17,7 +17,7 @@ final class RelationLeftEventConsumer implements IntegrationEventConsumerInterfa
     public function consumes(): array
     {
         return [
-            RelationLeft::class,
+            RelationRemoved::class,
         ];
     }
 
