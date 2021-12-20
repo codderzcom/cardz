@@ -17,7 +17,8 @@ class PlanProfileRequestSchema extends SchemaFactory implements Reusable
      */
     public function build(): SchemaContract
     {
-        $description = Schema::string('description')->description('Plan description');
+        $description = Schema::string('description')
+            ->description('Plan description');
 
         return Schema::object('PlanProfile')
             ->description('Plan profile request')

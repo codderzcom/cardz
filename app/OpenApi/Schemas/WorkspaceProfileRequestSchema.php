@@ -11,15 +11,25 @@ use Vyuldashev\LaravelOpenApi\Factories\SchemaFactory;
 
 class WorkspaceProfileRequestSchema extends SchemaFactory implements Reusable
 {
+    use SchemaFakerTrait;
+
     /**
      * @return SchemaContract
      * @throws InvalidArgumentException
      */
     public function build(): SchemaContract
     {
-        $name = Schema::string('name')->description('Workspace (business) title');
-        $description = Schema::string('description')->description('Workspace (business) description');
-        $address = Schema::string('address')->description('Workspace (business) address');
+        $name = Schema::string('name')
+            ->description('Workspace (business) title')
+            ->example($this->company());
+
+        $description = Schema::string('description')
+            ->description('Workspace (business) description')
+            ->example($this->text());
+
+        $address = Schema::string('address')
+            ->description('Workspace (business) address')
+            ->example($this->address());
 
         return Schema::object('WorkspaceProfile')
             ->description('Workspace profile request')

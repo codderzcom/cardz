@@ -11,22 +11,40 @@ use Vyuldashev\LaravelOpenApi\Factories\SchemaFactory;
 
 class RegisterRequestSchema extends SchemaFactory implements Reusable
 {
+    use SchemaFakerTrait;
+
     /**
      * @return SchemaContract
      * @throws InvalidArgumentException
      */
     public function build(): SchemaContract
     {
-        $phone = Schema::string('phone')->description('Phone');
-        $email = Schema::string('email')->description('Email is required if phone is not provided');
-        $name = Schema::string('name')->description('Customer name');
-        $password = Schema::string('password')->format(Schema::FORMAT_PASSWORD)->description('Password');
-        $deviceName = Schema::string('deviceName')->description('Device name is required to distinguish between different access tokens');
+        $phone = Schema::string('phone')
+            ->description('Phone')
+            ->example($this->phone());
+
+        $email = Schema::string('email')
+            ->description('Email is required if phone is not provided')
+            ->example($this->email());
+
+        $name = Schema::string('name')
+            ->description('Customer name')
+            ->example($this->name());
+
+        $password = Schema::string('password')
+            ->format(Schema::FORMAT_PASSWORD)
+            ->description('Password')
+            ->example($this->password());
+
+        $deviceName = Schema::string('deviceName')
+            ->description('Device name is required to distinguish between different access tokens')
+            ->example($this->word());
 
         $phoneRequired = Schema::object('Phone identity')
             ->description('Phone required')
             ->required($phone, $name, $password, $deviceName)
             ->properties($phone, $email, $name, $password, $deviceName);
+
         $emailRequired = Schema::object('Email identity')
             ->description('Email required')
             ->required($email, $name, $password, $deviceName)
