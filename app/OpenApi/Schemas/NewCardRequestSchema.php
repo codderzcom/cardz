@@ -17,8 +17,13 @@ class NewCardRequestSchema extends SchemaFactory implements Reusable
      */
     public function build(): SchemaContract
     {
-        $planId = Schema::string('planId')->format(Schema::FORMAT_UUID)->description('Plan id');
-        $customerId = Schema::string('customerId')->format(Schema::FORMAT_UUID)->description('Customer id');
+        $planId = Schema::string('planId')
+            ->format(Schema::FORMAT_UUID)
+            ->description('Plan id');
+
+        $customerId = Schema::string('customerId')
+            ->format(Schema::FORMAT_UUID)
+            ->description('Customer id');
 
         return Schema::object('NewCard')
             ->description('New card request')

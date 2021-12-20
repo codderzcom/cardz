@@ -11,13 +11,17 @@ use Vyuldashev\LaravelOpenApi\Factories\SchemaFactory;
 
 class RequirementProfileRequestSchema extends SchemaFactory implements Reusable
 {
+    use SchemaFakerTrait;
+
     /**
      * @return SchemaContract
      * @throws InvalidArgumentException
      */
     public function build(): SchemaContract
     {
-        $description = Schema::string('description')->description('Requirement description');
+        $description = Schema::string('description')
+            ->description('Requirement description')
+            ->example($this->text());
 
         return Schema::object('RequirementProfile')
             ->description('Requirement profile request')

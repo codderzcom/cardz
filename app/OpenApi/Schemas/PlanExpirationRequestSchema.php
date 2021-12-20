@@ -17,7 +17,9 @@ class PlanExpirationRequestSchema extends SchemaFactory implements Reusable
      */
     public function build(): SchemaContract
     {
-        $expires = Schema::string('expires')->format(Schema::FORMAT_DATE_TIME)->description('Plan expiration date');
+        $expires = Schema::string('expires')
+            ->format(Schema::FORMAT_DATE_TIME)
+            ->description('Plan expiration date');
 
         return Schema::object('PlanExpiration')
             ->description('Plan expiration request')

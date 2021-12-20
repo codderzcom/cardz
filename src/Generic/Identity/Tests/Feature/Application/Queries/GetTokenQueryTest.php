@@ -18,7 +18,7 @@ class GetTokenQueryTest extends BaseTestCase
         $user = $userBuilder->build();
         $this->getUserRepository()->persist($user);
 
-        $query = GetToken::of($user->identity, $userBuilder->plainTextPassword, $userBuilder->faker->word());
+        $query = GetToken::of($user->identity, $userBuilder->plainTextPassword, $userBuilder->faker()->word());
         $token = $this->queryBus()->execute($query);
 
         $this->assertNotEmpty($token);

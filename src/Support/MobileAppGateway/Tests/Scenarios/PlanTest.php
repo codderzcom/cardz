@@ -5,6 +5,7 @@ namespace Cardz\Support\MobileAppGateway\Tests\Scenarios;
 use Carbon\Carbon;
 use Cardz\Core\Cards\Tests\Support\Builders\PlanBuilder;
 use Cardz\Support\MobileAppGateway\Config\Routes\RouteName;
+use Symfony\Component\HttpFoundation\Response;
 
 class PlanTest extends BaseScenarioTestCase
 {
@@ -164,7 +165,7 @@ class PlanTest extends BaseScenarioTestCase
         $this->assertTrue($plan['isStopped']);
 
         $response = $this->routePut(RouteName::STOP_PLAN, $routeArgs);
-        $response->assertStatus(500);
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
     }
 
 }

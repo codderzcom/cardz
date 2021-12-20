@@ -9,21 +9,43 @@ use Vyuldashev\LaravelOpenApi\Factories\SchemaFactory;
 
 class BusinessPlanResponseSchema extends SchemaFactory implements Reusable
 {
+    use SchemaFakerTrait;
+
     public function build(): SchemaContract
     {
-        $planId = Schema::string('planId')->format(Schema::FORMAT_UUID)->description('Plan Id');
-        $workspaceId = Schema::string('workspaceId')->format(Schema::FORMAT_UUID)->description('Workspace Id');
-        $description = Schema::string('description')->description('Plan description');
+        $planId = Schema::string('planId')
+            ->format(Schema::FORMAT_UUID)
+            ->description('Plan Id');
 
-        $isLaunched = Schema::boolean('isLaunched')->description('Whether the plan is launched');
-        $isStopped = Schema::boolean('isStopped')->description('Whether the plan is stopped');
-        $isArchived = Schema::boolean('isArchived')->description('Whether the plan is archived');
+        $workspaceId = Schema::string('workspaceId')
+            ->format(Schema::FORMAT_UUID)
+            ->description('Workspace Id');
+
+        $description = Schema::string('description')
+            ->description('Plan description')
+            ->example($this->text());
+
+        $isLaunched = Schema::boolean('isLaunched')
+            ->description('Whether the plan is launched');
+
+        $isStopped = Schema::boolean('isStopped')
+            ->description('Whether the plan is stopped');
+
+        $isArchived = Schema::boolean('isArchived')
+            ->description('Whether the plan is archived');
 
         $requirement = Schema::object()->properties(
-            Schema::string('requirementId')->format(Schema::FORMAT_UUID)->description('Requirement id'),
-            Schema::string('description')->description('Requirement description'),
+            Schema::string('requirementId')
+                ->format(Schema::FORMAT_UUID)
+                ->description('Requirement id'),
+
+            Schema::string('description')
+                ->description('Requirement description')
+                ->example($this->text()),
         );
-        $requirements = Schema::array('requirements')->items($requirement)->description('All requirements');
+        $requirements = Schema::array('requirements')
+            ->items($requirement)
+            ->description('All requirements');
 
         return Schema::object('BusinessPlan')->properties(
             $planId, $workspaceId, $description, $isLaunched, $isStopped, $isArchived, $requirements

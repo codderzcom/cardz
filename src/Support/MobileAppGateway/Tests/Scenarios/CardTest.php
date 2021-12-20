@@ -3,6 +3,7 @@
 namespace Cardz\Support\MobileAppGateway\Tests\Scenarios;
 
 use Cardz\Support\MobileAppGateway\Config\Routes\RouteName;
+use Symfony\Component\HttpFoundation\Response;
 
 class CardTest extends BaseScenarioTestCase
 {
@@ -91,7 +92,7 @@ class CardTest extends BaseScenarioTestCase
         $this->assertTrue($card['isCompleted']);
 
         $response = $this->routePut(RouteName::BLOCK_CARD, $routeArgs);
-        $response->assertStatus(500);
+        $response->assertStatus(Response::HTTP_BAD_REQUEST);
     }
 
 }

@@ -1752,15 +1752,18 @@
                     },
                     "name": {
                         "description": "Workspace (business) name",
-                        "type": "string"
+                        "type": "string",
+                        "example": "Lesch-Rolfson"
                     },
                     "description": {
                         "description": "Workspace (business) description",
-                        "type": "string"
+                        "type": "string",
+                        "example": "Voluptate atque et quis. Dolorem architecto ullam quas itaque veritatis. Eius porro consequatur mollitia fugit in voluptatem debitis."
                     },
                     "address": {
                         "description": "Workspace (business) address",
-                        "type": "string"
+                        "type": "string",
+                        "example": "530 Wolff Views Suite 299\nNew Wendellburgh, WV 41789-3552"
                     }
                 }
             },
@@ -1815,7 +1818,8 @@
                                 },
                                 "description": {
                                     "description": "Achievement description = corresponding requirement description",
-                                    "type": "string"
+                                    "type": "string",
+                                    "example": "Fuga et sed in inventore nulla dolore. Laudantium voluptas aperiam et ut qui animi. Modi et at consequatur ipsa voluptatem. Veniam illum in reiciendis."
                                 }
                             }
                         }
@@ -1833,7 +1837,8 @@
                                 },
                                 "description": {
                                     "description": "Requirement description",
-                                    "type": "string"
+                                    "type": "string",
+                                    "example": "Provident et voluptatem doloribus animi et quidem. Reprehenderit explicabo ut exercitationem reiciendis. Corporis eos ad quae perspiciatis. Sunt ex ab dicta inventore minima enim."
                                 }
                             }
                         }
@@ -1851,15 +1856,18 @@
                 "properties": {
                     "name": {
                         "description": "Workspace (business) title",
-                        "type": "string"
+                        "type": "string",
+                        "example": "Lindgren Inc"
                     },
                     "description": {
                         "description": "Workspace (business) description",
-                        "type": "string"
+                        "type": "string",
+                        "example": "Dolorem expedita possimus libero eos. Ipsa est maiores expedita accusamus inventore rerum consequatur. Non officia dolorum atque earum omnis qui. Aliquid corrupti sequi consequatur non."
                     },
                     "address": {
                         "description": "Workspace (business) address",
-                        "type": "string"
+                        "type": "string",
+                        "example": "2637 Braun Crossroad Apt. 670\nLake Myrtice, UT 61874"
                     }
                 }
             },
@@ -1885,7 +1893,8 @@
                 "properties": {
                     "description": {
                         "description": "Requirement description",
-                        "type": "string"
+                        "type": "string",
+                        "example": "In tempora ratione labore culpa ut sit. Laboriosam error voluptatem et voluptate facere quia minima."
                     }
                 }
             },
@@ -1918,7 +1927,8 @@
                     },
                     "description": {
                         "description": "Achievement (requirement) description",
-                        "type": "string"
+                        "type": "string",
+                        "example": "Enim soluta porro autem in sit similique consequatur. Aut deserunt dignissimos voluptatem eligendi. Perspiciatis nulla nisi dicta sequi ut repellat."
                     }
                 }
             },
@@ -1933,16 +1943,19 @@
                 "properties": {
                     "identity": {
                         "description": "Identity is either phone or email",
-                        "type": "string"
+                        "type": "string",
+                        "example": "evert.bosco@yahoo.com"
                     },
                     "password": {
                         "description": "Password",
                         "format": "password",
-                        "type": "string"
+                        "type": "string",
+                        "example": "r1-vlb`z:oZWyHm*7L"
                     },
                     "deviceName": {
                         "description": "Device name is required to distinguish between different access tokens",
-                        "type": "string"
+                        "type": "string",
+                        "example": "et"
                     }
                 }
             },
@@ -1960,24 +1973,29 @@
                         "properties": {
                             "phone": {
                                 "description": "Phone",
-                                "type": "string"
+                                "type": "string",
+                                "example": "(458) 756-9279"
                             },
                             "email": {
                                 "description": "Email is required if phone is not provided",
-                                "type": "string"
+                                "type": "string",
+                                "example": "fweimann@jakubowski.net"
                             },
                             "name": {
                                 "description": "Customer name",
-                                "type": "string"
+                                "type": "string",
+                                "example": "Casandra Reilly V"
                             },
                             "password": {
                                 "description": "Password",
                                 "format": "password",
-                                "type": "string"
+                                "type": "string",
+                                "example": "vQ.yO[|$\"nQ&W$1#"
                             },
                             "deviceName": {
                                 "description": "Device name is required to distinguish between different access tokens",
-                                "type": "string"
+                                "type": "string",
+                                "example": "culpa"
                             }
                         }
                     },
@@ -1993,24 +2011,29 @@
                         "properties": {
                             "phone": {
                                 "description": "Phone",
-                                "type": "string"
+                                "type": "string",
+                                "example": "(458) 756-9279"
                             },
                             "email": {
                                 "description": "Email is required if phone is not provided",
-                                "type": "string"
+                                "type": "string",
+                                "example": "fweimann@jakubowski.net"
                             },
                             "name": {
                                 "description": "Customer name",
-                                "type": "string"
+                                "type": "string",
+                                "example": "Casandra Reilly V"
                             },
                             "password": {
                                 "description": "Password",
                                 "format": "password",
-                                "type": "string"
+                                "type": "string",
+                                "example": "vQ.yO[|$\"nQ&W$1#"
                             },
                             "deviceName": {
                                 "description": "Device name is required to distinguish between different access tokens",
-                                "type": "string"
+                                "type": "string",
+                                "example": "culpa"
                             }
                         }
                     }
@@ -2075,10 +2098,12 @@
                                 },
                                 "description": {
                                     "description": "Achievement description = corresponding requirement description",
-                                    "type": "string"
+                                    "type": "string",
+                                    "example": "Ratione omnis recusandae sed velit impedit unde suscipit. Quia qui ut voluptates atque voluptate. Laudantium est eveniet in. Saepe aut quod eum accusamus facilis porro quia."
                                 }
                             }
-                        }
+                        },
+                        "example": "Tempora dolorem voluptatem nihil similique ea. Aliquam vel libero rerum hic. Error doloribus beatae sit non molestiae."
                     },
                     "requirements": {
                         "description": "All requirements",
@@ -2093,7 +2118,8 @@
                                 },
                                 "description": {
                                     "description": "Requirement description",
-                                    "type": "string"
+                                    "type": "string",
+                                    "example": "Eos sequi dicta ea itaque in. Voluptatibus qui rem et aliquam eveniet quia labore dolore. Sit rerum ex nobis."
                                 }
                             }
                         }
@@ -2110,15 +2136,18 @@
                     },
                     "name": {
                         "description": "Workspace (business) name",
-                        "type": "string"
+                        "type": "string",
+                        "example": "Bechtelar-Hagenes"
                     },
                     "description": {
                         "description": "Workspace (business) description",
-                        "type": "string"
+                        "type": "string",
+                        "example": "Omnis et distinctio magni animi voluptatem facere. Culpa sunt et ipsam soluta ut praesentium. Maiores repellendus sunt ipsum quia velit."
                     },
                     "address": {
                         "description": "Workspace (business) address",
-                        "type": "string"
+                        "type": "string",
+                        "example": "756 Ursula Mill Apt. 347\nNew Markshire, MT 19526-8574"
                     }
                 }
             },
@@ -2137,7 +2166,8 @@
                     },
                     "description": {
                         "description": "Plan description",
-                        "type": "string"
+                        "type": "string",
+                        "example": "Alias asperiores ut beatae vel harum quidem qui. Impedit voluptate et quis voluptas. Voluptatem omnis iste sit qui consequatur et."
                     },
                     "isLaunched": {
                         "description": "Whether the plan is launched",
@@ -2164,7 +2194,8 @@
                                 },
                                 "description": {
                                     "description": "Requirement description",
-                                    "type": "string"
+                                    "type": "string",
+                                    "example": "Inventore iure facere numquam pariatur ea vel suscipit. Vitae voluptate eius sed vero officia. Dolores aliquam doloribus neque eveniet tempore culpa consequuntur expedita."
                                 }
                             }
                         }
