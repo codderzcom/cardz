@@ -13,11 +13,15 @@ class UserAlreadyRegisteredExceptionResponse extends ResponseFactory implements 
     public function build(): Response
     {
         return Response::badRequest('UserAlreadyRegisteredException')
-            ->content(MediaType::json()->schema(
-                Schema::string()
-                    ->description('User Already Registered Exception')
-                    ->example('User with given identity already registered')
-            ));
+            ->content(
+                MediaType::json()->schema(
+                    Schema::object()->properties(
+                        Schema::string('message')
+                            ->description('User Already Registered Exception')
+                            ->example('User with given identity already registered')
+                    )
+                )
+            );
     }
 
 }

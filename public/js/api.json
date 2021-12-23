@@ -1812,17 +1812,17 @@
                     "name": {
                         "description": "Workspace (business) name",
                         "type": "string",
-                        "example": "Crona Ltd"
+                        "example": "Osinski, Dare and Lowe"
                     },
                     "description": {
                         "description": "Workspace (business) description",
                         "type": "string",
-                        "example": "Quidem qui est impedit voluptas. Ipsum soluta autem atque vero expedita voluptatem. Atque nihil blanditiis culpa ea ipsum earum."
+                        "example": "Nihil eum veritatis delectus ipsam et animi excepturi. Id voluptas in ab. Amet beatae maxime numquam delectus eos animi."
                     },
                     "address": {
                         "description": "Workspace (business) address",
                         "type": "string",
-                        "example": "35151 Ezra Loop Suite 120\nKshlerinview, MT 73719"
+                        "example": "88809 Stark Plain Apt. 900\nSouth Tinafurt, WI 32476-0693"
                     }
                 }
             },
@@ -1878,7 +1878,7 @@
                                 "description": {
                                     "description": "Achievement description = corresponding requirement description",
                                     "type": "string",
-                                    "example": "In reprehenderit corrupti aliquam. Iste corrupti reiciendis at et. Officia explicabo expedita cupiditate. Dolores esse quod non qui. Sint sit delectus autem."
+                                    "example": "At dicta sapiente rerum et iure harum ut minus. Quaerat molestiae doloremque eum perferendis neque illum. Voluptatem qui nisi corporis sit excepturi."
                                 }
                             }
                         }
@@ -1897,7 +1897,7 @@
                                 "description": {
                                     "description": "Requirement description",
                                     "type": "string",
-                                    "example": "Ut magni error delectus. Aliquam explicabo repellendus libero corporis tenetur. Corrupti velit excepturi adipisci ut dolorem."
+                                    "example": "Et eos qui autem similique nam veritatis laudantium. Ea dolorum nemo ut dolorem nam commodi tenetur. Et odit ea esse consequatur eos dicta voluptas. Non sed in ut ipsum atque dicta excepturi."
                                 }
                             }
                         }
@@ -1916,17 +1916,17 @@
                     "name": {
                         "description": "Workspace (business) title",
                         "type": "string",
-                        "example": "Powlowski, Heller and Pagac"
+                        "example": "Pouros-Bednar"
                     },
                     "description": {
                         "description": "Workspace (business) description",
                         "type": "string",
-                        "example": "Doloremque et rerum ratione voluptatem. Asperiores molestiae et ut et omnis sapiente architecto repellat. Ipsam est occaecati voluptatem nesciunt id voluptatem sint."
+                        "example": "Qui quae ab voluptas ullam. Rerum excepturi et ut aut. Quos vel quia officiis. Quasi totam non neque ut quam deleniti. Voluptatibus perferendis sit fugit fugiat repellendus id fugit consequatur."
                     },
                     "address": {
                         "description": "Workspace (business) address",
                         "type": "string",
-                        "example": "29146 Javonte Highway\nPort Elisabeth, VA 88800"
+                        "example": "479 Hane Pines\nFeestton, TX 77783"
                     }
                 }
             },
@@ -1953,7 +1953,7 @@
                     "description": {
                         "description": "Requirement description",
                         "type": "string",
-                        "example": "Tempora eos excepturi fugit non aperiam suscipit amet. Eos voluptas perferendis iste aut amet laborum. Corporis facere eos ducimus magni odio. Sit dignissimos voluptatum reiciendis pariatur et."
+                        "example": "Dicta error excepturi nulla voluptatem cumque ab. Ipsa unde in repellendus quam quo non. Aperiam voluptatem quaerat neque velit."
                     }
                 }
             },
@@ -1987,7 +1987,7 @@
                     "description": {
                         "description": "Achievement (requirement) description",
                         "type": "string",
-                        "example": "Earum deserunt corporis sit non assumenda animi tenetur. Porro ad cumque consectetur. Deserunt rerum nobis illum laudantium. In odio quis veritatis et quo corporis."
+                        "example": "Quaerat omnis velit dolorem consequatur nihil. Rerum eius explicabo voluptas omnis neque fugiat omnis. Quod expedita sit modi. Error autem fugiat ratione ab odio."
                     }
                 }
             },
@@ -2003,18 +2003,18 @@
                     "identity": {
                         "description": "Identity is either phone or email",
                         "type": "string",
-                        "example": "thomas.haag@yahoo.com"
+                        "example": "olin79@gmail.com"
                     },
                     "password": {
                         "description": "Password",
                         "format": "password",
                         "type": "string",
-                        "example": "TZnlz7"
+                        "example": "xRR;l?hFu}wTw&Zd"
                     },
                     "deviceName": {
                         "description": "Device name is required to distinguish between different access tokens",
                         "type": "string",
-                        "example": "perferendis"
+                        "example": "adipisci"
                     }
                 }
             },
@@ -2033,28 +2033,28 @@
                             "phone": {
                                 "description": "Phone",
                                 "type": "string",
-                                "example": "(220) 875-0722"
+                                "example": "+1-253-317-5265"
                             },
                             "email": {
                                 "description": "Email is required if phone is not provided",
                                 "type": "string",
-                                "example": "chaim.bechtelar@gmail.com"
+                                "example": "keeling.jordi@gmail.com"
                             },
                             "name": {
                                 "description": "Customer name",
                                 "type": "string",
-                                "example": "Prof. Cyrus Hauck MD"
+                                "example": "Izabella Connelly"
                             },
                             "password": {
                                 "description": "Password",
                                 "format": "password",
                                 "type": "string",
-                                "example": "2&|S|v0L"
+                                "example": "GIX\\#H_zKa?0"
                             },
                             "deviceName": {
                                 "description": "Device name is required to distinguish between different access tokens",
                                 "type": "string",
-                                "example": "qui"
+                                "example": "quibusdam"
                             }
                         }
                     },
@@ -2071,28 +2071,28 @@
                             "phone": {
                                 "description": "Phone",
                                 "type": "string",
-                                "example": "(220) 875-0722"
+                                "example": "+1-253-317-5265"
                             },
                             "email": {
                                 "description": "Email is required if phone is not provided",
                                 "type": "string",
-                                "example": "chaim.bechtelar@gmail.com"
+                                "example": "keeling.jordi@gmail.com"
                             },
                             "name": {
                                 "description": "Customer name",
                                 "type": "string",
-                                "example": "Prof. Cyrus Hauck MD"
+                                "example": "Izabella Connelly"
                             },
                             "password": {
                                 "description": "Password",
                                 "format": "password",
                                 "type": "string",
-                                "example": "2&|S|v0L"
+                                "example": "GIX\\#H_zKa?0"
                             },
                             "deviceName": {
                                 "description": "Device name is required to distinguish between different access tokens",
                                 "type": "string",
-                                "example": "qui"
+                                "example": "quibusdam"
                             }
                         }
                     }
@@ -2139,7 +2139,7 @@
                     "description": {
                         "description": "Card (plan) description",
                         "type": "string",
-                        "example": "Ducimus ut nihil fuga illo. Aliquam soluta deserunt omnis nulla. Dolor voluptatem impedit provident doloribus dolorem nihil iusto."
+                        "example": "Ullam animi dolores nobis. Sunt laudantium consequatur quis nisi enim praesentium earum. Molestiae suscipit consectetur sapiente quia aperiam saepe. Neque asperiores veniam velit sed eos."
                     },
                     "satisfied": {
                         "description": "Whether all requirements to receive a bonus are satisfied",
@@ -2163,11 +2163,11 @@
                                 "description": {
                                     "description": "Achievement description = corresponding requirement description",
                                     "type": "string",
-                                    "example": "Et voluptatem nam voluptates rerum inventore cum doloremque. Aspernatur quas fugiat doloremque consectetur error porro. Possimus ea ipsum tenetur quia. Ab ipsa aut a totam asperiores quibusdam ut."
+                                    "example": "Cum numquam est placeat qui. Dolorum aut velit iure reiciendis quisquam. Et consequatur voluptates qui voluptates dolor."
                                 }
                             }
                         },
-                        "example": "Fugiat voluptas omnis qui. Dolorem mollitia modi qui molestiae rerum. Assumenda quae autem voluptatem sed non fugit adipisci."
+                        "example": "Sit id temporibus autem maxime qui quaerat quia. In quia voluptatem qui aliquam corrupti. Quae quae maxime quasi voluptate quis et quaerat. Saepe maiores ut magni dignissimos et aut perspiciatis."
                     },
                     "requirements": {
                         "description": "All requirements",
@@ -2183,7 +2183,7 @@
                                 "description": {
                                     "description": "Requirement description",
                                     "type": "string",
-                                    "example": "Praesentium voluptatum eaque est quis molestiae. Temporibus earum doloribus quaerat voluptatem placeat maiores dignissimos quae. Ut impedit in ullam dolorem libero eveniet."
+                                    "example": "Est aperiam aut minus et aut. Ipsa assumenda unde animi aut atque fugiat facilis. Aut et et autem. Placeat et soluta omnis ut est ut et placeat. Qui neque ut id."
                                 }
                             }
                         }
@@ -2201,17 +2201,17 @@
                     "name": {
                         "description": "Workspace (business) name",
                         "type": "string",
-                        "example": "Hirthe Inc"
+                        "example": "Oberbrunner Group"
                     },
                     "description": {
                         "description": "Workspace (business) description",
                         "type": "string",
-                        "example": "Non ipsam eos tempore quisquam. Odit velit vero aliquam qui consequatur facilis id et. Dolores quidem rem ut voluptatem."
+                        "example": "Voluptatem possimus dolor id harum fuga. Autem eaque fuga ut rerum rerum. At natus ullam molestias dolore quos nesciunt."
                     },
                     "address": {
                         "description": "Workspace (business) address",
                         "type": "string",
-                        "example": "5797 Cronin Flats\nPort Lilianafort, MD 93772-7366"
+                        "example": "9978 Rempel Ridges\nKihnton, NM 91489-4224"
                     }
                 }
             },
@@ -2231,7 +2231,7 @@
                     "description": {
                         "description": "Plan description",
                         "type": "string",
-                        "example": "Et et facere voluptas soluta qui. Doloribus culpa molestias est dolorum. Ducimus corrupti dolores fugit explicabo fugiat."
+                        "example": "Hic et dolores nihil sunt temporibus consectetur. Eligendi labore et perspiciatis sed quo. Molestias delectus delectus ut quo animi sit pariatur nostrum. Ipsam neque corrupti vero distinctio."
                     },
                     "isLaunched": {
                         "description": "Whether the plan is launched",
@@ -2259,7 +2259,7 @@
                                 "description": {
                                     "description": "Requirement description",
                                     "type": "string",
-                                    "example": "Dolor necessitatibus doloremque quidem impedit. Provident ducimus rem ratione ratione. Suscipit soluta rerum qui est libero. Expedita ut aspernatur dolorum voluptatem molestias veritatis et."
+                                    "example": "Molestiae asperiores qui maxime tempora deserunt ullam delectus. Mollitia sapiente vel voluptatem voluptatem ut aut sit consequatur. Sit voluptas fugiat delectus error quia ea."
                                 }
                             }
                         }
@@ -2273,9 +2273,14 @@
                 "content": {
                     "application\/json": {
                         "schema": {
-                            "description": "Parameters Assertion Exception",
-                            "type": "string",
-                            "example": "Wrong string format for UUID"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "description": "Parameters Assertion Exception",
+                                    "type": "string",
+                                    "example": "Wrong string format for UUID"
+                                }
+                            }
                         }
                     }
                 }
@@ -2315,9 +2320,14 @@
                 "content": {
                     "application\/json": {
                         "schema": {
-                            "description": "Authorization Exception",
-                            "type": "string",
-                            "example": "Subject <Subject Id> is not authorized for <Resource Type> <Resource Id>"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "description": "Authorization Exception",
+                                    "type": "string",
+                                    "example": "Subject <Subject Id> is not authorized for <Resource Type> <Resource Id>"
+                                }
+                            }
                         }
                     }
                 }
@@ -2327,9 +2337,14 @@
                 "content": {
                     "application\/json": {
                         "schema": {
-                            "description": "User Already Registered Exception",
-                            "type": "string",
-                            "example": "User with given identity already registered"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "description": "User Already Registered Exception",
+                                    "type": "string",
+                                    "example": "User with given identity already registered"
+                                }
+                            }
                         }
                     }
                 }
@@ -2339,9 +2354,14 @@
                 "content": {
                     "application\/json": {
                         "schema": {
-                            "description": "Unexpected Exception",
-                            "type": "string",
-                            "example": "Unexpected exception"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "description": "Unexpected Exception",
+                                    "type": "string",
+                                    "example": "Unexpected exception"
+                                }
+                            }
                         }
                     }
                 }
@@ -2351,9 +2371,14 @@
                 "content": {
                     "application\/json": {
                         "schema": {
-                            "description": "Requested resource not found",
-                            "type": "string",
-                            "example": "Not found exception: <Resource Name>: <Resource Id>"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "description": "Requested resource not found",
+                                    "type": "string",
+                                    "example": "Not found exception: <Resource Name>: <Resource Id>"
+                                }
+                            }
                         }
                     }
                 }
@@ -2363,9 +2388,14 @@
                 "content": {
                     "application\/json": {
                         "schema": {
-                            "description": "Authentication Exception",
-                            "type": "string",
-                            "example": "Invalid access token"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "description": "Authentication Exception",
+                                    "type": "string",
+                                    "example": "Invalid access token"
+                                }
+                            }
                         }
                     }
                 }
@@ -2375,9 +2405,14 @@
                 "content": {
                     "application\/json": {
                         "schema": {
-                            "description": "Domain Exception",
-                            "type": "string",
-                            "example": "Domain logic forbids requested operation"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "description": "Domain Exception",
+                                    "type": "string",
+                                    "example": "Domain logic forbids requested operation"
+                                }
+                            }
                         }
                     }
                 }

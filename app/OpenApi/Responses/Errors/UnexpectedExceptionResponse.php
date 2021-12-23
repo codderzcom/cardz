@@ -13,11 +13,15 @@ class UnexpectedExceptionResponse extends ResponseFactory implements Reusable
     public function build(): Response
     {
         return Response::internalServerError('UnexpectedException')
-            ->content(MediaType::json()->schema(
-                Schema::string()
-                    ->description('Unexpected Exception')
-                    ->example('Unexpected exception')
-            ));
+            ->content(
+                MediaType::json()->schema(
+                    Schema::object()->properties(
+                        Schema::string('message')
+                            ->description('Unexpected Exception')
+                            ->example('Unexpected exception')
+                    )
+                )
+            );
     }
 
 }

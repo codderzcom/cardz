@@ -13,11 +13,15 @@ class NotFoundResponse extends ResponseFactory implements Reusable
     public function build(): Response
     {
         return Response::notFound('NotFound')
-            ->content(MediaType::json()->schema(
-                Schema::string()
-                    ->description('Requested resource not found')
-                    ->example('Not found exception: <Resource Name>: <Resource Id>')
-            ));
+            ->content(
+                MediaType::json()->schema(
+                    Schema::object()->properties(
+                        Schema::string('message')
+                            ->description('Requested resource not found')
+                            ->example('Not found exception: <Resource Name>: <Resource Id>')
+                    )
+                )
+            );
     }
 
 }

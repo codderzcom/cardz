@@ -56,50 +56,55 @@ class Handler extends ExceptionHandler
     {
         // ToDo: Hmmmmmm
         if ($e instanceof UserNotFoundException) {
-            return response()->json('Cannot authenticate user with given credentials', Response::HTTP_UNAUTHORIZED);
+            return $this->errorResponse('Cannot authenticate user with given credentials', Response::HTTP_UNAUTHORIZED);
         }
 
         if ($e instanceof AccessDeniedException || $e instanceof AuthorizationFailedException) {
-            return response()->json($e->getMessage(), Response::HTTP_FORBIDDEN);
+            return $this->errorResponse($e->getMessage(), Response::HTTP_FORBIDDEN);
         }
 
         if ($e instanceof MethodNotAllowedHttpException) {
-            return response()->json('Invalid method', Response::HTTP_METHOD_NOT_ALLOWED);
+            return $this->errorResponse('Invalid method', Response::HTTP_METHOD_NOT_ALLOWED);
         }
 
         if ($e instanceof NotFoundHttpException) {
-            return response()->json('Not Found', Response::HTTP_NOT_FOUND);
+            return $this->errorResponse('Not Found', Response::HTTP_NOT_FOUND);
         }
 
         if ($e instanceof NotFoundException) {
-            return response()->json('Not found exception: ' . ($e->getMessage() ?: 'N/A'), Response::HTTP_NOT_FOUND);
+            return $this->errorResponse('Not found exception: ' . ($e->getMessage() ?: 'N/A'), Response::HTTP_NOT_FOUND);
         }
 
         if ($e instanceof ParameterAssertionException) {
-            return response()->json('Incorrect parameters: ' . ($e->getMessage() ?: 'N/A'), Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('Incorrect parameters: ' . ($e->getMessage() ?: 'N/A'), Response::HTTP_BAD_REQUEST);
         }
 
         if ($e instanceof DomainExceptionInterface) {
-            return response()->json('Domain logic forbids requested operation: ' . ($e->getMessage() ?: 'N/A'), Response::HTTP_BAD_REQUEST);
+            return $this->errorResponse('Domain logic forbids requested operation: ' . ($e->getMessage() ?: 'N/A'), Response::HTTP_BAD_REQUEST);
         }
 
         if ($e instanceof HttpException) {
-            return response()->json($e->getMessage(), $e->getStatusCode());
+            return $this->errorResponse($e->getMessage(), $e->getStatusCode());
         }
 
         if ($e instanceof AuthenticationException) {
             $message = $request->hasHeader('Authorization') ? 'Invalid access token' : 'Access token required';
-            return response()->json($message, Response::HTTP_UNAUTHORIZED);
+            return $this->errorResponse($message, Response::HTTP_UNAUTHORIZED);
         }
 
         if ($e instanceof QueryException && str_contains($e->getMessage(), 'personal_access_tokens')) {
-            return response()->json('Unacceptable access token', Response::HTTP_UNAUTHORIZED);
+            return $this->errorResponse('Unacceptable access token', Response::HTTP_UNAUTHORIZED);
         }
 
         if (config('app.debug')) {
             return parent::render($request, $e);
         }
 
-        return response()->json('Unexpected Exception. Try later', Response::HTTP_INTERNAL_SERVER_ERROR);
+        return $this->errorResponse('Unexpected Exception. Try later', Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+
+    private function errorResponse($message, int $code)
+    {
+        return response()->json(['message' => $message], $code);
     }
 }

@@ -13,11 +13,15 @@ class AuthenticationExceptionResponse extends ResponseFactory implements Reusabl
     public function build(): Response
     {
         return Response::unauthorized('AuthenticationException')
-            ->content(MediaType::json()->schema(
-                Schema::string()
-                    ->description('Authentication Exception')
-                    ->example('Invalid access token')
-            ));
+            ->content(
+                MediaType::json()->schema(
+                    Schema::object()->properties(
+                        Schema::string('message')
+                            ->description('Authentication Exception')
+                            ->example('Invalid access token')
+                    )
+                )
+            );
     }
 
 }

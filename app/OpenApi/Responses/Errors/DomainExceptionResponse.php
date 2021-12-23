@@ -13,11 +13,15 @@ class DomainExceptionResponse extends ResponseFactory implements Reusable
     public function build(): Response
     {
         return Response::badRequest('DomainException')
-            ->content(MediaType::json()->schema(
-                Schema::string()
-                    ->description('Domain Exception')
-                    ->example('Domain logic forbids requested operation')
-            ));
+            ->content(
+                MediaType::json()->schema(
+                    Schema::object()->properties(
+                        Schema::string('message')
+                            ->description('Domain Exception')
+                            ->example('Domain logic forbids requested operation')
+                    )
+                )
+            );
     }
 
 }
