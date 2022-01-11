@@ -20,7 +20,7 @@ class DomainExceptionResponse extends ResponseFactory implements Reusable
                             ->nullable(false)
                             ->description('Domain Exception')
                             ->example('Domain logic forbids requested operation')
-                    )
+                    )->required('message')
                 )
             );
     }

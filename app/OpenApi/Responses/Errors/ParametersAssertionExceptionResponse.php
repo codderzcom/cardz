@@ -20,7 +20,7 @@ class ParametersAssertionExceptionResponse extends ResponseFactory implements Re
                             ->nullable(false)
                             ->description('Parameters Assertion Exception')
                             ->example('Wrong string format for UUID')
-                    )
+                    )->required('message')
                 )
             );
     }

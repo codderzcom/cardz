@@ -20,7 +20,7 @@ class NotFoundResponse extends ResponseFactory implements Reusable
                             ->nullable(false)
                             ->description('Requested resource not found')
                             ->example('Not found exception: <Resource Name>: <Resource Id>')
-                    )
+                    )->required('message')
                 )
             );
     }

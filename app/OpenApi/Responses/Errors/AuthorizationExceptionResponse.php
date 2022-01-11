@@ -20,7 +20,7 @@ class AuthorizationExceptionResponse extends ResponseFactory implements Reusable
                             ->nullable(false)
                             ->description('Authorization Exception')
                             ->example('Subject <Subject Id> is not authorized for <Resource Type> <Resource Id>')
-                    )
+                    )->required('message')
                 )
             );
     }

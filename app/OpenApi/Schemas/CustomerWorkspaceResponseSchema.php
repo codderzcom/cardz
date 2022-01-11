@@ -34,7 +34,8 @@ class CustomerWorkspaceResponseSchema extends SchemaFactory implements Reusable
             ->example($this->address());
 
         return Schema::object('CustomerWorkspace')
-            ->properties($workspaceId, $name, $description, $address);
+            ->properties($workspaceId, $name, $description, $address)
+            ->required($workspaceId, $name, $description, $address);
     }
 
 }

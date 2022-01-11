@@ -20,7 +20,7 @@ class UserAlreadyRegisteredExceptionResponse extends ResponseFactory implements 
                             ->nullable(false)
                             ->description('User Already Registered Exception')
                             ->example('User with given identity already registered')
-                    )
+                    )->required('message')
                 )
             );
     }

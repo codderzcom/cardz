@@ -20,7 +20,7 @@ class UnexpectedExceptionResponse extends ResponseFactory implements Reusable
                             ->nullable(false)
                             ->description('Unexpected Exception')
                             ->example('Unexpected exception')
-                    )
+                    )->required('message')
                 )
             );
     }

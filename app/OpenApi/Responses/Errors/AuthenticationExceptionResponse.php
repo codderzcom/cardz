@@ -20,7 +20,7 @@ class AuthenticationExceptionResponse extends ResponseFactory implements Reusabl
                             ->nullable(false)
                             ->description('Authentication Exception')
                             ->example('Invalid access token')
-                    )
+                    )->required('message')
                 )
             );
     }

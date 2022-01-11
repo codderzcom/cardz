@@ -50,14 +50,15 @@ class BusinessPlanResponseSchema extends SchemaFactory implements Reusable
                 ->nullable(false)
                 ->description('Requirement description')
                 ->example($this->text()),
-        );
+        )->required('requirementId', 'description');
+
         $requirements = Schema::array('requirements')
             ->items($requirement)
             ->description('All requirements');
 
-        return Schema::object('BusinessPlan')->properties(
-            $planId, $workspaceId, $description, $isLaunched, $isStopped, $isArchived, $requirements
-        );
+        return Schema::object('BusinessPlan')
+            ->properties($planId, $workspaceId, $description, $isLaunched, $isStopped, $isArchived, $requirements)
+            ->required($planId, $workspaceId, $description, $isLaunched, $isStopped, $isArchived, $requirements);
     }
 
 }

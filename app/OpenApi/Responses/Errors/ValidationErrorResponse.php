@@ -22,7 +22,7 @@ class ValidationErrorResponse extends ResponseFactory implements Reusable
                     Schema::array()->items(Schema::string())
                 )
                 ->example(['field' => ['Something is wrong with this field!']])
-        );
+        )->required('message', 'errors');
 
         return Response::unprocessableEntity('ValidationError')
             ->description('Validation errors')
