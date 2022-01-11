@@ -61,7 +61,7 @@ class IssuedCardResponseSchema extends SchemaFactory implements Reusable
             ->items($requirement)
             ->description('All requirements');
 
-        return Schema::object()
+        return Schema::object('Issued card')
             ->properties($cardId, $planId, $customerId, $description, $satisfied, $completed, $achievements, $requirements);
     }
 

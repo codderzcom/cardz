@@ -13,7 +13,7 @@ class IssuedCardsResponse extends ResponseFactory
     public function build(): Response
     {
         return Response::ok()
-            ->content(MediaType::json()->schema(Schema::array()->items(IssuedCardResponseSchema::ref())))
+            ->content(MediaType::json()->schema(Schema::array('Issued cards')->items(IssuedCardResponseSchema::ref())))
             ->description('All of the customer\'s issued cards');
     }
 }
