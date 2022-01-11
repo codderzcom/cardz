@@ -58,7 +58,8 @@ class BusinessCardResponseSchema extends SchemaFactory implements Reusable
                 ->nullable(false)
                 ->description('Achievement description = corresponding requirement description')
                 ->example($this->text()),
-        );
+        )->required('achievementId', 'description');
+
         $achievements = Schema::array('achievements')
             ->items($achievement)
             ->description('Achieved requirements');
@@ -73,14 +74,16 @@ class BusinessCardResponseSchema extends SchemaFactory implements Reusable
                 ->nullable(false)
                 ->description('Requirement description')
                 ->example($this->text()),
-        );
+        )->required('requirementId', 'description');
+
         $requirements = Schema::array('requirements')
             ->items($requirement)
             ->description('All requirements');
 
-        return Schema::object('BusinessCard')->properties(
-            $cardId, $planId, $customerId, $isIssued, $isSatisfied, $isCompleted, $isRevoked, $isBlocked, $achievements, $requirements
-        );
+        return Schema::object('BusinessCard')
+            ->required($cardId, $planId, $customerId, $isIssued, $isSatisfied, $isCompleted, $isRevoked, $isBlocked, $achievements, $requirements)
+            ->properties($cardId, $planId, $customerId, $isIssued, $isSatisfied, $isCompleted, $isRevoked, $isBlocked, $achievements, $requirements)
+            ;
     }
 
 }
