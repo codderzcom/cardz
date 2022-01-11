@@ -17,6 +17,7 @@ class AuthenticationExceptionResponse extends ResponseFactory implements Reusabl
                 MediaType::json()->schema(
                     Schema::object()->properties(
                         Schema::string('message')
+                            ->nullable(false)
                             ->description('Authentication Exception')
                             ->example('Invalid access token')
                     )

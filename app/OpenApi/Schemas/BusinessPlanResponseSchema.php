@@ -15,31 +15,39 @@ class BusinessPlanResponseSchema extends SchemaFactory implements Reusable
     {
         $planId = Schema::string('planId')
             ->format(Schema::FORMAT_UUID)
+            ->nullable(false)
             ->description('Plan Id');
 
         $workspaceId = Schema::string('workspaceId')
             ->format(Schema::FORMAT_UUID)
+            ->nullable(false)
             ->description('Workspace Id');
 
         $description = Schema::string('description')
             ->description('Plan description')
+            ->nullable(false)
             ->example($this->text());
 
         $isLaunched = Schema::boolean('isLaunched')
+            ->nullable(false)
             ->description('Whether the plan is launched');
 
         $isStopped = Schema::boolean('isStopped')
+            ->nullable(false)
             ->description('Whether the plan is stopped');
 
         $isArchived = Schema::boolean('isArchived')
+            ->nullable(false)
             ->description('Whether the plan is archived');
 
         $requirement = Schema::object()->properties(
             Schema::string('requirementId')
                 ->format(Schema::FORMAT_UUID)
+                ->nullable(false)
                 ->description('Requirement id'),
 
             Schema::string('description')
+                ->nullable(false)
                 ->description('Requirement description')
                 ->example($this->text()),
         );

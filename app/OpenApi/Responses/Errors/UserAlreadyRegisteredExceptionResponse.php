@@ -17,6 +17,7 @@ class UserAlreadyRegisteredExceptionResponse extends ResponseFactory implements 
                 MediaType::json()->schema(
                     Schema::object()->properties(
                         Schema::string('message')
+                            ->nullable(false)
                             ->description('User Already Registered Exception')
                             ->example('User with given identity already registered')
                     )

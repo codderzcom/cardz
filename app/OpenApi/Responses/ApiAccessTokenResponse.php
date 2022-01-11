@@ -13,7 +13,10 @@ class ApiAccessTokenResponse extends ResponseFactory
     {
         return Response::ok()
             ->content(MediaType::json()->schema(
-                Schema::string()->description('API Access Bearer Token')->example('9|eigK2WNOHtJEOKtgcXD6m2NIaDFVcIMDfCMrsKii')
+                Schema::string()
+                    ->nullable(false)
+                    ->description('API Access Bearer Token')
+                    ->example('9|eigK2WNOHtJEOKtgcXD6m2NIaDFVcIMDfCMrsKii')
             ))
             ->description('Access token');
     }

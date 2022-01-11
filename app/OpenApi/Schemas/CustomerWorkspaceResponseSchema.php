@@ -15,17 +15,21 @@ class CustomerWorkspaceResponseSchema extends SchemaFactory implements Reusable
     {
         $workspaceId = Schema::string('workspaceId')
             ->format(Schema::FORMAT_UUID)
+            ->nullable(false)
             ->description('Workspace Id');
 
         $name = Schema::string('name')
+            ->nullable(false)
             ->description('Workspace (business) name')
             ->example($this->company());
 
         $description = Schema::string('description')
+            ->nullable(false)
             ->description('Workspace (business) description')
             ->example($this->text());
 
         $address = Schema::string('address')
+            ->nullable(false)
             ->description('Workspace (business) address')
             ->example($this->address());
 

@@ -41,6 +41,7 @@
                                 "schema": {
                                     "description": "API Access Bearer Token",
                                     "type": "string",
+                                    "nullable": false,
                                     "example": "9|eigK2WNOHtJEOKtgcXD6m2NIaDFVcIMDfCMrsKii"
                                 }
                             }
@@ -83,6 +84,7 @@
                                 "schema": {
                                     "description": "API Access Bearer Token",
                                     "type": "string",
+                                    "nullable": false,
                                     "example": "9|eigK2WNOHtJEOKtgcXD6m2NIaDFVcIMDfCMrsKii"
                                 }
                             }
@@ -1802,27 +1804,32 @@
                     "workspaceId": {
                         "description": "Workspace Id",
                         "format": "uuid",
-                        "type": "string"
+                        "type": "string",
+                        "nullable": false
                     },
                     "keeperId": {
                         "description": "Keeper Id",
                         "format": "uuid",
-                        "type": "string"
+                        "type": "string",
+                        "nullable": false
                     },
                     "name": {
                         "description": "Workspace (business) name",
                         "type": "string",
-                        "example": "Becker Group"
+                        "nullable": false,
+                        "example": "Feest-Barton"
                     },
                     "description": {
                         "description": "Workspace (business) description",
                         "type": "string",
-                        "example": "Nemo nam modi inventore quibusdam laboriosam. Illum nemo nihil et voluptas voluptas quo. Unde error molestiae est eius quibusdam sit. Veritatis deserunt vel nemo quia non eius unde."
+                        "nullable": false,
+                        "example": "Cumque aperiam est vitae aut quasi sunt amet veniam. Voluptatibus reiciendis asperiores quidem molestiae at autem sint. Aut magnam nulla nemo et."
                     },
                     "address": {
                         "description": "Workspace (business) address",
                         "type": "string",
-                        "example": "9350 Bosco Ranch Apt. 841\nWest Sheridanhaven, UT 26643-3868"
+                        "nullable": false,
+                        "example": "76977 Waelchi Curve\nPagacville, FL 71756"
                     }
                 }
             },
@@ -1832,37 +1839,45 @@
                     "cardId": {
                         "description": "Card Id",
                         "format": "uuid",
-                        "type": "string"
+                        "type": "string",
+                        "nullable": false
                     },
                     "planId": {
                         "description": "Plan Id",
                         "format": "uuid",
-                        "type": "string"
+                        "type": "string",
+                        "nullable": false
                     },
                     "customerId": {
                         "description": "Customer Id",
                         "format": "uuid",
-                        "type": "string"
+                        "type": "string",
+                        "nullable": false
                     },
                     "isIssued": {
                         "description": "Whether the card is issued",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "nullable": false
                     },
                     "isSatisfied": {
                         "description": "Whether all the requirements to receive a bonus are satisfied",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "nullable": false
                     },
                     "isCompleted": {
                         "description": "Whether the customer has received the bonus for this card",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "nullable": false
                     },
                     "isRevoked": {
                         "description": "Whether the card has been revoked",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "nullable": false
                     },
                     "isBlocked": {
                         "description": "Whether the card has been blocked",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "nullable": false
                     },
                     "achievements": {
                         "description": "Achieved requirements",
@@ -1873,12 +1888,14 @@
                                 "achievementId": {
                                     "description": "Achievement Id = corresponding requirement id",
                                     "format": "uuid",
-                                    "type": "string"
+                                    "type": "string",
+                                    "nullable": false
                                 },
                                 "description": {
                                     "description": "Achievement description = corresponding requirement description",
                                     "type": "string",
-                                    "example": "Odio quo possimus sed et in. Et possimus cumque in eligendi quidem ipsum corrupti. Reiciendis numquam ad accusantium qui non. Asperiores expedita optio aspernatur eius eius nihil tempora blanditiis."
+                                    "nullable": false,
+                                    "example": "Quo possimus qui magni officia. Saepe corporis fuga eveniet corrupti fuga. Neque in incidunt a laudantium cupiditate accusantium minus."
                                 }
                             }
                         }
@@ -1892,12 +1909,14 @@
                                 "requirementId": {
                                     "description": "Requirement id",
                                     "format": "uuid",
-                                    "type": "string"
+                                    "type": "string",
+                                    "nullable": false
                                 },
                                 "description": {
                                     "description": "Requirement description",
                                     "type": "string",
-                                    "example": "Vitae ullam ipsum laborum itaque. Accusantium voluptatum aut ipsa totam quaerat. Dolores accusantium occaecati et ullam ex necessitatibus."
+                                    "nullable": false,
+                                    "example": "Amet enim repellendus consequatur minus est adipisci earum. Pariatur ut quis et aspernatur qui. Quia laborum facere fuga dolore quos id. Nobis enim alias aut est voluptatibus."
                                 }
                             }
                         }
@@ -1916,17 +1935,17 @@
                     "name": {
                         "description": "Workspace (business) title",
                         "type": "string",
-                        "example": "Moen and Sons"
+                        "example": "Marvin Group"
                     },
                     "description": {
                         "description": "Workspace (business) description",
                         "type": "string",
-                        "example": "Temporibus quasi in enim autem eum sapiente aut. Est et quasi ab blanditiis. Sunt tempore doloremque maxime. Est eum distinctio quisquam voluptatem nemo. Eos esse est explicabo sed molestiae qui."
+                        "example": "Quia sunt voluptatem et qui aperiam aperiam qui fugit. Consequatur officiis placeat exercitationem vitae. Libero et voluptas molestias porro soluta ex asperiores."
                     },
                     "address": {
                         "description": "Workspace (business) address",
                         "type": "string",
-                        "example": "81465 Schneider Parkways\nRichmondmouth, ND 89523"
+                        "example": "47217 Ida Club\nQuigleyside, OR 07699-9040"
                     }
                 }
             },
@@ -1953,7 +1972,7 @@
                     "description": {
                         "description": "Requirement description",
                         "type": "string",
-                        "example": "Ipsa magnam in enim aperiam. Recusandae esse voluptate totam. Laudantium rerum velit inventore excepturi eum eos."
+                        "example": "Neque quidem sequi officiis commodi ullam ut qui. Nostrum asperiores quisquam quo nesciunt qui vel eaque. Et sed et placeat sit."
                     }
                 }
             },
@@ -1987,7 +2006,7 @@
                     "description": {
                         "description": "Achievement (requirement) description",
                         "type": "string",
-                        "example": "Vero ut minima dolores quo nostrum sed voluptatem. Accusantium labore deserunt illum ut. Ab in possimus assumenda adipisci temporibus. Consequatur quia tempora dignissimos est earum et."
+                        "example": "Error quibusdam architecto id tempora perferendis minima. Velit dolore et illum labore. Cumque id et nostrum dolorem velit. Laudantium quis delectus optio eligendi minus."
                     }
                 }
             },
@@ -2003,18 +2022,18 @@
                     "identity": {
                         "description": "Identity is either phone or email",
                         "type": "string",
-                        "example": "hope.schuster@hotmail.com"
+                        "example": "ocie48@cormier.com"
                     },
                     "password": {
                         "description": "Password",
                         "format": "password",
                         "type": "string",
-                        "example": ")%);~Y2|EetKX2e,Z"
+                        "example": "{vP'v@rNX{KeT<F*N5"
                     },
                     "deviceName": {
                         "description": "Device name is required to distinguish between different access tokens",
                         "type": "string",
-                        "example": "sit"
+                        "example": "consectetur"
                     }
                 }
             },
@@ -2033,28 +2052,28 @@
                             "phone": {
                                 "description": "Phone",
                                 "type": "string",
-                                "example": "541-895-5257"
+                                "example": "972.618.4996"
                             },
                             "email": {
                                 "description": "Email is required if phone is not provided",
                                 "type": "string",
-                                "example": "glenda.gutkowski@gmail.com"
+                                "example": "smurray@cole.biz"
                             },
                             "name": {
                                 "description": "Customer name",
                                 "type": "string",
-                                "example": "Ms. Faye Quigley MD"
+                                "example": "Damian Schuster"
                             },
                             "password": {
                                 "description": "Password",
                                 "format": "password",
                                 "type": "string",
-                                "example": "B8\"JV=["
+                                "example": "&\\ir}J2MN4E.I8"
                             },
                             "deviceName": {
                                 "description": "Device name is required to distinguish between different access tokens",
                                 "type": "string",
-                                "example": "odio"
+                                "example": "nisi"
                             }
                         }
                     },
@@ -2071,28 +2090,28 @@
                             "phone": {
                                 "description": "Phone",
                                 "type": "string",
-                                "example": "541-895-5257"
+                                "example": "972.618.4996"
                             },
                             "email": {
                                 "description": "Email is required if phone is not provided",
                                 "type": "string",
-                                "example": "glenda.gutkowski@gmail.com"
+                                "example": "smurray@cole.biz"
                             },
                             "name": {
                                 "description": "Customer name",
                                 "type": "string",
-                                "example": "Ms. Faye Quigley MD"
+                                "example": "Damian Schuster"
                             },
                             "password": {
                                 "description": "Password",
                                 "format": "password",
                                 "type": "string",
-                                "example": "B8\"JV=["
+                                "example": "&\\ir}J2MN4E.I8"
                             },
                             "deviceName": {
                                 "description": "Device name is required to distinguish between different access tokens",
                                 "type": "string",
-                                "example": "odio"
+                                "example": "nisi"
                             }
                         }
                     }
@@ -2124,30 +2143,36 @@
                     "cardId": {
                         "description": "Card Id",
                         "format": "uuid",
-                        "type": "string"
+                        "type": "string",
+                        "nullable": false
                     },
                     "planId": {
                         "description": "Plan Id",
                         "format": "uuid",
-                        "type": "string"
+                        "type": "string",
+                        "nullable": false
                     },
                     "customerId": {
                         "description": "Customer Id",
                         "format": "uuid",
-                        "type": "string"
+                        "type": "string",
+                        "nullable": false
                     },
                     "description": {
                         "description": "Card (plan) description",
                         "type": "string",
-                        "example": "Minus rerum maiores magni enim molestiae et atque delectus. Quia repellendus nihil minus a voluptas. Placeat aut explicabo omnis sequi ad doloribus consectetur."
+                        "nullable": false,
+                        "example": "A vitae dolores nulla ut aliquam. Vero quisquam similique eligendi sapiente sit pariatur sapiente autem. Deleniti ut deleniti perspiciatis asperiores tempore. Sed et dolor dicta iusto."
                     },
                     "satisfied": {
                         "description": "Whether all requirements to receive a bonus are satisfied",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "nullable": false
                     },
                     "completed": {
                         "description": "Whether customer has received the bonus for this card",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "nullable": false
                     },
                     "achievements": {
                         "description": "Achieved requirements",
@@ -2158,16 +2183,18 @@
                                 "achievementId": {
                                     "description": "Achievement Id = corresponding requirement id",
                                     "format": "uuid",
-                                    "type": "string"
+                                    "type": "string",
+                                    "nullable": false
                                 },
                                 "description": {
                                     "description": "Achievement description = corresponding requirement description",
                                     "type": "string",
-                                    "example": "Rem molestias dolores deleniti sit dicta. Nobis et et suscipit ad. Omnis reiciendis vitae in ipsam sunt repellendus. Veniam non ullam reiciendis unde possimus."
+                                    "nullable": false,
+                                    "example": "Quasi et ipsum provident voluptas accusamus vero. Dolorem debitis velit culpa ipsam doloremque blanditiis. Vitae voluptatibus dolore maiores culpa."
                                 }
                             }
                         },
-                        "example": "Minus veritatis architecto eligendi aperiam nobis. Perferendis iusto ipsum corrupti autem ullam veniam. Eos qui fuga aut sunt sit."
+                        "example": "Aut labore in nostrum exercitationem aliquid. Id maiores amet sed ea. Minus sint et doloremque qui."
                     },
                     "requirements": {
                         "description": "All requirements",
@@ -2178,12 +2205,14 @@
                                 "requirementId": {
                                     "description": "Requirement id",
                                     "format": "uuid",
-                                    "type": "string"
+                                    "type": "string",
+                                    "nullable": false
                                 },
                                 "description": {
                                     "description": "Requirement description",
                                     "type": "string",
-                                    "example": "Commodi deserunt molestiae dolorem eum. Eaque ipsa minima sint atque iure. Ratione dolores atque odit quisquam eveniet qui voluptas."
+                                    "nullable": false,
+                                    "example": "Ipsum labore tenetur consequuntur. Occaecati unde esse ipsa et ut laudantium. Commodi quis sed et."
                                 }
                             }
                         }
@@ -2196,22 +2225,26 @@
                     "workspaceId": {
                         "description": "Workspace Id",
                         "format": "uuid",
-                        "type": "string"
+                        "type": "string",
+                        "nullable": false
                     },
                     "name": {
                         "description": "Workspace (business) name",
                         "type": "string",
-                        "example": "Cremin-Towne"
+                        "nullable": false,
+                        "example": "Kovacek, Ferry and Schaefer"
                     },
                     "description": {
                         "description": "Workspace (business) description",
                         "type": "string",
-                        "example": "Voluptatibus assumenda blanditiis inventore laborum sit qui. Sint voluptatem quisquam ducimus. Iste error molestiae nulla velit reprehenderit."
+                        "nullable": false,
+                        "example": "Sed tenetur ratione sed perspiciatis nihil. Minima esse magni voluptas qui rerum. Eos possimus eius molestiae quia perspiciatis."
                     },
                     "address": {
                         "description": "Workspace (business) address",
                         "type": "string",
-                        "example": "581 Christine Extension Apt. 046\nLeannemouth, NV 45696"
+                        "nullable": false,
+                        "example": "22071 Missouri Ports Apt. 440\nAurelioville, HI 45894-0896"
                     }
                 }
             },
@@ -2221,29 +2254,35 @@
                     "planId": {
                         "description": "Plan Id",
                         "format": "uuid",
-                        "type": "string"
+                        "type": "string",
+                        "nullable": false
                     },
                     "workspaceId": {
                         "description": "Workspace Id",
                         "format": "uuid",
-                        "type": "string"
+                        "type": "string",
+                        "nullable": false
                     },
                     "description": {
                         "description": "Plan description",
                         "type": "string",
-                        "example": "Itaque molestias deserunt unde sed natus dolorum. Aspernatur reiciendis odio aliquam quia. Alias suscipit ipsa corporis."
+                        "nullable": false,
+                        "example": "Laborum neque cupiditate veniam nemo. Ullam similique ullam pariatur velit praesentium. Quas voluptas ad ea magni minus non ut. Non molestiae et omnis suscipit non dolor."
                     },
                     "isLaunched": {
                         "description": "Whether the plan is launched",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "nullable": false
                     },
                     "isStopped": {
                         "description": "Whether the plan is stopped",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "nullable": false
                     },
                     "isArchived": {
                         "description": "Whether the plan is archived",
-                        "type": "boolean"
+                        "type": "boolean",
+                        "nullable": false
                     },
                     "requirements": {
                         "description": "All requirements",
@@ -2254,12 +2293,14 @@
                                 "requirementId": {
                                     "description": "Requirement id",
                                     "format": "uuid",
-                                    "type": "string"
+                                    "type": "string",
+                                    "nullable": false
                                 },
                                 "description": {
                                     "description": "Requirement description",
                                     "type": "string",
-                                    "example": "Officia recusandae commodi adipisci minima aut corporis quo. Doloribus aut ea repellat eaque consectetur."
+                                    "nullable": false,
+                                    "example": "Quae libero alias quo consequuntur. Doloribus voluptates et qui harum unde. In voluptatem exercitationem ratione vel repellendus quia."
                                 }
                             }
                         }
@@ -2278,6 +2319,7 @@
                                 "message": {
                                     "description": "Parameters Assertion Exception",
                                     "type": "string",
+                                    "nullable": false,
                                     "example": "Wrong string format for UUID"
                                 }
                             }
@@ -2294,6 +2336,7 @@
                             "properties": {
                                 "message": {
                                     "type": "string",
+                                    "nullable": false,
                                     "example": "The given data was invalid."
                                 },
                                 "errors": {
@@ -2304,6 +2347,7 @@
                                             "type": "string"
                                         }
                                     },
+                                    "nullable": false,
                                     "example": {
                                         "field": [
                                             "Something is wrong with this field!"
@@ -2325,6 +2369,7 @@
                                 "message": {
                                     "description": "Authorization Exception",
                                     "type": "string",
+                                    "nullable": false,
                                     "example": "Subject <Subject Id> is not authorized for <Resource Type> <Resource Id>"
                                 }
                             }
@@ -2342,6 +2387,7 @@
                                 "message": {
                                     "description": "User Already Registered Exception",
                                     "type": "string",
+                                    "nullable": false,
                                     "example": "User with given identity already registered"
                                 }
                             }
@@ -2359,6 +2405,7 @@
                                 "message": {
                                     "description": "Unexpected Exception",
                                     "type": "string",
+                                    "nullable": false,
                                     "example": "Unexpected exception"
                                 }
                             }
@@ -2376,6 +2423,7 @@
                                 "message": {
                                     "description": "Requested resource not found",
                                     "type": "string",
+                                    "nullable": false,
                                     "example": "Not found exception: <Resource Name>: <Resource Id>"
                                 }
                             }
@@ -2393,6 +2441,7 @@
                                 "message": {
                                     "description": "Authentication Exception",
                                     "type": "string",
+                                    "nullable": false,
                                     "example": "Invalid access token"
                                 }
                             }
@@ -2410,6 +2459,7 @@
                                 "message": {
                                     "description": "Domain Exception",
                                     "type": "string",
+                                    "nullable": false,
                                     "example": "Domain logic forbids requested operation"
                                 }
                             }

@@ -17,6 +17,7 @@ class DomainExceptionResponse extends ResponseFactory implements Reusable
                 MediaType::json()->schema(
                     Schema::object()->properties(
                         Schema::string('message')
+                            ->nullable(false)
                             ->description('Domain Exception')
                             ->example('Domain logic forbids requested operation')
                     )

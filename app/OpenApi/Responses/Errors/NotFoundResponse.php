@@ -17,6 +17,7 @@ class NotFoundResponse extends ResponseFactory implements Reusable
                 MediaType::json()->schema(
                     Schema::object()->properties(
                         Schema::string('message')
+                            ->nullable(false)
                             ->description('Requested resource not found')
                             ->example('Not found exception: <Resource Name>: <Resource Id>')
                     )

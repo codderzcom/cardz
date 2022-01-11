@@ -15,32 +15,40 @@ class IssuedCardResponseSchema extends SchemaFactory implements Reusable
     {
         $cardId = Schema::string('cardId')
             ->format(Schema::FORMAT_UUID)
+            ->nullable(false)
             ->description('Card Id');
 
         $planId = Schema::string('planId')
             ->format(Schema::FORMAT_UUID)
+            ->nullable(false)
             ->description('Plan Id');
 
         $customerId = Schema::string('customerId')
             ->format(Schema::FORMAT_UUID)
+            ->nullable(false)
             ->description('Customer Id');
 
         $description = Schema::string('description')
+            ->nullable(false)
             ->description('Card (plan) description')
             ->example($this->faker()->text());
 
         $satisfied = Schema::boolean('satisfied')
+            ->nullable(false)
             ->description('Whether all requirements to receive a bonus are satisfied');
 
         $completed = Schema::boolean('completed')
+            ->nullable(false)
             ->description('Whether customer has received the bonus for this card');
 
         $achievement = Schema::object()->properties(
             Schema::string('achievementId')
+                ->nullable(false)
                 ->format(Schema::FORMAT_UUID)
                 ->description('Achievement Id = corresponding requirement id'),
 
             Schema::string('description')
+                ->nullable(false)
                 ->description('Achievement description = corresponding requirement description')
                 ->example($this->text()),
         );
@@ -51,9 +59,11 @@ class IssuedCardResponseSchema extends SchemaFactory implements Reusable
 
         $requirement = Schema::object()->properties(
             Schema::string('requirementId')
+                ->nullable(false)
                 ->format(Schema::FORMAT_UUID)->description('Requirement id'),
 
             Schema::string('description')
+                ->nullable(false)
                 ->description('Requirement description')
                 ->example($this->text()),
         );

@@ -17,6 +17,7 @@ class AuthorizationExceptionResponse extends ResponseFactory implements Reusable
                 MediaType::json()->schema(
                     Schema::object()->properties(
                         Schema::string('message')
+                            ->nullable(false)
                             ->description('Authorization Exception')
                             ->example('Subject <Subject Id> is not authorized for <Resource Type> <Resource Id>')
                     )
