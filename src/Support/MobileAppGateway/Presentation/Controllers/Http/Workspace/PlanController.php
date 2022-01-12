@@ -16,6 +16,7 @@ use App\OpenApi\Responses\Errors\NotFoundResponse;
 use App\OpenApi\Responses\Errors\UnexpectedExceptionResponse;
 use App\OpenApi\Responses\Errors\ValidationErrorResponse;
 use Cardz\Support\MobileAppGateway\Application\Services\Workspace\PlanAppService;
+use Cardz\Support\MobileAppGateway\Config\Routes\RouteName;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\BaseController;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\{Plan\AddPlanRequest,
     Plan\AddPlanRequirementRequest,
@@ -46,7 +47,7 @@ class PlanController extends BaseController
      * Requires user to be authorized to work in the current workspace.
      * @param Guid $workspaceId Workspace GUID
      */
-    #[OpenApi\Operation(tags: ['business', 'plan'])]
+    #[OpenApi\Operation(id: RouteName::GET_PLANS, tags: ['business', 'plan'])]
     #[OpenApi\Response(factory: BusinessPlansResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
     #[OpenApi\Response(factory: AuthorizationExceptionResponse::class, statusCode: 403)]
@@ -64,7 +65,7 @@ class PlanController extends BaseController
      * @param Guid $workspaceId Workspace GUID
      * @param Guid $planId Plan GUID
      */
-    #[OpenApi\Operation(tags: ['business', 'plan'])]
+    #[OpenApi\Operation(id: RouteName::GET_PLAN, tags: ['business', 'plan'])]
     #[OpenApi\Response(factory: BusinessPlanResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
     #[OpenApi\Response(factory: AuthorizationExceptionResponse::class, statusCode: 403)]
@@ -82,7 +83,7 @@ class PlanController extends BaseController
      * Requires user to be authorized to work in the current workspace.
      * @param Guid $workspaceId Workspace GUID
      */
-    #[OpenApi\Operation(tags: ['business', 'plan'])]
+    #[OpenApi\Operation(id: RouteName::ADD_PLAN, tags: ['business', 'plan'])]
     #[OpenApi\RequestBody(factory: AddPlanRequestBody::class)]
     #[OpenApi\Response(factory: BusinessPlanResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
@@ -102,7 +103,7 @@ class PlanController extends BaseController
      * @param Guid $workspaceId Workspace GUID
      * @param Guid $planId Plan GUID
      */
-    #[OpenApi\Operation(tags: ['business', 'plan'])]
+    #[OpenApi\Operation(id: RouteName::LAUNCH_PLAN, tags: ['business', 'plan'])]
     #[OpenApi\RequestBody(factory: LaunchPlanRequestBody::class)]
     #[OpenApi\Response(factory: BusinessPlanResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: DomainExceptionResponse::class, statusCode: 400)]
@@ -124,7 +125,7 @@ class PlanController extends BaseController
      * @param Guid $workspaceId Workspace GUID
      * @param Guid $planId Plan GUID
      */
-    #[OpenApi\Operation(tags: ['business', 'plan'])]
+    #[OpenApi\Operation(id: RouteName::STOP_PLAN, tags: ['business', 'plan'])]
     #[OpenApi\Response(factory: BusinessPlanResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: DomainExceptionResponse::class, statusCode: 400)]
     #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
@@ -144,7 +145,7 @@ class PlanController extends BaseController
      * @param Guid $workspaceId Workspace GUID
      * @param Guid $planId Plan GUID
      */
-    #[OpenApi\Operation(tags: ['business', 'plan'])]
+    #[OpenApi\Operation(id: RouteName::ARCHIVE_PLAN, tags: ['business', 'plan'])]
     #[OpenApi\Response(factory: BusinessPlanResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
     #[OpenApi\Response(factory: AuthorizationExceptionResponse::class, statusCode: 403)]
@@ -163,7 +164,7 @@ class PlanController extends BaseController
      * @param Guid $workspaceId Workspace GUID
      * @param Guid $planId Plan GUID
      */
-    #[OpenApi\Operation(tags: ['business', 'plan'])]
+    #[OpenApi\Operation(id: RouteName::CHANGE_PLAN_DESCRIPTION, tags: ['business', 'plan'])]
     #[OpenApi\RequestBody(factory: ChangePlanDescriptionRequestBody::class)]
     #[OpenApi\Response(factory: BusinessPlanResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
@@ -184,7 +185,7 @@ class PlanController extends BaseController
      * @param Guid $workspaceId Workspace GUID
      * @param Guid $planId Plan GUID
      */
-    #[OpenApi\Operation(tags: ['business', 'plan', 'requirement'])]
+    #[OpenApi\Operation(id: RouteName::ADD_PLAN_REQUIREMENT, tags: ['business', 'plan', 'requirement'])]
     #[OpenApi\RequestBody(factory: AddRequirementRequestBody::class)]
     #[OpenApi\Response(factory: BusinessPlanResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: DomainExceptionResponse::class, statusCode: 400)]
@@ -207,7 +208,7 @@ class PlanController extends BaseController
      * @param Guid $planId Plan GUID
      * @param Guid $requirementId Requirement GUID
      */
-    #[OpenApi\Operation(tags: ['business', 'plan', 'requirement'])]
+    #[OpenApi\Operation(id: RouteName::REMOVE_PLAN_REQUIREMENT, tags: ['business', 'plan', 'requirement'])]
     #[OpenApi\Response(factory: BusinessPlanResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
     #[OpenApi\Response(factory: AuthorizationExceptionResponse::class, statusCode: 403)]
@@ -227,7 +228,7 @@ class PlanController extends BaseController
      * @param Guid $planId Plan GUID
      * @param Guid $requirementId Requirement GUID
      */
-    #[OpenApi\Operation(tags: ['business', 'plan', 'requirement'])]
+    #[OpenApi\Operation(id: RouteName::CHANGE_PLAN_REQUIREMENT, tags: ['business', 'plan', 'requirement'])]
     #[OpenApi\RequestBody(factory: ChangeRequirementDescriptionRequestBody::class)]
     #[OpenApi\Response(factory: BusinessPlanResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]

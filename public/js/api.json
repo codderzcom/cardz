@@ -262,6 +262,7 @@
                 ],
                 "summary": "Get workspaces",
                 "description": "Returns all workspaces where the current user is a collaborator.",
+                "operationId": "ListAllWorkspace",
                 "responses": {
                     "200": {
                         "description": "List all workspaces of the current collaborator",
@@ -297,6 +298,7 @@
                 ],
                 "summary": "Add a new workspace",
                 "description": "Returns the newly created workspace where the current user is an owner.",
+                "operationId": "AddWorkspace",
                 "requestBody": {
                     "description": "Add workspace request",
                     "content": {
@@ -343,6 +345,7 @@
                 ],
                 "summary": "Get a workspace",
                 "description": "Returns workspace where the current user is a collaborator.\nRequires user to be authorized to work in this workspace.",
+                "operationId": "GetWorkspace",
                 "parameters": [
                     {
                         "name": "workspaceId",
@@ -393,6 +396,7 @@
                 ],
                 "summary": "Change workspace description",
                 "description": "Changes the current workspace description.\nRequires user to be the owner of the current workspace.",
+                "operationId": "ChangeWorkspaceProfile",
                 "parameters": [
                     {
                         "name": "workspaceId",
@@ -453,6 +457,7 @@
                 ],
                 "summary": "Leave collaboration",
                 "description": "Rescinds the user ability collaborate in the current workspace.\nRequires user to be authorized to work in the current workspace. Requires user to NOT be the owner of it.",
+                "operationId": "LeaveWorkspace",
                 "parameters": [
                     {
                         "name": "workspaceId",
@@ -503,6 +508,7 @@
                 ],
                 "summary": "Remove collaborator",
                 "description": "Fires the collaborator from the team. User with the given id will no longer be able to work in the workspace.\nRequires the current user to be the owner of the workspace.",
+                "operationId": "FireCollaborator",
                 "parameters": [
                     {
                         "name": "workspaceId",
@@ -562,6 +568,7 @@
                 ],
                 "summary": "Propose invite",
                 "description": "Returns id of the new invite to collaborate on the workspace.\nRequires user to be the owner of the current workspace.",
+                "operationId": "ProposeInvite",
                 "parameters": [
                     {
                         "name": "workspaceId",
@@ -609,6 +616,7 @@
                 ],
                 "summary": "Accept invite",
                 "description": "Accepts an invitation to collaborate. Authorizes user to work in the current workspace.",
+                "operationId": "AcceptInvite",
                 "parameters": [
                     {
                         "name": "workspaceId",
@@ -663,6 +671,7 @@
                 ],
                 "summary": "Discard invite",
                 "description": "Returns id of the new invite to collaborate on the workspace.\nRequires user to be the owner of the current workspace.",
+                "operationId": "DiscardInvite",
                 "parameters": [
                     {
                         "name": "workspaceId",
@@ -719,6 +728,7 @@
                 ],
                 "summary": "Get plans",
                 "description": "Returns all plans in the current workspace.\nRequires user to be authorized to work in the current workspace.",
+                "operationId": "ListAllPlan",
                 "parameters": [
                     {
                         "name": "workspaceId",
@@ -763,6 +773,7 @@
                 ],
                 "summary": "Add a new plan",
                 "description": "Adds a new plan to the current workspace.\nRequires user to be authorized to work in the current workspace.",
+                "operationId": "AddPlan",
                 "parameters": [
                     {
                         "name": "workspaceId",
@@ -818,6 +829,7 @@
                 ],
                 "summary": "Get plan",
                 "description": "Returns a plans in the current workspace by id.\nRequires user to be authorized to work in the current workspace.",
+                "operationId": "GetPlan",
                 "parameters": [
                     {
                         "name": "workspaceId",
@@ -872,6 +884,7 @@
                 ],
                 "summary": "Change plan description",
                 "description": "Changes plan description.\nRequires user to be authorized to work in the current workspace.",
+                "operationId": "ChangePlanDescription",
                 "parameters": [
                     {
                         "name": "workspaceId",
@@ -939,6 +952,7 @@
                 ],
                 "summary": "Launch a plan",
                 "description": "Launches a plan to activity. Requires an expiration date for aut expiration. Can be relaunched with a new date.\nRequires user to be authorized to work in the current workspace.",
+                "operationId": "LaunchPlan",
                 "parameters": [
                     {
                         "name": "workspaceId",
@@ -1009,6 +1023,7 @@
                 ],
                 "summary": "Stop a plan",
                 "description": "Stops a plan from active state.\nRequires user to be authorized to work in the current workspace.",
+                "operationId": "StopPlan",
                 "parameters": [
                     {
                         "name": "workspaceId",
@@ -1066,6 +1081,7 @@
                 ],
                 "summary": "Archive a plan",
                 "description": "Archives plan. Archived plans are invisible by normal means. Plans are archived automatically on their expiration date.\nRequires user to be authorized to work in the current workspace.",
+                "operationId": "ArchivePlan",
                 "parameters": [
                     {
                         "name": "workspaceId",
@@ -1121,6 +1137,7 @@
                 ],
                 "summary": "Add plan requirement",
                 "description": "Adds a new requirement to the plan. Requirement changes are propagated to the relevant cards.\nRequires user to be authorized to work in the current workspace.",
+                "operationId": "AddPlanRequirement",
                 "parameters": [
                     {
                         "name": "workspaceId",
@@ -1192,6 +1209,7 @@
                 ],
                 "summary": "Remove plan requirement",
                 "description": "Removes the requirement from the plan. Requirement changes are propagated to the relevant cards.\nRequires user to be authorized to work in the current workspace.",
+                "operationId": "RemovePlanRequirement",
                 "parameters": [
                     {
                         "name": "workspaceId",
@@ -1254,6 +1272,7 @@
                 ],
                 "summary": "Change plan requirement description",
                 "description": "Changes the requirement description. Description changes are propagated to the relevant cards.\nRequires user to be authorized to work in the current workspace.",
+                "operationId": "ChangePlanRequirement",
                 "parameters": [
                     {
                         "name": "workspaceId",
@@ -1330,6 +1349,7 @@
                 ],
                 "summary": "Issue card",
                 "description": "Issues card for a plan to a customer.\nRequires user to be authorized to work in the current workspace.",
+                "operationId": "IssueCard",
                 "parameters": [
                     {
                         "name": "workspaceId",
@@ -1391,6 +1411,7 @@
                 ],
                 "summary": "Get card",
                 "description": "Returns card by card id if it is issued in the current workspace.\nRequires user to be authorized to work in the current workspace.",
+                "operationId": "GetCard",
                 "parameters": [
                     {
                         "name": "workspaceId",
@@ -1445,6 +1466,7 @@
                 ],
                 "summary": "Complete card",
                 "description": "Marks card as completed, meaning the owner has received their bonus.\nRequires user to be authorized to work in the current workspace.",
+                "operationId": "CompleteCard",
                 "parameters": [
                     {
                         "name": "workspaceId",
@@ -1502,6 +1524,7 @@
                 ],
                 "summary": "Revoke card",
                 "description": "Marks card as revoked, meaning the owner cannot use and even see it anymore.\nRequires user to be authorized to work in the current workspace.",
+                "operationId": "RevokeCard",
                 "parameters": [
                     {
                         "name": "workspaceId",
@@ -1559,6 +1582,7 @@
                 ],
                 "summary": "Block card",
                 "description": "Marks card as blocked, meaning the owner cannot use it temporarily until it's unblocked.\nRequires user to be authorized to work in the current workspace.",
+                "operationId": "BlockCard",
                 "parameters": [
                     {
                         "name": "workspaceId",
@@ -1616,6 +1640,7 @@
                 ],
                 "summary": "Unblock card",
                 "description": "Marks card as unblocked, meaning the owner can interact with it again.\nRequires user to be authorized to work in the current workspace.",
+                "operationId": "UnblockCard",
                 "parameters": [
                     {
                         "name": "workspaceId",
@@ -1673,6 +1698,7 @@
                 ],
                 "summary": "Note achievement to the card",
                 "description": "Marks one of the Plan requirements as achieved in the customer card.\nCard will be marked as satisfied shortly after the last requirement is marked.\nMeaning the card owner is now legible for the bonus.\nRequires user to be authorized to work in the current workspace.",
+                "operationId": "NoteCardAchievement",
                 "parameters": [
                     {
                         "name": "workspaceId",
@@ -1743,6 +1769,7 @@
                 ],
                 "summary": "Dismiss achievement from the card",
                 "description": "Removes achievement and removes satisfaction mark from the card if necessary.\nCan only be done until the card owner received their bonus.\nRequires user to be authorized to work in the current workspace.",
+                "operationId": "DismissCardAchievement",
                 "parameters": [
                     {
                         "name": "workspaceId",
@@ -1830,19 +1857,19 @@
                         "description": "Workspace (business) name",
                         "type": "string",
                         "nullable": false,
-                        "example": "Keebler-Feest"
+                        "example": "Price, Glover and Block"
                     },
                     "description": {
                         "description": "Workspace (business) description",
                         "type": "string",
                         "nullable": false,
-                        "example": "Odit veritatis iure non voluptates tempore et. Deleniti velit nulla atque odio iusto cum et. Doloremque harum recusandae rem fugiat eveniet."
+                        "example": "Iusto dolore enim ducimus provident. Est rerum consequatur impedit ipsum sunt dolorem molestiae dolor. Magni ullam alias voluptatum est earum."
                     },
                     "address": {
                         "description": "Workspace (business) address",
                         "type": "string",
                         "nullable": false,
-                        "example": "1756 Jamel Lodge\nDasiabury, VA 44748-7953"
+                        "example": "77604 Daniela Rapid Apt. 554\nNew Lomastad, MA 23926"
                     }
                 }
             },
@@ -1924,7 +1951,7 @@
                                     "description": "Achievement description = corresponding requirement description",
                                     "type": "string",
                                     "nullable": false,
-                                    "example": "Officia autem eius molestiae. Voluptatibus id consequatur hic facere. Qui culpa rerum fugiat et aspernatur et. Et ut in fuga occaecati reprehenderit corrupti architecto."
+                                    "example": "Nemo sequi voluptatibus sunt animi ut. Iste in tempora sed facere aut ut consequatur. Modi sunt soluta voluptates rerum itaque esse enim."
                                 }
                             }
                         }
@@ -1949,7 +1976,7 @@
                                     "description": "Requirement description",
                                     "type": "string",
                                     "nullable": false,
-                                    "example": "Maiores est quas repellendus molestias dolorum consequatur dolores voluptas. Expedita quo atque voluptas non sint consequatur rem."
+                                    "example": "Ut et quos et vel odio soluta commodi. Ullam tenetur repudiandae tempora laudantium. Ex eos voluptatem quis inventore corrupti minus provident."
                                 }
                             }
                         }
@@ -1968,17 +1995,17 @@
                     "name": {
                         "description": "Workspace (business) title",
                         "type": "string",
-                        "example": "Kling, Hane and Cruickshank"
+                        "example": "Toy-Halvorson"
                     },
                     "description": {
                         "description": "Workspace (business) description",
                         "type": "string",
-                        "example": "Voluptas a quo id eum voluptas ipsam consequatur. Sint pariatur facere consequatur minima doloribus. Nihil omnis eum amet sint. Iure voluptatem et ratione rem voluptatem."
+                        "example": "Excepturi doloremque nisi ea beatae sunt nostrum. Perferendis quia velit expedita eveniet in. Dignissimos esse ea numquam esse enim in. Sunt voluptas ex qui sit non earum."
                     },
                     "address": {
                         "description": "Workspace (business) address",
                         "type": "string",
-                        "example": "836 Petra Plaza\nNew Rebecaburgh, MN 38858-5211"
+                        "example": "9909 Mills Station\nLake Wainoside, MS 35270"
                     }
                 }
             },
@@ -2005,7 +2032,7 @@
                     "description": {
                         "description": "Requirement description",
                         "type": "string",
-                        "example": "Ut nostrum doloribus harum sed ut. Eveniet sit voluptatum officiis dolorum nihil. Et aut quidem consequatur tempore soluta. Tempora voluptates officiis praesentium quidem recusandae beatae."
+                        "example": "Ipsum tempore debitis velit sit dolore. Sapiente reiciendis et ut vitae. Id voluptates impedit et velit."
                     }
                 }
             },
@@ -2039,7 +2066,7 @@
                     "description": {
                         "description": "Achievement (requirement) description",
                         "type": "string",
-                        "example": "Rerum vel exercitationem molestias enim aut temporibus repudiandae. Et ullam laborum architecto quis alias. Magnam et rerum reiciendis natus quod."
+                        "example": "Necessitatibus voluptatibus non quis occaecati amet earum consectetur. Nam ab ea porro qui. In sint odio et. Aliquam neque et ex ea."
                     }
                 }
             },
@@ -2055,18 +2082,18 @@
                     "identity": {
                         "description": "Identity is either phone or email",
                         "type": "string",
-                        "example": "pascale.will@brown.com"
+                        "example": "kveum@hotmail.com"
                     },
                     "password": {
                         "description": "Password",
                         "format": "password",
                         "type": "string",
-                        "example": "AD$_#\/6D:j'"
+                        "example": ".z\"XL94_lU\"!EI("
                     },
                     "deviceName": {
                         "description": "Device name is required to distinguish between different access tokens",
                         "type": "string",
-                        "example": "architecto"
+                        "example": "asperiores"
                     }
                 }
             },
@@ -2083,28 +2110,28 @@
                     "phone": {
                         "description": "Phone",
                         "type": "string",
-                        "example": "1-737-803-9224"
+                        "example": "234-753-3634"
                     },
                     "email": {
                         "description": "Email is required if phone is not provided",
                         "type": "string",
-                        "example": "leann52@yahoo.com"
+                        "example": "xziemann@yahoo.com"
                     },
                     "name": {
                         "description": "Customer name",
                         "type": "string",
-                        "example": "Dr. Assunta Gibson"
+                        "example": "Phoebe D'Amore"
                     },
                     "password": {
                         "description": "Password",
                         "format": "password",
                         "type": "string",
-                        "example": "ZVT{[Cmc4$\"^`$p8"
+                        "example": "dt`(S0h-yX*>.B[?)y2"
                     },
                     "deviceName": {
                         "description": "Device name is required to distinguish between different access tokens",
                         "type": "string",
-                        "example": "distinctio"
+                        "example": "ad"
                     }
                 }
             },
@@ -2163,7 +2190,7 @@
                         "description": "Card (plan) description",
                         "type": "string",
                         "nullable": false,
-                        "example": "Omnis laborum ex officia assumenda eos exercitationem. Repudiandae fuga unde asperiores ut. Dolorem quibusdam aut tempore animi. Alias ut error rerum."
+                        "example": "Nisi pariatur pariatur expedita deleniti nulla voluptatem. Doloribus neque vitae ut aspernatur. Nemo et accusantium nostrum illo. Molestiae modi vel aut quasi."
                     },
                     "satisfied": {
                         "description": "Whether all requirements to receive a bonus are satisfied",
@@ -2195,11 +2222,11 @@
                                     "description": "Achievement description = corresponding requirement description",
                                     "type": "string",
                                     "nullable": false,
-                                    "example": "A et omnis similique nihil quasi. Consequuntur soluta est quia voluptate ex ipsa. Magni qui dicta molestias nihil beatae et. Autem quia laudantium animi molestiae voluptas consequatur accusamus."
+                                    "example": "Animi rem ea qui corrupti et et architecto. Recusandae omnis distinctio velit. Saepe blanditiis optio qui quibusdam nam."
                                 }
                             }
                         },
-                        "example": "Eos illo nisi et ut illum impedit autem harum. Hic ex vitae natus non. Accusantium autem non earum magnam quibusdam harum molestiae voluptatem."
+                        "example": "Nam expedita deleniti est ipsum quos quo. Laborum ab est in provident omnis voluptatem. Ipsa sit porro enim sunt. Quasi porro deserunt nostrum. Et optio in nulla ipsum praesentium."
                     },
                     "requirements": {
                         "description": "All requirements",
@@ -2221,7 +2248,7 @@
                                     "description": "Requirement description",
                                     "type": "string",
                                     "nullable": false,
-                                    "example": "Hic totam aperiam iste eveniet. Qui dolor et sint facilis quas consectetur tenetur. Et necessitatibus quae quis alias enim ut eum."
+                                    "example": "Magni iusto ut iure adipisci aut voluptas veniam. Magni quia sit incidunt nesciunt. Est sunt modi doloribus error ab rerum. Magnam ut quasi aperiam nisi corrupti omnis."
                                 }
                             }
                         }
@@ -2247,19 +2274,19 @@
                         "description": "Workspace (business) name",
                         "type": "string",
                         "nullable": false,
-                        "example": "Kassulke Inc"
+                        "example": "Schuster, Wisoky and Blick"
                     },
                     "description": {
                         "description": "Workspace (business) description",
                         "type": "string",
                         "nullable": false,
-                        "example": "Voluptatem delectus quo aut consequuntur maxime soluta illo. Voluptatem ut mollitia omnis consequuntur non dolores. Quis illum inventore soluta iure. Sit cumque est autem."
+                        "example": "Quae consectetur ad id quos dolores odit. Nam perferendis tempore magnam expedita impedit aut eos. Nostrum aliquid impedit quod alias voluptas aut rerum et."
                     },
                     "address": {
                         "description": "Workspace (business) address",
                         "type": "string",
                         "nullable": false,
-                        "example": "68243 Vada Roads Apt. 847\nSonyafurt, DC 17802"
+                        "example": "25203 Padberg Park Apt. 854\nFisherstad, NH 39497"
                     }
                 }
             },
@@ -2291,7 +2318,7 @@
                         "description": "Plan description",
                         "type": "string",
                         "nullable": false,
-                        "example": "Quasi error quae aut culpa maxime. Aut cumque itaque ut est labore occaecati quae. Magnam hic deleniti dolorum. Odio ratione et dolor dignissimos."
+                        "example": "Et et consequatur dolorem est expedita commodi. Cupiditate aliquam praesentium est asperiores in eveniet. Illo quibusdam optio enim labore qui amet. Sit dolore quibusdam voluptas."
                     },
                     "isLaunched": {
                         "description": "Whether the plan is launched",
@@ -2328,7 +2355,7 @@
                                     "description": "Requirement description",
                                     "type": "string",
                                     "nullable": false,
-                                    "example": "Dolor asperiores eligendi velit deleniti eum. Harum velit et blanditiis et. Fugiat nesciunt eius voluptatem nobis. Non ipsa quibusdam ut eligendi vitae voluptates."
+                                    "example": "Hic illum unde laboriosam dolorem libero autem expedita. Dolores molestias et ut ipsa voluptate voluptates qui. Aliquid est rerum ipsam aut harum culpa a nostrum."
                                 }
                             }
                         }

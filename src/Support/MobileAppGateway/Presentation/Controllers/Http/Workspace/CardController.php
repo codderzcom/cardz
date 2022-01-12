@@ -12,6 +12,7 @@ use App\OpenApi\Responses\Errors\NotFoundResponse;
 use App\OpenApi\Responses\Errors\UnexpectedExceptionResponse;
 use App\OpenApi\Responses\Errors\ValidationErrorResponse;
 use Cardz\Support\MobileAppGateway\Application\Services\Workspace\CardAppService;
+use Cardz\Support\MobileAppGateway\Config\Routes\RouteName;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\BaseController;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\Card\CardCommandRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\Card\DismissAchievementCardRequest;
@@ -39,7 +40,7 @@ class CardController extends BaseController
      * @param Guid $workspaceId Workspace GUID
      * @param Guid $cardId Card GUID
      */
-    #[OpenApi\Operation(tags: ['business', 'card'])]
+    #[OpenApi\Operation(id: RouteName::GET_CARD, tags: ['business', 'card'])]
     #[OpenApi\Response(factory: BusinessCardResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
     #[OpenApi\Response(factory: AuthorizationExceptionResponse::class, statusCode: 403)]
@@ -57,7 +58,7 @@ class CardController extends BaseController
      * Requires user to be authorized to work in the current workspace.
      * @param Guid $workspaceId Workspace GUID
      */
-    #[OpenApi\Operation(tags: ['business', 'card'])]
+    #[OpenApi\Operation(id: RouteName::ISSUE_CARD, tags: ['business', 'card'])]
     #[OpenApi\RequestBody(factory: IssueCardRequestBody::class)]
     #[OpenApi\Response(factory: BusinessCardResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: DomainExceptionResponse::class, statusCode: 400)]
@@ -79,7 +80,7 @@ class CardController extends BaseController
      * @param Guid $workspaceId Workspace GUID
      * @param Guid $cardId Card GUID
      */
-    #[OpenApi\Operation(tags: ['business', 'card'])]
+    #[OpenApi\Operation(id: RouteName::COMPLETE_CARD, tags: ['business', 'card'])]
     #[OpenApi\Response(factory: BusinessCardResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: DomainExceptionResponse::class, statusCode: 400)]
     #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
@@ -99,7 +100,7 @@ class CardController extends BaseController
      * @param Guid $workspaceId Workspace GUID
      * @param Guid $cardId Card GUID
      */
-    #[OpenApi\Operation(tags: ['business', 'card'])]
+    #[OpenApi\Operation(id: RouteName::REVOKE_CARD, tags: ['business', 'card'])]
     #[OpenApi\Response(factory: BusinessCardResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: DomainExceptionResponse::class, statusCode: 400)]
     #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
@@ -119,7 +120,7 @@ class CardController extends BaseController
      * @param Guid $workspaceId Workspace GUID
      * @param Guid $cardId Card GUID
      */
-    #[OpenApi\Operation(tags: ['business', 'card'])]
+    #[OpenApi\Operation(id: RouteName::BLOCK_CARD, tags: ['business', 'card'])]
     #[OpenApi\Response(factory: BusinessCardResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: DomainExceptionResponse::class, statusCode: 400)]
     #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
@@ -139,7 +140,7 @@ class CardController extends BaseController
      * @param Guid $workspaceId Workspace GUID
      * @param Guid $cardId Card GUID
      */
-    #[OpenApi\Operation(tags: ['business', 'card'])]
+    #[OpenApi\Operation(id: RouteName::UNBLOCK_CARD, tags: ['business', 'card'])]
     #[OpenApi\Response(factory: BusinessCardResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: DomainExceptionResponse::class, statusCode: 400)]
     #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
@@ -161,7 +162,7 @@ class CardController extends BaseController
      * @param Guid $workspaceId Workspace GUID
      * @param Guid $cardId Card GUID
      */
-    #[OpenApi\Operation(tags: ['business', 'card'])]
+    #[OpenApi\Operation(id: RouteName::NOTE_ACHIEVEMENT, tags: ['business', 'card'])]
     #[OpenApi\RequestBody(factory: NoteCardAchievementRequestBody::class)]
     #[OpenApi\Response(factory: BusinessCardResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: DomainExceptionResponse::class, statusCode: 400)]
@@ -185,7 +186,7 @@ class CardController extends BaseController
      * @param Guid $cardId Card GUID
      * @param Guid $achievementId Achievement GUID
      */
-    #[OpenApi\Operation(tags: ['business', 'card'])]
+    #[OpenApi\Operation(id: RouteName::DISMISS_ACHIEVEMENT, tags: ['business', 'card'])]
     #[OpenApi\Response(factory: BusinessCardResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: DomainExceptionResponse::class, statusCode: 400)]
     #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]

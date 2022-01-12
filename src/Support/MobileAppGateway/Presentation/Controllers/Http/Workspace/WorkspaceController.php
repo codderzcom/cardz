@@ -13,6 +13,7 @@ use App\OpenApi\Responses\Errors\UnexpectedExceptionResponse;
 use App\OpenApi\Responses\Errors\ValidationErrorResponse;
 use App\OpenApi\SecuritySchemes\BearerTokenSecurityScheme;
 use Cardz\Support\MobileAppGateway\Application\Services\Workspace\WorkspaceAppService;
+use Cardz\Support\MobileAppGateway\Config\Routes\RouteName;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\BaseController;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\AddWorkspaceRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\ChangeWorkspaceProfileRequest;
@@ -35,7 +36,7 @@ class WorkspaceController extends BaseController
      *
      * Returns all workspaces where the current user is a collaborator.
      */
-    #[OpenApi\Operation(tags: ['business', 'workspace'], security: BearerTokenSecurityScheme::class)]
+    #[OpenApi\Operation(id: RouteName::GET_WORKSPACES, tags: ['business', 'workspace'], security: BearerTokenSecurityScheme::class)]
     #[OpenApi\Response(factory: BusinessWorkspacesResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
     #[OpenApi\Response(factory: UnexpectedExceptionResponse::class, statusCode: 500)]
@@ -51,7 +52,7 @@ class WorkspaceController extends BaseController
      * Requires user to be authorized to work in this workspace.
      * @param Guid $workspaceId Workspace GUID
      */
-    #[OpenApi\Operation(tags: ['business', 'workspace'], security: BearerTokenSecurityScheme::class)]
+    #[OpenApi\Operation(id: RouteName::GET_WORKSPACE, tags: ['business', 'workspace'], security: BearerTokenSecurityScheme::class)]
     #[OpenApi\Response(factory: BusinessWorkspaceResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
     #[OpenApi\Response(factory: AuthorizationExceptionResponse::class, statusCode: 403)]
@@ -67,7 +68,7 @@ class WorkspaceController extends BaseController
      *
      * Returns the newly created workspace where the current user is an owner.
      */
-    #[OpenApi\Operation(tags: ['business', 'workspace'], security: BearerTokenSecurityScheme::class)]
+    #[OpenApi\Operation(id: RouteName::ADD_WORKSPACE, tags: ['business', 'workspace'], security: BearerTokenSecurityScheme::class)]
     #[OpenApi\RequestBody(factory: AddWorkspaceRequestBody::class)]
     #[OpenApi\Response(factory: BusinessWorkspaceResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
@@ -90,7 +91,7 @@ class WorkspaceController extends BaseController
      * Requires user to be the owner of the current workspace.
      * @param Guid $workspaceId Workspace GUID
      */
-    #[OpenApi\Operation(tags: ['business', 'workspace'], security: BearerTokenSecurityScheme::class)]
+    #[OpenApi\Operation(id: RouteName::CHANGE_PROFILE, tags: ['business', 'workspace'], security: BearerTokenSecurityScheme::class)]
     #[OpenApi\RequestBody(factory: ChangeWorkspaceProfileRequestBody::class)]
     #[OpenApi\Response(factory: BusinessWorkspaceResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]

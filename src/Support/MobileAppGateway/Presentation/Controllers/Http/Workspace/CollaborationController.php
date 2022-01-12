@@ -10,6 +10,7 @@ use App\OpenApi\Responses\Errors\DomainExceptionResponse;
 use App\OpenApi\Responses\Errors\NotFoundResponse;
 use App\OpenApi\Responses\Errors\UnexpectedExceptionResponse;
 use Cardz\Support\MobileAppGateway\Application\Services\Workspace\CollaborationAppService;
+use Cardz\Support\MobileAppGateway\Config\Routes\RouteName;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\BaseController;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\Collaboration\FireCollaboratorRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\Collaboration\InviteRequest;
@@ -34,7 +35,7 @@ class CollaborationController extends BaseController
      * Requires user to be the owner of the current workspace.
      * @param Guid $workspaceId Workspace GUID
      */
-    #[OpenApi\Operation(tags: ['business', 'collaboration'])]
+    #[OpenApi\Operation(id: RouteName::PROPOSE_INVITE, tags: ['business', 'collaboration'])]
     #[OpenApi\Response(factory: CollaboratorIdResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
     #[OpenApi\Response(factory: AuthorizationExceptionResponse::class, statusCode: 403)]
@@ -52,7 +53,7 @@ class CollaborationController extends BaseController
      * @param Guid $workspaceId Workspace GUID
      * @param Guid $inviteId Invite GUID
      */
-    #[OpenApi\Operation(tags: ['business', 'collaboration'])]
+    #[OpenApi\Operation(id: RouteName::ACCEPT_INVITE, tags: ['business', 'collaboration'])]
     #[OpenApi\Response(factory: CollaboratorIdResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: BusinessPlanResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: DomainExceptionResponse::class, statusCode: 400)]
@@ -72,7 +73,7 @@ class CollaborationController extends BaseController
      * @param Guid $workspaceId Workspace GUID
      * @param Guid $inviteId Invite GUID
      */
-    #[OpenApi\Operation(tags: ['business', 'collaboration'])]
+    #[OpenApi\Operation(id: RouteName::DISCARD_INVITE, tags: ['business', 'collaboration'])]
     #[OpenApi\Response(factory: CollaboratorIdResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
     #[OpenApi\Response(factory: AuthorizationExceptionResponse::class, statusCode: 403)]
@@ -90,7 +91,7 @@ class CollaborationController extends BaseController
      * Requires user to be authorized to work in the current workspace. Requires user to NOT be the owner of it.
      * @param Guid $workspaceId Workspace GUID
      */
-    #[OpenApi\Operation(tags: ['business', 'collaboration'])]
+    #[OpenApi\Operation(id: RouteName::LEAVE_RELATION, tags: ['business', 'collaboration'])]
     #[OpenApi\Response(factory: CollaboratorIdResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: DomainExceptionResponse::class, statusCode: 400)]
     #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
@@ -110,7 +111,7 @@ class CollaborationController extends BaseController
      * @param Guid $workspaceId Workspace GUID
      * @param Guid $collaboratorId Collaborator GUID
      */
-    #[OpenApi\Operation(tags: ['business', 'collaboration'])]
+    #[OpenApi\Operation(id: RouteName::FIRE_COLLABORATOR, tags: ['business', 'collaboration'])]
     #[OpenApi\Response(factory: CollaboratorIdResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: DomainExceptionResponse::class, statusCode: 400)]
     #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
