@@ -6,44 +6,42 @@ use MyCLabs\Enum\Enum;
 
 final class RouteName extends Enum
 {
-    public const REGISTER = 'MAG.Business.CustomerRegister';
-    public const GET_TOKEN = 'MAG.Business.CustomerGetToken';
-    public const GET_WORKSPACES = 'MAG.Business.WorkspaceListAll';
-    public const ADD_WORKSPACE = 'MAG.Business.WorkspaceAdd';
-    public const GET_PLANS = 'MAG.Business.PlanListAll';
-    public const ISSUE_CARD = 'MAG.Business.CardIssue';
-    public const GET_CARD = 'MAG.Business.CardGetCard';
-    public const COMPLETE_CARD = 'MAG.Business.CardComplete';
-    public const REVOKE_CARD = 'MAG.Business.CardRevoke';
-    public const BLOCK_CARD = 'MAG.Business.CardBlock';
-    public const UNBLOCK_CARD = 'MAG.Business.CardUnblock';
+    public const REGISTER = 'CustomerRegister';
+    public const GET_TOKEN = 'CustomerGetToken';
+    public const GET_WORKSPACES = 'WorkspaceListAll';
+    public const ADD_WORKSPACE = 'WorkspaceAdd';
+    public const GET_PLANS = 'PlanListAll';
+    public const ISSUE_CARD = 'CardIssue';
+    public const GET_CARD = 'CardGet';
+    public const COMPLETE_CARD = 'CardComplete';
+    public const REVOKE_CARD = 'CardRevoke';
+    public const BLOCK_CARD = 'CardBlock';
+    public const UNBLOCK_CARD = 'CardUnblock';
 
-    public const NOTE_ACHIEVEMENT = 'MAG.Business.CardNoteAchievement';
-    public const DISMISS_ACHIEVEMENT = 'MAG.Business.CardDismissAchievement';
+    public const NOTE_ACHIEVEMENT = 'CardAchievementNote';
+    public const DISMISS_ACHIEVEMENT = 'CardAchievementDismiss';
 
-    public const ADD_PLAN = 'MAG.Business.PlanAdd';
-    public const CHANGE_PLAN_DESCRIPTION = 'MAG.Business.PlanChangeDescription';
-    public const LAUNCH_PLAN = 'MAG.Business.PlanLaunch';
-    public const STOP_PLAN = 'MAG.Business.PlanStop';
-    public const ARCHIVE_PLAN = 'MAG.Business.PlanArchive';
-    public const ADD_PLAN_REQUIREMENT = 'MAG.Business.PlanAddRequirement';
-    public const REMOVE_PLAN_REQUIREMENT = 'MAG.Business.PlanRemoveRequirement';
-    public const CHANGE_PLAN_REQUIREMENT = 'MAG.Business.PlanChangeRequirement';
-    public const PROPOSE_INVITE = 'MAG.Business.ProposeInvite';
-    public const ACCEPT_INVITE = 'MAG.Business.AcceptInvite';
-    public const DISCARD_INVITE = 'MAG.Business.DiscardInvite';
+    public const ADD_PLAN = 'PlanAdd';
+    public const CHANGE_PLAN_DESCRIPTION = 'PlanChangeDescription';
+    public const LAUNCH_PLAN = 'PlanLaunch';
+    public const STOP_PLAN = 'PlanStop';
+    public const ARCHIVE_PLAN = 'PlanArchive';
+    public const ADD_PLAN_REQUIREMENT = 'PlanRequirementAdd';
+    public const REMOVE_PLAN_REQUIREMENT = 'PlanRequirementRemove';
+    public const CHANGE_PLAN_REQUIREMENT = 'PlanRequirementChange';
+    public const PROPOSE_INVITE = 'InvitePropose';
+    public const ACCEPT_INVITE = 'InviteAccept';
+    public const DISCARD_INVITE = 'InviteDiscard';
 
-    public const LEAVE_RELATION = 'MAG.Business.Leave';
-    public const FIRE_COLLABORATOR = 'MAG.Business.Fire';
+    public const LEAVE_RELATION = 'CollaborationLeave';
+    public const FIRE_COLLABORATOR = 'CollaborationFire';
 
-    /* begin untested */
-    public const GET_WORKSPACE = 'MAG.Business.GetWorkspace';
-    public const CHANGE_PROFILE = 'MAG.Business.ChangeProfile';
-    public const GET_PLAN = 'MAG.Business.GetPlan';
+    public const GET_WORKSPACE = 'WorkspaceGet';
+    public const CHANGE_PROFILE = 'WorkspaceChangeProfile';
+    public const GET_PLAN = 'PlanGet';
 
-    public const CUSTOMER_WORKSPACES = 'MAG.Customer.GetWorkspaces';
-    public const CUSTOMER_ID = 'MAG.Customer.GetId';
-    public const CUSTOMER_CARDS = 'MAG.Customer.GetCards';
-    public const CUSTOMER_CARD = 'MAG.Customer.GetCard';
-    /* end untested */
+    public const CUSTOMER_WORKSPACES = 'CustomerWorkspacesGet';
+    public const CUSTOMER_ID = 'CustomerIdGet';
+    public const CUSTOMER_CARDS = 'CustomerCardsGet';
+    public const CUSTOMER_CARD = 'CustomerCardGet';
 }

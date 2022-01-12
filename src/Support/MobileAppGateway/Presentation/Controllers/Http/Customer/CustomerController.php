@@ -10,7 +10,6 @@ use App\OpenApi\Responses\CustomerWorkspacesResponse;
 use App\OpenApi\Responses\Errors\AuthenticationExceptionResponse;
 use App\OpenApi\Responses\Errors\AuthorizationExceptionResponse;
 use App\OpenApi\Responses\Errors\NotFoundResponse;
-use App\OpenApi\Responses\Errors\ParametersAssertionExceptionResponse;
 use App\OpenApi\Responses\Errors\UnexpectedExceptionResponse;
 use App\OpenApi\Responses\Errors\UserAlreadyRegisteredExceptionResponse;
 use App\OpenApi\Responses\Errors\ValidationErrorResponse;
@@ -18,12 +17,12 @@ use App\OpenApi\Responses\IssuedCardResponse;
 use App\OpenApi\Responses\IssuedCardsResponse;
 use App\OpenApi\SecuritySchemes\BearerTokenSecurityScheme;
 use Cardz\Support\MobileAppGateway\Application\Services\Customer\CustomerAppService;
+use Cardz\Support\MobileAppGateway\Config\Routes\RouteName;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\BaseController;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer\Requests\GetIssuedCardRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer\Requests\GetIssuedCardsRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer\Requests\GetTokenRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer\Requests\RegisterRequest;
-use Codderz\Platypus\Exceptions\ParameterAssertionException;
 use Illuminate\Http\JsonResponse;
 use Ramsey\Uuid\Guid\Guid;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
@@ -41,7 +40,7 @@ class CustomerController extends BaseController
      *
      * Returns id of the authenticated user.
      */
-    #[OpenApi\Operation(tags: ['customer'], security: BearerTokenSecurityScheme::class)]
+    #[OpenApi\Operation(id: RouteName::CUSTOMER_ID, tags: ['customer'], security: BearerTokenSecurityScheme::class)]
     #[OpenApi\Response(factory: CustomerIdResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
     #[OpenApi\Response(factory: AuthorizationExceptionResponse::class, statusCode: 403)]
@@ -56,7 +55,7 @@ class CustomerController extends BaseController
      *
      * Returns new API user token (for basic bearer auth). Requires identity, password and device name.
      */
-    #[OpenApi\Operation(tags: ['customer'])]
+    #[OpenApi\Operation(id: RouteName::GET_TOKEN, tags: ['customer'])]
     #[OpenApi\RequestBody(factory: GetTokenRequestBody::class)]
     #[OpenApi\Response(factory: ApiAccessTokenResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
@@ -76,7 +75,7 @@ class CustomerController extends BaseController
      *
      * Registers new user with email OR phone, password, device name (for token). Returns new auth token.
      */
-    #[OpenApi\Operation(tags: ['customer'])]
+    #[OpenApi\Operation(id: RouteName::REGISTER, tags: ['customer'])]
     #[OpenApi\RequestBody(factory: RegisterRequestBody::class)]
     #[OpenApi\Response(factory: ApiAccessTokenResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: UserAlreadyRegisteredExceptionResponse::class, statusCode: 400)]
@@ -98,7 +97,7 @@ class CustomerController extends BaseController
      *
      * Returns all active cards for the current user.
      */
-    #[OpenApi\Operation(tags: ['customer'], security: BearerTokenSecurityScheme::class)]
+    #[OpenApi\Operation(id: RouteName::CUSTOMER_CARDS, tags: ['customer'], security: BearerTokenSecurityScheme::class)]
     #[OpenApi\Response(factory: IssuedCardsResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
     #[OpenApi\Response(factory: UnexpectedExceptionResponse::class, statusCode: 500)]
@@ -113,7 +112,7 @@ class CustomerController extends BaseController
      * Returns an active card, owned by the current user, by its id.
      * @param Guid $cardId Card GUID
      */
-    #[OpenApi\Operation(tags: ['customer'], security: BearerTokenSecurityScheme::class)]
+    #[OpenApi\Operation(id: RouteName::CUSTOMER_CARD, tags: ['customer'], security: BearerTokenSecurityScheme::class)]
     #[OpenApi\Response(factory: IssuedCardResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
     #[OpenApi\Response(factory: NotFoundResponse::class, statusCode: 404)]
@@ -128,7 +127,7 @@ class CustomerController extends BaseController
      *
      * Returns all workspaces
      */
-    #[OpenApi\Operation(tags: ['customer'])]
+    #[OpenApi\Operation(id: RouteName::CUSTOMER_WORKSPACES, tags: ['customer'])]
     #[OpenApi\Response(factory: CustomerWorkspacesResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: UnexpectedExceptionResponse::class, statusCode: 500)]
     public function getWorkspaces(): JsonResponse
