@@ -12,14 +12,20 @@ return [
                 'contact' => [],
             ],
 
+            'middlewares' => [
+                'paths' => [
+                    \App\OpenApi\Middleware\ApiV1Middleware::class,
+                ],
+            ],
+
             'servers' => [
                 [
-                    'url' => env('APP_URL'),
+                    'url' => env('APP_URL') . '/api/v1',
                     'description' => 'App Environment',
                     'variables' => [],
                 ],
                 [
-                    'url' => 'http://localhost:8000',
+                    'url' => 'http://localhost:8000/api/v1',
                     'description' => 'Default',
                     'variables' => [],
                 ],

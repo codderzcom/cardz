@@ -7,16 +7,16 @@
     },
     "servers": [
         {
-            "url": "http:\/\/localhost:8000",
+            "url": "http:\/\/localhost:8000\/api\/v1",
             "description": "App Environment"
         },
         {
-            "url": "http:\/\/localhost:8000",
+            "url": "http:\/\/localhost:8000\/api\/v1",
             "description": "Default"
         }
     ],
     "paths": {
-        "\/api\/v1\/customer\/get-token": {
+        "\/customer\/get-token": {
             "post": {
                 "tags": [
                     "customer"
@@ -59,7 +59,7 @@
                 }
             }
         },
-        "\/api\/v1\/customer\/register": {
+        "\/customer\/register": {
             "post": {
                 "tags": [
                     "customer"
@@ -102,7 +102,7 @@
                 }
             }
         },
-        "\/api\/v1\/customer\/workspaces": {
+        "\/customer\/workspaces": {
             "get": {
                 "tags": [
                     "customer"
@@ -130,7 +130,7 @@
                 }
             }
         },
-        "\/api\/v1\/customer\/id": {
+        "\/customer\/id": {
             "get": {
                 "tags": [
                     "customer"
@@ -167,7 +167,7 @@
                 ]
             }
         },
-        "\/api\/v1\/customer\/card": {
+        "\/customer\/card": {
             "get": {
                 "tags": [
                     "customer"
@@ -202,7 +202,7 @@
                 ]
             }
         },
-        "\/api\/v1\/customer\/card\/{cardId}": {
+        "\/customer\/card\/{cardId}": {
             "get": {
                 "tags": [
                     "customer"
@@ -248,7 +248,7 @@
                 ]
             }
         },
-        "\/api\/v1\/workspace": {
+        "\/workspace": {
             "get": {
                 "tags": [
                     "business",
@@ -329,7 +329,7 @@
                 ]
             }
         },
-        "\/api\/v1\/workspace\/{workspaceId}": {
+        "\/workspace\/{workspaceId}": {
             "get": {
                 "tags": [
                     "business",
@@ -379,7 +379,7 @@
                 ]
             }
         },
-        "\/api\/v1\/workspace\/{workspaceId}\/profile": {
+        "\/workspace\/{workspaceId}\/profile": {
             "put": {
                 "tags": [
                     "business",
@@ -439,7 +439,7 @@
                 ]
             }
         },
-        "\/api\/v1\/workspace\/{workspaceId}\/collaboration\/leave": {
+        "\/workspace\/{workspaceId}\/collaboration\/leave": {
             "post": {
                 "tags": [
                     "business",
@@ -489,7 +489,7 @@
                 }
             }
         },
-        "\/api\/v1\/workspace\/{workspaceId}\/collaboration\/fire\/{collaboratorId}": {
+        "\/workspace\/{workspaceId}\/collaboration\/fire\/{collaboratorId}": {
             "post": {
                 "tags": [
                     "business",
@@ -548,7 +548,7 @@
                 }
             }
         },
-        "\/api\/v1\/workspace\/{workspaceId}\/collaboration\/invite": {
+        "\/workspace\/{workspaceId}\/collaboration\/invite": {
             "post": {
                 "tags": [
                     "business",
@@ -595,7 +595,7 @@
                 }
             }
         },
-        "\/api\/v1\/workspace\/{workspaceId}\/collaboration\/invite\/{inviteId}\/accept": {
+        "\/workspace\/{workspaceId}\/collaboration\/invite\/{inviteId}\/accept": {
             "put": {
                 "tags": [
                     "business",
@@ -649,7 +649,7 @@
                 }
             }
         },
-        "\/api\/v1\/workspace\/{workspaceId}\/collaboration\/invite\/{inviteId}\/discard": {
+        "\/workspace\/{workspaceId}\/collaboration\/invite\/{inviteId}\/discard": {
             "delete": {
                 "tags": [
                     "business",
@@ -705,7 +705,7 @@
                 }
             }
         },
-        "\/api\/v1\/workspace\/{workspaceId}\/plan": {
+        "\/workspace\/{workspaceId}\/plan": {
             "get": {
                 "tags": [
                     "business",
@@ -804,7 +804,7 @@
                 }
             }
         },
-        "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}": {
+        "\/workspace\/{workspaceId}\/plan\/{planId}": {
             "get": {
                 "tags": [
                     "business",
@@ -858,7 +858,7 @@
                 }
             }
         },
-        "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/description": {
+        "\/workspace\/{workspaceId}\/plan\/{planId}\/description": {
             "put": {
                 "tags": [
                     "business",
@@ -925,7 +925,7 @@
                 }
             }
         },
-        "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/launch": {
+        "\/workspace\/{workspaceId}\/plan\/{planId}\/launch": {
             "put": {
                 "tags": [
                     "business",
@@ -995,7 +995,7 @@
                 }
             }
         },
-        "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/stop": {
+        "\/workspace\/{workspaceId}\/plan\/{planId}\/stop": {
             "put": {
                 "tags": [
                     "business",
@@ -1052,7 +1052,7 @@
                 }
             }
         },
-        "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/archive": {
+        "\/workspace\/{workspaceId}\/plan\/{planId}\/archive": {
             "put": {
                 "tags": [
                     "business",
@@ -1106,7 +1106,7 @@
                 }
             }
         },
-        "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/requirement": {
+        "\/workspace\/{workspaceId}\/plan\/{planId}\/requirement": {
             "post": {
                 "tags": [
                     "business",
@@ -1177,7 +1177,7 @@
                 }
             }
         },
-        "\/api\/v1\/workspace\/{workspaceId}\/plan\/{planId}\/requirement\/{requirementId}": {
+        "\/workspace\/{workspaceId}\/plan\/{planId}\/requirement\/{requirementId}": {
             "delete": {
                 "tags": [
                     "business",
@@ -1316,7 +1316,7 @@
                 }
             }
         },
-        "\/api\/v1\/workspace\/{workspaceId}\/card": {
+        "\/workspace\/{workspaceId}\/card": {
             "post": {
                 "tags": [
                     "business",
@@ -1377,7 +1377,7 @@
                 }
             }
         },
-        "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}": {
+        "\/workspace\/{workspaceId}\/card\/{cardId}": {
             "get": {
                 "tags": [
                     "business",
@@ -1431,7 +1431,7 @@
                 }
             }
         },
-        "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/complete": {
+        "\/workspace\/{workspaceId}\/card\/{cardId}\/complete": {
             "put": {
                 "tags": [
                     "business",
@@ -1488,7 +1488,7 @@
                 }
             }
         },
-        "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/revoke": {
+        "\/workspace\/{workspaceId}\/card\/{cardId}\/revoke": {
             "put": {
                 "tags": [
                     "business",
@@ -1545,7 +1545,7 @@
                 }
             }
         },
-        "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/block": {
+        "\/workspace\/{workspaceId}\/card\/{cardId}\/block": {
             "put": {
                 "tags": [
                     "business",
@@ -1602,7 +1602,7 @@
                 }
             }
         },
-        "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/unblock": {
+        "\/workspace\/{workspaceId}\/card\/{cardId}\/unblock": {
             "put": {
                 "tags": [
                     "business",
@@ -1659,7 +1659,7 @@
                 }
             }
         },
-        "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/achievement": {
+        "\/workspace\/{workspaceId}\/card\/{cardId}\/achievement": {
             "post": {
                 "tags": [
                     "business",
@@ -1729,7 +1729,7 @@
                 }
             }
         },
-        "\/api\/v1\/workspace\/{workspaceId}\/card\/{cardId}\/achievement\/{achievementId}": {
+        "\/workspace\/{workspaceId}\/card\/{cardId}\/achievement\/{achievementId}": {
             "delete": {
                 "tags": [
                     "business",
@@ -1824,19 +1824,19 @@
                         "description": "Workspace (business) name",
                         "type": "string",
                         "nullable": false,
-                        "example": "Gorczany Ltd"
+                        "example": "Walter and Sons"
                     },
                     "description": {
                         "description": "Workspace (business) description",
                         "type": "string",
                         "nullable": false,
-                        "example": "Quia sit quae quibusdam cum qui ut velit. Eaque inventore fugiat officiis eius saepe dolores libero nihil. Omnis occaecati aliquam quos ut labore vero aut. Qui est aut est cupiditate."
+                        "example": "Iure non eligendi saepe et eaque. Aperiam quaerat et dolorum saepe exercitationem. Atque eos nostrum reprehenderit cum et aspernatur maxime nobis. Ut expedita aliquam illum dolor nisi."
                     },
                     "address": {
                         "description": "Workspace (business) address",
                         "type": "string",
                         "nullable": false,
-                        "example": "9133 Rosamond Meadow\nMargaretteborough, OR 48988-7637"
+                        "example": "3195 Kenny River Apt. 952\nStantonville, NJ 90410"
                     }
                 }
             },
@@ -1918,7 +1918,7 @@
                                     "description": "Achievement description = corresponding requirement description",
                                     "type": "string",
                                     "nullable": false,
-                                    "example": "Voluptate laboriosam eveniet quia laboriosam. Numquam necessitatibus reiciendis et dolorem minus necessitatibus velit. Quo quos quo fugiat minima. Dignissimos ea possimus voluptates reprehenderit."
+                                    "example": "Quas rem incidunt minus et. Non natus eligendi ex qui maxime. Perspiciatis adipisci dolores a vel."
                                 }
                             }
                         }
@@ -1943,7 +1943,7 @@
                                     "description": "Requirement description",
                                     "type": "string",
                                     "nullable": false,
-                                    "example": "Delectus dolor modi non nesciunt dolorum est. Consequatur debitis totam rem quos beatae quibusdam ea ea. Iste vel aut autem ut unde. Voluptatem hic pariatur consequatur molestiae quia."
+                                    "example": "Quibusdam aperiam nihil officia praesentium adipisci possimus vitae. Est laborum officiis rem similique quidem doloribus. Omnis quibusdam omnis rerum voluptatem."
                                 }
                             }
                         }
@@ -1962,17 +1962,17 @@
                     "name": {
                         "description": "Workspace (business) title",
                         "type": "string",
-                        "example": "Kautzer-Goodwin"
+                        "example": "Casper-Konopelski"
                     },
                     "description": {
                         "description": "Workspace (business) description",
                         "type": "string",
-                        "example": "Enim ex est non quisquam aut eos aut. Consequatur incidunt occaecati non. Quibusdam facere vitae suscipit id fugiat."
+                        "example": "Voluptate eos iusto temporibus quos. Eius minus ea explicabo eum cupiditate quasi. Nihil cum soluta error dolorem officia recusandae quibusdam unde."
                     },
                     "address": {
                         "description": "Workspace (business) address",
                         "type": "string",
-                        "example": "8051 Ruecker Place Apt. 099\nPort Eleanora, NV 72650"
+                        "example": "2955 Ernser Walks\nBeerberg, WI 60178"
                     }
                 }
             },
@@ -1999,7 +1999,7 @@
                     "description": {
                         "description": "Requirement description",
                         "type": "string",
-                        "example": "Explicabo amet et voluptas sint. Maiores est neque aut sed. Numquam tempora natus rerum dolorem. Sequi deleniti aut explicabo rerum."
+                        "example": "Et est atque ad facilis aut similique expedita. Commodi in distinctio autem nostrum velit harum soluta. Odio consectetur aut occaecati qui repudiandae eum."
                     }
                 }
             },
@@ -2033,7 +2033,7 @@
                     "description": {
                         "description": "Achievement (requirement) description",
                         "type": "string",
-                        "example": "Ratione nam minima et eos. Non debitis magni nostrum et a. Incidunt consequatur repudiandae consequatur repellat inventore."
+                        "example": "Et sunt reprehenderit similique. Nisi ea beatae maxime dolor corporis ea tempore. A aut molestiae fuga. Saepe sequi distinctio blanditiis et quod aut."
                     }
                 }
             },
@@ -2049,18 +2049,18 @@
                     "identity": {
                         "description": "Identity is either phone or email",
                         "type": "string",
-                        "example": "deonte.stehr@crist.net"
+                        "example": "amelie.kohler@hotmail.com"
                     },
                     "password": {
                         "description": "Password",
                         "format": "password",
                         "type": "string",
-                        "example": "S~c+\";AE_OJ]',"
+                        "example": "J6\"J)8ZbiAMoZ#Znm=k"
                     },
                     "deviceName": {
                         "description": "Device name is required to distinguish between different access tokens",
                         "type": "string",
-                        "example": "itaque"
+                        "example": "et"
                     }
                 }
             },
@@ -2079,28 +2079,28 @@
                             "phone": {
                                 "description": "Phone",
                                 "type": "string",
-                                "example": "+1.405.599.5319"
+                                "example": "305.419.8761"
                             },
                             "email": {
                                 "description": "Email is required if phone is not provided",
                                 "type": "string",
-                                "example": "mable98@gmail.com"
+                                "example": "xbeier@yahoo.com"
                             },
                             "name": {
                                 "description": "Customer name",
                                 "type": "string",
-                                "example": "Marlee Swaniawski PhD"
+                                "example": "Allen Stoltenberg DVM"
                             },
                             "password": {
                                 "description": "Password",
                                 "format": "password",
                                 "type": "string",
-                                "example": "#qPEeWF}ob"
+                                "example": "\\\"Q2*l|T;~I^fg$]"
                             },
                             "deviceName": {
                                 "description": "Device name is required to distinguish between different access tokens",
                                 "type": "string",
-                                "example": "occaecati"
+                                "example": "similique"
                             }
                         }
                     },
@@ -2117,28 +2117,28 @@
                             "phone": {
                                 "description": "Phone",
                                 "type": "string",
-                                "example": "+1.405.599.5319"
+                                "example": "305.419.8761"
                             },
                             "email": {
                                 "description": "Email is required if phone is not provided",
                                 "type": "string",
-                                "example": "mable98@gmail.com"
+                                "example": "xbeier@yahoo.com"
                             },
                             "name": {
                                 "description": "Customer name",
                                 "type": "string",
-                                "example": "Marlee Swaniawski PhD"
+                                "example": "Allen Stoltenberg DVM"
                             },
                             "password": {
                                 "description": "Password",
                                 "format": "password",
                                 "type": "string",
-                                "example": "#qPEeWF}ob"
+                                "example": "\\\"Q2*l|T;~I^fg$]"
                             },
                             "deviceName": {
                                 "description": "Device name is required to distinguish between different access tokens",
                                 "type": "string",
-                                "example": "occaecati"
+                                "example": "similique"
                             }
                         }
                     }
@@ -2199,7 +2199,7 @@
                         "description": "Card (plan) description",
                         "type": "string",
                         "nullable": false,
-                        "example": "Qui est illum eum voluptate. Qui et at fuga expedita esse rerum. Voluptatem modi nihil voluptatem pariatur eius."
+                        "example": "Qui nisi minus reiciendis nisi et. Sit suscipit reiciendis fugiat vel excepturi. Quo qui delectus eius. Et iste perspiciatis aliquam ut doloribus quidem."
                     },
                     "satisfied": {
                         "description": "Whether all requirements to receive a bonus are satisfied",
@@ -2231,11 +2231,11 @@
                                     "description": "Achievement description = corresponding requirement description",
                                     "type": "string",
                                     "nullable": false,
-                                    "example": "Consequuntur nesciunt incidunt et vero quod odit. Quibusdam exercitationem numquam facilis ipsum."
+                                    "example": "Praesentium perferendis sint accusamus et dignissimos. Nulla omnis consequatur blanditiis ducimus eveniet ad."
                                 }
                             }
                         },
-                        "example": "Esse ipsam rem omnis neque necessitatibus repellendus. Et eius sunt in cum dicta rerum. Illum inventore reprehenderit porro."
+                        "example": "Reiciendis ut aut non facilis illo repellat aliquam. Omnis eligendi quod ratione. Blanditiis quia sunt alias et consectetur et. Velit autem expedita ut illo magni doloremque."
                     },
                     "requirements": {
                         "description": "All requirements",
@@ -2257,7 +2257,7 @@
                                     "description": "Requirement description",
                                     "type": "string",
                                     "nullable": false,
-                                    "example": "Ratione quos et illum sed. Repellat explicabo totam non eaque. Itaque architecto et quaerat eveniet. Consequatur est sint et enim adipisci."
+                                    "example": "Et voluptatum nisi aspernatur voluptatem fuga omnis velit vel. Ut eum impedit voluptatum et iste nihil quaerat. Consequatur nihil vel eum quae suscipit incidunt."
                                 }
                             }
                         }
@@ -2283,19 +2283,19 @@
                         "description": "Workspace (business) name",
                         "type": "string",
                         "nullable": false,
-                        "example": "Flatley, Thiel and Zemlak"
+                        "example": "Bosco, Halvorson and Kovacek"
                     },
                     "description": {
                         "description": "Workspace (business) description",
                         "type": "string",
                         "nullable": false,
-                        "example": "Deserunt consequatur dolorem non quia. Molestias eligendi non dignissimos fuga. Velit rem quia quas consequatur."
+                        "example": "Architecto est dolore inventore distinctio provident quod. Doloremque inventore fugiat dolor qui aut non. Animi vel necessitatibus fugit laudantium possimus voluptas."
                     },
                     "address": {
                         "description": "Workspace (business) address",
                         "type": "string",
                         "nullable": false,
-                        "example": "44686 Lizzie Springs Suite 994\nNew Alexandreaberg, SD 88227"
+                        "example": "8317 Shields Vista Suite 485\nPort Wilhelmfurt, MO 60948-6202"
                     }
                 }
             },
@@ -2327,7 +2327,7 @@
                         "description": "Plan description",
                         "type": "string",
                         "nullable": false,
-                        "example": "Sit distinctio a tenetur praesentium numquam. Molestias culpa eos molestias tempore aliquid. Voluptatem atque rerum consequatur qui cumque eius sed."
+                        "example": "Ut voluptatem fugiat praesentium. Animi dolore debitis quis repellat temporibus enim labore. Aut eum consectetur ut maiores ut deleniti sit."
                     },
                     "isLaunched": {
                         "description": "Whether the plan is launched",
@@ -2364,7 +2364,7 @@
                                     "description": "Requirement description",
                                     "type": "string",
                                     "nullable": false,
-                                    "example": "Consequatur quibusdam dolorum at incidunt aut. Omnis nihil perferendis qui quibusdam esse. Ut enim et omnis voluptas voluptas."
+                                    "example": "Ullam vitae quis perferendis ratione. Cumque perspiciatis voluptatem perferendis occaecati. Explicabo et ipsam laborum quaerat autem iusto cum quam."
                                 }
                             }
                         }
