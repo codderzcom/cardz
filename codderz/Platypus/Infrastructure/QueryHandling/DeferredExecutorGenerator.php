@@ -5,7 +5,9 @@ namespace Codderz\Platypus\Infrastructure\QueryHandling;
 use Closure;
 use Codderz\Platypus\Contracts\Queries\QueryExecutorProviderInterface;
 use Codderz\Platypus\Contracts\Queries\QueryInterface;
+use Codderz\Platypus\Exceptions\QueryHandlingException;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionMethod;
 
 class DeferredExecutorGenerator implements QueryExecutorProviderInterface
@@ -49,11 +51,18 @@ class DeferredExecutorGenerator implements QueryExecutorProviderInterface
     protected function registerExecutorContainers(): void
     {
         foreach ($this->executorContainerClasses as $executorContainerClass) {
-            $this->registerExecutorContainer($executorContainerClass);
+            try {
+                $this->registerExecutorContainer($executorContainerClass);
+            } catch (ReflectionException $exception) {
+                throw new QueryHandlingException('Unable to register executor container. ' . $exception->getMessage());
+            }
         }
         $this->registered = true;
     }
 
+    /**
+     * @throws ReflectionException
+     */
     protected function registerExecutorContainer(string $executorContainerClass): void
     {
         $reflection = new ReflectionClass($executorContainerClass);
@@ -63,6 +72,9 @@ class DeferredExecutorGenerator implements QueryExecutorProviderInterface
         }
     }
 
+    /**
+     * @throws ReflectionException
+     */
     protected function registerMethod(string $executorContainerClass, ReflectionMethod $method): void
     {
         $parameters = $method->getParameters();
@@ -80,6 +92,6 @@ class DeferredExecutorGenerator implements QueryExecutorProviderInterface
 
     protected function makeExecutor(string $executingMethod, string $origin): Closure
     {
-        return fn ($query) => [($this->maker)($origin), $executingMethod]($query);
+        return fn($query) => [($this->maker)($origin), $executingMethod]($query);
     }
 }

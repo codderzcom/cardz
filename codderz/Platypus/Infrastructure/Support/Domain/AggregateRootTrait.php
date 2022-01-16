@@ -32,7 +32,7 @@ trait AggregateRootTrait
         return $this->events;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->toArray();
     }

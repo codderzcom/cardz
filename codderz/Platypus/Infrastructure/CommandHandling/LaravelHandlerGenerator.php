@@ -16,7 +16,7 @@ class LaravelHandlerGenerator implements CommandHandlerProviderInterface
 
     public static function of(string ...$handlerContainerClasses): static
     {
-        return new static(DeferredHandlerGenerator::of(fn($makeable) => app()->make($makeable)), $handlerContainerClasses);
+        return new static(DeferredHandlerGenerator::of(static fn($makeable) => app()->make($makeable)), $handlerContainerClasses);
     }
 
     public function getHandlers(): array

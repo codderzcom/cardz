@@ -8,6 +8,9 @@ use MyCLabs\Enum\Enum;
 
 class AbacPermission extends Enum implements PermissionInterface
 {
+    /**
+     * @throws AuthorizationFailedException
+     */
     public static function of(string $permission): static
     {
         return static::isValid($permission)

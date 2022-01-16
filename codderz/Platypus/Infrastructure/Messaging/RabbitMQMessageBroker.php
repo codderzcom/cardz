@@ -28,7 +28,7 @@ class RabbitMQMessageBroker implements MessageBrokerInterface
         foreach ($this->subscribers[(string) $channel] as $subscriber) {
             foreach ($messages as $message) {
                 try {
-                    $subscriber(json_encode($message->jsonSerialize()));
+                    $subscriber(json_encode($message->jsonSerialize(), JSON_THROW_ON_ERROR));
                 } catch (Throwable $exception) {
                     $this->errors[] = $exception;
                 }

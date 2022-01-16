@@ -5,7 +5,9 @@ namespace Codderz\Platypus\Infrastructure\CommandHandling;
 use Codderz\Platypus\Contracts\Commands\CommandHandlerInterface;
 use Codderz\Platypus\Contracts\Commands\CommandHandlerProviderInterface;
 use Codderz\Platypus\Contracts\Commands\CommandInterface;
+use Codderz\Platypus\Exceptions\CommandHandlingException;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionMethod;
 
 class SimpleAutoCommandHandlerProvider implements CommandHandlerProviderInterface
@@ -23,7 +25,11 @@ class SimpleAutoCommandHandlerProvider implements CommandHandlerProviderInterfac
     {
         $provider = new static();
         foreach ($handlerCollections as $handlerCollection) {
-            $provider->registerHandlerCollection($handlerCollection);
+            try {
+                $provider->registerHandlerCollection($handlerCollection);
+            } catch (ReflectionException $exception) {
+                throw new CommandHandlingException('Unable to register handler container. ' . $exception->getMessage());
+            }
         }
         return $provider;
     }
@@ -33,6 +39,9 @@ class SimpleAutoCommandHandlerProvider implements CommandHandlerProviderInterfac
         return $this->handlers;
     }
 
+    /**
+     * @throws ReflectionException
+     */
     protected function registerHandlerCollection(object $handlerCollection): void
     {
         $reflection = new ReflectionClass($handlerCollection);
@@ -42,6 +51,9 @@ class SimpleAutoCommandHandlerProvider implements CommandHandlerProviderInterfac
         }
     }
 
+    /**
+     * @throws ReflectionException
+     */
     protected function registerMethod(object $handlerCollection, ReflectionMethod $method): void
     {
         $parameters = $method->getParameters();

@@ -6,7 +6,7 @@ trait EventRecorderTrait
 {
     protected array $recordedEvents = [];
 
-    protected function recordEvent($eventIdentifier, $event)
+    protected function recordEvent($eventIdentifier, $event): void
     {
         $name = is_object($eventIdentifier) ? $eventIdentifier::class : $eventIdentifier;
         $this->recordedEvents[$name] = $event;

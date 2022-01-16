@@ -4,7 +4,9 @@ namespace Codderz\Platypus\Infrastructure\QueryHandling;
 
 use Codderz\Platypus\Contracts\Queries\QueryExecutorProviderInterface;
 use Codderz\Platypus\Contracts\Queries\QueryInterface;
+use Codderz\Platypus\Exceptions\QueryHandlingException;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionMethod;
 
 class SimpleAutoQueryExecutorProvider implements QueryExecutorProviderInterface
@@ -19,7 +21,11 @@ class SimpleAutoQueryExecutorProvider implements QueryExecutorProviderInterface
     {
         $provider = new static();
         foreach ($executorCollections as $executorCollection) {
-            $provider->registerExecutorCollection($executorCollection);
+            try {
+                $provider->registerExecutorCollection($executorCollection);
+            } catch (ReflectionException $exception) {
+                throw new QueryHandlingException('Unable to register executor container. ' . $exception->getMessage());
+            }
         }
         return $provider;
     }
@@ -29,6 +35,9 @@ class SimpleAutoQueryExecutorProvider implements QueryExecutorProviderInterface
         return $this->executors;
     }
 
+    /**
+     * @throws ReflectionException
+     */
     protected function registerExecutorCollection(object $executorCollection): void
     {
         $reflection = new ReflectionClass($executorCollection);
@@ -38,6 +47,9 @@ class SimpleAutoQueryExecutorProvider implements QueryExecutorProviderInterface
         }
     }
 
+    /**
+     * @throws ReflectionException
+     */
     protected function registerMethod(object $executorCollection, ReflectionMethod $method): void
     {
         $parameters = $method->getParameters();

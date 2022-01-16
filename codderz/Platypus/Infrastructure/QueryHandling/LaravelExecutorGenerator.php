@@ -16,7 +16,7 @@ class LaravelExecutorGenerator implements QueryExecutorProviderInterface
 
     public static function of(string ...$executorContainerClasses): static
     {
-        return new static(DeferredExecutorGenerator::of(fn($makeable) => app()->make($makeable)), $executorContainerClasses);
+        return new static(DeferredExecutorGenerator::of(static fn($makeable) => app()->make($makeable)), $executorContainerClasses);
     }
 
     public function getExecutors(): array

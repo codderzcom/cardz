@@ -5,6 +5,7 @@ namespace Codderz\Platypus\Infrastructure\Support;
 use Codderz\Platypus\Contracts\GenericIdInterface;
 use Codderz\Platypus\Exceptions\ParameterAssertionException;
 use JetBrains\PhpStorm\Immutable;
+use JetBrains\PhpStorm\Pure;
 use Ramsey\Uuid\Guid\Guid;
 
 #[Immutable]
@@ -39,6 +40,7 @@ class GuidBasedImmutableId implements GenericIdInterface
         return $this->id;
     }
 
+    #[Pure]
     public function equals(GenericIdInterface $id): bool
     {
         return $this->is((string) $id);
@@ -49,7 +51,8 @@ class GuidBasedImmutableId implements GenericIdInterface
         return $this->id === $id;
     }
 
-    public function jsonSerialize()
+    #[Pure]
+    public function jsonSerialize(): array
     {
         return [$this::shortName() => (string) $this];
     }

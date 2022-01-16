@@ -2,15 +2,11 @@
 
 namespace Codderz\Platypus\Infrastructure\Support;
 
-use Carbon\Carbon;
-use ReflectionClass;
-use Stringable;
-
-trait JsonPresenterTrait
+trait JsonArrayPresenterTrait
 {
     use ArrayPresenterTrait;
 
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return $this->toArray();
     }

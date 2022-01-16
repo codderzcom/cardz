@@ -3,11 +3,11 @@
 namespace Codderz\Platypus\Infrastructure\Support\Domain;
 
 use Codderz\Platypus\Contracts\Domain\AggregateEventInterface;
-use Codderz\Platypus\Infrastructure\Support\JsonPresenterTrait;
+use Codderz\Platypus\Infrastructure\Support\JsonArrayPresenterTrait;
 
 trait EventDrivenAggregateRootTrait
 {
-    use JsonPresenterTrait;
+    use JsonArrayPresenterTrait;
 
     protected string $methodPrefix = 'apply';
 

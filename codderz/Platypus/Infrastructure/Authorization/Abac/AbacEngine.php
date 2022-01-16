@@ -5,6 +5,7 @@ namespace Codderz\Platypus\Infrastructure\Authorization\Abac;
 use Codderz\Platypus\Contracts\Authorization\Abac\AbacAuthorizationRequestInterface;
 use Codderz\Platypus\Contracts\Authorization\Abac\RuleInterface;
 use Codderz\Platypus\Contracts\Authorization\AuthorizationResolution;
+use Codderz\Platypus\Exceptions\AuthorizationFailedException;
 
 class AbacEngine
 {
@@ -18,6 +19,9 @@ class AbacEngine
         }
     }
 
+    /**
+     * @throws AuthorizationFailedException
+     */
     public function resolve(AbacAuthorizationRequestInterface $authorizationRequest): AuthorizationResolution
     {
         $rule = $this->rules[(string) $authorizationRequest->getPermission()] ?? null;

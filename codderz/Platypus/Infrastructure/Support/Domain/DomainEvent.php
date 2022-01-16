@@ -7,6 +7,8 @@ use Codderz\Platypus\Contracts\Domain\AggregateRootInterface;
 use Codderz\Platypus\Contracts\Domain\DomainEventInterface;
 use Codderz\Platypus\Contracts\Messaging\EventInterface;
 use Codderz\Platypus\Infrastructure\Support\ShortClassNameTrait;
+use JetBrains\PhpStorm\ArrayShape;
+use JetBrains\PhpStorm\Pure;
 
 abstract class DomainEvent implements EventInterface, DomainEventInterface
 {
@@ -32,12 +34,14 @@ abstract class DomainEvent implements EventInterface, DomainEventInterface
 
     abstract public function with(): AggregateRootInterface;
 
+    #[Pure]
     public function __toString(): string
     {
         return $this::shortName();
     }
 
-    public function jsonSerialize()
+    #[ArrayShape(['domainEvent' => "string", 'at' => Carbon::class, 'with' => "mixed"])]
+    public function jsonSerialize(): array
     {
         return [
             'domainEvent' => $this::shortName(),

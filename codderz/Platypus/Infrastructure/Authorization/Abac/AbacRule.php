@@ -7,6 +7,8 @@ use Codderz\Platypus\Contracts\Authorization\Abac\PermissionInterface;
 use Codderz\Platypus\Contracts\Authorization\Abac\PolicyInterface;
 use Codderz\Platypus\Contracts\Authorization\Abac\RuleInterface;
 use Codderz\Platypus\Contracts\Authorization\AuthorizationResolution;
+use Codderz\Platypus\Exceptions\AuthorizationFailedException;
+use JetBrains\PhpStorm\Pure;
 
 class AbacRule implements RuleInterface
 {
@@ -20,7 +22,8 @@ class AbacRule implements RuleInterface
         $this->policies = $policies;
     }
 
-    public static function of(PermissionInterface $permission, PolicyInterface ...$policies)
+    #[Pure]
+    public static function of(PermissionInterface $permission, PolicyInterface ...$policies): static
     {
         return new static($permission, ...$policies);
     }
@@ -41,6 +44,9 @@ class AbacRule implements RuleInterface
             : $this->applyRestrictive($subject, $object, $config);
     }
 
+    /**
+     * @throws AuthorizationFailedException
+     */
     protected function applyPermissive(
         AttributeCollectionInterface $subject,
         AttributeCollectionInterface $object,
@@ -56,6 +62,9 @@ class AbacRule implements RuleInterface
         return $resolution;
     }
 
+    /**
+     * @throws AuthorizationFailedException
+     */
     protected function applyRestrictive(
         AttributeCollectionInterface $subject,
         AttributeCollectionInterface $object,

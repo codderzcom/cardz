@@ -5,7 +5,9 @@ namespace Codderz\Platypus\Infrastructure\CommandHandling;
 use Codderz\Platypus\Contracts\Commands\CommandHandlerInterface;
 use Codderz\Platypus\Contracts\Commands\CommandHandlerProviderInterface;
 use Codderz\Platypus\Contracts\Commands\CommandInterface;
+use Codderz\Platypus\Exceptions\CommandHandlingException;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionMethod;
 
 class DeferredHandlerGenerator implements CommandHandlerProviderInterface
@@ -53,11 +55,18 @@ class DeferredHandlerGenerator implements CommandHandlerProviderInterface
     protected function registerHandlerContainers(): void
     {
         foreach ($this->handlerContainerClasses as $handlerContainerClass) {
-            $this->registerHandlerContainer($handlerContainerClass);
+            try {
+                $this->registerHandlerContainer($handlerContainerClass);
+            } catch (ReflectionException $exception) {
+                throw new CommandHandlingException('Unable to register handler container. ' . $exception->getMessage());
+            }
         }
         $this->registered = true;
     }
 
+    /**
+     * @throws ReflectionException
+     */
     protected function registerHandlerContainer(string $handlerContainerClass): void
     {
         $reflection = new ReflectionClass($handlerContainerClass);
@@ -67,6 +76,9 @@ class DeferredHandlerGenerator implements CommandHandlerProviderInterface
         }
     }
 
+    /**
+     * @throws ReflectionException
+     */
     protected function registerMethod(string $handlerContainerClass, ReflectionMethod $method): void
     {
         $parameters = $method->getParameters();
@@ -87,6 +99,7 @@ class DeferredHandlerGenerator implements CommandHandlerProviderInterface
         return
             new class($handlingMethod, $for, $origin, $this->maker) implements CommandHandlerInterface {
                 private $originMaker;
+
                 public function __construct(
                     private string $method,
                     private string $handles,
