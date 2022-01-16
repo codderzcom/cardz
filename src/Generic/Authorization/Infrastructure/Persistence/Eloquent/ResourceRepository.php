@@ -7,9 +7,14 @@ use Cardz\Generic\Authorization\Domain\Resource\Resource;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceRepositoryInterface;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceType;
 use Cardz\Generic\Authorization\Exceptions\ResourceNotFoundException;
+use JetBrains\PhpStorm\ArrayShape;
+use JetBrains\PhpStorm\Pure;
 
 class ResourceRepository implements ResourceRepositoryInterface
 {
+    /**
+     * @throws ResourceNotFoundException
+     */
     public function find(string $resourceId, ResourceType $resourceType): Resource
     {
         /** @var EloquentResource $eloquentResource */
@@ -39,7 +44,9 @@ class ResourceRepository implements ResourceRepositoryInterface
             ->delete();
     }
 
-    /** @return Resource[] */
+    /**
+     * @return Resource[]
+     */
     public function getByAttributes(ResourceType $resourceType, array $attributes): array
     {
         $query = EloquentResource::query()->where('resource_type', '=', (string) $resourceType);
@@ -64,6 +71,8 @@ class ResourceRepository implements ResourceRepositoryInterface
         );
     }
 
+    #[Pure]
+    #[ArrayShape(['resource_id' => "string", 'resource_type' => "string", 'attributes' => "array"])]
     private function resourceAsData(Resource $resource): array
     {
         return [

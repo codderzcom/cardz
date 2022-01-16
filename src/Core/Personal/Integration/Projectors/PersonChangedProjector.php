@@ -18,7 +18,7 @@ final class PersonChangedProjector implements IntegrationEventConsumerInterface
 
     public function consumes(): array
     {
-        //ToDo: коннект к другому контексту
+        //ToDo: intercontext interaction
         return [
             PersonJoined::class,
             PersonNameChanged::class,

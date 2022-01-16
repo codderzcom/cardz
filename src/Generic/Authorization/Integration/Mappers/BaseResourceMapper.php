@@ -4,7 +4,6 @@ namespace Cardz\Generic\Authorization\Integration\Mappers;
 
 use Cardz\Generic\Authorization\Domain\Resource\Resource;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceType;
-use Cardz\Generic\Authorization\Exceptions\EventReconstructionException;
 
 abstract class BaseResourceMapper implements EventResourceMapperInterface
 {
@@ -12,22 +11,18 @@ abstract class BaseResourceMapper implements EventResourceMapperInterface
 
     protected const RESOURCE_ID_NAME = 'id';
 
-    public function map(string $event): Resource
+    public function map(object $eventPayload): Resource
     {
-        $payload = json_decode($event)?->payload;
-        if (!is_object($payload)) {
-            throw new EventReconstructionException("Missing payload");
-        }
         return Resource::restore(
-            $this->getResourceId($payload),
+            $this->getResourceId($eventPayload),
             $this->getResourceType(),
-            $this->getAttributes($payload)
+            $this->getAttributes($eventPayload)
         );
     }
 
-    protected function getResourceId(object $payload): string
+    protected function getResourceId(object $eventPayload): string
     {
-        return $payload->{static::RESOURCE_ID_NAME};
+        return $eventPayload->{static::RESOURCE_ID_NAME};
     }
 
     protected function getResourceType(): string
@@ -35,5 +30,5 @@ abstract class BaseResourceMapper implements EventResourceMapperInterface
         return static::RESOURCE_TYPE;
     }
 
-    abstract protected function getAttributes(object $payload): array;
+    abstract protected function getAttributes(object $eventPayload): array;
 }

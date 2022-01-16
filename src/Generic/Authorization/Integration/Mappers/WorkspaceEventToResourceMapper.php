@@ -4,6 +4,7 @@ namespace Cardz\Generic\Authorization\Integration\Mappers;
 
 use Cardz\Generic\Authorization\Domain\Attribute\Attribute;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceType;
+use JetBrains\PhpStorm\ArrayShape;
 
 class WorkspaceEventToResourceMapper extends BaseResourceMapper
 {
@@ -11,11 +12,12 @@ class WorkspaceEventToResourceMapper extends BaseResourceMapper
 
     protected const RESOURCE_ID_NAME = Attribute::WORKSPACE_ID;
 
-    protected function getAttributes(object $payload): array
+    #[ArrayShape([Attribute::WORKSPACE_ID => "string", Attribute::KEEPER_ID => "string"])]
+    protected function getAttributes(object $eventPayload): array
     {
         return [
-            Attribute::WORKSPACE_ID => $payload->workspaceId,
-            Attribute::KEEPER_ID => $payload->keeperId,
+            Attribute::WORKSPACE_ID => $eventPayload->workspaceId,
+            Attribute::KEEPER_ID => $eventPayload->keeperId,
         ];
     }
 }

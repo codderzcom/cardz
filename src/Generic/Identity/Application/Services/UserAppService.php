@@ -19,7 +19,6 @@ class UserAppService
 
     public function register(RegisterUser $command): UserId
     {
-        //ToDo: здесь?
         if ($this->userRepository->isExistingIdentity($command->getUserIdentity())) {
             throw new UserExistsException("User with given identity already registered");
         }

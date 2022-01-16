@@ -11,7 +11,6 @@ class KeeperRepository implements KeeperRepositoryInterface
 {
     public function take(KeeperId $keeperId, WorkspaceId $workspaceId): Keeper
     {
-        // ToDo: возможно следует получать из другого контекста
         return Keeper::restore((string) $keeperId, (string) $workspaceId);
     }
 }

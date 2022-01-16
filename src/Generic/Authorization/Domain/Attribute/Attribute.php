@@ -24,7 +24,7 @@ final class Attribute implements AttributeInterface
 
     public function __construct(
         private string $name,
-        private $value,
+        private mixed $value,
     ) {
     }
 
@@ -38,7 +38,7 @@ final class Attribute implements AttributeInterface
         return $this->name;
     }
 
-    public function value()
+    public function value(): mixed
     {
         return $this->value;
     }

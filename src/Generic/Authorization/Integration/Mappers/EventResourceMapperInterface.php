@@ -6,5 +6,5 @@ use Cardz\Generic\Authorization\Domain\Resource\Resource;
 
 interface EventResourceMapperInterface
 {
-    public function map(string $event): Resource;
+    public function map(object $eventPayload): Resource;
 }

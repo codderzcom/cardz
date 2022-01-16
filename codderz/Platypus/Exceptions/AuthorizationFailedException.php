@@ -2,9 +2,9 @@
 
 namespace Codderz\Platypus\Exceptions;
 
-use Exception;
+use RuntimeException;
 
-class AuthorizationFailedException extends Exception
+class AuthorizationFailedException extends RuntimeException
 {
 
 }

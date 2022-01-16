@@ -5,6 +5,7 @@ namespace Cardz\Generic\Authorization\Domain\Attribute;
 use Codderz\Platypus\Contracts\Authorization\Abac\AttributeCollectionInterface;
 use Codderz\Platypus\Contracts\Authorization\Abac\AttributeInterface;
 use Codderz\Platypus\Exceptions\AuthorizationFailedException;
+use JetBrains\PhpStorm\Pure;
 
 final class Attributes implements AttributeCollectionInterface
 {
@@ -28,7 +29,8 @@ final class Attributes implements AttributeCollectionInterface
         return $collection;
     }
 
-    public function toArray()
+    #[Pure]
+    public function toArray(): array
     {
         $attributes = [];
         foreach ($this->attributes as $attribute) {
@@ -46,12 +48,13 @@ final class Attributes implements AttributeCollectionInterface
         return $attribute;
     }
 
+    #[Pure]
     public function getValue(string $attributeName)
     {
         return ($this->attributes[$attributeName] ?? null)?->value();
     }
 
-    public function count()
+    public function count(): int
     {
         return count($this->attributes);
     }

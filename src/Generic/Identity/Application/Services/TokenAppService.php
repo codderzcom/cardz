@@ -25,7 +25,7 @@ class TokenAppService
             throw new UserNotFoundException("Invalid credentials");
         }
 
-        //ToDo: перенести в свой код?
+        //ToDo: make own createToken?
         /** @var EloquentUser $eloquentUser */
         $eloquentUser = EloquentUser::query()->find($user->userId);
         $plainTextToken = $eloquentUser->createToken($query->getDeviceName())->plainTextToken;

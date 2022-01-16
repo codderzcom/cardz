@@ -13,6 +13,7 @@ use Cardz\Generic\Authorization\Domain\Resource\ResourceRepositoryInterface;
 use Cardz\Generic\Authorization\Domain\Resource\ResourceType;
 use Cardz\Generic\Authorization\Exceptions\ResourceNotFoundException;
 use Cardz\Generic\Authorization\Integration\Mappers\PlanEventToResourceMapper;
+use JetBrains\PhpStorm\ArrayShape;
 
 final class PlanResourceEventConsumer extends BaseResourceEventConsumer
 {
@@ -35,6 +36,7 @@ final class PlanResourceEventConsumer extends BaseResourceEventConsumer
         ];
     }
 
+    #[ArrayShape([Attribute::KEEPER_ID => "?string"])]
     protected function getAdditionalAttributes(Resource $resource): array
     {
         $keeperId = null;

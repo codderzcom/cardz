@@ -19,7 +19,7 @@ final class RegistrationCompletedConsumer implements IntegrationEventConsumerInt
 
     public function consumes(): array
     {
-        //ToDo: коннект к другому контексту
+        //ToDo: intercontext interaction
         return [
             RegistrationCompleted::class,
         ];

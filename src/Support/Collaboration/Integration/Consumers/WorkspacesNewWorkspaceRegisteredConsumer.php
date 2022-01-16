@@ -16,7 +16,7 @@ final class WorkspacesNewWorkspaceRegisteredConsumer implements IntegrationEvent
 
     public function consumes(): array
     {
-        // TODO: here's a context link
+        //ToDo: intercontext interaction
         return [
             NewWorkspaceRegistered::class,
         ];

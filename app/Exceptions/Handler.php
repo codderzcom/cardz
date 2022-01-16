@@ -54,7 +54,6 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $e): JsonResponse|Response
     {
-        // ToDo: Hmmmmmm
         if ($e instanceof UserNotFoundException) {
             return $this->errorResponse('Cannot authenticate user with given credentials', Response::HTTP_UNAUTHORIZED);
         }
