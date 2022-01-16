@@ -4,6 +4,7 @@ namespace Cardz\Core\Personal\Domain\Events\Person;
 
 use Carbon\Carbon;
 use Cardz\Core\Personal\Domain\Model\Person\Name;
+use JetBrains\PhpStorm\Pure;
 
 final class PersonJoined extends BasePersonDomainEvent
 {
@@ -13,6 +14,7 @@ final class PersonJoined extends BasePersonDomainEvent
     ) {
     }
 
+    #[Pure]
     public static function of(Name $name, Carbon $joined): self
     {
         return new self($name, $joined);

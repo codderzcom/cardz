@@ -5,6 +5,7 @@ namespace Cardz\Core\Cards\Tests\Support\Builders;
 use Cardz\Core\Cards\Domain\Model\Plan\Requirement;
 use Codderz\Platypus\Infrastructure\Support\GuidBasedImmutableId;
 use Codderz\Platypus\Infrastructure\Tests\BaseBuilder;
+use JetBrains\PhpStorm\Pure;
 
 final class RequirementBuilder extends BaseBuilder
 {
@@ -12,6 +13,7 @@ final class RequirementBuilder extends BaseBuilder
 
     public string $description;
 
+    #[Pure]
     public function build(): Requirement
     {
         return Requirement::of($this->requirementId, $this->description);

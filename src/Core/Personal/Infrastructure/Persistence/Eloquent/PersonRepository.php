@@ -9,9 +9,13 @@ use Cardz\Core\Personal\Domain\Model\Person\PersonId;
 use Cardz\Core\Personal\Domain\Persistence\Contracts\PersonRepositoryInterface;
 use Cardz\Core\Personal\Infrastructure\Exceptions\PersonNotFoundException;
 use Codderz\Platypus\Contracts\Domain\AggregateEventInterface;
+use Codderz\Platypus\Infrastructure\Logging\SimpleLoggerTrait;
+use JsonException;
 
 class PersonRepository implements PersonRepositoryInterface
 {
+    use SimpleLoggerTrait;
+
     public function store(Person $person): array
     {
         $events = $person->releaseEvents();
@@ -32,7 +36,10 @@ class PersonRepository implements PersonRepositoryInterface
 
         $events = [];
         foreach ($esEvents as $esEvent) {
-            $events[] = $this->restoreEvent($esEvent);
+            $event = $this->restoreEvent($esEvent);
+            if ($event) {
+                $events[] = $event;
+            }
         }
         return (new Person($personId))->apply(...$events);
     }
@@ -54,10 +61,15 @@ class PersonRepository implements PersonRepositoryInterface
         return $esEvents->all();
     }
 
-    protected function restoreEvent(ESStorage $esEvent): AggregateEventInterface
+    protected function restoreEvent(ESStorage $esEvent): ?AggregateEventInterface
     {
         $eventClass = $esEvent->name;
-        $changeset = json_decode($esEvent->changeset, true);
+        try {
+            $changeset = json_decode($esEvent->changeset, true, 512, JSON_THROW_ON_ERROR);
+        } catch (JsonException $exception) {
+            $this->error("Unable to restore $eventClass event.");
+            return null;
+        }
         return [$eventClass, 'from']($changeset);
     }
 }

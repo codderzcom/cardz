@@ -3,6 +3,7 @@
 namespace Cardz\Core\Cards\Application\Commands;
 
 use Cardz\Core\Cards\Domain\Model\Card\CardId;
+use JetBrains\PhpStorm\Pure;
 
 class BaseCardCommand implements CardCommandInterface
 {
@@ -11,6 +12,7 @@ class BaseCardCommand implements CardCommandInterface
     ) {
     }
 
+    #[Pure]
     public static function of(string $cardId): static
     {
         return new static($cardId);

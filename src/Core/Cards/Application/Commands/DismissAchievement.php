@@ -3,6 +3,7 @@
 namespace Cardz\Core\Cards\Application\Commands;
 
 use Cardz\Core\Cards\Domain\Model\Card\CardId;
+use JetBrains\PhpStorm\Pure;
 
 final class DismissAchievement implements CardCommandInterface
 {
@@ -12,6 +13,7 @@ final class DismissAchievement implements CardCommandInterface
     ) {
     }
 
+    #[Pure]
     public static function of(string $cardId, string $achievementId): self
     {
         return new self($cardId, $achievementId);

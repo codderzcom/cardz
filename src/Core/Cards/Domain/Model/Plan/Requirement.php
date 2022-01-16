@@ -4,6 +4,7 @@ namespace Cardz\Core\Cards\Domain\Model\Plan;
 
 use Codderz\Platypus\Contracts\Domain\ValueObjectInterface;
 use Codderz\Platypus\Infrastructure\Support\ArrayPresenterTrait;
+use JetBrains\PhpStorm\Pure;
 
 final class Requirement implements ValueObjectInterface
 {
@@ -15,6 +16,7 @@ final class Requirement implements ValueObjectInterface
     ) {
     }
 
+    #[Pure]
     public static function of(string $requirementId, string $description): self
     {
         return new self($requirementId, $description);

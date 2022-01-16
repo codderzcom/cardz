@@ -3,9 +3,9 @@
 namespace Cardz\Core\Cards\Domain\Exceptions;
 
 use Codderz\Platypus\Contracts\Exceptions\DomainExceptionInterface;
-use Exception;
+use RuntimeException;
 
-class InvalidCardStateException extends Exception implements DomainExceptionInterface
+class InvalidCardStateException extends RuntimeException implements DomainExceptionInterface
 {
 
 }

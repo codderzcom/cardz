@@ -7,9 +7,12 @@ use Cardz\Core\Cards\Infrastructure\ReadStorage\Contracts\IssuedCardReadStorageI
 use Cardz\Core\Plans\Integration\Events\RequirementChanged as PlansRequirementChanged;
 use Codderz\Platypus\Contracts\Commands\CommandBusInterface;
 use Codderz\Platypus\Contracts\Messaging\IntegrationEventConsumerInterface;
+use Codderz\Platypus\Infrastructure\Messaging\IntegrationEventPayloadProviderTrait;
 
 final class PlansRequirementDescriptionChangedConsumer implements IntegrationEventConsumerInterface
 {
+    use IntegrationEventPayloadProviderTrait;
+
     public function __construct(
         private IssuedCardReadStorageInterface $issuedCardReadStorage,
         private CommandBusInterface $commandBus,
@@ -25,8 +28,8 @@ final class PlansRequirementDescriptionChangedConsumer implements IntegrationEve
 
     public function handle(string $event): void
     {
-        $payload = json_decode($event)?->payload;
-        if (!is_object($payload)) {
+        $payload = $this->getPayloadOrNull($event);
+        if ($payload === null) {
             return;
         }
         $issuedCards = $this->issuedCardReadStorage->allForPlanId($payload->planId);

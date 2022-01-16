@@ -7,6 +7,9 @@ use Cardz\Core\Personal\Domain\ReadModel\Contracts\JoinedPersonStorageInterface;
 use Cardz\Core\Personal\Domain\ReadModel\JoinedPerson;
 use Cardz\Core\Personal\Infrastructure\Exceptions\PersonNotFoundException;
 use Codderz\Platypus\Infrastructure\Support\PropertiesExtractorTrait;
+use JetBrains\PhpStorm\ArrayShape;
+use Carbon\Carbon;
+use JetBrains\PhpStorm\Pure;
 
 class JoinedPersonStorage implements JoinedPersonStorageInterface
 {
@@ -30,24 +33,23 @@ class JoinedPersonStorage implements JoinedPersonStorageInterface
         return $this->personFromData($eloquentPerson);
     }
 
+    #[ArrayShape(['id' => "string", 'name' => "string", 'joined_at' => Carbon::class])]
     private function personAsData(JoinedPerson $joinedPerson): array
     {
-        $data = [
+        return [
             'id' => $joinedPerson->personId,
             'name' => $joinedPerson->name,
             'joined_at' => $joinedPerson->joined,
         ];
-
-        return $data;
     }
 
+    #[Pure]
     private function personFromData(EloquentPerson $eloquentPerson): JoinedPerson
     {
-        $person = new JoinedPerson(
+        return new JoinedPerson(
             $eloquentPerson->id,
             $eloquentPerson->name,
             $eloquentPerson->joined_at,
         );
-        return $person;
     }
 }

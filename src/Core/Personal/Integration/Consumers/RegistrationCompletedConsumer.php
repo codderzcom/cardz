@@ -6,9 +6,12 @@ use Cardz\Core\Personal\Application\Commands\JoinPerson;
 use Cardz\Generic\Identity\Integration\Events\RegistrationCompleted;
 use Codderz\Platypus\Contracts\Commands\CommandBusInterface;
 use Codderz\Platypus\Contracts\Messaging\IntegrationEventConsumerInterface;
+use Codderz\Platypus\Infrastructure\Messaging\IntegrationEventPayloadProviderTrait;
 
 final class RegistrationCompletedConsumer implements IntegrationEventConsumerInterface
 {
+    use IntegrationEventPayloadProviderTrait;
+
     public function __construct(
         private CommandBusInterface $commandBus,
     ) {
@@ -24,8 +27,8 @@ final class RegistrationCompletedConsumer implements IntegrationEventConsumerInt
 
     public function handle(string $event): void
     {
-        $payload = json_decode($event)?->payload;
-        if (!is_object($payload)) {
+        $payload = $this->getPayloadOrNull($event);
+        if ($payload === null) {
             return;
         }
         $this->commandBus->dispatch(JoinPerson::of($payload->userId, $payload->name));

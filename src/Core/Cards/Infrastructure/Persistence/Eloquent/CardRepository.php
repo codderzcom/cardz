@@ -35,7 +35,7 @@ class CardRepository implements CardRepositoryInterface
     private function cardAsData(Card $card): array
     {
         $properties = $this->extractProperties($card, 'issued', 'satisfied', 'completed', 'revoked', 'blocked');
-        $data = [
+        return [
             'id' => (string) $card->cardId,
             'plan_id' => (string) $card->planId,
             'customer_id' => (string) $card->customerId,
@@ -48,8 +48,6 @@ class CardRepository implements CardRepositoryInterface
             'achievements' => $card->getAchievements()->toArray(),
             'requirements' => $card->getRequirements()->toArray(),
         ];
-
-        return $data;
     }
 
     private function cardFromData(EloquentCard $eloquentCard): Card
@@ -57,7 +55,7 @@ class CardRepository implements CardRepositoryInterface
         $achievements = is_string($eloquentCard->achievements) ? json_try_decode($eloquentCard->achievements, true) : $eloquentCard->achievements;
         $requirements = is_string($eloquentCard->requirements) ? json_try_decode($eloquentCard->requirements, true) : $eloquentCard->requirements;
 
-        $card = Card::restore(
+        return Card::restore(
             $eloquentCard->id,
             $eloquentCard->plan_id,
             $eloquentCard->customer_id,
@@ -70,6 +68,5 @@ class CardRepository implements CardRepositoryInterface
             $achievements,
             $requirements,
         );
-        return $card;
     }
 }

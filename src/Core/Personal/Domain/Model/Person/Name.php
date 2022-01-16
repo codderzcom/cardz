@@ -3,6 +3,7 @@
 namespace Cardz\Core\Personal\Domain\Model\Person;
 
 use Codderz\Platypus\Contracts\Domain\ValueObjectInterface;
+use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
 use JsonSerializable;
 
@@ -23,12 +24,13 @@ final class Name implements ValueObjectInterface, JsonSerializable
         return $this->name;
     }
 
+    #[ArrayShape(['name' => "string"])]
     public function toArray(): array
     {
         return ['name' => $this->name];
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): string
     {
         return (string) $this;
     }

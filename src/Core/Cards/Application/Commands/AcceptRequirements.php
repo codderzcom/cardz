@@ -5,6 +5,7 @@ namespace Cardz\Core\Cards\Application\Commands;
 use Cardz\Core\Cards\Domain\Model\Card\Achievements;
 use Cardz\Core\Cards\Domain\Model\Card\CardId;
 use Cardz\Core\Cards\Domain\Model\Plan\Requirement;
+use JetBrains\PhpStorm\Pure;
 
 final class AcceptRequirements implements CardCommandInterface
 {
@@ -20,6 +21,7 @@ final class AcceptRequirements implements CardCommandInterface
         $this->requirements = $requirements;
     }
 
+    #[Pure]
     public static function of(string $cardId, Requirement ...$requirements): self
     {
         return new self($cardId, ...$requirements);
@@ -30,6 +32,7 @@ final class AcceptRequirements implements CardCommandInterface
         return CardId::of($this->cardId);
     }
 
+    #[Pure]
     public function getRequirements(): Achievements
     {
         return Achievements::from(...$this->requirements);

@@ -9,11 +9,13 @@ use Cardz\Core\Plans\Integration\Events\PlanRequirementsChanged as PlansPlanRequ
 use Codderz\Platypus\Contracts\Commands\CommandBusInterface;
 use Codderz\Platypus\Contracts\Messaging\IntegrationEventConsumerInterface;
 use Codderz\Platypus\Infrastructure\Logging\SimpleLoggerTrait;
+use Codderz\Platypus\Infrastructure\Messaging\IntegrationEventPayloadProviderTrait;
+use JetBrains\PhpStorm\Pure;
 use Throwable;
 
 final class PlansRequirementsChangedConsumer implements IntegrationEventConsumerInterface
 {
-    use SimpleLoggerTrait;
+    use IntegrationEventPayloadProviderTrait;
 
     public function __construct(
         private IssuedCardReadStorageInterface $issuedCardReadStorage,
@@ -30,8 +32,8 @@ final class PlansRequirementsChangedConsumer implements IntegrationEventConsumer
 
     public function handle(string $event): void
     {
-        $payload = json_decode($event)?->payload;
-        if (!is_object($payload)) {
+        $payload = $this->getPayloadOrNull($event);
+        if ($payload === null) {
             return;
         }
 
@@ -51,6 +53,7 @@ final class PlansRequirementsChangedConsumer implements IntegrationEventConsumer
     /**
      * @return Requirement[]
      */
+    #[Pure]
     private function mapRequirements(array $eventRequirements): array
     {
         $requirements = [];
