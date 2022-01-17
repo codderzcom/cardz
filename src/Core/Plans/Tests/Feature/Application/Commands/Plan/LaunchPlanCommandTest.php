@@ -4,7 +4,6 @@ namespace Cardz\Core\Plans\Tests\Feature\Application\Commands\Plan;
 
 use Carbon\Carbon;
 use Cardz\Core\Plans\Application\Commands\Plan\LaunchPlan;
-use Cardz\Core\Plans\Domain\Events\Plan\PlanArchived;
 use Cardz\Core\Plans\Domain\Events\Plan\PlanLaunched;
 use Cardz\Core\Plans\Infrastructure\Exceptions\PlanNotFoundException;
 use Cardz\Core\Plans\Infrastructure\ReadStorage\Contracts\ReadPlanStorageInterface;

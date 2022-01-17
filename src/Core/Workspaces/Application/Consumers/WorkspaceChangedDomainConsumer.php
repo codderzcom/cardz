@@ -3,6 +3,7 @@
 namespace Cardz\Core\Workspaces\Application\Consumers;
 
 use Cardz\Core\Workspaces\Domain\Events\Workspace\WorkspaceProfileChanged;
+use Cardz\Core\Workspaces\Domain\Model\Workspace\Workspace;
 use Cardz\Core\Workspaces\Domain\ReadModel\AddedWorkspace;
 use Cardz\Core\Workspaces\Domain\ReadModel\Contracts\AddedWorkspaceStorageInterface;
 use Cardz\Core\Workspaces\Integration\Events\WorkspaceChanged;
@@ -27,8 +28,9 @@ class WorkspaceChangedDomainConsumer implements EventConsumerInterface
 
     public function handle(EventInterface $event): void
     {
-        /** @var WorkspaceProfileChanged $event */
-        $this->integrationEventBus->publish(WorkspaceChanged::of(AddedWorkspace::of($event->with())));
+        /** @var Workspace $workspace */
+        $workspace = $event->with();
+        $this->integrationEventBus->publish(WorkspaceChanged::of(AddedWorkspace::of($workspace)));
     }
 
 }

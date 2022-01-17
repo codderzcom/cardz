@@ -9,9 +9,13 @@ use Cardz\Core\Workspaces\Domain\Model\Workspace\WorkspaceId;
 use Cardz\Core\Workspaces\Domain\Persistence\Contracts\WorkspaceRepositoryInterface;
 use Cardz\Core\Workspaces\Infrastructure\Exceptions\WorkspaceNotFoundException;
 use Codderz\Platypus\Contracts\Domain\AggregateEventInterface;
+use Codderz\Platypus\Infrastructure\Logging\SimpleLoggerTrait;
+use JsonException;
 
 class WorkspaceRepository implements WorkspaceRepositoryInterface
 {
+    use SimpleLoggerTrait;
+
     public function store(Workspace $workspace): array
     {
         $events = $workspace->releaseEvents();
@@ -32,7 +36,10 @@ class WorkspaceRepository implements WorkspaceRepositoryInterface
 
         $events = [];
         foreach ($esEvents as $esEvent) {
-            $events[] = $this->restoreEvent($esEvent);
+            $event = $this->restoreEvent($esEvent);
+            if ($event) {
+                $events[] = $event;
+            }
         }
         return (new Workspace($workspaceId))->apply(...$events);
     }
@@ -54,10 +61,15 @@ class WorkspaceRepository implements WorkspaceRepositoryInterface
         return $esEvents->all();
     }
 
-    protected function restoreEvent(ESStorage $esEvent): AggregateEventInterface
+    protected function restoreEvent(ESStorage $esEvent): ?AggregateEventInterface
     {
         $eventClass = $esEvent->name;
-        $changeset = json_decode($esEvent->changeset, true);
+        try {
+            $changeset = json_decode($esEvent->changeset, true, 512, JSON_THROW_ON_ERROR);
+        } catch (JsonException $exception) {
+            $this->error("Unable to restore $eventClass event.");
+            return null;
+        }
         return [$eventClass, 'from']($changeset);
     }
 }

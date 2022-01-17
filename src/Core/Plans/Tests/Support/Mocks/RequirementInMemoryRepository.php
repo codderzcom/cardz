@@ -17,7 +17,6 @@ class RequirementInMemoryRepository implements RequirementRepositoryInterface
 
     public function take(RequirementId $requirementId): Requirement
     {
-        $requirement = static::$storage[(string) $requirementId];
-        return $requirement;
+        return static::$storage[(string) $requirementId];
     }
 }

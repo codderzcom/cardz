@@ -3,11 +3,13 @@
 namespace Cardz\Core\Plans\Infrastructure\Persistence\Eloquent;
 
 use App\Models\Plan as EloquentPlan;
+use Carbon\Carbon;
 use Cardz\Core\Plans\Domain\Model\Plan\Plan;
 use Cardz\Core\Plans\Domain\Model\Plan\PlanId;
 use Cardz\Core\Plans\Domain\Persistence\Contracts\PlanRepositoryInterface;
 use Cardz\Core\Plans\Infrastructure\Exceptions\PlanNotFoundException;
 use Codderz\Platypus\Infrastructure\Support\PropertiesExtractorTrait;
+use JetBrains\PhpStorm\ArrayShape;
 
 class PlanRepository implements PlanRepositoryInterface
 {
@@ -36,10 +38,20 @@ class PlanRepository implements PlanRepositoryInterface
         return $this->planFromData($eloquentPlan);
     }
 
+    #[ArrayShape([
+        'id' => "string",
+        'workspace_id' => "string",
+        'description' => "string",
+        'added_at' => Carbon::class | null,
+        'launched_at' => Carbon::class | null,
+        'stopped_at' => Carbon::class | null,
+        'archived_at' => Carbon::class | null,
+        'expiration_date' => Carbon::class | null,
+    ])]
     private function planAsData(Plan $plan): array
     {
         $properties = $this->extractProperties($plan, 'added', 'launched', 'stopped', 'archived', 'expirationDate');
-        $data = [
+        return [
             'id' => (string) $plan->planId,
             'workspace_id' => (string) $plan->workspaceId,
             'description' => (string) $plan->getDescription(),
@@ -49,7 +61,6 @@ class PlanRepository implements PlanRepositoryInterface
             'archived_at' => $properties['archived'],
             'expiration_date' => $properties['expirationDate'],
         ];
-        return $data;
     }
 
     private function planFromData(EloquentPlan $eloquentPlan): Plan

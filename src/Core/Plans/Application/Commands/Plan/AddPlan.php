@@ -5,6 +5,7 @@ namespace Cardz\Core\Plans\Application\Commands\Plan;
 use Cardz\Core\Plans\Domain\Model\Plan\Description;
 use Cardz\Core\Plans\Domain\Model\Plan\PlanId;
 use Cardz\Core\Plans\Domain\Model\Plan\WorkspaceId;
+use JetBrains\PhpStorm\Pure;
 
 final class AddPlan implements PlanCommandInterface
 {
@@ -30,6 +31,7 @@ final class AddPlan implements PlanCommandInterface
         return WorkspaceId::of($this->workspaceId);
     }
 
+    #[Pure]
     public function getDescription(): Description
     {
         return Description::of($this->description);

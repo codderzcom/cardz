@@ -3,6 +3,7 @@
 namespace Cardz\Core\Plans\Application\Commands\Requirement;
 
 use Cardz\Core\Plans\Domain\Model\Requirement\RequirementId;
+use JetBrains\PhpStorm\Pure;
 
 final class RemoveRequirement implements RequirementCommandInterface
 {
@@ -11,6 +12,7 @@ final class RemoveRequirement implements RequirementCommandInterface
     ) {
     }
 
+    #[Pure]
     public static function of(string $requirementId): self
     {
         return new self($requirementId);

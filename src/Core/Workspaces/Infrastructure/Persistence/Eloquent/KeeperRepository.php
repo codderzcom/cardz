@@ -9,9 +9,13 @@ use Cardz\Core\Workspaces\Domain\Model\Workspace\KeeperId;
 use Cardz\Core\Workspaces\Domain\Persistence\Contracts\KeeperRepositoryInterface;
 use Cardz\Core\Workspaces\Infrastructure\Exceptions\KeeperNotFoundException;
 use Codderz\Platypus\Contracts\Domain\AggregateEventInterface;
+use Codderz\Platypus\Infrastructure\Logging\SimpleLoggerTrait;
+use JsonException;
 
 class KeeperRepository implements KeeperRepositoryInterface
 {
+    use SimpleLoggerTrait;
+
     public function store(Keeper $keeper): array
     {
         $events = $keeper->releaseEvents();
@@ -32,7 +36,10 @@ class KeeperRepository implements KeeperRepositoryInterface
 
         $events = [];
         foreach ($esEvents as $esEvent) {
-            $events[] = $this->restoreEvent($esEvent);
+            $event = $this->restoreEvent($esEvent);
+            if ($event) {
+                $events[] = $event;
+            }
         }
         return (new Keeper($keeperId))->apply(...$events);
     }
@@ -54,10 +61,15 @@ class KeeperRepository implements KeeperRepositoryInterface
         return $esEvents->all();
     }
 
-    protected function restoreEvent(ESStorage $esEvent): AggregateEventInterface
+    protected function restoreEvent(ESStorage $esEvent): ?AggregateEventInterface
     {
         $eventClass = $esEvent->name;
-        $changeset = json_decode($esEvent->changeset, true);
+        try {
+            $changeset = json_decode($esEvent->changeset, true, 512, JSON_THROW_ON_ERROR);
+        } catch (JsonException $exception) {
+            $this->error("Unable to restore $eventClass event.");
+            return null;
+        }
         return [$eventClass, 'from']($changeset);
     }
 }

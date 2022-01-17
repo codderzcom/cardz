@@ -4,6 +4,7 @@ namespace Cardz\Core\Plans\Application\Commands\Plan;
 
 use Carbon\Carbon;
 use Cardz\Core\Plans\Domain\Model\Plan\PlanId;
+use JetBrains\PhpStorm\Pure;
 
 final class LaunchPlan implements PlanCommandInterface
 {
@@ -13,6 +14,7 @@ final class LaunchPlan implements PlanCommandInterface
     ) {
     }
 
+    #[Pure]
     public static function of(string $planId, string $expirationDate): self
     {
         return new self($planId, $expirationDate);

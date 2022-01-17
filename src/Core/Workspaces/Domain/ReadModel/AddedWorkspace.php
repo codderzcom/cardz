@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Cardz\Core\Workspaces\Domain\Model\Workspace\Profile;
 use Cardz\Core\Workspaces\Domain\Model\Workspace\Workspace;
 use Codderz\Platypus\Infrastructure\Support\ArrayPresenterTrait;
+use JetBrains\PhpStorm\Pure;
 use JsonSerializable;
 
 final class AddedWorkspace implements JsonSerializable
@@ -25,6 +26,7 @@ final class AddedWorkspace implements JsonSerializable
         return $this->toArray();
     }
 
+    #[Pure]
     public static function of(Workspace $workspace): self
     {
         return new AddedWorkspace(

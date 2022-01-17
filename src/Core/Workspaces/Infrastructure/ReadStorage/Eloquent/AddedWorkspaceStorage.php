@@ -7,6 +7,8 @@ use Cardz\Core\Workspaces\Domain\Model\Workspace\Profile;
 use Cardz\Core\Workspaces\Domain\ReadModel\AddedWorkspace;
 use Cardz\Core\Workspaces\Domain\ReadModel\Contracts\AddedWorkspaceStorageInterface;
 use Codderz\Platypus\Infrastructure\Support\PropertiesExtractorTrait;
+use JetBrains\PhpStorm\ArrayShape;
+use Carbon\Carbon;
 
 class AddedWorkspaceStorage implements AddedWorkspaceStorageInterface
 {
@@ -33,6 +35,7 @@ class AddedWorkspaceStorage implements AddedWorkspaceStorageInterface
         return $this->readWorkspaceFromData($eloquentWorkspace);
     }
 
+    #[ArrayShape(['id' => "string", 'keeper_id' => "string", 'profile' => "array", 'added_at' => Carbon::class])]
     private function workspaceAsData(AddedWorkspace $workspace): array
     {
         return [

@@ -8,6 +8,8 @@ use Cardz\Core\Plans\Application\Commands\Plan\ChangePlanDescription;
 use Cardz\Core\Plans\Application\Commands\Plan\LaunchPlan;
 use Cardz\Core\Plans\Application\Commands\Plan\PlanCommandInterface;
 use Cardz\Core\Plans\Application\Commands\Plan\StopPlan;
+use Cardz\Core\Plans\Domain\Exceptions\PlanNotFoundExceptionInterface;
+use Cardz\Core\Plans\Domain\Exceptions\WorkspaceNotFoundExceptionInterface;
 use Cardz\Core\Plans\Domain\Model\Plan\Plan;
 use Cardz\Core\Plans\Domain\Model\Plan\PlanId;
 use Cardz\Core\Plans\Domain\Persistence\Contracts\PlanRepositoryInterface;
@@ -24,30 +26,45 @@ class PlanAppService
     ) {
     }
 
+    /**
+     * @throws WorkspaceNotFoundExceptionInterface
+     */
     public function add(AddPlan $command): PlanId
     {
         $workspace = $this->workspaceRepository->take($command->getWorkspaceId());
         return $this->release($workspace->addPlan($command->getPlanId(), $command->getDescription()));
     }
 
+    /**
+     * @throws PlanNotFoundExceptionInterface
+     */
     public function launch(LaunchPlan $command): PlanId
     {
         $plan = $this->getPlan($command);
         return $this->release($plan->launch($command->getExpirationDate()));
     }
 
+    /**
+     * @throws PlanNotFoundExceptionInterface
+     */
     public function stop(StopPlan $command): PlanId
     {
         $plan = $this->getPlan($command);
         return $this->release($plan->stop());
     }
 
+    /**
+     * @throws PlanNotFoundExceptionInterface
+     */
     public function archive(ArchivePlan $command): PlanId
     {
         $plan = $this->getPlan($command);
         return $this->release($plan->archive());
     }
 
+    /**
+     * @throws PlanNotFoundExceptionInterface
+     */
     public function changeDescription(ChangePlanDescription $command): PlanId
     {
         $plan = $this->getPlan($command);
@@ -61,6 +78,9 @@ class PlanAppService
         return $plan->planId;
     }
 
+    /**
+     * @throws PlanNotFoundExceptionInterface
+     */
     private function getPlan(PlanCommandInterface $command): Plan
     {
         return $this->planRepository->take($command->getPlanId());

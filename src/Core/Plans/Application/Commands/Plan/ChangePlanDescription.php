@@ -4,6 +4,7 @@ namespace Cardz\Core\Plans\Application\Commands\Plan;
 
 use Cardz\Core\Plans\Domain\Model\Plan\Description;
 use Cardz\Core\Plans\Domain\Model\Plan\PlanId;
+use JetBrains\PhpStorm\Pure;
 
 final class ChangePlanDescription implements PlanCommandInterface
 {
@@ -13,6 +14,7 @@ final class ChangePlanDescription implements PlanCommandInterface
     ) {
     }
 
+    #[Pure]
     public static function of(string $planId, string $description): self
     {
         return new self($planId, $description);
@@ -23,6 +25,7 @@ final class ChangePlanDescription implements PlanCommandInterface
         return PlanId::of($this->planId);
     }
 
+    #[Pure]
     public function getDescription(): Description
     {
         return Description::of($this->description);

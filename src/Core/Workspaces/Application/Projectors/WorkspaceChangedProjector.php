@@ -2,9 +2,9 @@
 
 namespace Cardz\Core\Workspaces\Application\Projectors;
 
-use Cardz\Core\Workspaces\Domain\Events\Workspace\BaseWorkspaceDomainEvent;
 use Cardz\Core\Workspaces\Domain\Events\Workspace\WorkspaceAdded;
 use Cardz\Core\Workspaces\Domain\Events\Workspace\WorkspaceProfileChanged;
+use Cardz\Core\Workspaces\Domain\Model\Workspace\Workspace;
 use Cardz\Core\Workspaces\Domain\ReadModel\AddedWorkspace;
 use Cardz\Core\Workspaces\Domain\ReadModel\Contracts\AddedWorkspaceStorageInterface;
 use Codderz\Platypus\Contracts\Messaging\EventConsumerInterface;
@@ -27,8 +27,9 @@ final class WorkspaceChangedProjector implements EventConsumerInterface
 
     public function handle(EventInterface $event): void
     {
-        /** @var BaseWorkspaceDomainEvent $event */
-        $this->addedWorkspaceStorage->persist(AddedWorkspace::of($event->with()));
+        /** @var Workspace $workspace */
+        $workspace = $event->with();
+        $this->addedWorkspaceStorage->persist(AddedWorkspace::of($workspace));
     }
 
 }

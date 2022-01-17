@@ -3,9 +3,9 @@
 namespace Cardz\Core\Plans\Domain\Exceptions;
 
 use Codderz\Platypus\Contracts\Exceptions\DomainExceptionInterface;
-use Exception;
+use RuntimeException;
 
-class InvalidPlanStateException extends Exception implements DomainExceptionInterface
+class InvalidPlanStateException extends RuntimeException implements DomainExceptionInterface
 {
 
 }

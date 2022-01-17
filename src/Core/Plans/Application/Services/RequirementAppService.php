@@ -5,6 +5,8 @@ namespace Cardz\Core\Plans\Application\Services;
 use Cardz\Core\Plans\Application\Commands\Requirement\AddRequirement;
 use Cardz\Core\Plans\Application\Commands\Requirement\ChangeRequirement;
 use Cardz\Core\Plans\Application\Commands\Requirement\RemoveRequirement;
+use Cardz\Core\Plans\Domain\Exceptions\PlanNotFoundExceptionInterface;
+use Cardz\Core\Plans\Domain\Exceptions\RequirementNotFoundExceptionInterface;
 use Cardz\Core\Plans\Domain\Model\Requirement\Requirement;
 use Cardz\Core\Plans\Domain\Model\Requirement\RequirementId;
 use Cardz\Core\Plans\Domain\Persistence\Contracts\PlanRepositoryInterface;
@@ -20,18 +22,27 @@ class RequirementAppService
     ) {
     }
 
+    /**
+     * @throws PlanNotFoundExceptionInterface
+     */
     public function add(AddRequirement $command): RequirementId
     {
         $plan = $this->planRepository->take($command->getPlanId());
         return $this->releaseRequirement($plan->addRequirement($command->getRequirementId(), $command->getDescription()));
     }
 
+    /**
+     * @throws RequirementNotFoundExceptionInterface
+     */
     public function remove(RemoveRequirement $command): RequirementId
     {
         $requirement = $this->requirementRepository->take($command->getRequirementId());
         return $this->releaseRequirement($requirement->remove());
     }
 
+    /**
+     * @throws RequirementNotFoundExceptionInterface
+     */
     public function change(ChangeRequirement $command): RequirementId
     {
         $requirement = $this->requirementRepository->take($command->getRequirementId());

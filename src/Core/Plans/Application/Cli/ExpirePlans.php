@@ -21,12 +21,7 @@ class ExpirePlans extends Command
         parent::__construct();
     }
 
-    /**
-     * Execute the console command.
-     *
-     * @return int
-     */
-    public function handle()
+    public function handle(): int
     {
         $ids = $this->readPlanStorage->getExpiredIds();
         foreach ($ids as $planId) {

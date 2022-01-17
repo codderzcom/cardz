@@ -8,9 +8,12 @@ use Cardz\Core\Workspaces\Domain\Persistence\Contracts\KeeperRepositoryInterface
 use Codderz\Platypus\Contracts\Commands\CommandBusInterface;
 use Codderz\Platypus\Contracts\Messaging\IntegrationEventConsumerInterface;
 use Codderz\Platypus\Infrastructure\Logging\SimpleLoggerTrait;
+use Codderz\Platypus\Infrastructure\Messaging\IntegrationEventPayloadProviderTrait;
 
 final class KeeperRegisteredConsumer implements IntegrationEventConsumerInterface
 {
+    use IntegrationEventPayloadProviderTrait;
+
     use SimpleLoggerTrait;
 
     public function __construct(
@@ -28,7 +31,7 @@ final class KeeperRegisteredConsumer implements IntegrationEventConsumerInterfac
 
     public function handle(string $event): void
     {
-        $keeperId = json_decode($event)?->payload?->personId;
+        $keeperId = $this->getPayloadOrNull($event)?->personId;
         if (!$keeperId) {
             $this->error("Incomprehensible 'PersonJoined' event", ['event' => $event]);
             return;

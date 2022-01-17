@@ -3,6 +3,7 @@
 namespace Cardz\Core\Workspaces\Application\Consumers;
 
 use Cardz\Core\Workspaces\Domain\Events\Workspace\WorkspaceAdded;
+use Cardz\Core\Workspaces\Domain\Model\Workspace\Workspace;
 use Cardz\Core\Workspaces\Domain\ReadModel\AddedWorkspace;
 use Cardz\Core\Workspaces\Integration\Events\NewWorkspaceRegistered;
 use Codderz\Platypus\Contracts\Messaging\EventConsumerInterface;
@@ -25,8 +26,9 @@ class WorkspaceAddedDomainConsumer implements EventConsumerInterface
 
     public function handle(EventInterface $event): void
     {
-        /** @var WorkspaceAdded $event */
-        $this->integrationEventBus->publish(NewWorkspaceRegistered::of(AddedWorkspace::of($event->with())));
+        /** @var Workspace $workspace */
+        $workspace = $event->with();
+        $this->integrationEventBus->publish(NewWorkspaceRegistered::of(AddedWorkspace::of($workspace)));
     }
 
 }

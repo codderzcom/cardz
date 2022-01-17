@@ -9,6 +9,7 @@ use Cardz\Core\Workspaces\Domain\Model\Workspace\Profile;
 use Cardz\Core\Workspaces\Domain\Model\Workspace\Workspace;
 use Cardz\Core\Workspaces\Domain\Model\Workspace\WorkspaceId;
 use Codderz\Platypus\Infrastructure\Tests\BaseBuilder;
+use JetBrains\PhpStorm\Pure;
 
 final class WorkspaceBuilder extends BaseBuilder
 {
@@ -48,6 +49,7 @@ final class WorkspaceBuilder extends BaseBuilder
         return $this;
     }
 
+    #[Pure]
     public function profile(): Profile
     {
         return Profile::of($this->name, $this->description, $this->address);

@@ -3,6 +3,7 @@
 namespace Cardz\Core\Plans\Application\Commands\Requirement;
 
 use Cardz\Core\Plans\Domain\Model\Requirement\RequirementId;
+use JetBrains\PhpStorm\Pure;
 
 final class ChangeRequirement implements RequirementCommandInterface
 {
@@ -12,6 +13,7 @@ final class ChangeRequirement implements RequirementCommandInterface
     ) {
     }
 
+    #[Pure]
     public static function of(string $requirementId, string $description): self
     {
         return new self($requirementId, $description);

@@ -5,6 +5,7 @@ namespace Cardz\Core\Workspaces\Domain\Events\Workspace;
 use Carbon\Carbon;
 use Cardz\Core\Workspaces\Domain\Model\Workspace\KeeperId;
 use Cardz\Core\Workspaces\Domain\Model\Workspace\Profile;
+use JetBrains\PhpStorm\Pure;
 
 final class WorkspaceAdded extends BaseWorkspaceDomainEvent
 {
@@ -15,6 +16,7 @@ final class WorkspaceAdded extends BaseWorkspaceDomainEvent
     ) {
     }
 
+    #[Pure]
     public static function of(KeeperId $keeperId, Profile $profile, Carbon $added): self
     {
         return new self($keeperId, $profile, $added);

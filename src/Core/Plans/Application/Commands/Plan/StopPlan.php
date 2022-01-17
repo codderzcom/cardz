@@ -3,6 +3,7 @@
 namespace Cardz\Core\Plans\Application\Commands\Plan;
 
 use Cardz\Core\Plans\Domain\Model\Plan\PlanId;
+use JetBrains\PhpStorm\Pure;
 
 final class StopPlan implements PlanCommandInterface
 {
@@ -11,6 +12,7 @@ final class StopPlan implements PlanCommandInterface
     ) {
     }
 
+    #[Pure]
     public static function of(string $planId): self
     {
         return new self($planId);
