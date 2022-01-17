@@ -5,7 +5,7 @@ namespace Cardz\Generic\Identity\Tests\Support\Mocks;
 use Cardz\Generic\Identity\Domain\Model\User\User;
 use Cardz\Generic\Identity\Domain\Model\User\UserIdentity;
 use Cardz\Generic\Identity\Domain\Persistence\Contracts\UserRepositoryInterface;
-use Codderz\Platypus\Exceptions\NotFoundException;
+use Cardz\Generic\Identity\Infrastructure\Exceptions\UserNotFoundException;
 
 class UserInMemoryRepository implements UserRepositoryInterface
 {
@@ -24,6 +24,6 @@ class UserInMemoryRepository implements UserRepositoryInterface
 
     public function takeByIdentity(string $identity): User
     {
-        return self::$storage[$identity] ?? throw new NotFoundException();
+        return self::$storage[$identity] ?? throw new UserNotFoundException();
     }
 }

@@ -10,6 +10,7 @@ use Cardz\Generic\Authorization\Domain\Resource\Resource;
 use Cardz\Generic\Identity\Domain\Model\User\User;
 use Cardz\Support\Collaboration\Domain\Model\Invite\Invite;
 use Cardz\Support\Collaboration\Domain\Model\Relation\Relation;
+use JetBrains\PhpStorm\Pure;
 
 class Environment
 {
@@ -82,6 +83,7 @@ class Environment
         $this->resources = $resources;
     }
 
+    #[Pure]
     public static function of(
         array $keepers,
         array $keeperInfos,

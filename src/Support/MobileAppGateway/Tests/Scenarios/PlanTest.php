@@ -117,7 +117,7 @@ class PlanTest extends BaseScenarioTestCase
         $response->assertForbidden();
     }
 
-    public function test_plan_can_be_relanunched()
+    public function test_plan_can_be_relaunched()
     {
         $this->persistEnvironment();
         $collaboratorInfo = $this->environment->collaboratorInfos[0];
@@ -142,7 +142,7 @@ class PlanTest extends BaseScenarioTestCase
         $this->assertTrue($plan['isLaunched']);
     }
 
-    public function test_plan_canot_be_stopped_twice()
+    public function test_plan_cannot_be_stopped_twice()
     {
         $this->persistEnvironment();
         $collaboratorInfo = $this->environment->collaboratorInfos[0];

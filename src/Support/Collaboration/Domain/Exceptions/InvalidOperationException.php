@@ -3,9 +3,9 @@
 namespace Cardz\Support\Collaboration\Domain\Exceptions;
 
 use Codderz\Platypus\Contracts\Exceptions\DomainExceptionInterface;
-use Exception;
+use RuntimeException;
 
-class InvalidOperationException extends Exception implements DomainExceptionInterface
+class InvalidOperationException extends RuntimeException implements DomainExceptionInterface
 {
 
 }

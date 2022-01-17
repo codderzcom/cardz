@@ -5,6 +5,7 @@ namespace Cardz\Generic\Authorization\Domain\Resource;
 use Cardz\Generic\Authorization\Domain\Attribute\Attribute;
 use Cardz\Generic\Authorization\Domain\Attribute\Attributes;
 use Codderz\Platypus\Exceptions\AuthorizationFailedException;
+use JetBrains\PhpStorm\Pure;
 
 final class Resource
 {
@@ -38,6 +39,7 @@ final class Resource
         return $this(Attribute::WORKSPACE_ID) && !$this->resourceType->equals(ResourceType::RELATION());
     }
 
+    #[Pure]
     public function __invoke(string $attributeName)
     {
         return $this->attributes->getValue($attributeName);

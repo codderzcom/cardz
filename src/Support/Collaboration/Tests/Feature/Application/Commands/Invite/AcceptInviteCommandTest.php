@@ -11,7 +11,7 @@ use Cardz\Support\Collaboration\Tests\Support\Builders\InviteBuilder;
 use Codderz\Platypus\Infrastructure\Tests\ApplicationTestTrait;
 use Codderz\Platypus\Infrastructure\Tests\BaseTestCase;
 
-class AcceptInviteComandTest extends BaseTestCase
+class AcceptInviteCommandTest extends BaseTestCase
 {
     use ApplicationTestTrait, CollaborationTestHelperTrait;
 

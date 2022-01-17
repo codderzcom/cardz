@@ -18,6 +18,7 @@ use App\OpenApi\Responses\IssuedCardsResponse;
 use App\OpenApi\SecuritySchemes\BearerTokenSecurityScheme;
 use Cardz\Support\MobileAppGateway\Application\Services\Customer\CustomerAppService;
 use Cardz\Support\MobileAppGateway\Config\Routes\RouteName;
+use Cardz\Support\MobileAppGateway\Infrastructure\Exceptions\IssuedCardNotFoundException;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\BaseController;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer\Requests\GetIssuedCardRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer\Requests\GetIssuedCardsRequest;

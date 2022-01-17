@@ -3,6 +3,7 @@
 namespace Cardz\Generic\Identity\Application\Queries;
 
 use Codderz\Platypus\Contracts\Queries\QueryInterface;
+use JetBrains\PhpStorm\Pure;
 
 final class GetToken implements QueryInterface
 {
@@ -14,6 +15,7 @@ final class GetToken implements QueryInterface
         $this->identity = mb_strtolower($this->identity);
     }
 
+    #[Pure]
     public static function of(string $identity, string $password, string $deviceName): self
     {
         return new self($identity, $password, $deviceName);

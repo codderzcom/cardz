@@ -7,13 +7,12 @@ use Cardz\Support\MobileAppGateway\Tests\Support\ScenarioTestTrait;
 use Codderz\Platypus\Infrastructure\Tests\ApplicationTestTrait;
 use Faker\Factory;
 use Faker\Generator;
-use Illuminate\Foundation\Testing\Concerns\MakesHttpRequests;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 abstract class BaseScenarioTestCase extends TestCase
 {
-    use RefreshDatabase, MakesHttpRequests, ApplicationTestTrait, ScenarioTestTrait, ScenarioRoutingTestTrait;
+    use RefreshDatabase, ApplicationTestTrait, ScenarioTestTrait, ScenarioRoutingTestTrait;
 
     protected Generator $faker;
 

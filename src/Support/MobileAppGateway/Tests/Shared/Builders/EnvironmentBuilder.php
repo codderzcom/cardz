@@ -25,6 +25,7 @@ use Codderz\Platypus\Contracts\Tests\BuilderInterface;
 use Codderz\Platypus\Exceptions\NotFoundException;
 use Faker\Factory;
 use Faker\Generator;
+use JetBrains\PhpStorm\Pure;
 
 final class EnvironmentBuilder implements BuilderInterface
 {
@@ -268,20 +269,21 @@ final class EnvironmentBuilder implements BuilderInterface
 
         $customerId = $this->customers[1]->userId;
         $cards[] = $cardBuilder
-            ->withRequirements(...array_map(fn($req) => CardRequirement::of($req->requirementId, $req->getDescription()), $requirements))
+            ->withRequirements(...array_map(static fn($req) => CardRequirement::of($req->requirementId, $req->getDescription()), $requirements))
             ->withPlanId($planId)
             ->withCustomerId($customerId)
             ->build();
 
         $customerId = $this->customers[2]->userId;
         $cards[] = $cardBuilder
-            ->withRequirements(...array_map(fn($req) => CardRequirement::of($req->requirementId, $req->getDescription()), $requirements))
+            ->withRequirements(...array_map(static fn($req) => CardRequirement::of($req->requirementId, $req->getDescription()), $requirements))
             ->withPlanId($planId)
             ->withCustomerId($customerId)
             ->build();
         return $cards;
     }
 
+    #[Pure]
     private function requirementsByPlanId(string $planId): array
     {
         $requirements = [];

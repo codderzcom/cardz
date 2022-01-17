@@ -4,6 +4,8 @@ namespace Cardz\Generic\Identity\Domain\Model\User;
 
 use Codderz\Platypus\Contracts\Domain\ValueObjectInterface;
 use Illuminate\Support\Facades\Hash;
+use JetBrains\PhpStorm\ArrayShape;
+use JetBrains\PhpStorm\Pure;
 
 final class Password implements ValueObjectInterface
 {
@@ -17,6 +19,7 @@ final class Password implements ValueObjectInterface
         return new self(Hash::make($password));
     }
 
+    #[Pure]
     public static function ofHash(string $passwordHash): self
     {
         return new self($passwordHash);
@@ -27,6 +30,7 @@ final class Password implements ValueObjectInterface
         return $this->passwordHash;
     }
 
+    #[ArrayShape(['hash' => "string"])]
     public function toArray(): array
     {
         return [

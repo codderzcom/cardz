@@ -8,6 +8,7 @@ use Cardz\Generic\Identity\Domain\Events\User\RegistrationInitiated;
 use Cardz\Generic\Identity\Domain\Model\Token\Token;
 use Codderz\Platypus\Contracts\Domain\AggregateRootInterface;
 use Codderz\Platypus\Infrastructure\Support\Domain\AggregateRootTrait;
+use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
 
 final class User implements AggregateRootInterface
@@ -69,6 +70,7 @@ final class User implements AggregateRootInterface
     }
 
     #[Pure]
+    #[ArrayShape(['userId' => "string", 'email' => "null|string", 'phone' => "null|string", 'name' => "string"])]
     public function toArray(): array
     {
         return [

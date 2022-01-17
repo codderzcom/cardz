@@ -17,12 +17,18 @@ class AuthorizationMiddleware
     ) {
     }
 
+    /**
+     * @throws AccessDeniedException
+     */
     public function handle(Request $request, Closure $next): mixed
     {
         $this->authorize($request);
         return $next($request);
     }
 
+    /**
+     * @throws AccessDeniedException
+     */
     private function authorize(Request $request): void
     {
         $subjectId = $request->user()?->id;

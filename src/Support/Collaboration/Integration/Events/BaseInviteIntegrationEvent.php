@@ -5,6 +5,7 @@ namespace Cardz\Support\Collaboration\Integration\Events;
 use Cardz\Support\Collaboration\Domain\Model\Invite\Invite;
 use Codderz\Platypus\Contracts\Messaging\IntegrationEventInterface;
 use Codderz\Platypus\Infrastructure\Messaging\IntegrationEventTrait;
+use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
 
 abstract class BaseInviteIntegrationEvent implements IntegrationEventInterface
@@ -22,6 +23,7 @@ abstract class BaseInviteIntegrationEvent implements IntegrationEventInterface
         return new static($invite);
     }
 
+    #[ArrayShape(['name' => "string", 'payload' => "array"])]
     public function jsonSerialize(): array
     {
         return [

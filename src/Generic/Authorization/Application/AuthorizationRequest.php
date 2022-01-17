@@ -5,6 +5,7 @@ namespace Cardz\Generic\Authorization\Application;
 use Codderz\Platypus\Contracts\Authorization\Abac\AbacAuthorizationRequestInterface;
 use Codderz\Platypus\Contracts\Authorization\Abac\AttributeCollectionInterface;
 use Codderz\Platypus\Contracts\Authorization\Abac\PermissionInterface;
+use JetBrains\PhpStorm\Pure;
 
 final class AuthorizationRequest implements AbacAuthorizationRequestInterface
 {
@@ -16,6 +17,7 @@ final class AuthorizationRequest implements AbacAuthorizationRequestInterface
     ) {
     }
 
+    #[Pure]
     public static function of(
         PermissionInterface $permission,
         AttributeCollectionInterface $subject,

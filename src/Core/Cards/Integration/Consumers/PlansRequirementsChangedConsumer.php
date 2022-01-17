@@ -8,7 +8,6 @@ use Cardz\Core\Cards\Infrastructure\ReadStorage\Contracts\IssuedCardReadStorageI
 use Cardz\Core\Plans\Integration\Events\PlanRequirementsChanged as PlansPlanRequirementsChanged;
 use Codderz\Platypus\Contracts\Commands\CommandBusInterface;
 use Codderz\Platypus\Contracts\Messaging\IntegrationEventConsumerInterface;
-use Codderz\Platypus\Infrastructure\Logging\SimpleLoggerTrait;
 use Codderz\Platypus\Infrastructure\Messaging\IntegrationEventPayloadProviderTrait;
 use JetBrains\PhpStorm\Pure;
 use Throwable;

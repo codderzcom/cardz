@@ -4,6 +4,7 @@ namespace Cardz\Support\Collaboration\Application\Services;
 
 use Cardz\Support\Collaboration\Application\Commands\Invite\AcceptInvite;
 use Cardz\Support\Collaboration\Application\Commands\Invite\DiscardInvite;
+use Cardz\Support\Collaboration\Domain\Exceptions\InviteNotFoundExceptionInterface;
 use Cardz\Support\Collaboration\Domain\Model\Invite\InviteId;
 use Cardz\Support\Collaboration\Domain\Persistence\Contracts\InviteRepositoryInterface;
 use Cardz\Support\Collaboration\Infrastructure\Messaging\DomainEventBusInterface;
@@ -16,6 +17,9 @@ class InviteAppService
     ) {
     }
 
+    /**
+     * @throws InviteNotFoundExceptionInterface
+     */
     public function accept(AcceptInvite $command): InviteId
     {
         $invite = $this->inviteRepository->take($command->getInviteId());
@@ -25,6 +29,9 @@ class InviteAppService
         return $invite->inviteId;
     }
 
+    /**
+     * @throws InviteNotFoundExceptionInterface
+     */
     public function discard(DiscardInvite $command): InviteId
     {
         $invite = $this->inviteRepository->take($command->getInviteId());

@@ -3,11 +3,13 @@
 namespace Cardz\Generic\Identity\Infrastructure\Persistence\Eloquent;
 
 use App\Models\User as EloquentUser;
+use Carbon\Carbon;
 use Cardz\Generic\Identity\Domain\Model\User\User;
 use Cardz\Generic\Identity\Domain\Model\User\UserIdentity;
 use Cardz\Generic\Identity\Domain\Persistence\Contracts\UserRepositoryInterface;
 use Cardz\Generic\Identity\Infrastructure\Exceptions\UserNotFoundException;
 use Codderz\Platypus\Infrastructure\Support\PropertiesExtractorTrait;
+use JetBrains\PhpStorm\ArrayShape;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -48,11 +50,21 @@ class UserRepository implements UserRepositoryInterface
         return $this->userFromData($eloquentUser);
     }
 
+    #[ArrayShape([
+        'id' => "mixed",
+        'email' => "mixed",
+        'phone' => "mixed",
+        'name' => "mixed",
+        'password' => "string",
+        'remember_token' => "bool",
+        'registration_initiated_at' => Carbon::class | null,
+        'email_verified_at' => Carbon::class | null,
+    ])]
     private function userAsData(User $user): array
     {
         $properties = $this->extractProperties($user, 'registrationInitiated', 'emailVerified', 'password', 'rememberToken');
         $properties = array_merge($properties, $user->toArray());
-        $data = [
+        return [
             'id' => $properties['userId'],
             'email' => $properties['email'],
             'phone' => $properties['phone'],
@@ -62,13 +74,11 @@ class UserRepository implements UserRepositoryInterface
             'registration_initiated_at' => $properties['registrationInitiated'],
             'email_verified_at' => $properties['emailVerified'],
         ];
-
-        return $data;
     }
 
     private function userFromData(EloquentUser $eloquentUser): User
     {
-        $user = User::restore(
+        return User::restore(
             $eloquentUser->id,
             $eloquentUser->email,
             $eloquentUser->phone,
@@ -78,6 +88,5 @@ class UserRepository implements UserRepositoryInterface
             $eloquentUser->registration_initiated_at,
             $eloquentUser->email_verified_at,
         );
-        return $user;
     }
 }

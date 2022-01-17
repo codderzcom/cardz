@@ -10,7 +10,7 @@ use Cardz\Support\Collaboration\Tests\Feature\CollaborationTestHelperTrait;
 use Codderz\Platypus\Infrastructure\Tests\ApplicationTestTrait;
 use Codderz\Platypus\Infrastructure\Tests\BaseTestCase;
 
-class ProposeInviteComandTest extends BaseTestCase
+class ProposeInviteCommandTest extends BaseTestCase
 {
     use ApplicationTestTrait, CollaborationTestHelperTrait;
 

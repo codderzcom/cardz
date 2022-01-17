@@ -3,9 +3,9 @@
 namespace Cardz\Support\Collaboration\Domain\Exceptions;
 
 use Codderz\Platypus\Contracts\Exceptions\DomainExceptionInterface;
-use Exception;
+use RuntimeException;
 
-class CannotAcceptOwnInviteException extends Exception implements DomainExceptionInterface
+class CannotAcceptOwnInviteException extends RuntimeException implements DomainExceptionInterface
 {
 
 }

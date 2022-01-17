@@ -4,6 +4,7 @@ namespace Cardz\Support\Collaboration\Application\Commands\Invite;
 
 use Cardz\Support\Collaboration\Domain\Model\Invite\InviteId;
 use Cardz\Support\Collaboration\Domain\Model\Relation\CollaboratorId;
+use JetBrains\PhpStorm\Pure;
 
 final class AcceptInvite implements InviteCommandInterface
 {
@@ -13,6 +14,7 @@ final class AcceptInvite implements InviteCommandInterface
     ) {
     }
 
+    #[Pure]
     public static function of(string $inviteId, string $collaboratorId): self
     {
         return new self($inviteId, $collaboratorId);

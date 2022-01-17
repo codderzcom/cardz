@@ -32,7 +32,7 @@ class PersonAppService
         return $person->personId;
     }
 
-    private function release(Person $person)
+    private function release(Person $person): void
     {
         $events = $this->personRepository->store($person);
         $this->domainEventBus->publish(...$events);

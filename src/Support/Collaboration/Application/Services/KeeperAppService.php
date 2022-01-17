@@ -4,6 +4,7 @@ namespace Cardz\Support\Collaboration\Application\Services;
 
 use Cardz\Support\Collaboration\Application\Commands\Invite\ProposeInvite;
 use Cardz\Support\Collaboration\Application\Commands\Keeper\KeepWorkspace;
+use Cardz\Support\Collaboration\Domain\Exceptions\KeeperNotFoundExceptionInterface;
 use Cardz\Support\Collaboration\Domain\Model\Invite\InviteId;
 use Cardz\Support\Collaboration\Domain\Model\Relation\RelationId;
 use Cardz\Support\Collaboration\Domain\Persistence\Contracts\InviteRepositoryInterface;
@@ -21,6 +22,9 @@ class KeeperAppService
     ) {
     }
 
+    /**
+     * @throws KeeperNotFoundExceptionInterface
+     */
     public function keepWorkspace(KeepWorkspace $command): RelationId
     {
         $keeper = $this->keeperRepository->take($command->getKeeperId(), $command->getWorkspaceId());
@@ -30,6 +34,9 @@ class KeeperAppService
         return $relation->relationId;
     }
 
+    /**
+     * @throws KeeperNotFoundExceptionInterface
+     */
     public function invite(ProposeInvite $command): InviteId
     {
         $keeper = $this->keeperRepository->take($command->getKeeperId(), $command->getWorkspaceId());

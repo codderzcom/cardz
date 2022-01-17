@@ -5,6 +5,7 @@ namespace Cardz\Generic\Authorization\Application\Queries;
 use Cardz\Generic\Authorization\Domain\Permissions\AuthorizationPermission;
 use Codderz\Platypus\Contracts\GenericIdInterface;
 use Codderz\Platypus\Contracts\Queries\QueryInterface;
+use JetBrains\PhpStorm\Pure;
 
 final class IsAllowed implements QueryInterface
 {
@@ -15,6 +16,7 @@ final class IsAllowed implements QueryInterface
     ) {
     }
 
+    #[Pure]
     public static function of(
         AuthorizationPermission $permission,
         GenericIdInterface $subjectId,

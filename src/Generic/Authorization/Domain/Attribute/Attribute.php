@@ -4,6 +4,7 @@ namespace Cardz\Generic\Authorization\Domain\Attribute;
 
 use Codderz\Platypus\Contracts\Authorization\Abac\AttributeInterface;
 use Codderz\Platypus\Infrastructure\Support\ArrayPresenterTrait;
+use JetBrains\PhpStorm\Pure;
 
 final class Attribute implements AttributeInterface
 {
@@ -28,6 +29,7 @@ final class Attribute implements AttributeInterface
     ) {
     }
 
+    #[Pure]
     public static function of(string $name, $value): self
     {
         return new self($name, $value);

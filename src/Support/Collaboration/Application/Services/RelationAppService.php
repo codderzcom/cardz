@@ -4,6 +4,7 @@ namespace Cardz\Support\Collaboration\Application\Services;
 
 use Cardz\Support\Collaboration\Application\Commands\Relation\EstablishRelation;
 use Cardz\Support\Collaboration\Application\Commands\Relation\RemoveRelation;
+use Cardz\Support\Collaboration\Domain\Exceptions\RelationNotFoundExceptionInterface;
 use Cardz\Support\Collaboration\Domain\Model\Relation\Relation;
 use Cardz\Support\Collaboration\Domain\Model\Relation\RelationId;
 use Cardz\Support\Collaboration\Domain\Persistence\Contracts\RelationRepositoryInterface;
@@ -30,6 +31,9 @@ class RelationAppService
         return $command->getRelationId();
     }
 
+    /**
+     * @throws RelationNotFoundExceptionInterface
+     */
     public function remove(RemoveRelation $command): RelationId
     {
         $relation = $this->relationRepository->find($command->getCollaboratorId(), $command->getWorkspaceId());

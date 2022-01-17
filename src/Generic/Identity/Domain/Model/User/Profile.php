@@ -3,6 +3,8 @@
 namespace Cardz\Generic\Identity\Domain\Model\User;
 
 use Codderz\Platypus\Contracts\Domain\ValueObjectInterface;
+use JetBrains\PhpStorm\ArrayShape;
+use JetBrains\PhpStorm\Pure;
 
 final class Profile implements ValueObjectInterface
 {
@@ -11,6 +13,7 @@ final class Profile implements ValueObjectInterface
     ) {
     }
 
+    #[Pure]
     public static function of(string $name): self
     {
         return new self($name);
@@ -21,6 +24,7 @@ final class Profile implements ValueObjectInterface
         return $this->name;
     }
 
+    #[ArrayShape(['name' => "string"])]
     public function toArray(): array
     {
         return ['name' => $this->name];

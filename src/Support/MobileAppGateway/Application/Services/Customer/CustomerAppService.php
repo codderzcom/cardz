@@ -3,6 +3,7 @@
 namespace Cardz\Support\MobileAppGateway\Application\Services\Customer;
 
 use Cardz\Support\MobileAppGateway\Domain\ReadModel\Customer\IssuedCard;
+use Cardz\Support\MobileAppGateway\Infrastructure\Exceptions\IssuedCardNotFoundException;
 use Cardz\Support\MobileAppGateway\Infrastructure\ReadStorage\Customer\Contracts\CustomerWorkspaceReadStorageInterface;
 use Cardz\Support\MobileAppGateway\Infrastructure\ReadStorage\Customer\Contracts\IssuedCardReadStorageInterface;
 use Cardz\Support\MobileAppGateway\Integration\Contracts\IdentityContextInterface;
@@ -22,6 +23,9 @@ class CustomerAppService
         return Auth::id();
     }
 
+    /**
+     * @throws IssuedCardNotFoundException
+     */
     public function getIssuedCard(string $customerId, string $cardId): IssuedCard
     {
         return $this->issuedCardReadStorage->forCustomer($customerId, $cardId);

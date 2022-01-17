@@ -9,17 +9,18 @@ use JetBrains\PhpStorm\Pure;
 
 final class Attributes implements AttributeCollectionInterface
 {
-    /** @var Attribute[]  */
+    /** @var Attribute[] */
     private array $attributes = [];
 
-    public function __construct(
-        Attribute ...$attributes
-    ) {
+    #[Pure]
+    public function __construct(Attribute ...$attributes)
+    {
         foreach ($attributes as $attribute) {
             $this->attributes[$attribute->name()] = $attribute;
         }
     }
 
+    #[Pure]
     public static function of(array $attributeItems = []): self
     {
         $collection = new self();

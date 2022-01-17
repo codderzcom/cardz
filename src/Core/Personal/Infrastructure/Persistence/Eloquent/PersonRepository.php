@@ -66,7 +66,7 @@ class PersonRepository implements PersonRepositoryInterface
         $eventClass = $esEvent->name;
         try {
             $changeset = json_decode($esEvent->changeset, true, 512, JSON_THROW_ON_ERROR);
-        } catch (JsonException $exception) {
+        } catch (JsonException) {
             $this->error("Unable to restore $eventClass event.");
             return null;
         }

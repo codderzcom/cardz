@@ -3,12 +3,14 @@
 namespace Cardz\Support\Collaboration\Infrastructure\Persistence\Eloquent;
 
 use App\Models\Relation as EloquentRelation;
+use Carbon\Carbon;
 use Cardz\Support\Collaboration\Domain\Model\Relation\CollaboratorId;
 use Cardz\Support\Collaboration\Domain\Model\Relation\Relation;
 use Cardz\Support\Collaboration\Domain\Model\Workspace\WorkspaceId;
 use Cardz\Support\Collaboration\Domain\Persistence\Contracts\RelationRepositoryInterface;
 use Cardz\Support\Collaboration\Infrastructure\Exceptions\RelationNotFoundException;
 use Codderz\Platypus\Infrastructure\Support\PropertiesExtractorTrait;
+use JetBrains\PhpStorm\ArrayShape;
 
 class RelationRepository implements RelationRepositoryInterface
 {
@@ -37,22 +39,27 @@ class RelationRepository implements RelationRepositoryInterface
         return $eloquentRelation ? $this->relationFromData($eloquentRelation) : throw new RelationNotFoundException();
     }
 
+    #[ArrayShape([
+        'id' => "string",
+        'collaborator_id' => "string",
+        'workspace_id' => "string",
+        'relation_type' => "string",
+        'established_at' => Carbon::class | null,
+    ])]
     private function relationAsData(Relation $relation): array
     {
-        $data = [
+        return [
             'id' => (string) $relation->relationId,
             'collaborator_id' => (string) $relation->collaboratorId,
             'workspace_id' => (string) $relation->workspaceId,
             'relation_type' => (string) $relation->relationType,
             'established_at' => $this->extractProperty($relation, 'established'),
         ];
-
-        return $data;
     }
 
     private function relationFromData(EloquentRelation $eloquentRelation): Relation
     {
-        $relation = Relation::restore(
+        return Relation::restore(
             $eloquentRelation->id,
             $eloquentRelation->collaborator_id,
             $eloquentRelation->workspace_id,
@@ -60,6 +67,5 @@ class RelationRepository implements RelationRepositoryInterface
             $eloquentRelation->established_at,
             null,
         );
-        return $relation;
     }
 }

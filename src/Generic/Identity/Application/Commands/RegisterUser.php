@@ -7,6 +7,7 @@ use Cardz\Generic\Identity\Domain\Model\User\Profile;
 use Cardz\Generic\Identity\Domain\Model\User\UserId;
 use Cardz\Generic\Identity\Domain\Model\User\UserIdentity;
 use Codderz\Platypus\Contracts\Commands\CommandInterface;
+use JetBrains\PhpStorm\Pure;
 
 final class RegisterUser implements CommandInterface
 {
@@ -34,6 +35,7 @@ final class RegisterUser implements CommandInterface
         return UserIdentity::of($this->email, $this->phone);
     }
 
+    #[Pure]
     public function getProfile(): Profile
     {
         return Profile::of($this->name);

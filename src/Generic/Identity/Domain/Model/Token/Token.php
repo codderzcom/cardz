@@ -5,6 +5,7 @@ namespace Cardz\Generic\Identity\Domain\Model\Token;
 use Cardz\Generic\Identity\Domain\Events\Token\TokenAssigned;
 use Codderz\Platypus\Contracts\Domain\AggregateRootInterface;
 use Codderz\Platypus\Infrastructure\Support\Domain\AggregateRootTrait;
+use JetBrains\PhpStorm\ArrayShape;
 
 final class Token implements AggregateRootInterface
 {
@@ -22,6 +23,7 @@ final class Token implements AggregateRootInterface
         return $token->withEvents(TokenAssigned::of($token));
     }
 
+    #[ArrayShape(['userId' => "string", 'token' => "string"])]
     public function toArray(): array
     {
         return [

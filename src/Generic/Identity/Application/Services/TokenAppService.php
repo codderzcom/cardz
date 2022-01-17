@@ -4,6 +4,7 @@ namespace Cardz\Generic\Identity\Application\Services;
 
 use App\Models\User as EloquentUser;
 use Cardz\Generic\Identity\Application\Queries\GetToken;
+use Cardz\Generic\Identity\Domain\Exceptions\UserNotFoundExceptionInterface;
 use Cardz\Generic\Identity\Domain\Persistence\Contracts\UserRepositoryInterface;
 use Cardz\Generic\Identity\Infrastructure\Exceptions\UserNotFoundException;
 use Cardz\Generic\Identity\Infrastructure\Messaging\DomainEventBusInterface;
@@ -17,6 +18,9 @@ class TokenAppService
     ) {
     }
 
+    /**
+     * @throws UserNotFoundExceptionInterface
+     */
     public function issueToken(GetToken $query): string
     {
         $user = $this->userRepository->takeByIdentity($query->getIdentity());

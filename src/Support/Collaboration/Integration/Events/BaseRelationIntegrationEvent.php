@@ -5,6 +5,7 @@ namespace Cardz\Support\Collaboration\Integration\Events;
 use Cardz\Support\Collaboration\Domain\Model\Relation\Relation;
 use Codderz\Platypus\Contracts\Messaging\IntegrationEventInterface;
 use Codderz\Platypus\Infrastructure\Messaging\IntegrationEventTrait;
+use JetBrains\PhpStorm\ArrayShape;
 use JetBrains\PhpStorm\Pure;
 
 abstract class BaseRelationIntegrationEvent implements IntegrationEventInterface
@@ -22,6 +23,7 @@ abstract class BaseRelationIntegrationEvent implements IntegrationEventInterface
         return new static($relation);
     }
 
+    #[ArrayShape(['name' => "string", 'payload' => "array"])]
     public function jsonSerialize(): array
     {
         return [

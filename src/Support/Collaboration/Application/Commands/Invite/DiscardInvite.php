@@ -3,6 +3,7 @@
 namespace Cardz\Support\Collaboration\Application\Commands\Invite;
 
 use Cardz\Support\Collaboration\Domain\Model\Invite\InviteId;
+use JetBrains\PhpStorm\Pure;
 
 final class DiscardInvite implements InviteCommandInterface
 {
@@ -11,6 +12,7 @@ final class DiscardInvite implements InviteCommandInterface
     ) {
     }
 
+    #[Pure]
     public static function of(string $inviteId): self
     {
         return new self($inviteId);

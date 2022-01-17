@@ -9,7 +9,7 @@ use Cardz\Support\Collaboration\Tests\Support\Builders\InviteBuilder;
 use Codderz\Platypus\Infrastructure\Tests\ApplicationTestTrait;
 use Codderz\Platypus\Infrastructure\Tests\BaseTestCase;
 
-class DiscardInviteComandTest extends BaseTestCase
+class DiscardInviteCommandTest extends BaseTestCase
 {
     use ApplicationTestTrait, CollaborationTestHelperTrait;
 
