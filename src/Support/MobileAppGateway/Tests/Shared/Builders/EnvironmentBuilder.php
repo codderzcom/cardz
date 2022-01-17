@@ -72,7 +72,6 @@ final class EnvironmentBuilder implements BuilderInterface
     public array $resources = [];
 
     private function __construct(
-        private Generator $faker,
         private UserBuilder $userBuilder,
         private WorkspaceBuilder $workspaceBuilder,
         private PlanBuilder $planBuilder,
@@ -87,7 +86,6 @@ final class EnvironmentBuilder implements BuilderInterface
     public static function make(): self
     {
         $builder = new self(
-            Factory::create(),
             UserBuilder::make(),
             WorkspaceBuilder::make(),
             PlanBuilder::make(),
