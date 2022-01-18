@@ -7,10 +7,8 @@ use Codderz\Platypus\Exceptions\AuthorizationFailedException;
 
 interface RuleInterface
 {
-    public function forPermission(): PermissionInterface;
-
     /** @throws AuthorizationFailedException */
-    public function applyPolicies(
+    public function resolve(
         AttributeCollectionInterface $subject,
         AttributeCollectionInterface $object,
         AttributeCollectionInterface $config,

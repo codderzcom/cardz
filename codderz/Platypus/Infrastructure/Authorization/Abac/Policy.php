@@ -4,28 +4,28 @@ namespace Codderz\Platypus\Infrastructure\Authorization\Abac;
 
 use Codderz\Platypus\Contracts\Authorization\Abac\AttributeCollectionInterface;
 use Codderz\Platypus\Contracts\Authorization\Abac\PermissionInterface;
-use Codderz\Platypus\Contracts\Authorization\Abac\PolicyInterface;
 use Codderz\Platypus\Contracts\Authorization\Abac\RuleInterface;
+use Codderz\Platypus\Contracts\Authorization\Abac\PolicyInterface;
 use Codderz\Platypus\Contracts\Authorization\AuthorizationResolution;
 use Codderz\Platypus\Exceptions\AuthorizationFailedException;
 use JetBrains\PhpStorm\Pure;
 
-class AbacRule implements RuleInterface
+class Policy implements PolicyInterface
 {
-    /** PolicyInterface[] */
-    protected array $policies;
+    /** AbacRuleInterface[] */
+    protected array $rules;
 
     protected function __construct(
         protected PermissionInterface $permission,
-        PolicyInterface ...$policies
+        RuleInterface ...$rules
     ) {
-        $this->policies = $policies;
+        $this->rules = $rules;
     }
 
     #[Pure]
-    public static function of(PermissionInterface $permission, PolicyInterface ...$policies): static
+    public static function of(PermissionInterface $permission, RuleInterface ...$rules): static
     {
-        return new static($permission, ...$policies);
+        return new static($permission, ...$rules);
     }
 
     public function forPermission(): PermissionInterface
@@ -33,12 +33,12 @@ class AbacRule implements RuleInterface
         return $this->permission;
     }
 
-    public function applyPolicies(
+    public function applyRules(
         AttributeCollectionInterface $subject,
         AttributeCollectionInterface $object,
         AttributeCollectionInterface $config,
     ): AuthorizationResolution {
-        $ruleApplicationStrategy = AbacResolutionStrategy::ofConfig($config);
+        $ruleApplicationStrategy = ResolutionStrategy::ofConfig($config);
         return $ruleApplicationStrategy->isPermissive()
             ? $this->applyPermissive($subject, $object, $config)
             : $this->applyRestrictive($subject, $object, $config);
@@ -53,7 +53,7 @@ class AbacRule implements RuleInterface
         AttributeCollectionInterface $config,
     ): AuthorizationResolution {
         $resolution = AuthorizationResolution::of();
-        foreach ($this->policies as $policy) {
+        foreach ($this->rules as $policy) {
             $resolution = $policy->resolve($subject, $object, $config);
             if ($resolution->isPermissive()) {
                 return $resolution;
@@ -71,7 +71,7 @@ class AbacRule implements RuleInterface
         AttributeCollectionInterface $config,
     ): AuthorizationResolution {
         $resolution = AuthorizationResolution::of(false);
-        foreach ($this->policies as $policy) {
+        foreach ($this->rules as $policy) {
             $resolution = $policy->resolve($subject, $object, $config);
             if ($resolution->isRestrictive()) {
                 return $resolution;

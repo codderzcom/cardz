@@ -3,7 +3,7 @@
 namespace Cardz\Generic\Authorization\Domain\Permissions;
 
 use Cardz\Generic\Authorization\Domain\Resource\ResourceType;
-use Codderz\Platypus\Infrastructure\Authorization\Abac\AbacPermission;
+use Codderz\Platypus\Infrastructure\Authorization\Abac\Permission;
 
 /**
  * @method static self WORKSPACE_VIEW()
@@ -20,7 +20,7 @@ use Codderz\Platypus\Infrastructure\Authorization\Abac\AbacPermission;
  * @method static self FIRE_COLLABORATOR()
  * @method static self NULL_PERMISSION()
  */
-final class AuthorizationPermission extends AbacPermission
+final class AuthorizationPermission extends Permission
 {
     public const WORKSPACE_VIEW = ResourceType::WORKSPACE . '.view';
     public const WORKSPACE_CHANGE_PROFILE = ResourceType::WORKSPACE . '.change_profile';

@@ -9,7 +9,7 @@ use MyCLabs\Enum\Enum;
  * @method static static PERMISSIVE()
  * @method static static RESTRICTIVE()
  */
-class AbacResolutionStrategy extends Enum
+class ResolutionStrategy extends Enum
 {
     public const PERMISSIVE = 'permissive';
     public const RESTRICTIVE = 'restrictive';
@@ -21,7 +21,7 @@ class AbacResolutionStrategy extends Enum
 
     public static function ofConfig(AttributeCollectionInterface $config): static
     {
-        $strategy = $config->getValue('abac.strategy');
+        $strategy = $config->getValue(static::class);
         return static::isValid($strategy) ? new static($strategy) : static::RESTRICTIVE();
     }
 }
