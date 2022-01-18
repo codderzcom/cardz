@@ -3,35 +3,35 @@
 An attempt to style generic Bonus Cards API  with the DDD approach using Laravel.
 
 There are some stipulations we're trying to uphold:
- - isolate the project code from the Laravel framework as much as possible;
- - isolate the domain as much as possible;
- - construct a modular monolith in such a way to make the future transition to microservices relatively painless;
- - try to keep code complexity under control;
- - demonstrate most of the major strategic and tactic DDD patterns somewhat to the detriment of the previous consideration;
- - demonstrate the implementation of the CQRS pattern, Event Sourcing (with event storage) pattern, ABAC Auth and some other interesting approaches once again to the probable detriment of the code simplicity;
- - provide the bare minimum of tests required to keep a decent level of maintainability.
+- isolate the project code from the Laravel framework as much as possible;
+- isolate the domain as much as possible;
+- construct a modular monolith in such a way to make the future transition to microservices relatively painless;
+- try to keep code complexity under control;
+- demonstrate most of the major strategic and tactic DDD patterns somewhat to the detriment of the previous consideration;
+- demonstrate the implementation of the CQRS pattern, Event Sourcing (with event storage) pattern, ABAC Auth and some other interesting approaches once again to the probable detriment of the code simplicity;
+- provide the bare minimum of tests required to keep a decent level of maintainability.
 
 ## Installation instructions
 
- - clone the [repo](https://github.com/IndomitablePlatypus/cardz/) with `git clone`; 
- - ensure you have **PHP 8.0+**;
- - run `composer install`;
- - copy `.env.example` to `.env`;
- - provide your app key with `php artisan key:generate`;
- - make sure you have **PostgreSQL** installed and running;
- - create a relevant database and provide credentials for the DB connection in your `.env` file;
- - launch `php artisan serve` and proceed to the provided localhost page to take a look at the project API documentation.
+- clone the [repo](https://github.com/IndomitablePlatypus/cardz/) with `git clone`;
+- ensure you have **PHP 8.0+**;
+- run `composer install`;
+- copy `.env.example` to `.env`;
+- provide your app key with `php artisan key:generate`;
+- make sure you have **PostgreSQL** installed and running;
+- create a relevant database and provide credentials for the DB connection in your `.env` file;
+- launch `php artisan serve` and proceed to the provided localhost page to take a look at the project API documentation.
 
 Optionally, you can run `php artisan tests` to take a look at a small assortment of included tests.
 
 ## Domain description
 
 Some café owners got together and decided that they need new ways to attract more customers.
-One such way would be to implement a loyalty program where each customer is given a card with predefined requirements and a bonus.
-When requirements are met the customer is eligible for the bonus.
+One such way would be to implement a loyalty program where each customer is given a card with the predefined requirements and a bonus.
+When the requirements are met the customer is eligible for the bonus.
 Requirements are generally in the line of buying some specific type of coffee or food.
-For example, a card scheme can be described as "Buy eight cups of espresso and get a cappuccino for free" or "Buy latte, mocha and cappuccino and get a free lungo".
-Each time the requirement is met it's marked in the customer card as an achievement.
+For example, a card scheme can be described as "Buy eight cups of espresso and get a cappuccino for free" or "Buy latte, mocha, and cappuccino and get a free lungo".
+Each time the requirement is met it's marked on the customer card as an achievement.
 
 Once the bonus is received the card lifecycle is completed.
 
@@ -54,15 +54,15 @@ Remember, that we're trying to keep things simple and available for a large vari
 ## Ubiquitous language
 ### Terms
 After some back and forth between the owners the following terms were coined for the domain:
- - **customer**
- - **workspace**
- - **keeper**
- - **collaborator**
- - **plan**
- - **requirement**
- - **card**
- - **achievement**
- 
+- **customer**
+- **workspace**
+- **keeper**
+- **collaborator**
+- **plan**
+- **requirement**
+- **card**
+- **achievement**
+
 ### Contexts
 There are four Core contexts: **Cards**, **Personal**, **Plans** and **Workspaces**, two Support ones: **Collaboration** and **MobileAppGateway**, and two Generic ones: **Authorization** and **Identity**.
 MobileAppGateway is not, strictly speaking, a context, more of a gateway, but can be considered as such.
@@ -73,9 +73,9 @@ Identity is just a wrap on Laravel Sanctum.
 TBD
 
 ## Further work
- - we need to provide more documentation on the thought process and its implementation in the code;
- - more context-specific docs are required for each module;
- - tests need to be refactored for more clarity and ease of reading.
+- we need to provide more documentation on the thought process and its implementation in the code;
+- more context-specific docs are required for each module;
+- tests need to be refactored for more clarity and ease of reading.
 
 ## DDD Reference links
 TBD
