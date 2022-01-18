@@ -9,6 +9,8 @@ class Card extends Model
 {
     public $table = 'cards';
 
+    protected $keyType = 'string';
+
     public $incrementing = false;
 
     protected $guarded = [];

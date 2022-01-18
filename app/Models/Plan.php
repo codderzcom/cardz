@@ -10,6 +10,8 @@ class Plan extends Model
 {
     public $table = 'plans';
 
+    protected $keyType = 'string';
+
     public $incrementing = false;
 
     protected $guarded = [];

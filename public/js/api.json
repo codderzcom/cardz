@@ -1857,19 +1857,19 @@
                         "description": "Workspace (business) name",
                         "type": "string",
                         "nullable": false,
-                        "example": "Runolfsson Group"
+                        "example": "Kessler-Schmeler"
                     },
                     "description": {
                         "description": "Workspace (business) description",
                         "type": "string",
                         "nullable": false,
-                        "example": "Possimus sed atque eaque temporibus perferendis. Earum voluptates culpa qui ipsa sunt. Ut quas porro quis quos. Officia repudiandae ut ea aperiam quis expedita ut."
+                        "example": "Beatae culpa sint ullam similique unde quo. Velit accusantium quos ratione qui. Qui et sed et beatae repellat sed dolorum. Ullam rerum enim minus voluptas."
                     },
                     "address": {
                         "description": "Workspace (business) address",
                         "type": "string",
                         "nullable": false,
-                        "example": "929 Casimer Squares Apt. 564\nJastfort, NJ 15417-9226"
+                        "example": "48613 Adrianna Fork Apt. 063\nDedricshire, HI 31921-2621"
                     }
                 }
             },
@@ -1951,7 +1951,7 @@
                                     "description": "Achievement description = corresponding requirement description",
                                     "type": "string",
                                     "nullable": false,
-                                    "example": "Impedit dolorum ut ut. Repellat et ullam veniam et ut deserunt omnis. Facere exercitationem consequatur in maiores esse rerum."
+                                    "example": "Qui tempora dolorem voluptas hic non. Ex eum ipsa velit ea qui."
                                 }
                             }
                         }
@@ -1976,7 +1976,7 @@
                                     "description": "Requirement description",
                                     "type": "string",
                                     "nullable": false,
-                                    "example": "Omnis et dolorem et corporis voluptatem doloribus nesciunt. Tempora omnis molestiae et quis. Aut itaque ipsum sunt numquam error libero."
+                                    "example": "Odio unde nemo nam ut illum qui qui. Saepe quam saepe maxime dolorum."
                                 }
                             }
                         }
@@ -1995,17 +1995,17 @@
                     "name": {
                         "description": "Workspace (business) title",
                         "type": "string",
-                        "example": "Fay-Ruecker"
+                        "example": "Abernathy, Bayer and Brakus"
                     },
                     "description": {
                         "description": "Workspace (business) description",
                         "type": "string",
-                        "example": "Nam omnis autem quis quis veritatis et inventore dolorum. Expedita aut perferendis nam et impedit. Est repellat qui autem sed asperiores."
+                        "example": "Qui in molestias enim quia nulla provident soluta. Quisquam dolorem qui tempora. Praesentium enim perferendis illo ut ut est."
                     },
                     "address": {
                         "description": "Workspace (business) address",
                         "type": "string",
-                        "example": "3129 Pagac Fields Apt. 331\nSouth Moniqueville, CA 62892-4057"
+                        "example": "2982 Feest Mount Apt. 547\nWest Delphiahaven, KS 19109-5504"
                     }
                 }
             },
@@ -2032,7 +2032,7 @@
                     "description": {
                         "description": "Requirement description",
                         "type": "string",
-                        "example": "Suscipit et tenetur aperiam nemo nobis adipisci qui. Neque facere veritatis rerum amet molestias odit."
+                        "example": "Fuga nemo velit quam non voluptatem. Consequatur et autem ullam omnis doloribus voluptate quia. Atque accusamus consectetur expedita voluptatem. Incidunt harum architecto et."
                     }
                 }
             },
@@ -2066,7 +2066,7 @@
                     "description": {
                         "description": "Achievement (requirement) description",
                         "type": "string",
-                        "example": "Maiores eius consectetur iure necessitatibus sint vero nobis qui. Assumenda et alias quos placeat et. Ratione omnis voluptatem cumque dolor libero."
+                        "example": "Beatae fuga et dolores voluptatem eum qui ex. Qui in facilis alias saepe. Provident architecto quo est corrupti consectetur doloribus aut. Ut impedit consequatur quos nihil sapiente dolorum."
                     }
                 }
             },
@@ -2082,18 +2082,18 @@
                     "identity": {
                         "description": "Identity is either phone or email",
                         "type": "string",
-                        "example": "rodrick68@yahoo.com"
+                        "example": "leslie.sipes@okuneva.com"
                     },
                     "password": {
                         "description": "Password",
                         "format": "password",
                         "type": "string",
-                        "example": "RlNAe$`i\/\/e"
+                        "example": "bT{apFD"
                     },
                     "deviceName": {
                         "description": "Device name is required to distinguish between different access tokens",
                         "type": "string",
-                        "example": "est"
+                        "example": "in"
                     }
                 }
             },
@@ -2110,28 +2110,28 @@
                     "phone": {
                         "description": "Phone",
                         "type": "string",
-                        "example": "630-731-6884"
+                        "example": "(332) 906-2362"
                     },
                     "email": {
                         "description": "Email is required if phone is not provided",
                         "type": "string",
-                        "example": "veum.stephania@dicki.com"
+                        "example": "russel.sally@nolan.org"
                     },
                     "name": {
                         "description": "Customer name",
                         "type": "string",
-                        "example": "Sabina Oberbrunner"
+                        "example": "Dr. Stephon Botsford"
                     },
                     "password": {
                         "description": "Password",
                         "format": "password",
                         "type": "string",
-                        "example": "*XdW1;4Z#DAdUe-nqf4"
+                        "example": ",=tFHauDnPSev4"
                     },
                     "deviceName": {
                         "description": "Device name is required to distinguish between different access tokens",
                         "type": "string",
-                        "example": "harum"
+                        "example": "nam"
                     }
                 }
             },
@@ -2179,13 +2179,13 @@
                         "description": "Workspace (business) name",
                         "type": "string",
                         "nullable": false,
-                        "example": "Kilback, Walter and O'Reilly"
+                        "example": "Nitzsche Group"
                     },
                     "workspaceAddress": {
                         "description": "Workspace (business) address",
                         "type": "string",
                         "nullable": false,
-                        "example": "411 Hayes Ports\nJimmiestad, UT 74407-6344"
+                        "example": "3317 Kariane Stream\nCecileshire, DE 56578"
                     },
                     "customerId": {
                         "description": "Customer Id",
@@ -2197,7 +2197,7 @@
                         "description": "Card (plan) description",
                         "type": "string",
                         "nullable": false,
-                        "example": "Blanditiis illum inventore sapiente sint sint quae. Iste cupiditate quisquam reiciendis. Quia dolores ipsam ullam est magnam aut. Corrupti rerum et aut cum quas."
+                        "example": "Commodi quam occaecati omnis sint doloremque dolores repudiandae. Pariatur praesentium libero quasi nihil consequuntur. Dolores ratione deleniti nihil."
                     },
                     "satisfied": {
                         "description": "Whether all requirements to receive a bonus are satisfied",
@@ -2229,11 +2229,11 @@
                                     "description": "Achievement description = corresponding requirement description",
                                     "type": "string",
                                     "nullable": false,
-                                    "example": "Iure consequuntur saepe et. Inventore incidunt vitae rem in. Impedit ad deleniti voluptas qui numquam provident."
+                                    "example": "Et et qui enim eaque sint repellat. Amet doloribus soluta molestiae delectus quisquam et inventore. Doloremque quaerat expedita omnis eum. At neque sit reiciendis asperiores maiores."
                                 }
                             }
                         },
-                        "example": "Blanditiis maxime similique quo id. Impedit sint et illum sit. Quo aliquam adipisci pariatur quisquam recusandae incidunt dignissimos temporibus. Est hic similique quis et quas et."
+                        "example": "Consequatur ipsum aut consequuntur quibusdam eos dolore. Eos vitae ab voluptatem aut sequi. Ad ut deserunt deserunt voluptatibus illum esse molestiae illo. Ut eius dolor eos illum nihil."
                     },
                     "requirements": {
                         "description": "All requirements",
@@ -2255,7 +2255,7 @@
                                     "description": "Requirement description",
                                     "type": "string",
                                     "nullable": false,
-                                    "example": "Ipsum cum eius deserunt voluptatem rerum delectus. Omnis eos nesciunt aperiam doloribus nihil ipsam. Harum temporibus repellat molestiae perspiciatis quo qui."
+                                    "example": "Sed dicta rerum corrupti voluptas eveniet. Nihil corporis repellendus voluptatem consequuntur laudantium est. Placeat provident corrupti est doloremque molestiae veniam quia."
                                 }
                             }
                         }
@@ -2281,19 +2281,19 @@
                         "description": "Workspace (business) name",
                         "type": "string",
                         "nullable": false,
-                        "example": "Pagac, Ward and Barton"
+                        "example": "Smith Ltd"
                     },
                     "description": {
                         "description": "Workspace (business) description",
                         "type": "string",
                         "nullable": false,
-                        "example": "Dolorem iusto ut sint quos. Suscipit quia consequuntur iure officiis fugiat distinctio mollitia. Rerum aut quasi et magni repellat libero vero."
+                        "example": "Provident ab et tenetur ut ducimus. Vel dicta commodi quasi et aut ipsum. Et ut tempora ad. Tempore soluta et quis blanditiis consequatur ad."
                     },
                     "address": {
                         "description": "Workspace (business) address",
                         "type": "string",
                         "nullable": false,
-                        "example": "308 Kuhic Circles Apt. 269\nLake Lou, AR 68097"
+                        "example": "87489 Maggio Ridge\nSouth Adrainmouth, MS 43623"
                     }
                 }
             },
@@ -2325,7 +2325,7 @@
                         "description": "Plan description",
                         "type": "string",
                         "nullable": false,
-                        "example": "Temporibus officiis autem adipisci maiores veniam quia quidem. Ut quaerat occaecati voluptatem error ea. Eum et et sapiente animi dolorum recusandae. Ab in laboriosam soluta."
+                        "example": "Non dolore veniam voluptatem. Aperiam et impedit vel laudantium. Delectus qui cupiditate eum eaque."
                     },
                     "isLaunched": {
                         "description": "Whether the plan is launched",
@@ -2362,7 +2362,7 @@
                                     "description": "Requirement description",
                                     "type": "string",
                                     "nullable": false,
-                                    "example": "Et sit sint quae quo ad facilis. Nostrum voluptatem voluptas ut quam cumque laudantium. Autem enim est saepe necessitatibus aut commodi aut."
+                                    "example": "Quos esse ad esse tenetur. Qui a ducimus accusantium quibusdam. Quaerat est nulla consequatur nihil consequatur reiciendis libero. Saepe ducimus sed nostrum quia perspiciatis non voluptates dolor."
                                 }
                             }
                         }
@@ -2558,7 +2558,7 @@
         "securitySchemes": {
             "BearerToken": {
                 "type": "http",
-                "name": "BearerToken",
+                "name": "Authorization",
                 "in": "header",
                 "scheme": "bearer",
                 "bearerFormat": "JWT"

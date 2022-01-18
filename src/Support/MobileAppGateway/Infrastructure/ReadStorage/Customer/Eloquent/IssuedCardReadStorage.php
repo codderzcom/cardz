@@ -13,8 +13,7 @@ class IssuedCardReadStorage implements IssuedCardReadStorageInterface
     public function allForCustomer(string $customerId): array
     {
         /** @var EloquentCard $card */
-        $cards = EloquentCard::query()
-            ->with('plan.workspace')
+        $cards = EloquentCard::with('plan.workspace')
             ->where('customer_id', '=', $customerId)
             ->whereNull('revoked_at')
             ->whereNull('blocked_at')
@@ -30,7 +29,7 @@ class IssuedCardReadStorage implements IssuedCardReadStorageInterface
     public function forCustomer(string $customerId, string $cardId): IssuedCard
     {
         /** @var EloquentCard $card */
-        $card = EloquentCard::query()
+        $card = EloquentCard::with('plan.workspace')
             ->where('id', '=', $cardId)
             ->where('customer_id', '=', $customerId)
             ->whereNull('revoked_at')
@@ -50,8 +49,8 @@ class IssuedCardReadStorage implements IssuedCardReadStorageInterface
 
         return IssuedCard::make(
             $card->id,
-            $card->plan->workspace->name,
-            $card->plan->workspace->address,
+            $card->plan->workspace->profile['name'],
+            $card->plan->workspace->profile['address'],
             $card->customer_id,
             $card->description,
             $card->satisfied_at !== null,

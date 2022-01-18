@@ -9,6 +9,8 @@ class Workspace extends Model
 {
     public $table = 'workspaces';
 
+    protected $keyType = 'string';
+
     public $incrementing = false;
 
     protected $guarded = [];
