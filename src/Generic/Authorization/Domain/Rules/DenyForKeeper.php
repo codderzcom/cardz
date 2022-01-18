@@ -1,13 +1,13 @@
 <?php
 
-namespace Cardz\Generic\Authorization\Domain\Policies;
+namespace Cardz\Generic\Authorization\Domain\Rules;
 
 use Cardz\Generic\Authorization\Domain\Attribute\Attribute;
+use Codderz\Platypus\Contracts\Authorization\Abac\RuleInterface;
 use Codderz\Platypus\Contracts\Authorization\Abac\AttributeCollectionInterface;
-use Codderz\Platypus\Contracts\Authorization\Abac\PolicyInterface;
 use Codderz\Platypus\Contracts\Authorization\AuthorizationResolution;
 
-class AllowForKeeper implements PolicyInterface
+class DenyForKeeper implements RuleInterface
 {
     public function resolve(
         AttributeCollectionInterface $subject,
@@ -17,6 +17,6 @@ class AllowForKeeper implements PolicyInterface
         $subjectId = $subject(Attribute::SUBJECT_ID)->value();
         $keeperId = $object(Attribute::KEEPER_ID)->value();
 
-        return AuthorizationResolution::of($subjectId === $keeperId);
+        return AuthorizationResolution::of($subjectId !== $keeperId);
     }
 }

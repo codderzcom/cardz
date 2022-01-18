@@ -2,9 +2,9 @@
 
 namespace Codderz\Platypus\Contracts\Authorization\Abac;
 
-use Codderz\Platypus\Contracts\Authorization\AuthorizationRequestInterface;
+use Codderz\Platypus\Contracts\Authorization\AuthorizationRequestInterface as AuthRequestInterface;
 
-interface AbacAuthorizationRequestInterface extends AuthorizationRequestInterface
+interface AuthorizationRequestInterface extends AuthRequestInterface
 {
     public function getPermission(): PermissionInterface;
 

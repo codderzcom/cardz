@@ -1,13 +1,13 @@
 <?php
 
-namespace Cardz\Generic\Authorization\Domain\Policies;
+namespace Cardz\Generic\Authorization\Domain\Rules;
 
 use Cardz\Generic\Authorization\Domain\Attribute\Attribute;
+use Codderz\Platypus\Contracts\Authorization\Abac\RuleInterface;
 use Codderz\Platypus\Contracts\Authorization\Abac\AttributeCollectionInterface;
-use Codderz\Platypus\Contracts\Authorization\Abac\PolicyInterface;
 use Codderz\Platypus\Contracts\Authorization\AuthorizationResolution;
 
-class AllowForCollaborators implements PolicyInterface
+class AllowForCollaborators implements RuleInterface
 {
     public function resolve(
         AttributeCollectionInterface $subject,

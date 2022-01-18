@@ -6,7 +6,7 @@ use Codderz\Platypus\Contracts\Authorization\Abac\PermissionInterface;
 use Codderz\Platypus\Exceptions\AuthorizationFailedException;
 use MyCLabs\Enum\Enum;
 
-class AbacPermission extends Enum implements PermissionInterface
+class Permission extends Enum implements PermissionInterface
 {
     /**
      * @throws AuthorizationFailedException
