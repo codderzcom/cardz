@@ -1,14 +1,14 @@
 # CARDZ
 
-An attempt to style generic Bonus Cards API  with the DDD approach using Laravel.
+This repo is an attempt to style a "Bonus Cards API" with the DDD approach using bare bones of Laravel.
 
 There are some stipulations we're trying to uphold:
 - isolate the project code from the Laravel framework as much as possible;
 - isolate the domain as much as possible;
-- construct a modular monolith in such a way to make the future transition to microservices relatively painless;
+- construct a modular monolith in such a way to make the future transition to the microservice architecture relatively painless;
 - try to keep code complexity under control;
 - demonstrate most of the major strategic and tactic DDD patterns somewhat to the detriment of the previous consideration;
-- demonstrate the implementation of the CQRS pattern, Event Sourcing (with event storage) pattern, ABAC Auth and some other interesting approaches once again to the probable detriment of the code simplicity;
+- demonstrate the implementation of the CQRS pattern, Event Sourcing (with event storage) pattern, ABAC Auth and some other interesting approaches, once again to the probable detriment of the code simplicity;
 - provide the bare minimum of tests required to keep a decent level of maintainability.
 
 ## Installation instructions
@@ -26,9 +26,9 @@ Optionally, you can run `php artisan tests` to take a look at a small assortment
 
 ## Domain description
 
-Some café owners got together and decided that they need new ways to attract more customers.
-One such way would be to implement a loyalty program where each customer is given a card with the predefined requirements for some bonus.
-When the requirements are met the card owner is eligible for the bonus.
+Some café owners got together and decided that they need a new way to attract more customers.
+One such way would be to implement a loyalty program where each customer is given some card with the predefined requirements for a bonus.
+When the requirements are met the card owner becomes eligible for the bonus.
 Requirements are generally in the line of buying some specific type of coffee or food.
 For example, a bonus scheme may be described as "_Buy eight cups of espresso and get a cappuccino for free_" or "_Buy latte, mocha, and cappuccino and get a free lungo_".
 Each time the requirement is met it's marked on the card as an achievement.
@@ -36,7 +36,7 @@ Each time the requirement is met it's marked on the card as an achievement.
 Once the bonus is received the card lifecycle is completed, and it should be treated as irrelevant.
 
 Requirements can wary for each café and a bonus plan.
-The system should mostly keep records of what is or should be done rather than control or limit café owners and managers.
+The system should mostly keep records of what is or should be done rather than try to control or limit the café owners and managers.
 
 Each owner can establish an unlimited* number of workspaces where they can create an unlimited* number of bonus plans.
 A plan is basically a description of requirements (which number, you've guessed it, is unlimited*) and a bonus in free form.
@@ -46,7 +46,7 @@ Basically, every registered user can start a workspace.
 
 Once a workspace is established its keeper can invite more people to work there. Generally, that would be servers, baristas, bartenders, and so on.
 
-Only the collaborators of the same workspace can introduce the changes to the plans, create the new ones and launch them. New collaborators can be invited only by the keeper.
+Only the collaborators of the same workspace can introduce the changes to the plans, create the new ones, and launch them. New collaborators can be invited only by the keeper.
 
 A customer identifies themselves via the mobile app after which they can be issued a card for the specific plan.
 There are no restrictions* on the number of cards a customer can own for each plan or a workspace.
@@ -76,7 +76,7 @@ Authorization is based on an extremely simple ABAC-like engine designed to serve
 Identity is just a wrap on Laravel Sanctum.
 
 ## Event storming diagram
-TBD
+N/A
 
 ## Further work
 - we need to provide more documentation on the thought process and its implementation in the code;
@@ -84,7 +84,7 @@ TBD
 - tests need to be refactored for more clarity and ease of reading.
 
 ## DDD Reference links
-TBD
+N/A
 
 ## OpenApi Reference links
 - [RapiDoc](https://mrin9.github.io/RapiDoc/quickstart.html): wrap an OpenApi json.
