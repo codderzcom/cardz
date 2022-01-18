@@ -14,6 +14,7 @@ class IssuedCardReadStorage implements IssuedCardReadStorageInterface
     {
         /** @var EloquentCard $card */
         $cards = EloquentCard::query()
+            ->with('plan.workspace')
             ->where('customer_id', '=', $customerId)
             ->whereNull('revoked_at')
             ->whereNull('blocked_at')
@@ -49,7 +50,8 @@ class IssuedCardReadStorage implements IssuedCardReadStorageInterface
 
         return IssuedCard::make(
             $card->id,
-            $card->plan_id,
+            $card->plan->workspace->name,
+            $card->plan->workspace->address,
             $card->customer_id,
             $card->description,
             $card->satisfied_at !== null,

@@ -12,7 +12,8 @@ final class IssuedCard implements JsonSerializable
 
     private function __construct(
         public string $cardId,
-        public string $planId,
+        string $workspaceName,
+        string $workspaceAddress,
         public string $customerId,
         public string $description,
         public bool $satisfied,
@@ -29,7 +30,8 @@ final class IssuedCard implements JsonSerializable
     #[Pure]
     public static function make(
         string $cardId,
-        string $planId,
+        string $workspaceName,
+        string $workspaceAddress,
         string $customerId,
         string $description,
         bool $satisfied,
@@ -39,7 +41,8 @@ final class IssuedCard implements JsonSerializable
     ): self {
         return new self(
             $cardId,
-            $planId,
+            $workspaceName,
+            $workspaceAddress,
             $customerId,
             $description,
             $satisfied,
