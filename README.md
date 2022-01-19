@@ -9,18 +9,18 @@ There are some stipulations we're trying to uphold:
 - isolate the domain as much as possible;
 - construct a modular monolith in such a way to make the future transition to the microservice architecture relatively painless;
 - try to keep code complexity under control;
-- demonstrate most of the major strategic and tactic DDD patterns somewhat to the detriment of the previous consideration;
+- demonstrate most of the major strategic and tactic DDD patterns somewhat to the detriment of the previous provision;
 - demonstrate the implementation of the CQRS pattern, Event Sourcing (with event storage) pattern, ABAC Auth and some other interesting approaches, once again to the probable detriment of the code simplicity;
 - provide the bare minimum of tests required to keep a decent level of maintainability.
 
 Please, note that we purposely break the YAGNI principle for the demo, scalability and maintainability reasons.   
 We are aware that this code is not, in fact, the most simple or efficient.
 Furthermore, we fully agree that the bounded contexts here (specifically the core ones) are suboptimal and require more in-depth analysis.
-However, it's a common occurrence for any application as more and more information comes to light during the development and production phases.
+However, it's a common occurrence for any application as more and more information usually comes to light during the development and production phases.
 
-We have not given any consideration to the high load troubles and a lot of other potential hurdles, or rather we've willfully discarded them, as they are beyond what this application aims to be.
+We've willfully discarded the considerations of high load and a score of other potential hurdles, as they are beyond what this application aims to be.
 
-There were no particular reasons to choose the Laravel framework, it could've been Symfony or Zend or anything else really, as long as it has a router, DI container, ORM and other framework stuff.
+There were no particular reasons to choose the Laravel framework, it could've been Symfony or Zend or anything else really, as long as it has a router, DI container, ORM and other frameworky stuff.
 
 ## Domain
 
