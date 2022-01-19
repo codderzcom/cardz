@@ -2,6 +2,7 @@
 
 namespace Cardz\Core\Plans;
 
+use Cardz\Core\Plans\Application\Cli\ExpirePlans;
 use Cardz\Core\Plans\Application\Consumers\PlanDomainEventsConsumer;
 use Cardz\Core\Plans\Application\Consumers\RequirementChangedDomainEventsConsumer;
 use Cardz\Core\Plans\Application\Services\PlanAppService;
@@ -44,5 +45,7 @@ class PlansProvider extends ServiceProvider
 
         $domainEventBus->subscribe($this->app->make(PlanDomainEventsConsumer::class));
         $domainEventBus->subscribe($this->app->make(RequirementChangedDomainEventsConsumer::class));
+
+        $this->commands([ExpirePlans::class]);
     }
 }

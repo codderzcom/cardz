@@ -20,6 +20,7 @@ There are some stipulations we're trying to uphold:
 - provide your app key with `php artisan key:generate`;
 - make sure you have **PostgreSQL** installed and running;
 - create a relevant database and provide credentials for the DB connection in your `.env` file;
+- run migrations for your DB with the `php artisan migrate` command; 
 - launch `php artisan serve` and proceed to the provided localhost page to take a look at the project API documentation.
 
 Optionally, you can run `php artisan tests` to take a look at a small assortment of included tests.

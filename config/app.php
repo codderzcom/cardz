@@ -181,15 +181,6 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         ...CardzServiceProvider::providers(),
-
-        //Cardz\Generic\Identity\IdentityProvider::class,
-        //Cardz\Generic\Authorization\AuthorizationProvider::class,
-        Cardz\Core\Cards\CardsProvider::class,
-        //Cardz\Support\Collaboration\CollaborationProvider::class,
-        //Cardz\Support\MobileAppGateway\MobileAppBackProvider::class,
-        Cardz\Core\Plans\PlansProvider::class,
-        Cardz\Core\Personal\PersonalProvider::class,
-        Cardz\Core\Workspaces\WorkspacesProvider::class,
     ],
 
     /*

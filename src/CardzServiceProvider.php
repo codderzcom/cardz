@@ -2,7 +2,10 @@
 
 namespace Cardz;
 
-use Cardz\Core\Plans\Application\Cli\ExpirePlans;
+use Cardz\Core\Cards\CardsProvider;
+use Cardz\Core\Personal\PersonalProvider;
+use Cardz\Core\Plans\PlansProvider;
+use Cardz\Core\Workspaces\WorkspacesProvider;
 use Cardz\Generic\Authorization\AuthorizationProvider;
 use Cardz\Generic\Identity\IdentityProvider;
 use Cardz\Support\Collaboration\CollaborationProvider;
@@ -31,6 +34,10 @@ final class CardzServiceProvider extends ServiceProvider
             MobileAppGatewayProvider::class,
             CollaborationProvider::class,
 
+            CardsProvider::class,
+            PlansProvider::class,
+            PersonalProvider::class,
+            WorkspacesProvider::class,
         ];
     }
 
@@ -41,8 +48,6 @@ final class CardzServiceProvider extends ServiceProvider
 
         $this->app->singleton(EventBusInterface::class, fn() => new EventBus($this->app->make(LocalSyncMessageBroker::class)));
         $this->app->singleton(IntegrationEventBusInterface::class, fn() => new IntegrationEventBus($this->app->make(RabbitMQMessageBroker::class)));
-
-        $this->commands([ExpirePlans::class]);
     }
 
 }
