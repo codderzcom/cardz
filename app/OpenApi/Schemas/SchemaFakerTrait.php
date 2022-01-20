@@ -13,6 +13,11 @@ trait SchemaFakerTrait
         return $this->faker()->text($symbols);
     }
 
+    protected function sentence(): string
+    {
+        return $this->faker()->sentence();
+    }
+
     protected function name(): string
     {
         return $this->faker()->name();

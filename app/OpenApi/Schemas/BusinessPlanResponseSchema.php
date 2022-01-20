@@ -23,6 +23,11 @@ class BusinessPlanResponseSchema extends SchemaFactory implements Reusable
             ->nullable(false)
             ->description('Workspace Id');
 
+        $name = Schema::string('name')
+            ->description('Plan name')
+            ->nullable(false)
+            ->example($this->sentence());
+
         $description = Schema::string('description')
             ->description('Plan description')
             ->nullable(false)
@@ -57,8 +62,8 @@ class BusinessPlanResponseSchema extends SchemaFactory implements Reusable
             ->description('All requirements');
 
         return Schema::object('BusinessPlan')
-            ->properties($planId, $workspaceId, $description, $isLaunched, $isStopped, $isArchived, $requirements)
-            ->required($planId, $workspaceId, $description, $isLaunched, $isStopped, $isArchived, $requirements);
+            ->properties($planId, $workspaceId, $name, $description, $isLaunched, $isStopped, $isArchived, $requirements)
+            ->required($planId, $workspaceId, $name, $description, $isLaunched, $isStopped, $isArchived, $requirements);
     }
 
 }
