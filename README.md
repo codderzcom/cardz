@@ -15,12 +15,12 @@ There are some stipulations we're trying to uphold:
 
 Please, note that we purposely break the YAGNI principle for the demo, scalability and maintainability reasons.   
 We are aware that this code is not, in fact, the most simple or efficient.
-Furthermore, we fully agree that the bounded contexts here (specifically the core ones) are suboptimal and require more in-depth analysis.
-However, it's a common occurrence for any application as more and more information usually comes to light during the development and production phases.
+Furthermore, we fully agree that the bounded contexts here (especially the core ones) are suboptimal and might not be the best possible representation of the domain.
+However, we feel they are good enough for now, and they should be malleable enough to future changes and redesign.
 
 We've willfully discarded the considerations of high load and a score of other potential hurdles, as they are beyond what this application aims to be.
 
-There were no particular reasons to choose the Laravel framework, it could've been Symfony or Zend or anything else really, as long as it has a router, DI container, ORM and other frameworky stuff.
+There has been no particular reason to choose the Laravel framework, it could've been Symfony, or Zend, or anything else really, as long as it had a router, a DI container, an ORM and other frameworky stuff.
 
 ## Domain
 
