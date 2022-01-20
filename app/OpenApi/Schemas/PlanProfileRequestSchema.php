@@ -17,13 +17,15 @@ class PlanProfileRequestSchema extends SchemaFactory implements Reusable
      */
     public function build(): SchemaContract
     {
+        $name = Schema::string('name')
+            ->description('Plan name');
         $description = Schema::string('description')
             ->description('Plan description');
 
         return Schema::object('PlanProfile')
             ->description('Plan profile request')
-            ->required($description)
-            ->properties($description);
+            ->required($name, $description)
+            ->properties($name, $description);
     }
 
 }

@@ -4,7 +4,7 @@ namespace Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace
 
 use App\OpenApi\Requests\Customer\AddPlanRequestBody;
 use App\OpenApi\Requests\Customer\AddRequirementRequestBody;
-use App\OpenApi\Requests\Customer\ChangePlanDescriptionRequestBody;
+use App\OpenApi\Requests\Customer\ChangePlanProfileRequestBody;
 use App\OpenApi\Requests\Customer\ChangeRequirementDescriptionRequestBody;
 use App\OpenApi\Requests\Customer\LaunchPlanRequestBody;
 use App\OpenApi\Responses\BusinessPlanResponse;
@@ -20,7 +20,7 @@ use Cardz\Support\MobileAppGateway\Config\Routes\RouteName;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\BaseController;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Workspace\Commands\{Plan\AddPlanRequest,
     Plan\AddPlanRequirementRequest,
-    Plan\ChangePlanDescriptionRequest,
+    Plan\ChangePlanProfileRequest,
     Plan\ChangePlanRequirementDescriptionRequest,
     Plan\LaunchPlanCommandRequest,
     Plan\PlanCommandRequest,
@@ -92,7 +92,7 @@ class PlanController extends BaseController
     #[OpenApi\Response(factory: UnexpectedExceptionResponse::class, statusCode: 500)]
     public function add(AddPlanRequest $request): JsonResponse
     {
-        return $this->response($this->planService->add($request->workspaceId, $request->description));
+        return $this->response($this->planService->add($request->workspaceId, $request->name, $request->description));
     }
 
     /**
@@ -164,17 +164,17 @@ class PlanController extends BaseController
      * @param Guid $workspaceId Workspace GUID
      * @param Guid $planId Plan GUID
      */
-    #[OpenApi\Operation(id: RouteName::CHANGE_PLAN_DESCRIPTION, tags: ['business', 'plan'])]
-    #[OpenApi\RequestBody(factory: ChangePlanDescriptionRequestBody::class)]
+    #[OpenApi\Operation(id: RouteName::CHANGE_PLAN_PROFILE, tags: ['business', 'plan'])]
+    #[OpenApi\RequestBody(factory: ChangePlanProfileRequestBody::class)]
     #[OpenApi\Response(factory: BusinessPlanResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
     #[OpenApi\Response(factory: AuthorizationExceptionResponse::class, statusCode: 403)]
     #[OpenApi\Response(factory: NotFoundResponse::class, statusCode: 404)]
     #[OpenApi\Response(factory: ValidationErrorResponse::class, statusCode: 422)]
     #[OpenApi\Response(factory: UnexpectedExceptionResponse::class, statusCode: 500)]
-    public function changeDescription(ChangePlanDescriptionRequest $request): JsonResponse
+    public function changeProfile(ChangePlanProfileRequest $request): JsonResponse
     {
-        return $this->response($this->planService->changeDescription($request->planId, $request->description));
+        return $this->response($this->planService->changeProfile($request->planId, $request->name, $request->description));
     }
 
     /**

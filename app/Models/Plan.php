@@ -22,6 +22,7 @@ class Plan extends Model
         'stopped_at' => 'datetime',
         'archived_at' => 'datetime',
         'expiration_date' => 'datetime',
+        'profile' => 'array',
     ];
 
     public function workspace(): BelongsTo

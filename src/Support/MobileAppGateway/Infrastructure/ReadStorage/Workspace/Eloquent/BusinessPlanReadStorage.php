@@ -48,10 +48,13 @@ class BusinessPlanReadStorage implements BusinessPlanReadStorageInterface
                 ];
             }
         }
+        $profile = is_string($plan->profile) ? json_try_decode($plan->profile, true) : $plan->profile;
+
         return BusinessPlan::make(
             $plan->id,
             $plan->workspace_id,
-            $plan->description,
+            $profile['name'],
+            $profile['description'],
             $plan->launched_at !== null,
             $plan->stopped_at !== null,
             $plan->archived_at !== null,

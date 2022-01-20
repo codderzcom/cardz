@@ -14,6 +14,8 @@ final class PlanBuilder extends BaseBuilder
 
     public string $workspaceId;
 
+    public string $name;
+
     public string $description;
 
     public Carbon $added;
@@ -31,6 +33,7 @@ final class PlanBuilder extends BaseBuilder
         return Plan::restore(
             $this->planId,
             $this->workspaceId,
+            $this->name,
             $this->description,
             $this->added,
             $this->launched,
@@ -71,6 +74,7 @@ final class PlanBuilder extends BaseBuilder
     {
         $this->planId = PlanId::makeValue();
         $this->workspaceId = WorkspaceId::makeValue();
+        $this->name = $this->faker->sentence();
         $this->description = $this->faker->text();
         $this->added = Carbon::now();
         $this->launched = null;

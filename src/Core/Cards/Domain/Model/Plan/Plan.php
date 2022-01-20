@@ -23,15 +23,16 @@ final class Plan implements AggregateRootInterface
     #[Pure]
     private function __construct(
         private PlanId $planId,
+        private string $name,
         private string $description,
         Requirement ...$requirements
     ) {
         $this->requirements = $requirements;
     }
 
-    public static function restore(string $planId, string $description, Requirement ...$requirements): self
+    public static function restore(string $planId, string $name, string $description, Requirement ...$requirements): self
     {
-        return new self(PlanId::of($planId), $description, ...$requirements);
+        return new self(PlanId::of($planId), $name, $description, ...$requirements);
     }
 
     public function issueCard(CardId $cardId, CustomerId $customerId): Card

@@ -34,9 +34,9 @@ class PlanAppService
     /**
      * @throws BusinessPlanNotFoundException
      */
-    public function add(string $workspaceId, string $description): BusinessPlan
+    public function add(string $workspaceId, string $name, string $description): BusinessPlan
     {
-        $planId = $this->plansContext->add($workspaceId, $description);
+        $planId = $this->plansContext->add($workspaceId, $name, $description);
         return $this->businessPlanReadStorage->find($planId);
     }
 
@@ -70,9 +70,9 @@ class PlanAppService
     /**
      * @throws BusinessPlanNotFoundException
      */
-    public function changeDescription(string $planId, string $description): BusinessPlan
+    public function changeProfile(string $planId, string $name, string $description): BusinessPlan
     {
-        $this->plansContext->changeDescription($planId, $description);
+        $this->plansContext->changeProfile($planId, $name, $description);
         return $this->businessPlanReadStorage->find($planId);
     }
 

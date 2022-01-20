@@ -22,7 +22,7 @@ final class RouteName extends Enum
     public const DISMISS_ACHIEVEMENT = 'DismissCardAchievement';
 
     public const ADD_PLAN = 'AddPlan';
-    public const CHANGE_PLAN_DESCRIPTION = 'ChangePlanDescription';
+    public const CHANGE_PLAN_PROFILE = 'ChangePlanProfile';
     public const LAUNCH_PLAN = 'LaunchPlan';
     public const STOP_PLAN = 'StopPlan';
     public const ARCHIVE_PLAN = 'ArchivePlan';

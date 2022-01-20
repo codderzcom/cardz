@@ -22,7 +22,7 @@ class PlanTest extends BaseScenarioTestCase
 
         $plan = $this->routePost(RouteName::ADD_PLAN,
             ['workspaceId' => $workspaceId],
-            ['description' => $planBuilder->description]
+            ['name' => $planBuilder->name, 'description' => $planBuilder->description]
         )->json();
 
         $this->assertEquals($workspaceId, $plan['workspaceId']);
@@ -41,7 +41,7 @@ class PlanTest extends BaseScenarioTestCase
 
         $plan = $this->routePost(RouteName::ADD_PLAN,
             ['workspaceId' => $workspaceId],
-            ['description' => $planBuilder->description]
+            ['name' => $planBuilder->name, 'description' => $planBuilder->description]
         )->json();
 
         $this->assertEquals($workspaceId, $plan['workspaceId']);
@@ -62,6 +62,7 @@ class PlanTest extends BaseScenarioTestCase
 
         $changed = 'Changed';
 
+        $this->assertNotEquals($changed, $plan['name']);
         $this->assertNotEquals($changed, $plan['description']);
         $this->assertFalse($plan['isLaunched']);
         $this->assertFalse($plan['isStopped']);
@@ -72,13 +73,18 @@ class PlanTest extends BaseScenarioTestCase
 
         $plan = $this->routePut(RouteName::LAUNCH_PLAN, $routeArgs, $routeParams)->json();
 
+        $this->assertNotEquals($changed, $plan['name']);
         $this->assertNotEquals($changed, $plan['description']);
         $this->assertTrue($plan['isLaunched']);
         $this->assertFalse($plan['isStopped']);
         $this->assertFalse($plan['isArchived']);
 
-        $plan = $this->routePut(RouteName::CHANGE_PLAN_DESCRIPTION, $routeArgs, ['description' => $changed])->json();
+        $plan = $this->routePut(
+            RouteName::CHANGE_PLAN_PROFILE, $routeArgs,
+            ['name' => $changed, 'description' => $changed],
+        )->json();
 
+        $this->assertEquals($changed, $plan['name']);
         $this->assertEquals($changed, $plan['description']);
 
         $plan = $this->routePut(RouteName::STOP_PLAN, $routeArgs)->json();
@@ -133,12 +139,12 @@ class PlanTest extends BaseScenarioTestCase
         $routeArgs = ['workspaceId' => $workspaceId, 'planId' => $planId];
         $routeParams = ['expirationDate' => (string) Carbon::now()->addDay()];
 
-        $plan = $this->routePut(RouteName::LAUNCH_PLAN,$routeArgs,$routeParams)->json();
+        $plan = $this->routePut(RouteName::LAUNCH_PLAN, $routeArgs, $routeParams)->json();
         $this->assertTrue($plan['isLaunched']);
 
         $routeParams = ['expirationDate' => (string) Carbon::now()->addCentury()];
 
-        $plan = $this->routePut(RouteName::LAUNCH_PLAN,$routeArgs,$routeParams)->json();
+        $plan = $this->routePut(RouteName::LAUNCH_PLAN, $routeArgs, $routeParams)->json();
         $this->assertTrue($plan['isLaunched']);
     }
 
@@ -158,7 +164,7 @@ class PlanTest extends BaseScenarioTestCase
         $routeArgs = ['workspaceId' => $workspaceId, 'planId' => $planId];
         $routeParams = ['expirationDate' => (string) Carbon::now()->addDay()];
 
-        $plan = $this->routePut(RouteName::LAUNCH_PLAN,$routeArgs,$routeParams)->json();
+        $plan = $this->routePut(RouteName::LAUNCH_PLAN, $routeArgs, $routeParams)->json();
         $this->assertTrue($plan['isLaunched']);
 
         $plan = $this->routePut(RouteName::STOP_PLAN, $routeArgs)->json();

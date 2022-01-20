@@ -22,8 +22,8 @@ final class Workspace implements AggregateRootInterface
         return new self($workspaceId);
     }
 
-    public function addPlan(PlanId $planId, Description $description): Plan
+    public function addPlan(PlanId $planId, Profile $profile): Plan
     {
-        return Plan::add($planId, $this->workspaceId, $description);
+        return Plan::add($planId, $this->workspaceId, $profile);
     }
 }

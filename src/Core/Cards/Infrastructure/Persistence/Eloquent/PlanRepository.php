@@ -43,7 +43,8 @@ class PlanRepository implements PlanRepositoryInterface
         }
         return Plan::restore(
             $eloquentPlan->id,
-            $eloquentPlan->description,
+            $eloquentPlan->profile['name'],
+            $eloquentPlan->profile['description'],
             ...$requirements,
         );
     }

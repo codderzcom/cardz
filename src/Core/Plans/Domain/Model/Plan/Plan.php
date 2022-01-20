@@ -5,7 +5,7 @@ namespace Cardz\Core\Plans\Domain\Model\Plan;
 use Carbon\Carbon;
 use Cardz\Core\Plans\Domain\Events\Plan\PlanAdded;
 use Cardz\Core\Plans\Domain\Events\Plan\PlanArchived;
-use Cardz\Core\Plans\Domain\Events\Plan\PlanDescriptionChanged;
+use Cardz\Core\Plans\Domain\Events\Plan\PlanProfileChanged;
 use Cardz\Core\Plans\Domain\Events\Plan\PlanLaunched;
 use Cardz\Core\Plans\Domain\Events\Plan\PlanStopped;
 use Cardz\Core\Plans\Domain\Exceptions\InvalidPlanStateException;
@@ -33,13 +33,13 @@ final class Plan implements AggregateRootInterface
     private function __construct(
         public PlanId $planId,
         public WorkspaceId $workspaceId,
-        private Description $description,
+        private Profile $profile,
     ) {
     }
 
-    public static function add(PlanId $planId, WorkspaceId $workspaceId, Description $description = null): self
+    public static function add(PlanId $planId, WorkspaceId $workspaceId, Profile $profile): self
     {
-        $plan = new self($planId, $workspaceId, $description);
+        $plan = new self($planId, $workspaceId, $profile);
         $plan->added = Carbon::now();
         return $plan->withEvents(PlanAdded::of($plan));
     }
@@ -47,6 +47,7 @@ final class Plan implements AggregateRootInterface
     public static function restore(
         string $planId,
         string $workspaceId,
+        string $name,
         string $description,
         ?Carbon $added = null,
         ?Carbon $launched = null,
@@ -54,7 +55,7 @@ final class Plan implements AggregateRootInterface
         ?Carbon $archived = null,
         ?Carbon $expirationDate = null,
     ): self {
-        $plan = new self(PlanId::of($planId), WorkspaceId::of($workspaceId), Description::of($description));
+        $plan = new self(PlanId::of($planId), WorkspaceId::of($workspaceId), Profile::of($name, $description));
         $plan->added = $added;
         $plan->launched = $launched;
         $plan->stopped = $stopped;
@@ -104,15 +105,15 @@ final class Plan implements AggregateRootInterface
         return $this->withEvents(PlanArchived::of($this));
     }
 
-    public function changeDescription(Description $description): self
+    public function changeProfile(Profile $profile): self
     {
-        $this->description = $description;
-        return $this->withEvents(PlanDescriptionChanged::of($this));
+        $this->profile = $profile;
+        return $this->withEvents(PlanProfileChanged::of($this));
     }
 
-    public function getDescription(): Description
+    public function getProfile(): Profile
     {
-        return $this->description;
+        return $this->profile;
     }
 
     public function isAdded(): bool

@@ -4,7 +4,7 @@ namespace Cardz\Core\Plans\Application\Services;
 
 use Cardz\Core\Plans\Application\Commands\Plan\AddPlan;
 use Cardz\Core\Plans\Application\Commands\Plan\ArchivePlan;
-use Cardz\Core\Plans\Application\Commands\Plan\ChangePlanDescription;
+use Cardz\Core\Plans\Application\Commands\Plan\ChangePlanProfile;
 use Cardz\Core\Plans\Application\Commands\Plan\LaunchPlan;
 use Cardz\Core\Plans\Application\Commands\Plan\PlanCommandInterface;
 use Cardz\Core\Plans\Application\Commands\Plan\StopPlan;
@@ -32,7 +32,7 @@ class PlanAppService
     public function add(AddPlan $command): PlanId
     {
         $workspace = $this->workspaceRepository->take($command->getWorkspaceId());
-        return $this->release($workspace->addPlan($command->getPlanId(), $command->getDescription()));
+        return $this->release($workspace->addPlan($command->getPlanId(), $command->getProfile()));
     }
 
     /**
@@ -65,10 +65,10 @@ class PlanAppService
     /**
      * @throws PlanNotFoundExceptionInterface
      */
-    public function changeDescription(ChangePlanDescription $command): PlanId
+    public function changeProfile(ChangePlanProfile $command): PlanId
     {
         $plan = $this->getPlan($command);
-        return $this->release($plan->changeDescription($command->getDescription()));
+        return $this->release($plan->changeProfile($command->getProfile()));
     }
 
     private function release(Plan $plan): PlanId

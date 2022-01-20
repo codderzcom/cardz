@@ -12,6 +12,7 @@ final class BusinessPlan
     private function __construct(
         public string $planId,
         public string $workspaceId,
+        public string $name,
         public string $description,
         public bool $isLaunched,
         public bool $isStopped,
@@ -24,13 +25,14 @@ final class BusinessPlan
     public static function make(
         string $planId,
         string $workspaceId,
+        string $name,
         string $description,
         bool $isLaunched,
         bool $isStopped,
         bool $isArchived,
         array $requirements,
     ): self {
-        return new self($planId, $workspaceId, $description, $isLaunched, $isStopped, $isArchived, $requirements);
+        return new self($planId, $workspaceId, $name, $description, $isLaunched, $isStopped, $isArchived, $requirements);
     }
 
 }

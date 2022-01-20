@@ -2,8 +2,8 @@
 
 namespace Cardz\Core\Plans\Application\Commands\Plan;
 
-use Cardz\Core\Plans\Domain\Model\Plan\Description;
 use Cardz\Core\Plans\Domain\Model\Plan\PlanId;
+use Cardz\Core\Plans\Domain\Model\Plan\Profile;
 use Cardz\Core\Plans\Domain\Model\Plan\WorkspaceId;
 use JetBrains\PhpStorm\Pure;
 
@@ -12,13 +12,14 @@ final class AddPlan implements PlanCommandInterface
     private function __construct(
         private string $planId,
         private string $workspaceId,
+        private string $name,
         private string $description,
     ) {
     }
 
-    public static function of(string $workspaceId, string $description): self
+    public static function of(string $workspaceId, string $name, string $description): self
     {
-        return new self(PlanId::makeValue(), $workspaceId, $description);
+        return new self(PlanId::makeValue(), $workspaceId, $name, $description);
     }
 
     public function getPlanId(): PlanId
@@ -32,9 +33,9 @@ final class AddPlan implements PlanCommandInterface
     }
 
     #[Pure]
-    public function getDescription(): Description
+    public function getProfile(): Profile
     {
-        return Description::of($this->description);
+        return Profile::of($this->name, $this->description);
     }
 
 }

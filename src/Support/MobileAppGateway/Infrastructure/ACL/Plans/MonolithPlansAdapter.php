@@ -4,7 +4,7 @@ namespace Cardz\Support\MobileAppGateway\Infrastructure\ACL\Plans;
 
 use Cardz\Core\Plans\Application\Commands\Plan\AddPlan;
 use Cardz\Core\Plans\Application\Commands\Plan\ArchivePlan;
-use Cardz\Core\Plans\Application\Commands\Plan\ChangePlanDescription;
+use Cardz\Core\Plans\Application\Commands\Plan\ChangePlanProfile;
 use Cardz\Core\Plans\Application\Commands\Plan\LaunchPlan;
 use Cardz\Core\Plans\Application\Commands\Plan\StopPlan;
 use Cardz\Core\Plans\Application\Commands\Requirement\AddRequirement;
@@ -20,9 +20,9 @@ class MonolithPlansAdapter implements PlansContextInterface
     ) {
     }
 
-    public function add(string $workspaceId, string $description): string
+    public function add(string $workspaceId, string $name, string $description): string
     {
-        $command = AddPlan::of($workspaceId, $description);
+        $command = AddPlan::of($workspaceId, $name, $description);
         $this->commandBus->dispatch($command);
         return $command->getPlanId();
     }
@@ -34,9 +34,9 @@ class MonolithPlansAdapter implements PlansContextInterface
         return $command->getPlanId();
     }
 
-    public function changeDescription(string $planId, string $description): string
+    public function changeProfile(string $planId, string $name, string $description): string
     {
-        $command = ChangePlanDescription::of($planId, $description);
+        $command = ChangePlanProfile::of($planId, $name, $description);
         $this->commandBus->dispatch($command);
         return $command->getPlanId();
     }

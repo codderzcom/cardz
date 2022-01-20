@@ -16,9 +16,9 @@ final class AddPlanCommandTest extends BaseTestCase
 
     public function test_plan_can_be_added()
     {
-        $planTemplate = PlanBuilder::make()->build();
+        $profileTemplate = PlanBuilder::make()->build()->getProfile();
 
-        $command = AddPlan::of(PlanId::makeValue(), $planTemplate->getDescription());
+        $command = AddPlan::of(PlanId::makeValue(), ...$profileTemplate->toArray());
         $this->commandBus()->dispatch($command);
 
         $plan = $this->getPlanRepository()->take($command->getPlanId());

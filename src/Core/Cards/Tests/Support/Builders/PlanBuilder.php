@@ -11,6 +11,8 @@ final class PlanBuilder extends BaseBuilder
 {
     public PlanId $planId;
 
+    public string $name;
+
     public string $description;
 
     /**
@@ -22,6 +24,7 @@ final class PlanBuilder extends BaseBuilder
     {
         return Plan::restore(
             $this->planId,
+            $this->name,
             $this->description,
             ...$this->requirements,
         );
@@ -36,6 +39,7 @@ final class PlanBuilder extends BaseBuilder
     public function generate(): static
     {
         $this->planId = PlanId::make();
+        $this->name = $this->faker->sentence();
         $this->description = $this->faker->text();
         $this->requirements = $this->generateRequirements();
         return $this;

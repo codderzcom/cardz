@@ -41,7 +41,7 @@ class PlanRepository implements PlanRepositoryInterface
     #[ArrayShape([
         'id' => "string",
         'workspace_id' => "string",
-        'description' => "string",
+        'profile' => "array",
         'added_at' => Carbon::class | null,
         'launched_at' => Carbon::class | null,
         'stopped_at' => Carbon::class | null,
@@ -54,7 +54,7 @@ class PlanRepository implements PlanRepositoryInterface
         return [
             'id' => (string) $plan->planId,
             'workspace_id' => (string) $plan->workspaceId,
-            'description' => (string) $plan->getDescription(),
+            'profile' => $plan->getProfile()->toArray(),
             'added_at' => $properties['added'],
             'launched_at' => $properties['launched'],
             'stopped_at' => $properties['stopped'],
@@ -65,10 +65,13 @@ class PlanRepository implements PlanRepositoryInterface
 
     private function planFromData(EloquentPlan $eloquentPlan): Plan
     {
+        $profile = is_string($eloquentPlan->profile) ? json_try_decode($eloquentPlan->profile, true) : $eloquentPlan->profile;
+
         return Plan::restore(
             $eloquentPlan->id,
             $eloquentPlan->workspace_id,
-            $eloquentPlan->description,
+            $profile['name'],
+            $profile['description'],
             $eloquentPlan->added_at,
             $eloquentPlan->launched_at,
             $eloquentPlan->stopped_at,

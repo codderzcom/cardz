@@ -5,6 +5,6 @@ namespace Cardz\Core\Plans\Domain\Events\Plan;
 use JetBrains\PhpStorm\Immutable;
 
 #[Immutable]
-final class PlanDescriptionChanged extends BasePlanDomainEvent
+final class PlanProfileChanged extends BasePlanDomainEvent
 {
 }

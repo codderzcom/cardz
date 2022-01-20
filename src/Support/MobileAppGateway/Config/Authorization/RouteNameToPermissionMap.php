@@ -25,7 +25,7 @@ final class RouteNameToPermissionMap
         RouteName::DISMISS_ACHIEVEMENT => AuthorizationPermission::CARD_CHANGE,
 
         RouteName::ADD_PLAN => AuthorizationPermission::PLAN_ADD,
-        RouteName::CHANGE_PLAN_DESCRIPTION => AuthorizationPermission::PLAN_CHANGE,
+        RouteName::CHANGE_PLAN_PROFILE => AuthorizationPermission::PLAN_CHANGE,
         RouteName::LAUNCH_PLAN => AuthorizationPermission::PLAN_CHANGE,
         RouteName::STOP_PLAN => AuthorizationPermission::PLAN_CHANGE,
         RouteName::ARCHIVE_PLAN => AuthorizationPermission::PLAN_CHANGE,

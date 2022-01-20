@@ -2,22 +2,23 @@
 
 namespace Cardz\Core\Plans\Application\Commands\Plan;
 
-use Cardz\Core\Plans\Domain\Model\Plan\Description;
 use Cardz\Core\Plans\Domain\Model\Plan\PlanId;
+use Cardz\Core\Plans\Domain\Model\Plan\Profile;
 use JetBrains\PhpStorm\Pure;
 
-final class ChangePlanDescription implements PlanCommandInterface
+final class ChangePlanProfile implements PlanCommandInterface
 {
     private function __construct(
         private string $planId,
+        private string $name,
         private string $description,
     ) {
     }
 
     #[Pure]
-    public static function of(string $planId, string $description): self
+    public static function of(string $planId, string $name, string $description): self
     {
-        return new self($planId, $description);
+        return new self($planId, $name, $description);
     }
 
     public function getPlanId(): PlanId
@@ -26,9 +27,9 @@ final class ChangePlanDescription implements PlanCommandInterface
     }
 
     #[Pure]
-    public function getDescription(): Description
+    public function getProfile(): Profile
     {
-        return Description::of($this->description);
+        return Profile::of($this->name, $this->description);
     }
 
 }
