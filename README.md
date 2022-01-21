@@ -56,8 +56,11 @@ ___
 _*unlimited - within reasonable limits, but that's not in the sphere of our current considerations._
 
 
+### Event storming diagram
+N/A
 
 ### Ubiquitous language
+
 #### Terms
 After some back and forth between the owners the following terms were coined for the domain:
 - **customer** - any system user
@@ -69,20 +72,23 @@ After some back and forth between the owners the following terms were coined for
 - **card** - a place to track customer's progress towards a bonus obtainment
 - **achievement** - a completed requirement marked in a card
 
+Actually, the terms need to be specified separately for each context, but for this small app the dictionary above provides sufficient description.
+
 ### Contexts
 There are four Core contexts: **Cards**, **Personal**, **Plans** and **Workspaces**, two Support ones: **Collaboration** and **MobileAppGateway**, and two Generic ones: **Authorization** and **Identity**.
 MobileAppGateway is not, strictly speaking, a context, more of a gateway, but can be considered as such.
 Authorization is based on an extremely simple ABAC-like engine designed to serve as a demo for the generic authorization usage in a DDD project with eventually consistent intercontext communication.  
 Identity is just a wrap on Laravel Sanctum.
 
-### Event storming diagram
+#### Context map
 N/A
 
 ## Further work
 - we need to provide more documentation on the thought process and its implementation in the code;
 - more context-specific docs are required for each module;
 - tests need to be refactored for more clarity and ease of reading;
-- implement microservices.
+- we'd like to introduce a microservice implementation of app alongside this one;
+- shared code has to be remade into the proper vendor library.
 
 ## Installation instructions
 
@@ -98,30 +104,27 @@ N/A
 
 Optionally, you can run `php artisan tests` to take a look at a small assortment of included tests.
 
+The RabbitMQ messaging is faked, so there's no need to install RabbitMQ for now.
+
 ### Code structure
 
-Most of the app code lies within the `src` directory. Some infrastructure unrelated to the domain is in the `codderz` directory. Consider it a kind of external lib.   
+Most of the app code lies within the `src` directory. Parts of the infrastructure unrelated to the domain are in the `codderz` directory. Consider it a kind of external lib.   
 A small bit of an app code is in the `app` directory mostly due to the Laravel structure.
 
-## Some useful reference links for DDD and ES
+## Some interesting reference links for DDD, ES, and CQRS
 - http://practical-ddd.blogspot.com/2012/07/designing-aggregates.html
 - https://www.jamesmichaelhickey.com/consistency-boundary/
 - https://storyneedle.com/where-domain-models-meet-content-models/
-- https://medium.com/ibm-garage/whats-the-right-size-for-a-microservice-bf1740370d47/
-- https://vaadin.com/learn/tutorials/ddd/
 - https://lostechies.com/jimmybogard/2014/05/13/a-better-domain-events-pattern/
 - https://gojko.net/2009/03/12/qcon-london-2009-eric-evans-what-ive-learned-about-ddd-since-the-book/
-- https://buildplease.com/pages/fpc-1/ series up to https://buildplease.com/pages/fpc-23/
-- https://medium.com/@mgonzalezbaile/implementing-a-use-case-i-intro-38c80b4fed0 series up to https://medium.com/@mgonzalezbaile/implementing-a-use-case-v-given-when-then-testing-style-a17a645b1aa6
+- https://buildplease.com/pages/fpc-1/ - https://buildplease.com/pages/fpc-23/
+- https://medium.com/@mgonzalezbaile/implementing-a-use-case-i-intro-38c80b4fed0 - https://medium.com/@mgonzalezbaile/implementing-a-use-case-v-given-when-then-testing-style-a17a645b1aa6
 - https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together/
-- https://samnewman.io/patterns/architectural/bff/
 - https://chriskiehl.com/article/event-sourcing-is-hard/
 - https://eventmodeling.org/posts/what-is-event-modeling/
 - https://codeopinion.com/stop-doing-dogmatic-domain-driven-design/
+- https://cqrs.files.wordpress.com/2010/11/cqrs_documents.pdf
 
-It'd be worth checking out basically everything that Eric Evans, Vaughn Vernon, Jimmy Nilsson, Greg Young, Udi Dahan, Nick Tune, and Alberto Brandolini have to say about the Domain-Driven Design and Event Sourcing.
-
-
-## OpenApi Reference links
-- [RapiDoc](https://mrin9.github.io/RapiDoc/quickstart.html): wrap an OpenApi json.
+## OpenApi
 - Laravel OpenApi generator: generate OpenApi json. https://vyuldashev.github.io/laravel-openapi/#installation
+- [RapiDoc](https://mrin9.github.io/RapiDoc/quickstart.html): wrap an OpenApi json.
