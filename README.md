@@ -52,7 +52,8 @@ The customer identifies themselves via the mobile app after which they can be is
 There are no restrictions* on the number of cards a customer can own for each plan or a workspace.
 Remember, that we're trying to keep things simple and flexible for a large variety of owners and businesses.
 
-___
+__
+
 _*unlimited - within reasonable limits, but that's not in the sphere of our current considerations._
 
 
@@ -92,7 +93,7 @@ N/A
 
 ## Installation instructions
 
-- clone the [repo](https://github.com/IndomitablePlatypus/cardz/) with `git clone`;
+- clone the [repo](https://github.com/codderzcom/cardz/) with `git clone`;
 - ensure you have **PHP 8.0+**;
 - run `composer install`;
 - copy `.env.example` to `.env`;
