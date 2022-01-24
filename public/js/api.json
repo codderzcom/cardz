@@ -3,7 +3,7 @@
     "info": {
         "title": "Cardz",
         "description": "Bonus cards server-side application",
-        "version": "0.5.1.227"
+        "version": "0.5.1.239"
     },
     "servers": [
         {
@@ -1857,19 +1857,19 @@
                         "description": "Workspace (business) name",
                         "type": "string",
                         "nullable": false,
-                        "example": "White, Senger and Schultz"
+                        "example": "Bernhard-Baumbach"
                     },
                     "description": {
                         "description": "Workspace (business) description",
                         "type": "string",
                         "nullable": false,
-                        "example": "Sapiente omnis in sunt distinctio nisi ut. Aut molestiae eum quaerat esse est eius. Eos dolor laboriosam ipsum nesciunt eligendi voluptatem. Sed qui harum repellendus est."
+                        "example": "Qui ipsam quos voluptates exercitationem officia iusto. Nisi enim repudiandae temporibus nulla."
                     },
                     "address": {
                         "description": "Workspace (business) address",
                         "type": "string",
                         "nullable": false,
-                        "example": "4295 Lang Drives\nChristiansenchester, ID 15988-5011"
+                        "example": "70799 Witting Forest Suite 660\nMarlenshire, WI 79224-4948"
                     }
                 }
             },
@@ -1951,7 +1951,7 @@
                                     "description": "Achievement description = corresponding requirement description",
                                     "type": "string",
                                     "nullable": false,
-                                    "example": "In qui numquam temporibus facere. Perspiciatis perspiciatis voluptate et doloribus voluptatem molestias qui. Saepe rem neque deserunt atque libero enim."
+                                    "example": "Corrupti soluta error qui consequatur voluptatibus laborum. Veniam et consequatur est consequatur et delectus sed. Ut voluptatem recusandae natus impedit libero nostrum possimus qui."
                                 }
                             }
                         }
@@ -1976,7 +1976,7 @@
                                     "description": "Requirement description",
                                     "type": "string",
                                     "nullable": false,
-                                    "example": "Dolores omnis et amet doloribus blanditiis repudiandae. Quia autem ipsam voluptatem unde. Commodi sit eos sed pariatur modi."
+                                    "example": "Quam aliquid quia doloribus eligendi aspernatur unde nihil. Corrupti eveniet magnam quia architecto numquam consequatur voluptas ex. Magni ut est et et deleniti omnis expedita fugit."
                                 }
                             }
                         }
@@ -1995,17 +1995,17 @@
                     "name": {
                         "description": "Workspace (business) title",
                         "type": "string",
-                        "example": "Hegmann-Kozey"
+                        "example": "Flatley-Cartwright"
                     },
                     "description": {
                         "description": "Workspace (business) description",
                         "type": "string",
-                        "example": "Rerum ut praesentium voluptas nam nemo voluptatem. Repellat quod quod architecto inventore. Rerum neque dolorem corporis. Cumque architecto ab rerum qui."
+                        "example": "Est impedit voluptates at nemo ut. Quibusdam recusandae quia ut. Ut accusamus velit architecto aut eaque. Dolores culpa quo rerum natus."
                     },
                     "address": {
                         "description": "Workspace (business) address",
                         "type": "string",
-                        "example": "9666 Fahey Village\nNew Lila, TX 49274-5874"
+                        "example": "1739 Donato Gateway Suite 720\nLake Leannafurt, VT 25234"
                     }
                 }
             },
@@ -2037,7 +2037,7 @@
                     "description": {
                         "description": "Requirement description",
                         "type": "string",
-                        "example": "Ut culpa excepturi nulla veniam commodi quia totam. Consequuntur sit nobis necessitatibus eligendi ut. Ipsum illo doloremque cupiditate laborum at illo."
+                        "example": "Et nihil temporibus et et beatae tempora. Molestiae laudantium nisi et. Tempora distinctio eum quam exercitationem minus. Officiis quo voluptas voluptatem expedita quisquam."
                     }
                 }
             },
@@ -2071,7 +2071,7 @@
                     "description": {
                         "description": "Achievement (requirement) description",
                         "type": "string",
-                        "example": "Impedit eaque consequatur dolor. Ut dolorum ducimus voluptatum expedita nulla. Neque culpa nemo ex maxime."
+                        "example": "Perferendis saepe et quos placeat enim quos occaecati. Molestiae quia nostrum ipsam et architecto. Commodi eum sunt qui recusandae."
                     }
                 }
             },
@@ -2087,18 +2087,18 @@
                     "identity": {
                         "description": "Identity is either phone or email",
                         "type": "string",
-                        "example": "bogan.alexandrine@hotmail.com"
+                        "example": "rahul86@yahoo.com"
                     },
                     "password": {
                         "description": "Password",
                         "format": "password",
                         "type": "string",
-                        "example": "Ma8)Y(d"
+                        "example": "v#Rfw-@pv"
                     },
                     "deviceName": {
                         "description": "Device name is required to distinguish between different access tokens",
                         "type": "string",
-                        "example": "inventore"
+                        "example": "harum"
                     }
                 }
             },
@@ -2115,28 +2115,28 @@
                     "phone": {
                         "description": "Phone",
                         "type": "string",
-                        "example": "281.604.1360"
+                        "example": "1-281-883-4135"
                     },
                     "email": {
                         "description": "Email is required if phone is not provided",
                         "type": "string",
-                        "example": "zmueller@armstrong.com"
+                        "example": "elyssa85@hotmail.com"
                     },
                     "name": {
                         "description": "Customer name",
                         "type": "string",
-                        "example": "Shaina Goldner"
+                        "example": "Dejah Bashirian"
                     },
                     "password": {
                         "description": "Password",
                         "format": "password",
                         "type": "string",
-                        "example": "X0wv:\/Dd{-S"
+                        "example": "'0r%^!X{]Hu<\"d\"z"
                     },
                     "deviceName": {
                         "description": "Device name is required to distinguish between different access tokens",
                         "type": "string",
-                        "example": "totam"
+                        "example": "modi"
                     }
                 }
             },
@@ -2184,13 +2184,13 @@
                         "description": "Workspace (business) name",
                         "type": "string",
                         "nullable": false,
-                        "example": "Hagenes-Wehner"
+                        "example": "Quitzon, Koch and Mraz"
                     },
                     "workspaceAddress": {
                         "description": "Workspace (business) address",
                         "type": "string",
                         "nullable": false,
-                        "example": "39907 Littel Park\nNew Eldred, NE 94519-6384"
+                        "example": "677 Shanahan Fields Apt. 283\nBobbyhaven, MN 37423-1972"
                     },
                     "customerId": {
                         "description": "Customer Id",
@@ -2202,7 +2202,7 @@
                         "description": "Card (plan) description",
                         "type": "string",
                         "nullable": false,
-                        "example": "Consectetur autem maiores et saepe. Ut in id sit alias exercitationem. Fugiat mollitia ducimus consequatur neque enim. Laudantium atque voluptatem maiores iste repellat non."
+                        "example": "Et facilis enim et odit aperiam. Quidem ut nihil enim est corrupti ab. Tempora hic rerum quae culpa dolores. Consectetur et pariatur eum molestiae labore assumenda asperiores dicta."
                     },
                     "satisfied": {
                         "description": "Whether all requirements to receive a bonus are satisfied",
@@ -2234,11 +2234,11 @@
                                     "description": "Achievement description = corresponding requirement description",
                                     "type": "string",
                                     "nullable": false,
-                                    "example": "Aut molestiae earum maxime eius. Consequuntur officiis aliquam quia. Animi necessitatibus quibusdam repudiandae occaecati exercitationem. Nihil repellat doloribus quibusdam quia est quasi."
+                                    "example": "Omnis voluptatibus nulla debitis ipsa qui. Et fuga accusantium repellendus tempora velit. Non aut blanditiis id debitis minus repellendus atque. Iusto ut asperiores libero qui nam distinctio."
                                 }
                             }
                         },
-                        "example": "Nam incidunt sequi totam facilis aut. Dignissimos et adipisci consequatur debitis sequi ipsam perspiciatis. Nesciunt expedita consectetur eligendi deleniti eum."
+                        "example": "Dolorum expedita nulla ratione cum commodi doloribus. Voluptas ex quisquam autem qui quis. Consequuntur quia sapiente voluptatem voluptatem fuga dolores et."
                     },
                     "requirements": {
                         "description": "All requirements",
@@ -2260,7 +2260,7 @@
                                     "description": "Requirement description",
                                     "type": "string",
                                     "nullable": false,
-                                    "example": "Nostrum rerum excepturi quo veniam explicabo maxime. Laborum non voluptas quaerat tempore dolores magnam. Est dolorem ipsum nihil temporibus necessitatibus."
+                                    "example": "Assumenda qui nihil quasi veniam. Aut qui molestias aut doloribus doloremque minima. Perferendis fugit unde nihil perferendis. Consequatur quo exercitationem dolores."
                                 }
                             }
                         }
@@ -2286,19 +2286,19 @@
                         "description": "Workspace (business) name",
                         "type": "string",
                         "nullable": false,
-                        "example": "Farrell-Greenfelder"
+                        "example": "Nitzsche, Klocko and Bartell"
                     },
                     "description": {
                         "description": "Workspace (business) description",
                         "type": "string",
                         "nullable": false,
-                        "example": "Facilis error voluptatem eum modi aliquam asperiores qui. Cumque similique ut recusandae voluptas. Sit omnis quae facilis eum delectus aspernatur qui."
+                        "example": "Error sunt sunt maxime voluptatem vel. Et vel in libero. Ex quasi voluptates tempore deleniti harum."
                     },
                     "address": {
                         "description": "Workspace (business) address",
                         "type": "string",
                         "nullable": false,
-                        "example": "22085 Shanahan Point Apt. 219\nCorwinfurt, WY 61669-8114"
+                        "example": "803 Bechtelar Ways\nNew Clement, UT 67836-9397"
                     }
                 }
             },
@@ -2331,13 +2331,13 @@
                         "description": "Plan name",
                         "type": "string",
                         "nullable": false,
-                        "example": "Accusantium asperiores laboriosam quae fugiat quod dolores."
+                        "example": "Excepturi hic et quo quam et."
                     },
                     "description": {
                         "description": "Plan description",
                         "type": "string",
                         "nullable": false,
-                        "example": "Sint rerum nulla nihil qui delectus. Vitae eum voluptatibus facere est voluptatibus fugiat quos. Autem placeat consequatur maxime quia odit."
+                        "example": "Eius qui repellat omnis odit. Est inventore odio voluptates voluptas. Iste qui optio deserunt eligendi aliquam molestiae illo. Aspernatur sed quia qui aliquid atque ipsum sed."
                     },
                     "isLaunched": {
                         "description": "Whether the plan is launched",
@@ -2374,7 +2374,7 @@
                                     "description": "Requirement description",
                                     "type": "string",
                                     "nullable": false,
-                                    "example": "Quibusdam vel reprehenderit voluptatem et aliquam accusamus sunt. Voluptates et impedit earum voluptatem. Adipisci dicta enim animi maiores impedit molestiae est."
+                                    "example": "Consequatur eos id modi harum. Eius iure numquam nisi id."
                                 }
                             }
                         }
