@@ -9,6 +9,7 @@ use App\OpenApi\Responses\Errors\AuthorizationExceptionResponse;
 use App\OpenApi\Responses\Errors\DomainExceptionResponse;
 use App\OpenApi\Responses\Errors\NotFoundResponse;
 use App\OpenApi\Responses\Errors\UnexpectedExceptionResponse;
+use App\OpenApi\Responses\InviteIdResponse;
 use Cardz\Support\MobileAppGateway\Application\Services\Workspace\CollaborationAppService;
 use Cardz\Support\MobileAppGateway\Config\Routes\RouteName;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\BaseController;
@@ -36,7 +37,7 @@ class CollaborationController extends BaseController
      * @param Guid $workspaceId Workspace GUID
      */
     #[OpenApi\Operation(id: RouteName::PROPOSE_INVITE, tags: ['business', 'collaboration'])]
-    #[OpenApi\Response(factory: CollaboratorIdResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: InviteIdResponse::class, statusCode: 200)]
     #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
     #[OpenApi\Response(factory: AuthorizationExceptionResponse::class, statusCode: 403)]
     #[OpenApi\Response(factory: NotFoundResponse::class, statusCode: 404)]
