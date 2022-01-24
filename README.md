@@ -92,7 +92,7 @@ N/A
 
 ## Installation instructions
 
-- clone the [repo](https://github.com/IndomitablePlatypus/cardz/) with `git clone`;
+- clone the [repo](https://github.com/codderzcom/queues) with `git clone`;
 - ensure you have **PHP 8.0+**;
 - run `composer install`;
 - copy `.env.example` to `.env`;
