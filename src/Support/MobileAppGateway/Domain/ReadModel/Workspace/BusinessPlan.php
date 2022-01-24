@@ -2,6 +2,7 @@
 
 namespace Cardz\Support\MobileAppGateway\Domain\ReadModel\Workspace;
 
+use Carbon\Carbon;
 use Codderz\Platypus\Infrastructure\Support\ArrayPresenterTrait;
 use JetBrains\PhpStorm\Pure;
 
@@ -17,6 +18,7 @@ final class BusinessPlan
         public bool $isLaunched,
         public bool $isStopped,
         public bool $isArchived,
+        public ?Carbon $expirationDate,
         public array $requirements,
     ) {
     }
@@ -30,9 +32,10 @@ final class BusinessPlan
         bool $isLaunched,
         bool $isStopped,
         bool $isArchived,
+        ?Carbon $expirationDate,
         array $requirements,
     ): self {
-        return new self($planId, $workspaceId, $name, $description, $isLaunched, $isStopped, $isArchived, $requirements);
+        return new self($planId, $workspaceId, $name, $description, $isLaunched, $isStopped, $isArchived, $expirationDate, $requirements);
     }
 
 }

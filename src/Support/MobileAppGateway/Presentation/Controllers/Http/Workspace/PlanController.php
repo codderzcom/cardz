@@ -157,9 +157,9 @@ class PlanController extends BaseController
     }
 
     /**
-     * Change plan description
+     * Change plan profile
      *
-     * Changes plan description.
+     * Changes plan profile.
      * Requires user to be authorized to work in the current workspace.
      * @param Guid $workspaceId Workspace GUID
      * @param Guid $planId Plan GUID

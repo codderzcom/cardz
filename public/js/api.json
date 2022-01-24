@@ -3,7 +3,7 @@
     "info": {
         "title": "Cardz",
         "description": "Bonus cards server-side application",
-        "version": "0.5.1.239"
+        "version": "0.5.1.241"
     },
     "servers": [
         {
@@ -876,14 +876,14 @@
                 }
             }
         },
-        "\/workspace\/{workspaceId}\/plan\/{planId}\/prfile": {
+        "\/workspace\/{workspaceId}\/plan\/{planId}\/profile": {
             "put": {
                 "tags": [
                     "business",
                     "plan"
                 ],
-                "summary": "Change plan description",
-                "description": "Changes plan description.\nRequires user to be authorized to work in the current workspace.",
+                "summary": "Change plan profile",
+                "description": "Changes plan profile.\nRequires user to be authorized to work in the current workspace.",
                 "operationId": "ChangePlanProfile",
                 "parameters": [
                     {
@@ -1857,19 +1857,19 @@
                         "description": "Workspace (business) name",
                         "type": "string",
                         "nullable": false,
-                        "example": "Bernhard-Baumbach"
+                        "example": "Rath PLC"
                     },
                     "description": {
                         "description": "Workspace (business) description",
                         "type": "string",
                         "nullable": false,
-                        "example": "Qui ipsam quos voluptates exercitationem officia iusto. Nisi enim repudiandae temporibus nulla."
+                        "example": "At alias velit soluta quasi dolores sit sit. Doloribus eaque voluptatem consequatur. Amet et dolorem deleniti perspiciatis natus. Quo officia suscipit perspiciatis temporibus facilis."
                     },
                     "address": {
                         "description": "Workspace (business) address",
                         "type": "string",
                         "nullable": false,
-                        "example": "70799 Witting Forest Suite 660\nMarlenshire, WI 79224-4948"
+                        "example": "182 Jacobi Island Suite 018\nPort Cyrustown, KY 26290"
                     }
                 }
             },
@@ -1951,7 +1951,7 @@
                                     "description": "Achievement description = corresponding requirement description",
                                     "type": "string",
                                     "nullable": false,
-                                    "example": "Corrupti soluta error qui consequatur voluptatibus laborum. Veniam et consequatur est consequatur et delectus sed. Ut voluptatem recusandae natus impedit libero nostrum possimus qui."
+                                    "example": "Sapiente commodi iusto qui similique cum. Est quae non aliquam adipisci ut. Nesciunt sed quibusdam facilis doloremque. Quidem impedit voluptatum optio repellat."
                                 }
                             }
                         }
@@ -1976,7 +1976,7 @@
                                     "description": "Requirement description",
                                     "type": "string",
                                     "nullable": false,
-                                    "example": "Quam aliquid quia doloribus eligendi aspernatur unde nihil. Corrupti eveniet magnam quia architecto numquam consequatur voluptas ex. Magni ut est et et deleniti omnis expedita fugit."
+                                    "example": "Iste omnis culpa fugit. Beatae vero harum eos rerum dolor aut dolorum. Neque voluptates ullam laborum laudantium. Autem sunt quaerat voluptas quo nostrum."
                                 }
                             }
                         }
@@ -1995,17 +1995,17 @@
                     "name": {
                         "description": "Workspace (business) title",
                         "type": "string",
-                        "example": "Flatley-Cartwright"
+                        "example": "Donnelly Group"
                     },
                     "description": {
                         "description": "Workspace (business) description",
                         "type": "string",
-                        "example": "Est impedit voluptates at nemo ut. Quibusdam recusandae quia ut. Ut accusamus velit architecto aut eaque. Dolores culpa quo rerum natus."
+                        "example": "Qui occaecati numquam est cumque qui. Illo aut et sed dolorem neque quae facere. Sint repellendus molestias unde cumque recusandae. Nihil cumque aliquam officiis."
                     },
                     "address": {
                         "description": "Workspace (business) address",
                         "type": "string",
-                        "example": "1739 Donato Gateway Suite 720\nLake Leannafurt, VT 25234"
+                        "example": "412 Kohler Islands Suite 364\nYadiratown, NM 05502-7657"
                     }
                 }
             },
@@ -2037,7 +2037,7 @@
                     "description": {
                         "description": "Requirement description",
                         "type": "string",
-                        "example": "Et nihil temporibus et et beatae tempora. Molestiae laudantium nisi et. Tempora distinctio eum quam exercitationem minus. Officiis quo voluptas voluptatem expedita quisquam."
+                        "example": "Voluptates officia sed inventore laboriosam. Iusto enim eaque non saepe dolorum et neque aut. Dolorem dolorem non mollitia et at tempore iste."
                     }
                 }
             },
@@ -2071,7 +2071,7 @@
                     "description": {
                         "description": "Achievement (requirement) description",
                         "type": "string",
-                        "example": "Perferendis saepe et quos placeat enim quos occaecati. Molestiae quia nostrum ipsam et architecto. Commodi eum sunt qui recusandae."
+                        "example": "Corporis alias velit sunt minima et. Id sit nam dolor quae dolor ullam earum quidem. Consequatur ut earum est autem."
                     }
                 }
             },
@@ -2087,18 +2087,18 @@
                     "identity": {
                         "description": "Identity is either phone or email",
                         "type": "string",
-                        "example": "rahul86@yahoo.com"
+                        "example": "ahowell@steuber.com"
                     },
                     "password": {
                         "description": "Password",
                         "format": "password",
                         "type": "string",
-                        "example": "v#Rfw-@pv"
+                        "example": "&{^0kXMwuLHWP|@JJ,"
                     },
                     "deviceName": {
                         "description": "Device name is required to distinguish between different access tokens",
                         "type": "string",
-                        "example": "harum"
+                        "example": "quis"
                     }
                 }
             },
@@ -2115,28 +2115,28 @@
                     "phone": {
                         "description": "Phone",
                         "type": "string",
-                        "example": "1-281-883-4135"
+                        "example": "(650) 236-8108"
                     },
                     "email": {
                         "description": "Email is required if phone is not provided",
                         "type": "string",
-                        "example": "elyssa85@hotmail.com"
+                        "example": "charlie06@yahoo.com"
                     },
                     "name": {
                         "description": "Customer name",
                         "type": "string",
-                        "example": "Dejah Bashirian"
+                        "example": "Perry Runolfsson"
                     },
                     "password": {
                         "description": "Password",
                         "format": "password",
                         "type": "string",
-                        "example": "'0r%^!X{]Hu<\"d\"z"
+                        "example": "cO(y4eE+NR8&J]f-"
                     },
                     "deviceName": {
                         "description": "Device name is required to distinguish between different access tokens",
                         "type": "string",
-                        "example": "modi"
+                        "example": "omnis"
                     }
                 }
             },
@@ -2184,13 +2184,13 @@
                         "description": "Workspace (business) name",
                         "type": "string",
                         "nullable": false,
-                        "example": "Quitzon, Koch and Mraz"
+                        "example": "Kuhic and Sons"
                     },
                     "workspaceAddress": {
                         "description": "Workspace (business) address",
                         "type": "string",
                         "nullable": false,
-                        "example": "677 Shanahan Fields Apt. 283\nBobbyhaven, MN 37423-1972"
+                        "example": "379 Weissnat Mill\nPort Darron, TN 60622"
                     },
                     "customerId": {
                         "description": "Customer Id",
@@ -2202,7 +2202,7 @@
                         "description": "Card (plan) description",
                         "type": "string",
                         "nullable": false,
-                        "example": "Et facilis enim et odit aperiam. Quidem ut nihil enim est corrupti ab. Tempora hic rerum quae culpa dolores. Consectetur et pariatur eum molestiae labore assumenda asperiores dicta."
+                        "example": "Autem dolor non dolor animi at tempore. Quia veniam minima hic consequatur expedita. Eos et ducimus et dolorem officiis. Nostrum consequuntur reprehenderit facilis ex dolore corporis ea."
                     },
                     "satisfied": {
                         "description": "Whether all requirements to receive a bonus are satisfied",
@@ -2234,11 +2234,11 @@
                                     "description": "Achievement description = corresponding requirement description",
                                     "type": "string",
                                     "nullable": false,
-                                    "example": "Omnis voluptatibus nulla debitis ipsa qui. Et fuga accusantium repellendus tempora velit. Non aut blanditiis id debitis minus repellendus atque. Iusto ut asperiores libero qui nam distinctio."
+                                    "example": "In est et voluptate explicabo enim maiores voluptatum voluptatum. Doloremque itaque ipsa asperiores quisquam veritatis consequuntur. Voluptas neque est consequatur labore aspernatur nesciunt."
                                 }
                             }
                         },
-                        "example": "Dolorum expedita nulla ratione cum commodi doloribus. Voluptas ex quisquam autem qui quis. Consequuntur quia sapiente voluptatem voluptatem fuga dolores et."
+                        "example": "Et eligendi sed ea quia asperiores nam sint. Adipisci nisi hic culpa rerum consequatur cupiditate omnis. Esse perspiciatis pariatur corrupti eaque saepe est perferendis."
                     },
                     "requirements": {
                         "description": "All requirements",
@@ -2260,7 +2260,7 @@
                                     "description": "Requirement description",
                                     "type": "string",
                                     "nullable": false,
-                                    "example": "Assumenda qui nihil quasi veniam. Aut qui molestias aut doloribus doloremque minima. Perferendis fugit unde nihil perferendis. Consequatur quo exercitationem dolores."
+                                    "example": "Nihil architecto in facilis cumque. Voluptas inventore quia quibusdam assumenda. Magnam inventore eum possimus omnis praesentium commodi. Ullam eum aliquid eum voluptate sit voluptate."
                                 }
                             }
                         }
@@ -2286,19 +2286,19 @@
                         "description": "Workspace (business) name",
                         "type": "string",
                         "nullable": false,
-                        "example": "Nitzsche, Klocko and Bartell"
+                        "example": "McDermott-Crooks"
                     },
                     "description": {
                         "description": "Workspace (business) description",
                         "type": "string",
                         "nullable": false,
-                        "example": "Error sunt sunt maxime voluptatem vel. Et vel in libero. Ex quasi voluptates tempore deleniti harum."
+                        "example": "Blanditiis magnam et odit minus. Iusto in non dolores porro. Consequatur aliquam nesciunt possimus aliquam reiciendis."
                     },
                     "address": {
                         "description": "Workspace (business) address",
                         "type": "string",
                         "nullable": false,
-                        "example": "803 Bechtelar Ways\nNew Clement, UT 67836-9397"
+                        "example": "670 Annalise Locks Suite 362\nWest Alvenatown, WA 75652"
                     }
                 }
             },
@@ -2312,6 +2312,7 @@
                     "isLaunched",
                     "isStopped",
                     "isArchived",
+                    "expirationDate",
                     "requirements"
                 ],
                 "properties": {
@@ -2331,13 +2332,13 @@
                         "description": "Plan name",
                         "type": "string",
                         "nullable": false,
-                        "example": "Excepturi hic et quo quam et."
+                        "example": "Nobis et fugiat rerum enim."
                     },
                     "description": {
                         "description": "Plan description",
                         "type": "string",
                         "nullable": false,
-                        "example": "Eius qui repellat omnis odit. Est inventore odio voluptates voluptas. Iste qui optio deserunt eligendi aliquam molestiae illo. Aspernatur sed quia qui aliquid atque ipsum sed."
+                        "example": "Illum architecto aliquam voluptas eveniet aliquid et. Assumenda magni aut debitis itaque voluptate. Pariatur tempore nesciunt dolor vel molestiae. Delectus voluptatem occaecati blanditiis autem."
                     },
                     "isLaunched": {
                         "description": "Whether the plan is launched",
@@ -2353,6 +2354,11 @@
                         "description": "Whether the plan is archived",
                         "type": "boolean",
                         "nullable": false
+                    },
+                    "expirationDate": {
+                        "description": "Plan expiration date",
+                        "format": "date-time",
+                        "type": "string"
                     },
                     "requirements": {
                         "description": "All requirements",
@@ -2374,7 +2380,7 @@
                                     "description": "Requirement description",
                                     "type": "string",
                                     "nullable": false,
-                                    "example": "Consequatur eos id modi harum. Eius iure numquam nisi id."
+                                    "example": "Numquam sunt et vitae dicta a dolorum. Quasi placeat sunt magnam eum omnis libero et. Earum sunt voluptate nobis aut at."
                                 }
                             }
                         }

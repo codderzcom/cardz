@@ -45,7 +45,7 @@ Route::group(['prefix' => '/api/v1', 'middleware' => 'api'], function () {
             Route::group(['prefix' => '/plan/{planId}'], function () {
                 Route::get('/', [PlanController::class, 'getPlan'])->name(RouteName::GET_PLAN);
 
-                Route::put('/prfile', [PlanController::class, 'changeProfile'])->name(RouteName::CHANGE_PLAN_PROFILE);
+                Route::put('/profile', [PlanController::class, 'changeProfile'])->name(RouteName::CHANGE_PLAN_PROFILE);
                 Route::put('/launch', [PlanController::class, 'launch'])->name(RouteName::LAUNCH_PLAN);
                 Route::put('/stop', [PlanController::class, 'stop'])->name(RouteName::STOP_PLAN);
                 Route::put('/archive', [PlanController::class, 'archive'])->name(RouteName::ARCHIVE_PLAN);
