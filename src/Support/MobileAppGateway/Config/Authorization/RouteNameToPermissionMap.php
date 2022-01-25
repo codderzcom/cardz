@@ -10,6 +10,7 @@ final class RouteNameToPermissionMap
     private array $permissionMap = [
         RouteName::REGISTER => AuthorizationPermission::NULL_PERMISSION,
         RouteName::GET_TOKEN => AuthorizationPermission::NULL_PERMISSION,
+        RouteName::CLEAR_TOKENS => AuthorizationPermission::NULL_PERMISSION,
 
         RouteName::GET_WORKSPACES => AuthorizationPermission::NULL_PERMISSION,
         RouteName::ADD_WORKSPACE => AuthorizationPermission::NULL_PERMISSION,

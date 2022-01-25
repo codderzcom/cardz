@@ -5,6 +5,7 @@ namespace Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer;
 use App\OpenApi\Requests\Customer\GetTokenRequestBody;
 use App\OpenApi\Requests\Customer\RegisterRequestBody;
 use App\OpenApi\Responses\ApiAccessTokenResponse;
+use App\OpenApi\Responses\ClearTokensResponse;
 use App\OpenApi\Responses\CustomerIdResponse;
 use App\OpenApi\Responses\CustomerWorkspacesResponse;
 use App\OpenApi\Responses\Errors\AuthenticationExceptionResponse;
@@ -25,6 +26,8 @@ use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer\Reques
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer\Requests\GetTokenRequest;
 use Cardz\Support\MobileAppGateway\Presentation\Controllers\Http\Customer\Requests\RegisterRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Ramsey\Uuid\Guid\Guid;
 use Vyuldashev\LaravelOpenApi\Attributes as OpenApi;
 
@@ -69,6 +72,20 @@ class CustomerController extends BaseController
             $request->password,
             $request->deviceName,
         ));
+    }
+
+    /**
+     * Clear user tokens
+     *
+     * Removes all existing access tokens for the current user. (I.e. logout)
+     */
+    #[OpenApi\Operation(id: RouteName::CLEAR_TOKENS, tags: ['customer'])]
+    #[OpenApi\Response(factory: ClearTokensResponse::class, statusCode: 200)]
+    #[OpenApi\Response(factory: AuthenticationExceptionResponse::class, statusCode: 401)]
+    #[OpenApi\Response(factory: UnexpectedExceptionResponse::class, statusCode: 500)]
+    public function clearTokens(): JsonResponse
+    {
+        return $this->response($this->customerAppService->clearTokens(Auth::id()));
     }
 
     /**

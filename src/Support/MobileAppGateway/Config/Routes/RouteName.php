@@ -8,6 +8,7 @@ final class RouteName extends Enum
 {
     public const REGISTER = 'RegisterCustomer';
     public const GET_TOKEN = 'GetCustomerToken';
+    public const CLEAR_TOKENS = 'ClearCustomerToken';
     public const GET_WORKSPACES = 'ListAllWorkspace';
     public const ADD_WORKSPACE = 'AddWorkspace';
     public const GET_PLANS = 'ListAllPlan';

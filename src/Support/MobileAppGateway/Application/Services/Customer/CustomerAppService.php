@@ -14,7 +14,7 @@ class CustomerAppService
     public function __construct(
         private IssuedCardReadStorageInterface $issuedCardReadStorage,
         private CustomerWorkspaceReadStorageInterface $customerWorkspaceReadStorage,
-        private IdentityContextInterface $authContext,
+        private IdentityContextInterface $identityContext,
     ) {
     }
 
@@ -43,13 +43,18 @@ class CustomerAppService
 
     public function getToken(string $identity, string $password, string $deviceName): string
     {
-        return $this->authContext->getToken($identity, $password, $deviceName);
+        return $this->identityContext->getToken($identity, $password, $deviceName);
+    }
+
+    public function clearTokens(string $userId): string
+    {
+        return $this->identityContext->clearTokens($userId);
     }
 
     public function register(?string $email, ?string $phone, string $name, string $password, string $deviceName): string
     {
-        $this->authContext->registerUser($email, $phone, $name, $password);
-        return $this->authContext->getToken($email ?: $phone, $password, $deviceName);
+        $this->identityContext->registerUser($email, $phone, $name, $password);
+        return $this->identityContext->getToken($email ?: $phone, $password, $deviceName);
     }
 }
 
