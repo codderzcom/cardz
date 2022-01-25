@@ -2,6 +2,7 @@
 
 namespace Cardz\Support\MobileAppGateway\Infrastructure\ACL\Identity;
 
+use Cardz\Generic\Identity\Application\Commands\ClearTokens;
 use Cardz\Generic\Identity\Application\Commands\RegisterUser;
 use Cardz\Generic\Identity\Application\Queries\GetToken;
 use Cardz\Support\MobileAppGateway\Integration\Contracts\IdentityContextInterface;
@@ -29,4 +30,10 @@ class MonolithIdentityAdapter implements IdentityContextInterface
         return $this->queryBus->execute($query);
     }
 
+    public function clearTokens(string $userId): string
+    {
+        $command = ClearTokens::of($userId, false);
+        $this->commandBus->dispatch($command);
+        return $command->getUserId();
+    }
 }

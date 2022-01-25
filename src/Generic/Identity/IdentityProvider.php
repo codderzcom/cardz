@@ -31,6 +31,7 @@ class IdentityProvider extends ServiceProvider
         QueryBusInterface $queryBus,
     ) {
         $commandBus->registerProvider(LaravelHandlerGenerator::of(UserAppService::class));
+        $commandBus->registerProvider(LaravelHandlerGenerator::of(TokenAppService::class));
         $queryBus->registerProvider(LaravelExecutorGenerator::of(TokenAppService::class));
 
         $domainEventBus->subscribe($this->app->make(TokenAssignedConsumer::class));
